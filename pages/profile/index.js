@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Profile = () => {
   const token = Cookies.get("token");
@@ -18,7 +19,7 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [token]);
 
   // delete user bloc
   async function deleteUser() {
@@ -39,7 +40,7 @@ const Profile = () => {
 
   return (
     <div>
-      <p>{currentUser.name}</p>
+      {/* <p>{currentUser.name}</p> */}
       <Link href="/" exact>
         <a>Update</a>
       </Link>
