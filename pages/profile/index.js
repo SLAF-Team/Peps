@@ -1,11 +1,24 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import axios from "axios"
+import axios from "axios";
 
 const Profile = () => {
   const token = Cookies.get("token");
   const router = useRouter();
+
+  // get current user
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(result);
+    const current_user = result.data.user;
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   // delete user bloc
   async function deleteUser() {
@@ -23,7 +36,7 @@ const Profile = () => {
   };
 
   // update user bloc
-  
+
   return (
     <div>
       <Link href="/" exact>
