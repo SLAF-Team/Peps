@@ -17,7 +17,7 @@ model Recipe {
   description String
   imageUrl    String?
   published   Boolean @default(false)
-  cook       User   @relation(fields: [cookId], references: [id])
+  cook       User   @relation(fields: [cookId], references: [id], onDelete: Cascade)
   cookId     Int
 }
 
