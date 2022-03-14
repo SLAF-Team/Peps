@@ -7,13 +7,13 @@ const Profile = () => {
   const token = Cookies.get("token");
   const router = useRouter();
 
+  // delete user bloc
   async function deleteUser() {
     const result = await axios.delete("/api/user/deleteUser", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(result)
-    // Cookies.remove("token");
-    // router.push("/");
+    Cookies.remove("token");
+    router.push("/");
   }
 
   const handleDelete = () => {
@@ -21,6 +21,8 @@ const Profile = () => {
       deleteUser();
     }
   };
+
+  // update user bloc
   
   return (
     <div>
