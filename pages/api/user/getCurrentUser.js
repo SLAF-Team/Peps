@@ -21,6 +21,8 @@ export default async (req, res) => {
     }
     res.status(200).json({ user });
   } catch (err) {
-    return false;
+    res.status(err).json({});
   }
+  res.status(405);
+  res.end()
 };
