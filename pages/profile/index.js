@@ -13,7 +13,7 @@ const Profile = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     console.log(result);
-    const current_user = result.data.user;
+    const currentUser = result.data.user;
   }
 
   useEffect(() => {
@@ -39,6 +39,7 @@ const Profile = () => {
 
   return (
     <div>
+      <p>{currentUser.name}</p>
       <Link href="/" exact>
         <a>Update</a>
       </Link>
