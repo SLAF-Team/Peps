@@ -11,8 +11,8 @@ const Profile = () => {
 
   console.log("utilisateur connecté");
   console.log(user);
-  // get current user
 
+  // fetch current user
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
       headers: { Authorization: `Bearer ${token}` },
