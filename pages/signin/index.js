@@ -18,7 +18,7 @@ const SignIn = () => {
   };
 
   async function signUserIn(data) {
-    const result = await axios.post("/api/user/logUserIn", {
+    const result = await axios.post("/api/user/getUser", {
       ...data,
     });
     console.log(result);
