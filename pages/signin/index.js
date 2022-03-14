@@ -22,8 +22,8 @@ const SignIn = () => {
       ...data,
     });
     console.log(result);
-    // Cookies.set("token", result.data.token, { expires: 7 });
-    // router.push("/profile");
+    Cookies.set("token", result.data.token, { expires: 7 });
+    router.push("/");
   }
 
   const handleSubmit = (e) => {
