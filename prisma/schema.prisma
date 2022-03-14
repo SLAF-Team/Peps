@@ -9,3 +9,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String  @unique
+  password  String
+  admin     Boolean @default(false)
+  cook      Boolean @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  recipes   Recipe[]
+
+  @@map(name: "users")
+}
+
