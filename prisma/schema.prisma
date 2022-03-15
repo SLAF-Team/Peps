@@ -10,27 +10,81 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Recipe {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String
-  imageUrl    String?
-  published   Boolean @default(false)
-  cook       User   @relation(fields: [cookId], references: [id])
-  cookId     Int
+model User {
+id	Int @default(autoincrement()) @id
+name	String?
+email	String @unique
+password	String
+isadmin	Boolean @default(false)
+createdAt	DateTime @default(now()) @map(name: "created_at")
+updatedAt	DateTime @updatedAt @map(name: "updated_at")
+recipes	Recipe[]
+@@map(name: "users")	
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String  @unique
-  password  String
-  isadmin     Boolean @default(false)
-  iscook      Boolean @default(false)
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-  recipes   Recipe[]
+model Ingredient	{
+id	Int @default(autoincrement()) @id
+possibleUnits	String
+name	String
+recipes	IngredientsandRecipes[]
+}
+	
+model Region		{
+id	Int @default(autoincrement()) @id
+name	String
+dishes	Dish[]
+}
+	
+model Country	{
+id	Int @default(autoincrement()) @id
+name	String
+recipes	Recipe[]
+}
+	
+model Tag {
+id	Int @default(autoincrement()) @id
+name	String
+recipes	Recipe[] @relation("_TagsAndRecipes")
+}
+	
+model Type	{
+id	Int @default(autoincrement()) @id
+name	String
+recipes	Recipe[]
+}
+	
+model Recipe	{
+id	Int @default(autoincrement()) @id
+name	String
+imageUrl	String?
+ingredients	IngredientsandRecipes[]
+published	Boolean @default(false)
+country	Country @relation(fields: [countryId], references: [id])
+countryId	Int
+cook	User  @relation(fields: [cookId], references: [id])
+cookId	Int
+dish	Dish   @relation(fields: [dishId], references: [id])
+dishId	Int
+tags	Tag[] @relation("_TagsAndRecipes")
+type	Type @relation(fields: [typeId], references: [id])
+typeId	Int
+}
 
-  @@map(name: "users")
+	
+model Dish	{
+id 	Int @default(autoincrement()) @id
+title	String
+description	String
+recipes	Recipe[]
+region	Region @relation(fields: [regionId], references: [id])
+regionId	Int
+}
+	
+model IngredientsandRecipes		{
+quantity	Int
+recipe	Recipe @relation(fields: [recipeId], references: [id])
+recipeId	Int
+ingredient	Ingredient @relation(fields: [ingredientId], references: [id])
+ingredientId	Int
+@@id([recipeId, ingredientId])	
 }
