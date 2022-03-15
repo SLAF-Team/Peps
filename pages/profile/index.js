@@ -3,11 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import UpdateUserForm from "../../components/editUser";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const token = Cookies.get("token");
   const router = useRouter();
+  const [form, setForm] = useState(false);
 
   console.log("utilisateur connecté");
   console.log(user);
@@ -33,6 +35,10 @@ const Profile = () => {
     router.push("/");
   }
 
+  const handleUpdateUser = () => {
+    setForm(!form);
+  };
+
   const handleDelete = () => {
     if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
       deleteUser();
@@ -47,10 +53,13 @@ const Profile = () => {
           <p>{user.email}</p>
         </div>
       ) : null}
-      <Link href="/" exact>
-        <a>Update</a>
-      </Link>
 
+      {!form && (
+        <button onClick={() => handleUpdateUser()}>
+          Editer mon profil
+        </button>
+      )}
+      {form ? <UpdateUserForm user={user} /> : null}
       <button onClick={() => handleDelete()}>
         <a>Supprimer mon compte</a>
       </button>
