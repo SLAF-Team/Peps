@@ -2,18 +2,12 @@ import "../styles/globals.css";
 import Layout from "../components/layout";
 import Cookies from "js-cookie";
 import { useState } from "react";
-// import { useAtom } from "jotai";
 import { useEffect } from "react";
 import axios from "axios";
-// import { Provider } from "jotai";
-// import {atom} from "jotai"
 import { UserContext } from "../context/UserContext";
-
-// export const userAtom = atom(null);
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
-  // const [user, setUser] = useAtom(userAtom);
   const token = Cookies.get("token");
 
   console.log("token");
@@ -34,14 +28,11 @@ function MyApp({ Component, pageProps }) {
   }, [token]);
 
   return (
-    // <Provider>
     <UserContext.Provider value={{ user, setUser }}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </UserContext.Provider>
-
-    // </Provider>
   );
 }
 
