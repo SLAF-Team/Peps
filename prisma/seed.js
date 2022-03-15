@@ -1,7 +1,13 @@
-const {PrismaClient} = require("@prisma/client")
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.ingredient.deleteMany({});
+  await prisma.type.deleteMany({});
+  await prisma.region.deleteMany({});
+  await prisma.country.deleteMany({});
+  await prisma.tag.deleteMany({});
+  await prisma.dish.deleteMany({});
   await prisma.recipe.deleteMany({});
   await prisma.user.deleteMany({});
 
@@ -13,6 +19,26 @@ async function main() {
       password: "johndoe",
     },
   });
+
+  const countries = [
+    { name: "France" },
+    { name: "Italie" },
+    { name: "Espagne" },
+  ];
+
+  const regions = [
+    { name: "Asie" },
+    { name: "Méditerrannée" },
+    { name: "Amérique du Sud" },
+  ];
+
+  const tags = [
+    { name: "Végétarien" },
+    { name: "Sans gluten" },
+    { name: "coucou" },
+  ];
+
+  const types = [{ name: "Entrée" }, { name: "Plat" }, { name: "Dessert" }];
 
   const users = [
     {
@@ -32,37 +58,46 @@ async function main() {
     },
   ];
 
-  const recipes = [
+  const dishs = [
     {
       title: "Couscous",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
-      imageUrl:
-        "https://img.cuisineaz.com/660x660/2017/02/06/i120514-couscous-au-lait.jpeg",
-      published: true,
-      cookId: john.id,
     },
     {
       title: "Pot au Feu à l'ancienne",
       description:
         "Over the past two decades, Rails has taken countless companies to millions of users and billions in market valuations.",
-      imageUrl:
-        "https://resize-parismatch.lanmedia.fr/img/var/news/storage/images/paris-match/culture/medias/la-cuisine-des-mousquetaires-micheline-banzet-acolyte-de-maite-est-morte-1700201/27713466-1-fre-FR/La-Cuisine-des-Mousquetaires-Micheline-Banzet-acolyte-de-Maite-est-morte.jpg",
-      published: true,
-      cookId: john.id,
     },
     {
       title: "Poutin",
       description: "Sans commentaire.",
-      imageUrl: "https://www.ledevoir.com/documents/image/vladimir-poutine.jpg",
-      published: true,
-      cookId: john.id,
     },
   ];
 
   https: await prisma.user.createMany({
     data: users,
   });
+
+  await prisma.tag.createMany({
+    data: tags,
+  });
+
+  await prisma.country.createMany({
+    data: countries,
+  });
+
+  await prisma.type.createMany({
+    data: types,
+  });
+
+  await prisma.region.createMany({
+    data: regions,
+  });
+
+    await prisma.dish.createMany({
+      data: dishs,
+    });
 
   await prisma.recipe.createMany({
     data: recipes,
