@@ -1,14 +1,14 @@
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import UpdateUserForm from "../../components/editUser";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const token = Cookies.get("token");
   const router = useRouter();
-
+  const [form, setForm] = useState(false);
   console.log("utilisateur connecté");
   console.log(user);
 
@@ -19,12 +19,21 @@ const Profile = () => {
     });
     setUser(result.data.user);
   }
-
   useEffect(() => {
     getUser();
   }, []);
 
+  const handleUpdateUser = () => {
+    setForm(!form);
+  };
+
   // delete user bloc
+  const handleDelete = () => {
+    if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
+      deleteUser();
+    }
+  };
+  
   async function deleteUser() {
     const result = await axios.delete("/api/user/deleteUser", {
       headers: { Authorization: `Bearer ${token}` },
@@ -32,12 +41,6 @@ const Profile = () => {
     Cookies.remove("token");
     router.push("/");
   }
-
-  const handleDelete = () => {
-    if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
-      deleteUser();
-    }
-  };
 
   return (
     <div>
@@ -47,10 +50,13 @@ const Profile = () => {
           <p>{user.email}</p>
         </div>
       ) : null}
-      <Link href="/" exact>
-        <a>Update</a>
-      </Link>
 
+      {!form && (
+        <button onClick={() => handleUpdateUser()}>
+          Editer mon profil
+        </button>
+      )}
+      {form ? <UpdateUserForm user={user} /> : null}
       <button onClick={() => handleDelete()}>
         <a>Supprimer mon compte</a>
       </button>
