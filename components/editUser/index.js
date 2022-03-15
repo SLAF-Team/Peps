@@ -20,7 +20,7 @@ const UpdateUserForm = ({user}) => {
     setEmail(e.target.value);
   };
 
-  async function signUserUp() {
+  async function editUser() {
     const result = await axios.put(
       "/api/user/editUser",
       {
@@ -37,7 +37,7 @@ const UpdateUserForm = ({user}) => {
   // Handling the form submission + fetch data + update state
   const handleSubmit = (e) => {
     e.preventDefault();
-    signUserUp();
+    editUser();
     router.push(`/profile`);
   };
 

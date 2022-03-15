@@ -9,6 +9,7 @@ const Profile = () => {
   const token = Cookies.get("token");
   const router = useRouter();
   const [form, setForm] = useState(false);
+
   console.log("utilisateur connecté");
   console.log(user);
 
@@ -28,12 +29,12 @@ const Profile = () => {
   };
 
   // delete user bloc
-  const handleDelete = () => {
+  const handleDeleteUser = () => {
     if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
       deleteUser();
     }
   };
-  
+
   async function deleteUser() {
     const result = await axios.delete("/api/user/deleteUser", {
       headers: { Authorization: `Bearer ${token}` },
@@ -45,21 +46,22 @@ const Profile = () => {
   return (
     <div>
       {user ? (
-        <div>
-          <p>{user.name}</p>
-          <p>{user.email}</p>
-        </div>
+        <>
+          <div>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+          </div>
+          {!form && (
+            <button onClick={() => handleUpdateUser()}>
+              Editer mon profil
+            </button>
+          )}
+          {form ? <UpdateUserForm user={user} /> : null}
+          <button onClick={() => handleDeleteUser()}>
+            <a>Supprimer mon compte</a>
+          </button>
+        </>
       ) : null}
-
-      {!form && (
-        <button onClick={() => handleUpdateUser()}>
-          Editer mon profil
-        </button>
-      )}
-      {form ? <UpdateUserForm user={user} /> : null}
-      <button onClick={() => handleDelete()}>
-        <a>Supprimer mon compte</a>
-      </button>
     </div>
   );
 };
