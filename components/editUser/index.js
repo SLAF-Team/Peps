@@ -1,18 +1,14 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-// UseUserContext a import 
-import { useRouter } from "next/router";
 
-const UpdateUserForm = ({ user }) => {
-  const { setUser } = useUserContext();
+const UpdateUserForm = ({user}) => {
+  const token = Cookies.get("token");
   const router = useRouter();
 
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [isOwner, setOwner] = useState(user.isowner);
-
-  const token = Cookies.get("token");
+  const [name, setName] = useState(user?.name);
+  const [email, setEmail] = useState(user?.email);
 
   // Handling the name change
   const handleName = (e) => {
@@ -24,10 +20,6 @@ const UpdateUserForm = ({ user }) => {
     setEmail(e.target.value);
   };
 
-  const handleCheck = () => {
-    setOwner(!isOwner);
-  };
-
   async function signUserUp() {
     const result = await axios.put(
       "/api/user/editUser",
@@ -35,11 +27,11 @@ const UpdateUserForm = ({ user }) => {
         id: user.id,
         name: name,
         email: email,
-        isowner: isOwner,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setUser(result.data);
+    // Désactivé pour le momen
+    // setUser(result.data);
   }
 
   // Handling the form submission + fetch data + update state
@@ -68,16 +60,6 @@ const UpdateUserForm = ({ user }) => {
           value={email}
           type="email"
         />
-      </div>
-      <div className="form-check  mt-3">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          value=""
-          id="flexCheckDefault"
-          onChange={handleCheck}
-        />
-        <label className="form-check-label">Je suis un propriétaire</label>
       </div>
       <button type="submit" className="btn btn-primary my-3">
         J'édite
