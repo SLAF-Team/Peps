@@ -1,28 +1,18 @@
-import { useEffect, useState } from "react";
+import { useUserContext } from "../../context/UserContext";
+import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
 import UpdateUserForm from "../../components/editUser";
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const [form, setForm] = useState(false);
 
-  console.log("utilisateur connecté");
+  console.log("PROFIL : utilisateur connecté");
   console.log(user);
-
-  // fetch current user
-  async function getUser() {
-    const result = await axios.get("/api/user/getCurrentUser", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setUser(result.data.user);
-  }
-  useEffect(() => {
-    getUser();
-  }, []);
 
   const handleUpdateUser = () => {
     setForm(!form);
@@ -40,6 +30,7 @@ const Profile = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     Cookies.remove("token");
+    setUser(null);
     router.push("/");
   }
 
