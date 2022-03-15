@@ -20,6 +20,12 @@ async function main() {
     },
   });
 
+  const afrique = await prisma.region.create({
+    data: {
+      name: "Afrique",
+    },
+  });
+
   const countries = [
     { name: "France" },
     { name: "Italie" },
@@ -28,7 +34,7 @@ async function main() {
 
   const regions = [
     { name: "Asie" },
-    { name: "Méditerrannée" },
+    { name: "Europe du Sud" },
     { name: "Amérique du Sud" },
   ];
 
@@ -36,6 +42,12 @@ async function main() {
     { name: "Végétarien" },
     { name: "Sans gluten" },
     { name: "coucou" },
+  ];
+
+  const ingredients = [
+    { name: "Sucre", possibleUnits: "Gr" },
+    { name: "Eau", possibleUnits: "L" },
+    { name: "Courgette", possibleUnits: "Unité" },
   ];
 
   const types = [{ name: "Entrée" }, { name: "Plat" }, { name: "Dessert" }];
@@ -63,15 +75,18 @@ async function main() {
       title: "Couscous",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+      region: afrique.id,
     },
     {
       title: "Pot au Feu à l'ancienne",
       description:
         "Over the past two decades, Rails has taken countless companies to millions of users and billions in market valuations.",
+      region: afrique.id,
     },
     {
-      title: "Poutin",
+      title: "Poutine",
       description: "Sans commentaire.",
+      region: afrique.id,
     },
   ];
 
@@ -95,12 +110,12 @@ async function main() {
     data: regions,
   });
 
-    await prisma.dish.createMany({
-      data: dishs,
-    });
+  await prisma.ingredient.createMany({
+    data: ingredients,
+  });
 
-  await prisma.recipe.createMany({
-    data: recipes,
+  await prisma.dish.createMany({
+    data: dishs,
   });
 }
 

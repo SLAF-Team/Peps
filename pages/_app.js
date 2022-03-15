@@ -2,25 +2,13 @@ import "../styles/globals.css";
 import Layout from "../components/layout";
 import Cookies from "js-cookie";
 import { useState } from "react";
-// import { useAtom } from "jotai";
 import { useEffect } from "react";
 import axios from "axios";
-// import { Provider } from "jotai";
-// import {atom} from "jotai"
 import { UserContext } from "../context/UserContext";
-
-// export const userAtom = atom(null);
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
-  // const [user, setUser] = useAtom(userAtom);
   const token = Cookies.get("token");
-
-  console.log("token");
-  console.log(token);
-
-  console.log("user from app");
-  console.log(user);
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -33,15 +21,15 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, [token]);
 
+    console.log("user from app");
+    console.log(user);
+
   return (
-    // <Provider>
     <UserContext.Provider value={{ user, setUser }}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </UserContext.Provider>
-
-    // </Provider>
   );
 }
 

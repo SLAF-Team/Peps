@@ -3,9 +3,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import classes from "../../styles/Home.module.css";
+import { useUserContext } from "../../context/UserContext";
 
 const SignUp = () => {
   const router = useRouter();
+  const { setUser } = useUserContext();
 
   // States for registration
   const [name, setName] = useState("");
@@ -31,8 +33,8 @@ const SignUp = () => {
     const result = await axios.post("/api/user/addUser", {
       ...data,
     });
-    console.log(result)
     Cookies.set("token", result.data.token, { expires: 7 });
+    setUser(result.data.user);
     router.push("/");
   }
 
