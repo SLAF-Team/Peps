@@ -75,18 +75,18 @@ async function main() {
       title: "Couscous",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
-      region: afrique.id,
+      regionId: afrique.id,
     },
     {
       title: "Pot au Feu à l'ancienne",
       description:
         "Over the past two decades, Rails has taken countless companies to millions of users and billions in market valuations.",
-      region: afrique.id,
+      regionId: afrique.id,
     },
     {
       title: "Poutine",
       description: "Sans commentaire.",
-      region: afrique.id,
+      regionId: afrique.id,
     },
   ];
 
