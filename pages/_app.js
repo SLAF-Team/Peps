@@ -10,12 +10,6 @@ function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const token = Cookies.get("token");
 
-  console.log("token");
-  console.log(token);
-
-  console.log("user from app");
-  console.log(user);
-
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,6 +20,9 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     getUser();
   }, [token]);
+
+    console.log("user from app");
+    console.log(user);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
