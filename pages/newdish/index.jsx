@@ -1,13 +1,12 @@
-import { React} from 'react';
+import React from 'react';
 import { useState } from 'react/cjs/react.development';
 
 const newDish = () => {
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [recipe, setRecipe] = useState("");
-    const [region, setRegion] = useState("");
-    const [regionId, setRegionId] = useState("");
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [region, setRegion] = useState();
+    const [regionId, setRegionId] = useState();
 
 
     const handleTitle = (e) => {
@@ -18,10 +17,6 @@ const newDish = () => {
         setDescription(e.target.value);
     };
     
-    const handleRecipe = (e) => {
-        setRecipe(e.target.value);
-    };
-
     const handleRegion = (e) => {
         setRegion(e.target.value);
     };
@@ -287,9 +282,11 @@ const newDish = () => {
                 <option value="yemen">Yémen</option>
                 <option value="zambie">Zambie</option>
                 <option value="zimbabwe">Zimbabwe</option>
-                
             </select>
             </div>
+            <button type="submit" className="btn btn-primary my-3">
+                Créer un plat
+            </button> 
         </div>
     );
 };
