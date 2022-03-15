@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useUserContext } from "../../context/UserContext";
 
 const UpdateUserForm = ({user}) => {
   const token = Cookies.get("token");
-  const router = useRouter();
+  const { setUser } = useUserContext();
 
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -20,7 +20,7 @@ const UpdateUserForm = ({user}) => {
     setEmail(e.target.value);
   };
 
-  async function signUserUp() {
+  async function editUser() {
     const result = await axios.put(
       "/api/user/editUser",
       {
@@ -30,15 +30,13 @@ const UpdateUserForm = ({user}) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    // Désactivé pour le momen
-    // setUser(result.data);
+    setUser(result.data);
   }
 
   // Handling the form submission + fetch data + update state
   const handleSubmit = (e) => {
     e.preventDefault();
-    signUserUp();
-    router.push(`/profile`);
+    editUser();
   };
 
   return (

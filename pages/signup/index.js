@@ -11,7 +11,6 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isCook, setCook] = useState(false);
 
   // Handling the name change
   const handleName = (e) => {
@@ -26,10 +25,6 @@ const SignUp = () => {
   // Handling the password change
   const handlePassword = (e) => {
     setPassword(e.target.value);
-  };
-
-  const handleCheck = () => {
-    setCook(!isCook);
   };
 
   async function signUserUp(data) {
@@ -48,7 +43,6 @@ const SignUp = () => {
       name: name,
       email: email,
       password: password,
-      iscook: isCook,
     };
     signUserUp(data);
   };
@@ -83,17 +77,6 @@ const SignUp = () => {
               value={password}
               type="password"
             />
-          </div>
-
-          <div className="form-check my-2">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-              onChange={handleCheck}
-            />
-            <label className="form-check-label">Je suis un cuisinier</label>
           </div>
 
           <button type="submit">

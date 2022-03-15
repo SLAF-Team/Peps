@@ -16,6 +16,7 @@
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
+    "jotai": "^1.6.1",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.0",
