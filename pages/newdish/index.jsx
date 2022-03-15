@@ -1,47 +1,57 @@
 import React from 'react';
 import { useState } from 'react/cjs/react.development';
+import { useRef } from 'react/cjs/react.development';
 
 const newDish = () => {
 
-    const [title, setTitle] = useState();
-    const [description, setDescription] = useState();
-    const [region, setRegion] = useState();
-    const [regionId, setRegionId] = useState();
+    const formRef = useRef();
 
 
-    const handleTitle = (e) => {
-        setTitle(e.target.value);
-    };
-    
-    const handleDescription = (e) => {
-        setDescription(e.target.value);
-    };
-    
-    const handleRegion = (e) => {
-        setRegion(e.target.value);
-    };
+
+    async function addNewDish(params) {
+        const {
+          addTitle,
+          addDescription,
+          addRegion
+        } = formRef.current;
+        const title = addTitle.value;
+        const description = addDescription.value;
+        const region = addRegion.value;
+        console.log(title)
+        await axios.post(
+          "/api/dish/addDish",
+          {
+            title,
+            description,
+            region
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        // router.push("/newdish");
+      }
+
+
 
 
     return (
         <div>
+            <form ref={formRef}>
             <div>
                 <label>Titre</label>
                 <input
-                onChange={handleTitle}
-                value={title}
+                name="addTitle"
                 type="text"
                 />
             </div>
             <div>
                 <label>Description</label>
                 <input 
-                onChange={handleDescription}
-                value={description}
+                name="addDescription"
                 type="text" />
             </div>
             <div>
                 <label>Region</label>
-                <select name="pays">
+                <select name="addRegion">
                 <option value="afghanistan">Afghanistan</option>
                 <option value="afrique-du-sud">Afrique du Sud</option>
                 <option value="albanie">Albanie</option>
@@ -284,9 +294,10 @@ const newDish = () => {
                 <option value="zimbabwe">Zimbabwe</option>
             </select>
             </div>
-            <button type="submit" className="btn btn-primary my-3">
+            <button type="submit" className="btn btn-primary my-3" onClick={() => addNewDish()}>
                 Créer un plat
             </button> 
+            </form>
         </div>
     );
 };
