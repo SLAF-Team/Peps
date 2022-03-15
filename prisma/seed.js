@@ -9,7 +9,6 @@ async function main() {
     data: {
       name: "john",
       email: "john.doe@yopmail.com",
-      iscook: true,
       isadmin: true,
       password: "johndoe",
     },
@@ -19,19 +18,16 @@ async function main() {
     {
       name: "Owner1234",
       email: "owner1234@yopmail.com",
-      iscook: true,
       password: "123456",
     },
     {
       name: "Owner2345",
       email: "owner2345@yopmail.com",
-      iscook: false,
       password: "123456",
     },
     {
       name: "Owner3456",
       email: "owner3456@yopmail.com",
-      iscook: false,
       password: "123456",
     },
   ];
