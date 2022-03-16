@@ -90,6 +90,15 @@ async function main() {
     },
   ];
 
+    // const recipes = [
+    //   {
+    //     name: "Couscous de chez ma grand mère",
+    //     description:
+    //       "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+    //     regionId: afrique.id,
+    //   },
+    // ];
+
   https: await prisma.user.createMany({
     data: users,
   });
