@@ -2,12 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.recipe.deleteMany({});
+  await prisma.dish.deleteMany({});
   await prisma.ingredient.deleteMany({});
   await prisma.type.deleteMany({});
   await prisma.country.deleteMany({});
   await prisma.tag.deleteMany({});
-  await prisma.dish.deleteMany({});
-  await prisma.recipe.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.region.deleteMany({});
 
@@ -26,9 +26,9 @@ async function main() {
     },
   });
 
-    const maroc = await prisma.country.create({
-      data: { name: "Maroc" },
-    });
+  const maroc = await prisma.country.create({
+    data: { name: "Maroc" },
+  });
 
   const countries = [
     { name: "France" },
@@ -49,9 +49,9 @@ async function main() {
   ];
 
   const ingredients = [
-    { name: "Sucre", possibleUnits: "Gr" },
-    { name: "Eau", possibleUnits: "L" },
-    { name: "Courgette", possibleUnits: "Unité" },
+    { name: "Sucre" },
+    { name: "Eau" },
+    { name: "Courgette" },
   ];
 
   const entree = await prisma.type.create({
@@ -78,10 +78,9 @@ async function main() {
     },
   ];
 
-    const gramme = await prisma.unit.create({
-      data: { name: "gr" },
-    });
-
+  const gramme = await prisma.unit.create({
+    data: { name: "gr" },
+  });
 
   const units = [
     {
@@ -170,9 +169,9 @@ async function main() {
     data: dishs,
   });
 
-    await prisma.recipe.createMany({
-      data: recipes,
-    });
+  await prisma.recipe.createMany({
+    data: recipes,
+  });
 }
 
 main()

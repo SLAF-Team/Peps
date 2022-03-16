@@ -21,6 +21,16 @@ const newDish = () => {
     getAllCountries();
   }, []);
 
+  // get tags
+  async function getAllCountries() {
+    const result = await axios.get("/api/country/getCountries");
+    setCountries(result.data);
+  }
+
+  useEffect(() => {
+    getAllCountries();
+  }, []);
+
   // add Dish
   async function addNewDish(params) {
     setDisable(true);
