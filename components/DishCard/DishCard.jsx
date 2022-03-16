@@ -5,58 +5,31 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 const DishCard = (props) => {
-    const dishElement = props.dish;
+    const dish = props.dish;
     const token = Cookies.get('token');
     const router = useRouter();
-    // dishElement.recipes.forEach(recipe => {
-    //     console.log(recipe.name)
-    // })
-
-
-    // {dishElement?.recipes.map(recip => {
-    //     console.log(recip.name)
-    // })}
-
 
     async function deleteDish() {
         if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-          await axios.delete(`/api/dish/${dishElement?.id}`, {
+          await axios.delete(`/api/dish/${dish?.id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          router.push("/");
+          router.push("/dishs/");
         }
       }
 
-    
     return (
         <div>
-            <h1>Titre : {dishElement.title}</h1>
-            <p>Description : {dishElement.description}</p>
+            <h1>Titre : {dish.title}</h1>
+            <p>Description : {dish.description}</p>
             <button onClick={deleteDish} >
                 Supprimer
             </button>
             <div>
-                {dishElement.recipes ? (dishElement.recipes.forEach(recipe => (
-                    <div>
-                        <p>Recette : {recipe.name}</p>
-                        <p>Desc recette : {recipe.description}</p>
-                        
-                    </div> )
-                    
-                    
-                ) ) : null }
-
-                
-
-                {/* {dishElement.recipes.map(recip => {
-                    <p>{recip.name}</p>
-                })} */}
-
-         
-
-                
+                {dish.recipes.map(recipe => (
+                    <p>{recipe.name}</p>
+                ))}
             </div>
-
         </div>
     );
 };
