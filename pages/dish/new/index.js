@@ -31,8 +31,8 @@ const newDish = () => {
     await axios.post(
       "/api/dish/addDish",
       {
-        title,
-        description,
+        title: title,
+        description: description,
         regionID: region,
       },
       { headers: { Authorization: `Bearer ${token}` } }

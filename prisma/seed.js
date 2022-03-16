@@ -4,12 +4,12 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.ingredient.deleteMany({});
   await prisma.type.deleteMany({});
-  await prisma.region.deleteMany({});
   await prisma.country.deleteMany({});
   await prisma.tag.deleteMany({});
   await prisma.dish.deleteMany({});
   await prisma.recipe.deleteMany({});
   await prisma.user.deleteMany({});
+  await prisma.region.deleteMany({});
 
   const john = await prisma.user.create({
     data: {
