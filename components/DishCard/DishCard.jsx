@@ -25,6 +25,9 @@ const DishCard = (props) => {
             <button onClick={deleteDish} >
                 Supprimer
             </button>
+            <button onClick={editDish}>
+                modifier
+            </button>
             <div>
                 {dish.recipes.map(recipe => (
                     <p>{recipe.name}</p>
