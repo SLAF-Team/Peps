@@ -33,7 +33,7 @@ const newDish = () => {
       {
         title: title,
         description: description,
-        regionID: region,
+        regionId: region,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );

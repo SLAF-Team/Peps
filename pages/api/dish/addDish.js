@@ -11,7 +11,7 @@ export default async (req, res) => {
         ...data,
       },
     });
-    res.status(200).json( dish );
+    res.status(200).json(dish);
   } catch (err) {
     console.log(err);
     res.status(403).json({ err: "Error occured while adding a new dish." });
