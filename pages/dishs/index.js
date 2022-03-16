@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react/cjs/react.development";
 import axios from "axios";
+import DishCard from "../../components/DishCard/DishCard";
 
 const Dishs = () => {
   const [dishs, setDishs] = useState(null);
@@ -20,8 +21,7 @@ const Dishs = () => {
       {dishs ? (
         <>
           {dishs.map((dish) => (
-            <h1 key={dish.id}>{dish.title}</h1>
-            // <DishCard dish={dish}/>
+            <DishCard key={dish.id} dish={dish}/>
           ))}
         </>
       ) : null}
