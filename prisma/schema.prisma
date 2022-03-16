@@ -24,9 +24,14 @@ recipes	Recipe[]
 
 model Ingredient	{
 id	Int @default(autoincrement()) @id
-possibleUnits	String
 name	String
 recipes	IngredientsandRecipes[]
+}
+
+model Unit  {
+id  Int @default(autoincrement()) @id
+name  String
+recipes IngredientsandRecipes[]
 }
 
 model Region		{
@@ -58,7 +63,7 @@ id	Int @default(autoincrement()) @id
 name	String
 description String
 imageUrl	String?
-ingredients	IngredientsandRecipes[]
+ingredientsUnit	IngredientsandRecipes[]
 published	Boolean @default(false)
 country	Country @relation(fields: [countryId], references: [id])
 countryId	Int
@@ -87,5 +92,7 @@ recipe	Recipe @relation(fields: [recipeId], references: [id])
 recipeId	Int
 ingredient	Ingredient @relation(fields: [ingredientId], references: [id])
 ingredientId	Int
-@@id([recipeId, ingredientId])
+unit  Unit @relation(fields: [unitId], references: [id])
+unitId  Int
+@@id([recipeId, ingredientId, unitId])
 }
