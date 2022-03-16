@@ -31,9 +31,9 @@ const newDish = () => {
     await axios.post(
       "/api/dish/addDish",
       {
-        title,
-        description,
-        region,
+        title: title,
+        description: description,
+        regionId: region,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -56,7 +56,7 @@ const newDish = () => {
             <label>Region</label>
             <select name="addRegion">
               {regions.map((region) => (
-                <option value={region.name} key={region.id}>{region.name}</option>
+                <option value={region.id} key={region.id}>{region.name}</option>
               ))}
             </select>
           </div>
