@@ -21,7 +21,7 @@ const Dishs = () => {
       {dishs ? (
         <>
           {dishs.map((dish) => (
-            <DishCard key={dish.id} dish={dish}/>
+                <DishCard key={dish.id} dish={dish}/>
           ))}
         </>
       ) : null}
