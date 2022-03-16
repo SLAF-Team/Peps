@@ -26,6 +26,10 @@ async function main() {
     },
   });
 
+    const maroc = await prisma.country.create({
+      data: { name: "Maroc" },
+    });
+
   const countries = [
     { name: "France" },
     { name: "Italie" },
@@ -50,7 +54,11 @@ async function main() {
     { name: "Courgette", possibleUnits: "Unité" },
   ];
 
-  const types = [{ name: "Entrée" }, { name: "Plat" }, { name: "Dessert" }];
+  const entree = await prisma.type.create({
+    data: { name: "Entrée" },
+  });
+
+  const types = [{ name: "Plat" }, { name: "Dessert" }];
 
   const users = [
     {
@@ -70,13 +78,16 @@ async function main() {
     },
   ];
 
-  const dishs = [
-    {
+  const couscous = await prisma.dish.create({
+    data: {
       title: "Couscous",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       regionId: afrique.id,
     },
+  });
+
+  const dishs = [
     {
       title: "Pot au Feu à l'ancienne",
       description:
@@ -90,14 +101,26 @@ async function main() {
     },
   ];
 
-    // const recipes = [
-    //   {
-    //     name: "Couscous de chez ma grand mère",
-    //     description:
-    //       "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
-    //     regionId: afrique.id,
-    //   },
-    // ];
+  const recipes = [
+    {
+      name: "Couscous de chez ma grand mère",
+      description:
+        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+      cookId: john.id,
+      dishId: couscous.id,
+      typeId: entree.id,
+      countryId: maroc.id,
+    },
+    {
+      name: "Un autre couscous incroyable",
+      description:
+        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+      cookId: john.id,
+      dishId: couscous.id,
+      typeId: entree.id,
+      countryId: maroc.id,
+    },
+  ];
 
   https: await prisma.user.createMany({
     data: users,
@@ -126,6 +149,10 @@ async function main() {
   await prisma.dish.createMany({
     data: dishs,
   });
+
+    await prisma.recipe.createMany({
+      data: recipes,
+    });
 }
 
 main()
