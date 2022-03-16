@@ -13,9 +13,9 @@ const DishCard = (props) => {
     // })
 
 
-    // {dishElement?.recipes.map(recip => {
-    //     console.log(recip.name)
-    // })}
+    dishElement?.recipes.map(recip => {
+        console.log(recip)
+    })
 
 
     async function deleteDish() {
@@ -23,7 +23,7 @@ const DishCard = (props) => {
           await axios.delete(`/api/dish/${dishElement?.id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          router.push("/");
+          router.push("/dishs/");
         }
       }
 
@@ -36,25 +36,9 @@ const DishCard = (props) => {
                 Supprimer
             </button>
             <div>
-                {dishElement.recipes ? (dishElement.recipes.forEach(recipe => (
-                    <div>
-                        <p>Recette : {recipe.name}</p>
-                        <p>Desc recette : {recipe.description}</p>
-                        
-                    </div> )
-                    
-                    
-                ) ) : null }
-
-                
-
-                {/* {dishElement.recipes.map(recip => {
+                {dishElement.recipes.map(recip => (
                     <p>{recip.name}</p>
-                })} */}
-
-         
-
-                
+                ))}
             </div>
 
         </div>
