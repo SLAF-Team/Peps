@@ -8,7 +8,6 @@ export default async (req, res) => {
         id: Number.parseInt(id, 10),
       },
     });
-
     res.status(200).json(deleteDish);
   } catch (error) {
     console.log(error);
