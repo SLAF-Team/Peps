@@ -91,4 +91,4 @@ const AddRecipesIngredients = ({ recipe }) => {
   );
 };
 
-export default newRecipe;
+export default AddRecipesIngredients;
