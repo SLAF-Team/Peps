@@ -14,6 +14,7 @@ const newRecipe = () => {
   const [tags, setTags] = useState(null);
   const [types, setTypes] = useState(null);
   const { user } = useUserContext();
+  const [recipe, setRecipe] = useState(null)
 
   useEffect(() => {
     getAllCountries();
@@ -64,23 +65,24 @@ const newRecipe = () => {
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
-    const tags = addTag.value;
+    // const tags = addTag.value;
     const cook = user;
-    await axios.post(
-      "/api/dish/addDish",
+    const result = await axios.post(
+      "/api/recipe/addRecipe",
       {
         name,
         description,
         imageUrl,
         countryId: parseInt(country),
-        cook,
-        dish,
-        type,
-        tags,
+        cookId: parseInt(cook.id),
+        dishId: parseInt(dish),
+        typeId: parseInt(type),
+        // tags: parseInt(tags),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
+    setRecipe(result.data)
   }
 
   return (
