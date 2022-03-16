@@ -19,6 +19,7 @@ const newRecipe = () => {
     getAllCountries();
     getAllDishs();
     getAllTypes();
+    getAllTags();
   }, []);
 
   // get regions
@@ -35,7 +36,7 @@ const newRecipe = () => {
 
   // get tags
   async function getAllTags() {
-    const result = await axios.get("/api/tags/getTags");
+    const result = await axios.get("/api/tag/getTags");
     setTags(result.data);
   }
 
@@ -48,13 +49,22 @@ const newRecipe = () => {
   // add Dish
   async function addNewDish(params) {
     setDisable(true);
-    const { addName, addDescription, addCountry } = formRef.current;
+    const {
+      addName,
+      addDescription,
+      addCountry,
+      addDish,
+      addType,
+      addTag,
+      addImageUrl,
+    } = formRef.current;
     const name = addName.value;
     const description = addDescription.value;
     const imageUrl = addImageUrl.value;
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
+    const tags = addTag.value;
     const cook = user;
     await axios.post(
       "/api/dish/addDish",
@@ -106,6 +116,18 @@ const newRecipe = () => {
               {types.map((type) => (
                 <option value={type.id} key={type.id}>
                   {type.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+        {tags ? (
+          <div>
+            <label>Tag</label>
+            <select multiple name="addTag">
+              {tags.map((tag) => (
+                <option value={tag.id} key={tag.id}>
+                  {tag.name}
                 </option>
               ))}
             </select>
