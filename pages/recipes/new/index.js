@@ -4,7 +4,6 @@ import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
-import { MultiSelect } from "@mantine/core";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -15,6 +14,7 @@ const newRecipe = () => {
   const [tags, setTags] = useState(null);
   const [types, setTypes] = useState(null);
   const { user } = useUserContext();
+  const [recipe, setRecipe] = useState(null)
 
   useEffect(() => {
     getAllCountries();
@@ -40,7 +40,7 @@ const newRecipe = () => {
     const result = await axios.get("/api/tag/getTags");
     setTags(result.data)
   }
-  
+
   // get types
   async function getAllTypes() {
     const result = await axios.get("/api/type/getTypes");
@@ -65,56 +65,25 @@ const newRecipe = () => {
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
-    const tags = addTag.value;
+    // const tags = addTag.value;
     const cook = user;
-    await axios.post(
-      "/api/dish/addDish",
+    const result = await axios.post(
+      "/api/recipe/addRecipe",
       {
         name,
         description,
         imageUrl,
         countryId: parseInt(country),
-        cook,
-        dish,
-        type,
-        tags,
+        cookId: parseInt(cook.id),
+        dishId: parseInt(dish),
+        typeId: parseInt(type),
+        // tags: parseInt(tags),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
+    setRecipe(result.data)
   }
-
-  // function Demo() {
-  //   return (
-  //     <MultiSelect
-  //       data={data}
-  //       label="Your favorite frameworks/libraries"
-  //       placeholder="Pick all that you like"
-  //     />
-  //   );
-  // }
-
-  // import { MultiSelect } from "@mantine/core";
-
-  // function Demo() {
-  //   return (
-  //     <MultiSelect
-  //       data={[
-  //         "React",
-  //         "Angular",
-  //         "Svelte",
-  //         "Vue",
-  //         "Riot",
-  //         "Next.js",
-  //         "Blitz.js",
-  //       ]}
-  //       label="Your favorite frameworks/libraries"
-  //       placeholder="Pick all that you like"
-  //       searchable
-  //       nothingFound="Nothing found"
-  //     />
-  //   );
-  // }
 
   return (
     <div>
@@ -190,14 +159,5 @@ const newRecipe = () => {
     </div>
   );
 };
-
-// export async function getServerSideProps() {
-//   const allDishes = await prisma.dish.findMany();
-//   return {
-//     props: {
-//       dishes: allDishes,
-//     },
-//   };
-// }
 
 export default newRecipe;
