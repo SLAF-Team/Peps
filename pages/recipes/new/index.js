@@ -4,6 +4,7 @@ import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
+import { MultiSelect } from "@mantine/core";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -37,9 +38,9 @@ const newRecipe = () => {
   // get tags
   async function getAllTags() {
     const result = await axios.get("/api/tag/getTags");
-    setTags(result.data);
+    setTags(result.data)
   }
-
+  
   // get types
   async function getAllTypes() {
     const result = await axios.get("/api/type/getTypes");
@@ -76,11 +77,44 @@ const newRecipe = () => {
         cook,
         dish,
         type,
+        tags,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
   }
+
+  // function Demo() {
+  //   return (
+  //     <MultiSelect
+  //       data={data}
+  //       label="Your favorite frameworks/libraries"
+  //       placeholder="Pick all that you like"
+  //     />
+  //   );
+  // }
+
+  // import { MultiSelect } from "@mantine/core";
+
+  // function Demo() {
+  //   return (
+  //     <MultiSelect
+  //       data={[
+  //         "React",
+  //         "Angular",
+  //         "Svelte",
+  //         "Vue",
+  //         "Riot",
+  //         "Next.js",
+  //         "Blitz.js",
+  //       ]}
+  //       label="Your favorite frameworks/libraries"
+  //       placeholder="Pick all that you like"
+  //       searchable
+  //       nothingFound="Nothing found"
+  //     />
+  //   );
+  // }
 
   return (
     <div>
@@ -123,8 +157,8 @@ const newRecipe = () => {
         ) : null}
         {tags ? (
           <div>
-            <label>Tag</label>
-            <select multiple name="addTag">
+            <label>Tags</label>
+            <select name="addTag">
               {tags.map((tag) => (
                 <option value={tag.id} key={tag.id}>
                   {tag.name}
