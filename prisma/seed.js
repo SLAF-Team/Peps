@@ -78,6 +78,26 @@ async function main() {
     },
   ];
 
+    const gramme = await prisma.unit.create({
+      data: { name: "gr" },
+    });
+
+
+  const units = [
+    {
+      name: "L",
+    },
+    {
+      name: "cuillère à soupe",
+    },
+    {
+      name: "cuillère à café",
+    },
+    {
+      name: "unité",
+    },
+  ];
+
   const couscous = await prisma.dish.create({
     data: {
       title: "Couscous",
