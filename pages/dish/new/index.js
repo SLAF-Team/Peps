@@ -11,15 +11,17 @@ const newDish = () => {
   const [disable, setDisable] = useState(false);
   const [regions, setRegions] = useState(null);
 
+  // get regions
   async function getAllRegions() {
-    const result = await axios.get("/api/dish/getRegions");
+    const result = await axios.get("/api/region/getRegions");
     setRegions(result.data);
   }
 
-    useEffect(() => {
-      getAllRegions();
-    }, []);
+  useEffect(() => {
+    getAllRegions();
+  }, []);
 
+  // add Dish
   async function addNewDish(params) {
     setDisable(true);
     const { addTitle, addDescription, addRegion } = formRef.current;
@@ -49,13 +51,16 @@ const newDish = () => {
           <label>Description</label>
           <input name="addDescription" type="text" />
         </div>
-        <div>
-          <label>Region</label>
-          <select name="addRegion">
-            <option value="afrique">Afrique</option>
-            <option value="asie">Asie</option>
-          </select>
-        </div>
+        {regions ? (
+          <div>
+            <label>Region</label>
+            <select name="addRegion">
+              {regions.map((region) => (
+                <option value={region.name} key={region.id}>{region.name}</option>
+              ))}
+            </select>
+          </div>
+        ) : null}
         <button
           disabled={disable}
           className="btn btn-primary my-3"
