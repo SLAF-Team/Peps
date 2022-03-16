@@ -33,7 +33,7 @@ const newDish = () => {
       {
         title: title,
         description: description,
-        regionId: region,
+        regionId: parseInt(region),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
