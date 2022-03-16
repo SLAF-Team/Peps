@@ -2,14 +2,24 @@ import React from "react";
 import { useState, useEffect } from "react/cjs/react.development";
 import { useRef } from "react/cjs/react.development";
 import axios from "axios";
-import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
+import { useUserContext } from "../../../context/UserContext";
 
-const newDish = () => {
+const newRecipe = () => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
   const [countries, setCountries] = useState(null);
+  const [dishs, setDishs] = useState(null);
+  const [tags, setTags] = useState(null);
+  const [types, setTypes] = useState(null);
+  const { user } = useUserContext();
+
+  useEffect(() => {
+    getAllCountries();
+    getAllDishs();
+    getAllTypes();
+  }, []);
 
   // get regions
   async function getAllCountries() {
@@ -17,19 +27,23 @@ const newDish = () => {
     setCountries(result.data);
   }
 
-  useEffect(() => {
-    getAllCountries();
-  }, []);
-
-  // get tags
-  async function getAllCountries() {
-    const result = await axios.get("/api/country/getCountries");
-    setCountries(result.data);
+  // get dish
+  async function getAllDishs() {
+    const result = await axios.get("/api/dish/getDishs");
+    setDishs(result.data);
   }
 
-  useEffect(() => {
-    getAllCountries();
-  }, []);
+  // get tags
+  async function getAllTags() {
+    const result = await axios.get("/api/tags/getTags");
+    setTags(result.data);
+  }
+
+  // get types
+  async function getAllTypes() {
+    const result = await axios.get("/api/type/getTypes");
+    setTypes(result.data);
+  }
 
   // add Dish
   async function addNewDish(params) {
@@ -37,7 +51,11 @@ const newDish = () => {
     const { addName, addDescription, addCountry } = formRef.current;
     const name = addName.value;
     const description = addDescription.value;
+    const imageUrl = addImageUrl.value;
     const country = addCountry.value;
+    const dish = addDish.value;
+    const type = addType.value;
+    const cook = user;
     await axios.post(
       "/api/dish/addDish",
       {
@@ -45,7 +63,9 @@ const newDish = () => {
         description,
         imageUrl,
         countryId: parseInt(country),
-        regionId: parseInt(region),
+        cook,
+        dish,
+        type,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -63,6 +83,34 @@ const newDish = () => {
           <label>Description</label>
           <input name="addDescription" type="text" />
         </div>
+        <div>
+          <label>URL de l'image</label>
+          <input name="addImageUrl" type="text" />
+        </div>
+        {dishs ? (
+          <div>
+            <label>Plat relié</label>
+            <select name="addDish">
+              {dishs.map((dish) => (
+                <option value={dish.id} key={dish.id}>
+                  {dish.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+        {types ? (
+          <div>
+            <label>Type de plat</label>
+            <select name="addType">
+              {types.map((type) => (
+                <option value={type.id} key={type.id}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
         {countries ? (
           <div>
             <label>Pays</label>
@@ -87,13 +135,13 @@ const newDish = () => {
   );
 };
 
-export async function getServerSideProps() {
-  const allDishes = await prisma.dish.findMany();
-  return {
-    props: {
-      dishes: allDishes,
-    },
-  };
-}
+// export async function getServerSideProps() {
+//   const allDishes = await prisma.dish.findMany();
+//   return {
+//     props: {
+//       dishes: allDishes,
+//     },
+//   };
+// }
 
-export default newDish;
+export default newRecipe;
