@@ -10,15 +10,15 @@ const newRecipe = () => {
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
   const [countries, setCountries] = useState(null);
-  const [dishs, setDishs] = useState(null);
+  const [dishes, setDishes] = useState(null);
   const [tags, setTags] = useState(null);
   const [types, setTypes] = useState(null);
   const { user } = useUserContext();
-  const [recipe, setRecipe] = useState(null)
+  const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
     getAllCountries();
-    getAllDishs();
+    getAllDishes();
     getAllTypes();
     getAllTags();
   }, []);
@@ -30,15 +30,15 @@ const newRecipe = () => {
   }
 
   // get dish
-  async function getAllDishs() {
-    const result = await axios.get("/api/dish/getDishs");
-    setDishs(result.data);
+  async function getAllDishes() {
+    const result = await axios.get("/api/dish/getDishes");
+    setDishes(result.data);
   }
 
   // get tags
   async function getAllTags() {
     const result = await axios.get("/api/tag/getTags");
-    setTags(result.data)
+    setTags(result.data);
   }
 
   // get types
@@ -82,7 +82,7 @@ const newRecipe = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
-    setRecipe(result.data)
+    setRecipe(result.data);
   }
 
   return (
@@ -100,11 +100,11 @@ const newRecipe = () => {
           <label>URL de l'image</label>
           <input name="addImageUrl" type="text" />
         </div>
-        {dishs ? (
+        {dishes ? (
           <div>
             <label>Plat relié</label>
             <select name="addDish">
-              {dishs.map((dish) => (
+              {dishes.map((dish) => (
                 <option value={dish.id} key={dish.id}>
                   {dish.title}
                 </option>

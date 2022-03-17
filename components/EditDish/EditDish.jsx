@@ -20,11 +20,7 @@ export default function EditShack({ closeModal, dish }) {
 
   async function editShack(form) {
     setDisable(true);
-    const {
-      dishTitle,
-      dishDescription,
-      dishId,
-    } = form;
+    const { dishTitle, dishDescription, dishId } = form;
     const title = dishTitle;
     const description = dishDescription;
     const id = dishId;
@@ -40,7 +36,7 @@ export default function EditShack({ closeModal, dish }) {
     );
     setDisable(false);
     closeModal();
-    router.push(`/dishs/`);
+    router.push(`/dishes/`);
   }
 
   return (

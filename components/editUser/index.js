@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../context/UserContext";
 
-const UpdateUserForm = ({ user, handleUpdateUser }) => {
+const EditUser = ({ user, handleUpdateUser }) => {
   const token = Cookies.get("token");
   const { setUser } = useUserContext();
 
@@ -67,4 +67,4 @@ const UpdateUserForm = ({ user, handleUpdateUser }) => {
   );
 };
 
-export default UpdateUserForm;
+export default EditUser;
