@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
 import EditUser from "../../components/EditUser";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
   const { user, setUser } = useUserContext();
@@ -32,10 +33,18 @@ const Profile = () => {
   }
 
   return (
-    <div>
-      <div>
-        <p>{user?.name}</p>
-        <p>{user?.email}</p>
+    <>
+      <div className={styles.top + " row"}>
+        <div className="col-3">
+          <div className={styles.avatar}>
+            <p>Prout</p>
+          </div>
+        </div>
+        <div className="col-9">
+          <h2>{user?.name}</h2>
+          <h5>{user?.email}</h5>
+          Settings
+        </div>
       </div>
       {!form && (
         <button onClick={() => handleUpdateUser()}>Editer mon profil</button>
@@ -50,7 +59,7 @@ const Profile = () => {
           <p>{recipe.description}</p>
         </>
       ))}
-    </div>
+    </>
   );
 };
 
