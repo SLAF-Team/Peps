@@ -4,6 +4,7 @@ import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
+import AddRecipesIngredients from "../../../components/addRecipesIngredients";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -77,7 +78,6 @@ const newRecipe = () => {
         cookId: parseInt(cook.id),
         dishId: parseInt(dish),
         typeId: parseInt(type),
-        // tags: parseInt(tags),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -87,6 +87,7 @@ const newRecipe = () => {
 
   return (
     <div>
+      <h2>1ère étape : ajoute ta recette ! </h2>
       <form ref={formRef}>
         <div>
           <label>Name</label>
@@ -156,6 +157,10 @@ const newRecipe = () => {
           Créer un plat
         </button>
       </form>
+      <h2>2ème étape : ajoute tes ingrédients</h2>
+      <AddRecipesIngredients recipe={recipe} />
+      <h2>3ème étape : Décris les étapes de ta recette</h2>
+      <h2>4ème étape : Un peu de référencement...</h2>
     </div>
   );
 };
