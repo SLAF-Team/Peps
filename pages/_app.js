@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Layout from "../components/Layout";
+import Layout from "../components/layout"
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
