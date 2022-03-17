@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -8,6 +8,9 @@ const DishCard = (props) => {
     const dish = props.dish;
     const token = Cookies.get('token');
     const router = useRouter();
+    const formRef = useRef();
+    const [titleChange, setTitleChange] = useState();
+    const [descriptionChange, setDescriptionChange] = useState();
 
     async function deleteDish() {
         if (window.confirm("Souhaitez vous supprimer ce plat?")) {
@@ -22,6 +25,7 @@ const DishCard = (props) => {
         const result = await axios.put(
           "/api/dish/editDish",
           {
+            id: dish.id,
             title: dish.title,
             description:  dish.description,
           },
@@ -29,17 +33,16 @@ const DishCard = (props) => {
         );
       }
 
-      const [state, setState] = useState({
-		dishTitle: dish.title,
-		dishDescription: dish.description,
-        });
 
-      const handleValueChange = (e) => {
-		setState({
-			...state,
-			[e.target.name]: e.target.value,
-		});
-	};
+        const handleTitle = (e) => {
+            setTitleChange(e.target.value);
+        };
+
+        
+        const handleDescription = (e) => {
+            setDescriptionChange(e.target.value);
+        };
+
 
     return (
         <div>
@@ -51,25 +54,25 @@ const DishCard = (props) => {
 
 
             <form >
-								<label>Title</label>
-								<input
-									name="shackTitle"
-									type="text"
-									value={state.dishTitle}
-									onChange={handleValueChange}
-								/>
-								<label>Description</label>
-								<textarea
-									name="shackDescription"
-									type="text"
-									style={{ width: "100%", height: "100px" }}
-									value={state.dishDescription}
-									onChange={handleValueChange}
-								/>
-                                      <button type="submit" onClick={editDish}>
-                                            J'édite
-                                        </button>
-					</form>
+                <label>Title</label>
+                <input
+                    name="shackTitle"
+                    type="text"
+                    defaultValue={dish.title}
+                    onChange={handleTitle}
+                />
+                <label>Description</label>
+                <textarea
+                    name="shackDescription"
+                    type="text"
+                    style={{ width: "100%", height: "100px" }}
+                    defaultValue={dish.description}
+                    onChange={handleDescription}
+                />
+                        <button type="submit" onClick={editDish}>
+                            J'édite
+                        </button>
+                </form>
 
 
 
