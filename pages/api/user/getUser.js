@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import prisma from "../../../lib/prisma.ts";
+
 const bcrypt = require("bcrypt");
 
 export default async (req, res) => {
@@ -15,7 +16,10 @@ export default async (req, res) => {
         where: {
           email: email,
         },
-        include: {likes: true},
+        include: {
+          recipes: true,
+          likes: true
+        },
       });
       if (!user) {
         res.status(400).json({ status: "error", error: "User Not Found" });
