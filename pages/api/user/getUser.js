@@ -15,6 +15,7 @@ export default async (req, res) => {
         where: {
           email: email,
         },
+        include: {likes: true},
       });
       if (!user) {
         res.status(400).json({ status: "error", error: "User Not Found" });

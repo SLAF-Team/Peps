@@ -23,7 +23,7 @@ const SignIn = () => {
     const result = await axios.post("/api/user/getUser", {
       ...data,
     });
-    console.log(result);
+    console.log("result");
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user)
     router.push("/");

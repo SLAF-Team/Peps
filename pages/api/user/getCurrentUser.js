@@ -15,6 +15,7 @@ export default async (req, res) => {
     const { id } = jwt.verify(token, process.env.JWT_KEY);
     const user = await prisma.user.findUnique({
       where: { id },
+      include: {likes: true},
     });
     if (!user) {
       return false;

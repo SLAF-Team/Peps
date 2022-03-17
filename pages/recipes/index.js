@@ -6,11 +6,11 @@ import RecipeCard from "../../components/recipeCard";
 const Recipes = () => {
   const [recipes, setRecipes] = useState(null);
 
-  // get dishs
+  // get recipes
   async function getAllRecipes() {
     const result = await axios.get("/api/recipe/getRecipes");
     setRecipes(result.data);
-  }
+pages/api/user/getUser.js  }
 
   useEffect(() => {
     getAllRecipes();
@@ -21,7 +21,9 @@ const Recipes = () => {
       {recipes ? (
         <>
           {recipes.map((recipe) => (
-            <RecipeCard recipe={recipe} key={recipe.id}/>
+            <>
+              <RecipeCard recipe={recipe} key={recipe.id}/>
+            </>
           ))}
         </>
       ) : null}
