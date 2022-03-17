@@ -12,7 +12,7 @@ const AddRecipesSteps = ({ recipe }) => {
     setDisable(true);
     const { addSteps } = formRef.current;
     const steps = addSteps.value;
-    const result = await axios.put(
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
@@ -21,22 +21,7 @@ const AddRecipesSteps = ({ recipe }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
-    console.log(result);
   }
-
-    async function addTagsToRecipe(data) {
-      const result = await axios.put(
-        "/api/recipe/editRecipe",
-        {
-          id: recipe.id,
-          tags: {
-            connect: data,
-          },
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      console.log(result);
-    }
 
   return (
     <div>

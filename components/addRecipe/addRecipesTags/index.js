@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const AddRecipesTags = ({ recipe }) => {
   const [tags, setTags] = useState(null);
   const [value, setValue] = useState([]);
-  const token = Cookies.get("token")
+  const token = Cookies.get("token");
 
   async function getAllTags() {
     const result = await axios.get("/api/tag/getTags");
@@ -48,9 +48,7 @@ const AddRecipesTags = ({ recipe }) => {
         required
       >
         {tags
-          ? tags.map((tag) => (
-              <Checkbox value={tag.id} label={tag.name} />
-            ))
+          ? tags.map((tag) => <Checkbox value={tag.id} label={tag.name} />)
           : null}
       </CheckboxGroup>
       <button onClick={handleClick}>Valider mon choix</button>
