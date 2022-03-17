@@ -8,7 +8,8 @@ export default async (req, res) => {
   //   res.status(403).json({ err: "Forbidden" });
   //   return;
   // }
-
+  console.log("requête")
+  console.log(req)
   const data = req.body;
 
   try {
