@@ -155,7 +155,9 @@ const newRecipe = () => {
       })}
       {/* </> : null} */}
       <h2>III - Décris les étapes de ta recette</h2>
-      {recipe ? <addRecipesSteps recipe={recipe} /> : null}
+      {/* {recipe ? */}
+       <addRecipesSteps recipe={recipe} /> 
+      {/* // : null} */}
       <h2>IV - Un peu de référencement...</h2>
       {/* {recipe ? <AddRecipesTags /> : null} */}
       <AddRecipesTags />

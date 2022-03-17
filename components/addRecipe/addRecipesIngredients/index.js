@@ -10,12 +10,14 @@ const AddRecipesIngredients = ({ recipe }) => {
   const [disable, setDisable] = useState(false);
   const [ingredients, setIngredients] = useState(null);
   const [units, setUnits] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     getAllIngredients();
     getAllUnits();
   }, []);
 
+  // submitted : servira pour delete ?
   // get regions
   async function getAllIngredients() {
     const result = await axios.get("/api/ingredient/getIngredients");
@@ -47,6 +49,7 @@ const AddRecipesIngredients = ({ recipe }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
+    setSubmitted(true);
   }
 
   return (
@@ -80,12 +83,13 @@ const AddRecipesIngredients = ({ recipe }) => {
             </select>
           </div>
         ) : null}
-        <button
-          disabled={disable}
-          onClick={() => addRecipeIngredients()}
-        >
-          Ajouter
-        </button>
+        {submitted ? (
+          <p>Ajouté!</p>
+        ) : (
+          <button disabled={disable} onClick={() => addRecipeIngredients()}>
+            Ajouter
+          </button>
+        )}
       </form>
     </div>
   );
