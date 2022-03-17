@@ -17,17 +17,9 @@ const Recipes = () => {
   }, []);
 
   return (
-    <>
-      {recipes ? (
-        <>
-          {recipes.map((recipe) => (
-            <>
-              <RecipeCard recipe={recipe} key={recipe.id}/>
-            </>
-          ))}
-        </>
-      ) : null}
-    </>
+    recipes && recipes.map((recipe) => (
+      <RecipeCard recipe={recipe} key={recipe.id}/>
+    ))
   );
 };
 
