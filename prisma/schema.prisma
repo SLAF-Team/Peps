@@ -11,88 +11,101 @@ datasource db {
 }
 
 model User {
-id	Int @default(autoincrement()) @id
-name	String?
-email	String @unique
-password	String
-isadmin	Boolean @default(false)
-createdAt	DateTime @default(now()) @map(name: "created_at")
-updatedAt	DateTime @updatedAt @map(name: "updated_at")
-recipes	Recipe[]
-@@map(name: "users")
+  id        Int              @id @default(autoincrement())
+  name      String?
+  email     String           @unique
+  password  String
+  isadmin   Boolean          @default(false)
+  createdAt DateTime         @default(now()) @map(name: "created_at")
+  updatedAt DateTime         @updatedAt @map(name: "updated_at")
+  recipes   Recipe[]
+  likes     LikesOnRecipes[]
+
+  @@map(name: "users")
 }
 
-model Ingredient	{
-id	Int @default(autoincrement()) @id
-name	String
-recipes	IngredientsandRecipes[]
+model Ingredient {
+  id      Int                     @id @default(autoincrement())
+  name    String
+  recipes IngredientsandRecipes[]
 }
 
-model Unit  {
-id  Int @default(autoincrement()) @id
-name  String
-recipes IngredientsandRecipes[]
+model Unit {
+  id      Int                     @id @default(autoincrement())
+  name    String
+  recipes IngredientsandRecipes[]
 }
 
-model Region		{
-id	Int @default(autoincrement()) @id
-name	String
-dishes	Dish[]
+model Region {
+  id     Int    @id @default(autoincrement())
+  name   String
+  dishes Dish[]
 }
 
-model Country	{
-id	Int @default(autoincrement()) @id
-name	String
-recipes	Recipe[]
+model Country {
+  id      Int      @id @default(autoincrement())
+  name    String
+  recipes Recipe[]
 }
 
 model Tag {
-id	Int @default(autoincrement()) @id
-name	String
-recipes	Recipe[] @relation("_TagsAndRecipes")
+  id      Int      @id @default(autoincrement())
+  name    String
+  recipes Recipe[] @relation("_TagsAndRecipes")
 }
 
-model Type	{
-id	Int @default(autoincrement()) @id
-name	String
-recipes	Recipe[]
+model Type {
+  id      Int      @id @default(autoincrement())
+  name    String
+  recipes Recipe[]
 }
 
-model Recipe	{
-id	Int @default(autoincrement()) @id
-name	String
-description String
-imageUrl	String?
-ingredientsUnit	IngredientsandRecipes[]
-published	Boolean @default(false)
-country	Country @relation(fields: [countryId], references: [id])
-countryId	Int
-cook	User  @relation(fields: [cookId], references: [id])
-cookId	Int
-dish	Dish   @relation(fields: [dishId], references: [id])
-dishId	Int
-tags	Tag[] @relation("_TagsAndRecipes")
-type	Type @relation(fields: [typeId], references: [id])
-typeId	Int
+model Recipe {
+  id              Int                     @id @default(autoincrement())
+  name            String
+  description     String
+  imageUrl        String?
+  ingredientsUnit IngredientsandRecipes[]
+  published       Boolean                 @default(false)
+  country         Country                 @relation(fields: [countryId], references: [id])
+  countryId       Int
+  cook            User                    @relation(fields: [cookId], references: [id])
+  cookId          Int
+  dish            Dish                    @relation(fields: [dishId], references: [id])
+  dishId          Int
+  tags            Tag[]                   @relation("_TagsAndRecipes")
+  type            Type                    @relation(fields: [typeId], references: [id])
+  typeId          Int
+  likes           LikesOnRecipes[]
 }
 
-
-model Dish	{
-id 	Int @default(autoincrement()) @id
-title	String
-description	String
-recipes	Recipe[]
-region	Region @relation(fields: [regionId], references: [id])
-regionId	Int
+model Dish {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  recipes     Recipe[]
+  region      Region   @relation(fields: [regionId], references: [id])
+  regionId    Int
 }
 
-model IngredientsandRecipes		{
-quantity	Int
-recipe	Recipe @relation(fields: [recipeId], references: [id])
-recipeId	Int
-ingredient	Ingredient @relation(fields: [ingredientId], references: [id])
-ingredientId	Int
-unit  Unit @relation(fields: [unitId], references: [id])
-unitId  Int
-@@id([recipeId, ingredientId, unitId])
+model IngredientsandRecipes {
+  quantity     Int
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  recipeId     Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  unit         Unit       @relation(fields: [unitId], references: [id])
+  unitId       Int
+
+  @@id([recipeId, ingredientId, unitId])
+}
+
+model LikesOnRecipes {
+  quantity Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId Int
+
+  @@id([userId, recipeId])
 }
