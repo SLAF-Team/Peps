@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import styles from "./NavBar.module.css";
+import Button from "../Button";
 
 const NavBar = () => {
   const router = useRouter();
@@ -13,19 +15,16 @@ const NavBar = () => {
   };
 
   return (
-    <div>
-      <Link href="/" exact>
-        <a>OM</a>
-      </Link>
-      <Link href="/signin" exact>
-        <a>Connexion</a>
-      </Link>
-      <Link href="/signup" exact>
-        <a>Inscription</a>
-      </Link>
-      <Link href="/signout" exact>
-        <a onClick={() => handleClick()}>Déconnexion</a>
-      </Link>
+    <div className={styles.navbar}>
+      <Button label="OM" href="/" type="primary" />
+      <Button label="Connexion" href="/signin" type="warning" />
+      <Button label="Inscription" href="/signup" type="success" />
+      <Button
+        label="Déconnexion"
+        href="/signout"
+        handleClick={() => handleClick()}
+        type="danger"
+      />
     </div>
   );
 };

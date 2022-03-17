@@ -1,26 +1,31 @@
-import React from "react";
 import { useState, useEffect } from "react/cjs/react.development";
 import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
+import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngredients";
+import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 
 const newRecipe = () => {
   const formRef = useRef();
+  const { user } = useUserContext();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
   const [countries, setCountries] = useState(null);
   const [dishes, setDishes] = useState(null);
-  const [tags, setTags] = useState(null);
   const [types, setTypes] = useState(null);
-  const { user } = useUserContext();
   const [recipe, setRecipe] = useState(null);
+  const [count, setCount] = useState(0);
+
+  console.log("recette from recette");
+  console.log(recipe);
+
+  // clean usestate : idée - https://stackoverflow.com/questions/57305109/using-react-hooks-with-more-than-one-key-value-pair-in-state-object
 
   useEffect(() => {
     getAllCountries();
     getAllDishes();
     getAllTypes();
-    getAllTags();
   }, []);
 
   // get regions
@@ -35,12 +40,6 @@ const newRecipe = () => {
     setDishes(result.data);
   }
 
-  // get tags
-  async function getAllTags() {
-    const result = await axios.get("/api/tag/getTags");
-    setTags(result.data);
-  }
-
   // get types
   async function getAllTypes() {
     const result = await axios.get("/api/type/getTypes");
@@ -48,7 +47,7 @@ const newRecipe = () => {
   }
 
   // add Dish
-  async function addNewDish(params) {
+  async function addNewRecipe(params) {
     setDisable(true);
     const {
       addName,
@@ -56,7 +55,6 @@ const newRecipe = () => {
       addCountry,
       addDish,
       addType,
-      addTag,
       addImageUrl,
     } = formRef.current;
     const name = addName.value;
@@ -65,7 +63,6 @@ const newRecipe = () => {
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
-    // const tags = addTag.value;
     const cook = user;
     const result = await axios.post(
       "/api/recipe/addRecipe",
@@ -77,7 +74,6 @@ const newRecipe = () => {
         cookId: parseInt(cook.id),
         dishId: parseInt(dish),
         typeId: parseInt(type),
-        // tags: parseInt(tags),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -85,8 +81,13 @@ const newRecipe = () => {
     setRecipe(result.data);
   }
 
+  const handleClick = () => {
+    setCount(count + 1);
+  };
+
   return (
     <div>
+      <h2>1ère étape : ajoute ta recette ! </h2>
       <form ref={formRef}>
         <div>
           <label>Name</label>
@@ -124,18 +125,6 @@ const newRecipe = () => {
             </select>
           </div>
         ) : null}
-        {tags ? (
-          <div>
-            <label>Tags</label>
-            <select name="addTag">
-              {tags.map((tag) => (
-                <option value={tag.id} key={tag.id}>
-                  {tag.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
         {countries ? (
           <div>
             <label>Pays</label>
@@ -151,11 +140,25 @@ const newRecipe = () => {
         <button
           disabled={disable}
           className="btn btn-primary my-3"
-          onClick={() => addNewDish()}
+          onClick={() => addNewRecipe()}
         >
           Créer un plat
         </button>
       </form>
+      <h2>II - Ajoute tes ingrédients</h2>
+      {/* {recipe ? <> */}
+      <button onClick={handleClick}>Ajouter un ingrédient</button>
+      {[...Array(count)].map((e, i) => {
+        return <AddRecipesIngredients recipe={recipe} key={i} />;
+      })}
+      {/* </> : null} */}
+      <h2>III - Décris les étapes de ta recette</h2>
+      {/* {recipe ? */}
+      <addRecipesSteps recipe={recipe} />
+      {/* // : null} */}
+      <h2>IV - Un peu de référencement...</h2>
+      {/* {recipe ? <AddRecipesTags /> : null} */}
+      <AddRecipesTags recipe={recipe} />
     </div>
   );
 };

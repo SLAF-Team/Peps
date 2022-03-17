@@ -10,6 +10,7 @@ const AddRecipesIngredients = ({ recipe }) => {
   const [disable, setDisable] = useState(false);
   const [ingredients, setIngredients] = useState(null);
   const [units, setUnits] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     getAllIngredients();
@@ -31,23 +32,28 @@ const AddRecipesIngredients = ({ recipe }) => {
   // add Incredient / Quantities / Recipe
   async function addRecipeIngredients(params) {
     setDisable(true);
+    console.log("recette from ingredient")
+    console.log(recipe)
+
     const { addIngredient, addUnit, addQuantity } = formRef.current;
     const ingredient = addIngredient.value;
     const quantity = addQuantity.value;
     const unit = addUnit.value;
-    const recipe = recipe;
-    await axios.post(
-      "/api/ingredientsandrecipe/addIngredientsAndRecipes",
+    const result = await axios.post(
+      "/api/ingredientsandrecipes/addIngredientsAndRecipes",
       {
         ingredientId: parseInt(ingredient),
         unitId: parseInt(unit),
         quantity: parseInt(quantity),
-        recipe: recipe,
+        recipeID: recipe.id,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
+    console.log(result)
   }
+
+  // la query : il s'agit d'une update de recipe !!!
 
   return (
     <div>
@@ -80,12 +86,13 @@ const AddRecipesIngredients = ({ recipe }) => {
             </select>
           </div>
         ) : null}
-        <button
-          disabled={disable}
-          onClick={() => addRecipeIngredients()}
-        >
-          Ajouter
-        </button>
+        {submitted ? (
+          <p>Ajouté!</p>
+        ) : (
+          <button disabled={disable} onClick={() => addRecipeIngredients()}>
+            Ajouter
+          </button>
+        )}
       </form>
     </div>
   );
