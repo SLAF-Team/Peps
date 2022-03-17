@@ -15,7 +15,6 @@ const Dishs = () => {
   useEffect(() => {
     getAllDishs();
   }, []);
-  
 
   return (
     <>
