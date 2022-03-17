@@ -29,31 +29,30 @@ const AddRecipesIngredients = ({ recipe }) => {
     setUnits(result.data);
   }
 
-  // add Incredient / Quantities / Recipe
   async function addRecipeIngredients(params) {
     setDisable(true);
-    console.log("recette from ingredient")
-    console.log(recipe)
-
     const { addIngredient, addUnit, addQuantity } = formRef.current;
     const ingredient = addIngredient.value;
     const quantity = addQuantity.value;
     const unit = addUnit.value;
-    const result = await axios.post(
-      "/api/ingredientsandrecipes/addIngredientsAndRecipes",
+    const result = await axios.put(
+      "/api/recipe/editRecipe",
       {
-        ingredientId: parseInt(ingredient),
-        unitId: parseInt(unit),
-        quantity: parseInt(quantity),
-        recipeID: recipe.id,
+        id: recipe.id,
+        ingredientsUnit: {
+          create: [
+            {
+              ingredientId: parseInt(ingredient),
+              unitId: parseInt(unit),
+              quantity: parseInt(quantity),
+            },
+          ],
+        },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setDisable(false);
-    console.log(result)
   }
-
-  // la query : il s'agit d'une update de recipe !!!
 
   return (
     <div>

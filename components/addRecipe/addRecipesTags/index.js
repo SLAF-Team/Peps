@@ -34,7 +34,6 @@ const AddRecipesTags = ({ recipe }) => {
   const handleClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    console.log(newValue)
     addTagsToRecipe(newValue);
   };
 
@@ -49,7 +48,9 @@ const AddRecipesTags = ({ recipe }) => {
         required
       >
         {tags
-          ? tags.map((tag) => <Checkbox value={tag.id} label={tag.name} />)
+          ? tags.map((tag) => (
+              <Checkbox value={tag.id} label={tag.name} />
+            ))
           : null}
       </CheckboxGroup>
       <button onClick={handleClick}>Valider mon choix</button>

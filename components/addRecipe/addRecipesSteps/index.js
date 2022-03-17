@@ -24,6 +24,20 @@ const AddRecipesSteps = ({ recipe }) => {
     console.log(result);
   }
 
+    async function addTagsToRecipe(data) {
+      const result = await axios.put(
+        "/api/recipe/editRecipe",
+        {
+          id: recipe.id,
+          tags: {
+            connect: data,
+          },
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(result);
+    }
+
   return (
     <div>
       <form ref={formRef}>
