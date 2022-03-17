@@ -18,6 +18,7 @@ export default async (req, res) => {
         },
         include: {
           recipes: true,
+          likes: true
         },
       });
       if (!user) {
