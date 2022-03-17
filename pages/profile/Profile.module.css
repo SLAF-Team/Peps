@@ -1,36 +1,22 @@
-.avatar {
-	height: 10rem;
-	width: 10rem;
-	background-color: #ffd12f;
-	border-radius: 14px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.top {
+.selector {
 	width: 100%;
-	margin-top: 3rem;
+	display: flex;
+	border-bottom: 0.5px solid black;
+	margin-top: 1rem;
 }
 
-.letter {
-	font-family: Merriweather, sans-serif;
-	font-weight: 700;
-	font-size: 80px;
-	color: white;
+.selectorText {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	font-size: 16px;
+	font-weight: 400;
 }
 
-.avatarBlock {
+.selectorBlock {
+	width: 100%;
+	text-align: center;
 }
 
-.name {
-	font-family: "Merriweather", serif;
-	font-weight: 700;
-	font-size: 36px;
-	margin: 0;
-}
-
-.email {
-	margin-top: 8px;
-	margin-bottom: 8px;
+.selectorBlock:hover {
+	border-bottom: 2px solid black;
 }

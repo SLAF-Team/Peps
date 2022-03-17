@@ -1,0 +1,40 @@
+.avatar {
+	height: 10rem;
+	width: 10rem;
+	background-color: #ffd12f;
+	border-radius: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.top {
+	width: 100%;
+	margin-top: 3rem;
+}
+
+.letter {
+	font-family: Merriweather, sans-serif;
+	font-weight: 700;
+	font-size: 80px;
+	color: white;
+}
+
+.avatarBlock {
+}
+
+.name {
+	font-family: "Merriweather", serif;
+	font-weight: 700;
+	font-size: 36px;
+	margin: 0;
+}
+
+.email {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+@media only screen and (min-width: 33.75em) {
+	/* 540px */
+}
