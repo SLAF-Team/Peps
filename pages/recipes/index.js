@@ -6,7 +6,7 @@ import RecipeCard from "../../components/RecipeCard";
 const Recipes = () => {
   const [recipes, setRecipes] = useState(null);
 
-  // get dishs
+  // get dishes
   async function getAllRecipes() {
     const result = await axios.get("/api/recipe/getRecipes");
     setRecipes(result.data);
