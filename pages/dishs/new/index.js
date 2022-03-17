@@ -4,12 +4,15 @@ import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const newDish = () => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
   const [regions, setRegions] = useState(null);
+  const router = useRouter();
+
 
   // get regions
   async function getAllRegions() {
@@ -37,6 +40,7 @@ const newDish = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    router.push("/dishs/");
     setDisable(false);
   }
 

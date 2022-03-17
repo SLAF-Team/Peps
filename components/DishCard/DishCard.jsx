@@ -14,7 +14,7 @@ const DishCard = (props) => {
           await axios.delete(`/api/dish/${dish?.id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          router.push("/dishs/");
+          router.push("/dishs");
         }
       }
 
