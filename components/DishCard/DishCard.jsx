@@ -26,8 +26,8 @@ const DishCard = (props) => {
           "/api/dish/editDish",
           {
             id: dish.id,
-            title: dish.title,
-            description:  dish.description,
+            title: titleChange,
+            description:  descriptionChange,
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
