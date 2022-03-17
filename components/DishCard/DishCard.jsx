@@ -12,14 +12,15 @@ const DishCard = (props) => {
     const [titleChange, setTitleChange] = useState();
     const [descriptionChange, setDescriptionChange] = useState();
 
-    async function deleteDish() {
-        if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-          await axios.delete(`/api/dish/${dish?.id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          router.push("/dishs/");
-        }
-      }
+
+  async function deleteDish() {
+    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+      await axios.delete(`/api/dish/${dish?.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/dishes/");
+    }
+  }
 
       async function editDish() {
         const result = await axios.put(
@@ -83,6 +84,7 @@ const DishCard = (props) => {
             </div>
         </div>
     );
+
 };
 
 export default DishCard;
