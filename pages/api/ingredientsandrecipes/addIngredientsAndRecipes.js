@@ -4,7 +4,7 @@ export default async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    const ingredientsandrecipes = await prisma.ingredientsandrecipes.create({
+    const ingredientsandrecipes = await prisma.ingredientsAndRecipes.create({
       data: {
         ...data,
       },

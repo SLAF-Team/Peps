@@ -17,7 +17,7 @@ const newRecipe = () => {
   const [recipe, setRecipe] = useState(null);
   const [count, setCount] = useState(0);
 
-  console.log("recette");
+  console.log("recette from recette");
   console.log(recipe);
 
   // clean usestate : idée - https://stackoverflow.com/questions/57305109/using-react-hooks-with-more-than-one-key-value-pair-in-state-object
@@ -84,8 +84,6 @@ const newRecipe = () => {
   const handleClick = () => {
     setCount(count + 1);
   };
-
-  console.log(count);
 
   return (
     <div>

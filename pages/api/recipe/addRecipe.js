@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
   const data = req.body;
-  console.log(data);
   try {
     const recipe = await prisma.recipe.create({
       data: {

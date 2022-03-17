@@ -7,8 +7,6 @@ const AddRecipesTags = () => {
 const [tags, setTags] = useState(null);
 const [value, setValue] = useState([]);
 
-console.log(value)
-
 async function getAllTags() {
   const result = await axios.get("/api/tag/getTags");
   setTags(result.data);
