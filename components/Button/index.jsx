@@ -18,7 +18,7 @@ const Button = ({ label, handleClick, type, href }) => {
 			btnStyle = styles.success;
 			break;
 		default:
-			btnStyle = ".primary";
+			btnStyle = styles.primary;
 			break;
 	}
 

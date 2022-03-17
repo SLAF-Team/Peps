@@ -101,7 +101,6 @@ model IngredientsandRecipes {
 }
 
 model LikesOnRecipes {
-  quantity Int
   user     User   @relation(fields: [userId], references: [id])
   userId   Int
   recipe   Recipe @relation(fields: [recipeId], references: [id])

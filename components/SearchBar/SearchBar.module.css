@@ -1,0 +1,18 @@
+.search {
+	background: #ffffff;
+	border: 0.7px solid #000000;
+	box-sizing: border-box;
+	border-radius: 4px;
+	padding: 10px 34px;
+}
+
+.img {
+	position: relative;
+	margin-top: -28px;
+	margin-left: 8px;
+	pointer-events: none;
+}
+
+.size {
+	position: relative;
+}
