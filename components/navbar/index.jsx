@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 import styles from "./NavBar.module.css";
 import Button from "../Button";
+import SearchBar from "../SearchBar";
+import { useUserContext } from "../../context/UserContext";
 
 const NavBar = () => {
+  const { user, setUser } = useUserContext();
   const router = useRouter();
 
   const handleClick = () => {
@@ -16,15 +18,24 @@ const NavBar = () => {
 
   return (
     <div className={styles.navbar}>
-      <Button label="OM" href="/" type="primary" />
-      <Button label="Connexion" href="/signin" type="warning" />
-      <Button label="Inscription" href="/signup" type="success" />
-      <Button
-        label="Déconnexion"
-        href="/signout"
-        handleClick={() => handleClick()}
-        type="danger"
-      />
+      <div>
+        <Link href="/" exact>
+          <span className={styles.brand}>Cookogs</span>
+        </Link>
+      </div>
+      <div className={styles.right}>
+        <SearchBar placeholder="Chercher une recette" />
+        {!user ? (
+          <Button label="Connexion" href="/signin" type="warning" />
+        ) : (
+          <Button
+            label="Déconnexion"
+            href="/signout"
+            handleClick={() => handleClick()}
+            type="danger"
+          />
+        )}
+      </div>
     </div>
   );
 };

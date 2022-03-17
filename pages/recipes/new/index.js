@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
 import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngredients";
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
+import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
+import { Checkbox } from "@mantine/core";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -15,12 +17,11 @@ const newRecipe = () => {
   const [dishes, setDishes] = useState(null);
   const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [count, setCount] = useState(0);
 
   console.log("recette from recette");
   console.log(recipe);
-
-  // clean usestate : idée - https://stackoverflow.com/questions/57305109/using-react-hooks-with-more-than-one-key-value-pair-in-state-object
 
   useEffect(() => {
     getAllCountries();
@@ -74,6 +75,7 @@ const newRecipe = () => {
         cookId: parseInt(cook.id),
         dishId: parseInt(dish),
         typeId: parseInt(type),
+        published: checked,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -137,6 +139,11 @@ const newRecipe = () => {
             </select>
           </div>
         ) : null}
+        <Checkbox
+          checked={checked}
+          onChange={(event) => setChecked(event.currentTarget.checked)}
+          label="Publier ma recette?"
+        />
         <button
           disabled={disable}
           className="btn btn-primary my-3"
@@ -154,7 +161,7 @@ const newRecipe = () => {
       {/* </> : null} */}
       <h2>III - Décris les étapes de ta recette</h2>
       {/* {recipe ? */}
-      <addRecipesSteps recipe={recipe} />
+      <AddRecipesSteps recipe={recipe} />
       {/* // : null} */}
       <h2>IV - Un peu de référencement...</h2>
       {/* {recipe ? <AddRecipesTags /> : null} */}

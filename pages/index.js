@@ -1,18 +1,10 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Peps</title>
-        <meta name="description" content="Peps" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <h1>OM PAGE</h1>
-      </main>
-    </div>
-  )
+    <main className={styles.main}>
+      <h1>OM PAGE</h1>
+    </main>
+  );
 }

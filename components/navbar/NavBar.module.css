@@ -7,3 +7,13 @@
   padding: 1rem 3rem;
   border-bottom: 0.5px solid black;
 }
+
+.brand {
+  cursor: pointer;
+  font-family: Merriweather, sans-serif;
+  font-size: 32px;
+}
+
+.right {
+  display: flex;
+}
