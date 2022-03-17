@@ -1,22 +1,23 @@
-import React from 'react';
-import { useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
+import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const DishCard = (props) => {
-    const dish = props.dish;
-    const token = Cookies.get('token');
-    const router = useRouter();
+  const dish = props.dish;
+  const token = Cookies.get("token");
+  const router = useRouter();
 
-    async function deleteDish() {
-        if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-          await axios.delete(`/api/dish/${dish?.id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          router.push("/dishs/");
-        }
-      }
+  async function deleteDish() {
+    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+      await axios.delete(`/api/dish/${dish?.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/dishes/");
+    }
+  }
+
 
       async function editDish() {
         const result = await axios.put(
@@ -80,6 +81,7 @@ const DishCard = (props) => {
             </div>
         </div>
     );
+
 };
 
 export default DishCard;
