@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, [token]);
 
-    console.log("user from app");
-    console.log(user);
+  console.log("user from app");
+  console.log(user);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
