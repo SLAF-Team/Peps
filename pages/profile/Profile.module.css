@@ -1,0 +1,10 @@
+.avatar {
+	height: 10rem;
+	width: 10rem;
+	background-color: blue;
+	border-radius: 14px;
+}
+
+.top {
+	width: 100%;
+}
