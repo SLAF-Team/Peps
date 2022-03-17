@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import prisma from "../../../lib/prisma.ts";
+
 const bcrypt = require("bcrypt");
 
 export default async (req, res) => {
@@ -14,6 +15,9 @@ export default async (req, res) => {
       const user = await prisma.user.findUnique({
         where: {
           email: email,
+        },
+        include: {
+          recipes: true,
         },
       });
       if (!user) {

@@ -3,16 +3,13 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
-import UpdateUserForm from "../../components/editUser";
+import EditUser from "../../components/EditUser";
 
 const Profile = () => {
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const [form, setForm] = useState(false);
-
-  console.log("PROFIL : utilisateur connecté");
-  console.log(user);
 
   const handleUpdateUser = () => {
     setForm(!form);
@@ -36,23 +33,23 @@ const Profile = () => {
 
   return (
     <div>
-      {user ? (
+      <div>
+        <p>{user?.name}</p>
+        <p>{user?.email}</p>
+      </div>
+      {!form && (
+        <button onClick={() => handleUpdateUser()}>Editer mon profil</button>
+      )}
+      {form && <EditUser user={user} handleUpdateUser={handleUpdateUser} />}
+      <button onClick={() => handleDeleteUser()}>
+        <a>Supprimer mon compte</a>
+      </button>
+      {user?.recipes.map((recipe) => (
         <>
-          <div>
-            <p>{user.name}</p>
-            <p>{user.email}</p>
-          </div>
-          {!form && (
-            <button onClick={() => handleUpdateUser()}>
-              Editer mon profil
-            </button>
-          )}
-          {form ? <UpdateUserForm user={user} /> : null}
-          <button onClick={() => handleDeleteUser()}>
-            <a>Supprimer mon compte</a>
-          </button>
+          <h2>{recipe.name}</h2>
+          <p>{recipe.description}</p>
         </>
-      ) : null}
+      ))}
     </div>
   );
 };

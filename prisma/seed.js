@@ -106,7 +106,7 @@ async function main() {
     },
   });
 
-  const dishs = [
+  const dishes = [
     {
       title: "Pot au Feu à l'ancienne",
       description:
@@ -166,7 +166,7 @@ async function main() {
   });
 
   await prisma.dish.createMany({
-    data: dishs,
+    data: dishes,
   });
 
   await prisma.recipe.createMany({
