@@ -62,6 +62,7 @@ model Recipe	{
 id	Int @default(autoincrement()) @id
 name	String
 description String
+steps String?
 imageUrl	String?
 ingredientsUnit	IngredientsandRecipes[]
 published	Boolean @default(false)
