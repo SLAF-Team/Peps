@@ -15,9 +15,10 @@ const newRecipe = () => {
   const [dishes, setDishes] = useState(null);
   const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
+  const [count, setCount] = useState(0);
 
-  console.log("recette")
-  console.log(recipe)
+  console.log("recette");
+  console.log(recipe);
 
   // clean usestate : idée - https://stackoverflow.com/questions/57305109/using-react-hooks-with-more-than-one-key-value-pair-in-state-object
 
@@ -80,6 +81,12 @@ const newRecipe = () => {
     setRecipe(result.data);
   }
 
+  const handleClick = () => {
+    setCount(count + 1);
+  };
+
+  console.log(count);
+
   return (
     <div>
       <h2>1ère étape : ajoute ta recette ! </h2>
@@ -140,10 +147,16 @@ const newRecipe = () => {
           Créer un plat
         </button>
       </form>
-      <h2>2ème étape : ajoute tes ingrédients</h2>
-      {recipe ? <AddRecipesIngredients recipe={recipe} /> : null}
-      <h2>3ème étape : Décris les étapes de ta recette</h2>
-      <h2>4ème étape : Un peu de référencement...</h2>
+      <h2>II - Ajoute tes ingrédients</h2>
+      {/* {recipe ? <> */}
+      <button onClick={handleClick}>Ajouter un ingrédient</button>
+      {[...Array(count)].map((e, i) => {
+        return <AddRecipesIngredients recipe={recipe} key={i} />;
+      })}
+      {/* </> : null} */}
+      <h2>III - Décris les étapes de ta recette</h2>
+      {recipe ? <addRecipesSteps recipe={recipe} /> : null}
+      <h2>IV - Un peu de référencement...</h2>
       {/* {recipe ? <AddRecipesTags /> : null} */}
       <AddRecipesTags />
     </div>
