@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
 import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngredients";
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
+import { Checkbox } from "@mantine/core";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -15,6 +16,8 @@ const newRecipe = () => {
   const [dishes, setDishes] = useState(null);
   const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
+  const [checked, setChecked] = useState(false);
+
   const [count, setCount] = useState(0);
 
   console.log("recette from recette");
@@ -74,6 +77,7 @@ const newRecipe = () => {
         cookId: parseInt(cook.id),
         dishId: parseInt(dish),
         typeId: parseInt(type),
+        published: checked,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -137,6 +141,11 @@ const newRecipe = () => {
             </select>
           </div>
         ) : null}
+        <Checkbox
+          checked={checked}
+          onChange={(event) => setChecked(event.currentTarget.checked)}
+          label="Publier ma recette?"
+        />
         <button
           disabled={disable}
           className="btn btn-primary my-3"
