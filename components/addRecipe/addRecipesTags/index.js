@@ -20,6 +20,19 @@ useEffect(() => {
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
+        tags: { 
+create [
+          {
+          // assignedBy: "Bob",
+          // assignedAt: new Date(),
+          category: {
+            connect: {
+              id: value,
+            },
+          },
+        },
+]
+        }
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
