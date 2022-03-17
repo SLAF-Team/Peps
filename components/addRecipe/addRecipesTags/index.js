@@ -22,11 +22,9 @@ const AddRecipesTags = ({ recipe }) => {
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
-        // data: {
         tags: {
           connect: data,
         },
-        // },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
