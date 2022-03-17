@@ -87,6 +87,9 @@ async function main() {
       name: "L",
     },
     {
+      name: "Cl",
+    },
+    {
       name: "cuillère à soupe",
     },
     {
@@ -172,6 +175,10 @@ async function main() {
   await prisma.recipe.createMany({
     data: recipes,
   });
+
+    await prisma.unit.createMany({
+      data: units,
+    });
 }
 
 main()
