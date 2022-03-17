@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mantine/core": "^4.0.5",
+    "@mantine/next": "^4.0.5",
     "@prisma/client": "^3.10.0",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",

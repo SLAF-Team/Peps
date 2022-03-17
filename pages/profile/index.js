@@ -3,18 +3,13 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
-import EditUser from "../../components/EditUser";
+import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
-  const [form, setForm] = useState(false);
-
-  const handleUpdateUser = () => {
-    setForm(!form);
-  };
 
   // delete user bloc
   const handleDeleteUser = () => {
@@ -34,31 +29,13 @@ const Profile = () => {
 
   return (
     <>
-      <div className={styles.top + " row"}>
-        <div className="col-3">
-          <div className={styles.avatar}>
-            <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
-          </div>
+      <UserList user={user} handleDeleteUser={handleDeleteUser} />
+      <div className={styles.selector}>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES CONTRIBUTIONS</p>
         </div>
-        <div className="col-9">
-          <div>
-            <p className={styles.name}>{user?.name}</p>
-            <p className={styles.email}>{user?.email}</p>
-          </div>
-          <div>
-            {" "}
-            {!form && (
-              <button onClick={() => handleUpdateUser()}>
-                Editer mon profil
-              </button>
-            )}
-            {form && (
-              <EditUser user={user} handleUpdateUser={handleUpdateUser} />
-            )}
-            <button onClick={() => handleDeleteUser()}>
-              <a>Supprimer mon compte</a>
-            </button>
-          </div>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES LISTES</p>
         </div>
       </div>
       {user?.recipes.map((recipe) => (
