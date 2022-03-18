@@ -7,6 +7,7 @@ import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngre
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
 import { Checkbox } from "@mantine/core";
+import classes from './Recipe.module.css'
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -19,9 +20,6 @@ const newRecipe = () => {
   const [recipe, setRecipe] = useState(null);
   const [checked, setChecked] = useState(false);
   const [count, setCount] = useState(0);
-
-  console.log("recette from recette");
-  console.log(recipe);
 
   useEffect(() => {
     getAllCountries();
@@ -88,23 +86,22 @@ const newRecipe = () => {
   };
 
   return (
-    <div>
-      <h2>1ère étape : ajoute ta recette ! </h2>
-      <form ref={formRef}>
-        <div>
-          <label>Name</label>
-          <input name="addName" type="text" />
+    <div className={classes.main}>
+      <div className={classes.maintitle}>
+        <h2>1ère étape : ajoute ta recette ! </h2>
+      </div>
+      <form ref={formRef} className={classes.recipeform}>
+        <div className={classes.toggle}>
+          <p>Privée</p>
+          <p>Publique</p>
         </div>
-        <div>
-          <label>Description</label>
-          <input name="addDescription" type="text" />
-        </div>
-        <div>
-          <label>URL de l'image</label>
-          <input name="addImageUrl" type="text" />
-        </div>
+        <Checkbox
+          checked={checked}
+          onChange={(event) => setChecked(event.currentTarget.checked)}
+          label="Publier ma recette?"
+        />
         {dishes ? (
-          <div>
+          <div className={classes.dropdown}>
             <label>Plat relié</label>
             <select name="addDish">
               {dishes.map((dish) => (
@@ -115,20 +112,16 @@ const newRecipe = () => {
             </select>
           </div>
         ) : null}
-        {types ? (
-          <div>
-            <label>Type de plat</label>
-            <select name="addType">
-              {types.map((type) => (
-                <option value={type.id} key={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
+        <div className={classes.field}>
+          <label>Nom de la recette</label>
+          <input name="addName" type="text" />
+        </div>
+        <div className={classes.photo}>
+          <label>Ajouter une photo</label>
+          <input name="addImageUrl" type="text" />
+        </div>
         {countries ? (
-          <div>
+          <div className={classes.field}>
             <label>Pays</label>
             <select name="addCountry">
               {countries.map((country) => (
@@ -139,11 +132,25 @@ const newRecipe = () => {
             </select>
           </div>
         ) : null}
-        <Checkbox
-          checked={checked}
-          onChange={(event) => setChecked(event.currentTarget.checked)}
-          label="Publier ma recette?"
-        />
+        {types ? (
+          <div className={classes.dropdown}>
+            <label>Type de plat</label>
+            <select name="addType">
+              {types.map((type) => (
+                <option value={type.id} key={type.id}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+        <div className={classes.field}>
+          <label>Tags à faire</label>
+        </div>
+        <div className={classes.field}>
+          <label>Description</label>
+          <input name="addDescription" type="text" />
+        </div>
         <button
           disabled={disable}
           className="btn btn-primary my-3"
@@ -152,20 +159,24 @@ const newRecipe = () => {
           Créer un plat
         </button>
       </form>
-      <h2>II - Ajoute tes ingrédients</h2>
-      {/* {recipe ? <> */}
-      <button onClick={handleClick}>Ajouter un ingrédient</button>
-      {[...Array(count)].map((e, i) => {
-        return <AddRecipesIngredients recipe={recipe} key={i} />;
-      })}
-      {/* </> : null} */}
-      <h2>III - Décris les étapes de ta recette</h2>
-      {/* {recipe ? */}
-      <AddRecipesSteps recipe={recipe} />
-      {/* // : null} */}
-      <h2>IV - Un peu de référencement...</h2>
-      {/* {recipe ? <AddRecipesTags /> : null} */}
-      <AddRecipesTags recipe={recipe} />
+      <div className={classes.ingredientform}>
+        <h2>II - Ajoute tes ingrédients</h2>
+        {/* {recipe ? <> */}
+        {[...Array(count)].map((e, i) => {
+          return <AddRecipesIngredients recipe={recipe} key={i} />;
+        })}
+        {/* </> : null} */}
+        <button onClick={handleClick}>Ajouter un ingrédient</button>
+      </div>
+      <div className={classes.stepsform}>
+        <h2>III - Décris les étapes de ta recette</h2>
+        {/* {recipe ? */}
+        <AddRecipesSteps recipe={recipe} />
+        {/* // : null} */}
+        <h2>IV - Un peu de référencement...</h2>
+        {/* {recipe ? <AddRecipesTags /> : null} */}
+        <AddRecipesTags recipe={recipe} />
+      </div>
     </div>
   );
 };
