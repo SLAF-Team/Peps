@@ -18,13 +18,6 @@ const DishCard = (props) => {
             <h1>Titre : {dish.title}</h1>
             <p>Description : {dish.description}</p>
             <Button type={'primary'} label={"Plus de détail"} href={`/dishes/${dish.id}`}/>
-
-
-            <div>
-                {dish.recipes.map(recipe => (
-                    <p>{recipe.name}</p>
-                ))}
-            </div>
         </div>
     );
 
