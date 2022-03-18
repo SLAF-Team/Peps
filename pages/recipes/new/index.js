@@ -10,7 +10,7 @@ import { Checkbox } from "@mantine/core";
 import classes from "./Recipe.module.css";
 import prisma from "../../../lib/prisma.ts";
 
-const newRecipe = ({ countries, types, dishes }) => {
+const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const token = Cookies.get("token");
@@ -137,7 +137,7 @@ const newRecipe = ({ countries, types, dishes }) => {
         <h2>II - Ajoute tes ingrédients</h2>
         {/* {recipe ? <> */}
         {[...Array(count)].map((e, i) => {
-          return <AddRecipesIngredients recipe={recipe} key={i} />;
+          return <AddRecipesIngredients recipe={recipe} key={i} ingredients={ingredients} units={units}/>;
         })}
         {/* </> : null} */}
         <button onClick={handleClick}>Ajouter un ingrédient</button>
@@ -149,7 +149,7 @@ const newRecipe = ({ countries, types, dishes }) => {
         {/* // : null} */}
         <h2>IV - Un peu de référencement...</h2>
         {/* {recipe ? <AddRecipesTags /> : null} */}
-        <AddRecipesTags recipe={recipe} />
+        <AddRecipesTags recipe={recipe} tags={tags}/>
       </div>
     </div>
   );
@@ -159,11 +159,17 @@ export async function getServerSideProps() {
   const allTypes = await prisma.type.findMany();
   const allCountries = await prisma.country.findMany();
   const allDishes = await prisma.dish.findMany();
+  const allIngredients = await prisma.ingredient.findMany();
+  const allUnits = await prisma.unit.findMany();
+  const allTags = await prisma.tag.findMany();
   return {
     props: {
       dishes: allDishes,
       types: allTypes,
       countries: allCountries,
+      tags: allTags,
+      ingredients: allIngredients,
+      units: allUnits,
     },
   };
 }

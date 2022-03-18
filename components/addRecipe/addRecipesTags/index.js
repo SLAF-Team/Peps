@@ -3,22 +3,12 @@ import axios from "axios";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import Cookies from "js-cookie";
 
-const AddRecipesTags = ({ recipe }) => {
-  const [tags, setTags] = useState(null);
+const AddRecipesTags = ({ recipe, tags }) => {
   const [value, setValue] = useState([]);
   const token = Cookies.get("token");
 
-  async function getAllTags() {
-    const result = await axios.get("/api/tag/getTags");
-    setTags(result.data);
-  }
-
-  useEffect(() => {
-    getAllTags();
-  }, []);
-
   async function addTagsToRecipe(data) {
-    const result = await axios.put(
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
