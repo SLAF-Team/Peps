@@ -19,6 +19,7 @@ model User {
   createdAt DateTime         @default(now()) @map(name: "created_at")
   updatedAt DateTime         @updatedAt @map(name: "updated_at")
   recipes   Recipe[]
+  lists   List[]
   likes     LikesOnRecipes[]
 
   @@map(name: "users")
@@ -78,6 +79,7 @@ model Recipe {
   type            Type                    @relation(fields: [typeId], references: [id], onDelete: SetNull)
   typeId          Int
   likes           LikesOnRecipes[]
+  lists           List[]                   @relation("_ListAndRecipes")
 }
 
 model Dish {
@@ -108,4 +110,12 @@ model LikesOnRecipes {
   recipeId Int
 
   @@id([userId, recipeId])
+}
+
+model List {
+  id       Int      @id @default(autoincrement())
+  name     String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipes            Recipe[]                   @relation("_ListAndRecipes")
 }

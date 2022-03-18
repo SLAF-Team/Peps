@@ -123,6 +123,28 @@ async function main() {
     },
   ];
 
+  const recipe = await prisma.recipe.create({
+    data: {
+      name: "Couscous de chez ma grand mère",
+      description:
+        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+      cookId: john.id,
+      dishId: couscous.id,
+      typeId: entree.id,
+      countryId: maroc.id,
+    },
+  });
+
+    const list = await prisma.list.create({
+      data: {
+        name: "A essayer",
+        userId: john.id,
+        recipes: {
+          connect: [{ id: recipe.id }],
+        },
+      },
+    });
+
   const recipes = [
     {
       name: "Couscous de chez ma grand mère",
@@ -176,9 +198,9 @@ async function main() {
     data: recipes,
   });
 
-    await prisma.unit.createMany({
-      data: units,
-    });
+  await prisma.unit.createMany({
+    data: units,
+  });
 }
 
 main()

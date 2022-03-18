@@ -1,0 +1,45 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.setups_small {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+
+}
+
+.setup_small {
+  display: flex;
+  flex-direction: column;
+}
+
+.setup_large {
+  display: flex;
+  flex-direction: column;
+}
+
+.input_small {
+  width: 162.5px;
+  height: 48px;
+  left: 19px;
+  top: 1036px;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+}
+
+
+.input_large {
+  width: 333px;
+  height: 48px;
+  left: 21px;
+  top: 1136px;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+
