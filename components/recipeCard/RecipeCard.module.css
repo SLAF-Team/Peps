@@ -1,8 +1,10 @@
 .recipe__container {
-  border: 2px purple solid;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 220px;
+  height: 360px;
 }
 
 .recipe__img {
@@ -26,6 +28,7 @@
     display: flex;
     flex-direction: column;
     width: 165px;
+    height: 360px;
   }
   
   .recipe__img {

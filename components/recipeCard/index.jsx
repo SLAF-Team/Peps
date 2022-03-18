@@ -8,7 +8,7 @@ const RecipeCard = ({ recipe }) => {
   const token = Cookies.get("token");
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
-  const hasLikes = recipe?._count.likes ? true : false;
+  const hasLikes = recipe?._count ? true : false;
 
   async function addLike() {
     await axios.put(

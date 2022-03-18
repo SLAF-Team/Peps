@@ -40,11 +40,13 @@ const Profile = () => {
           <p className={styles.selectorText}>MES LISTES</p>
         </div>
       </div>
+      <div className={styles.container}>
       {user?.recipes.map((recipe, index) => (
         <div key={`recipe-${index}`}>
           <RecipeCard recipe={recipe} />
         </div>
       ))}
+      </div>
     </>
   );
 };
