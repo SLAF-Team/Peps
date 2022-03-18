@@ -5,21 +5,10 @@ import axios from "axios";
 import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
 
-const newDish = () => {
+const newDish = ({regions}) => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
-  const [regions, setRegions] = useState(null);
-
-  // get regions
-  async function getAllRegions() {
-    const result = await axios.get("/api/region/getRegions");
-    setRegions(result.data);
-  }
-
-  useEffect(() => {
-    getAllRegions();
-  }, []);
 
   // add Dish
   async function addNewDish(params) {
@@ -74,10 +63,10 @@ const newDish = () => {
 };
 
 export async function getServerSideProps() {
-  const allDishes = await prisma.dish.findMany();
+  const allRegions = await prisma.region.findMany();
   return {
     props: {
-      dishes: allDishes,
+      regions: allRegions,
     },
   };
 }
