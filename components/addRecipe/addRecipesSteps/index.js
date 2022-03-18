@@ -1,5 +1,4 @@
-import { useState } from "react/cjs/react.development";
-import { useRef } from "react/cjs/react.development";
+import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
