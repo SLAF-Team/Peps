@@ -79,6 +79,7 @@ model Recipe {
   type            Type                    @relation(fields: [typeId], references: [id], onDelete: SetNull)
   typeId          Int
   likes           LikesOnRecipes[]
+  lists           List[]                   @relation("_ListAndRecipes")
 }
 
 model Dish {
@@ -116,4 +117,5 @@ model List {
   name     String
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
+  recipes            Recipe[]                   @relation("_ListAndRecipes")
 }

@@ -20,13 +20,6 @@ async function main() {
     },
   });
 
-  const list = await prisma.list.create({
-    data: {
-      name: "A essayer",
-      userId: john.id,
-    },
-  });
-
   const afrique = await prisma.region.create({
     data: {
       name: "Afrique",
@@ -129,6 +122,28 @@ async function main() {
       regionId: afrique.id,
     },
   ];
+
+  const recipe = await prisma.recipe.create({
+    data: {
+      name: "Couscous de chez ma grand mère",
+      description:
+        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
+      cookId: john.id,
+      dishId: couscous.id,
+      typeId: entree.id,
+      countryId: maroc.id,
+    },
+  });
+
+    const list = await prisma.list.create({
+      data: {
+        name: "A essayer",
+        userId: john.id,
+        recipes: {
+          connect: [{ id: recipe.id }],
+        },
+      },
+    });
 
   const recipes = [
     {
