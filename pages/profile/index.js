@@ -57,6 +57,14 @@ const Profile = ({ recipes, lists }) => {
             ))}
         </div>
       </div>
+      <div className={styles.container}>
+      {recipesFromUser &&
+        recipesFromUser.map((recipe, index) => (
+          <div key={`recipe-${index}`}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+      </div>
     </>
   );
 };

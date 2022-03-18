@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   width: 940px;
@@ -8,7 +9,6 @@
 
 @media (max-width: 500px) {
   .container {
-    border: 3px solid orange;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
