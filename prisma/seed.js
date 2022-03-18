@@ -20,6 +20,13 @@ async function main() {
     },
   });
 
+  const list = await prisma.list.create({
+    data: {
+      name: "A essayer",
+      userId: john.id,
+    },
+  });
+
   const afrique = await prisma.region.create({
     data: {
       name: "Afrique",
@@ -176,9 +183,9 @@ async function main() {
     data: recipes,
   });
 
-    await prisma.unit.createMany({
-      data: units,
-    });
+  await prisma.unit.createMany({
+    data: units,
+  });
 }
 
 main()
