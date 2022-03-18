@@ -4,12 +4,12 @@ export default async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    const ingredientsandrecipes = await prisma.ingredientsAndRecipes.create({
+    const ingredientsUnit = await prisma.ingrediendsAndRecipes.create({
       data: {
         ...data,
       },
     });
-    res.status(200).json(ingredientsandrecipes);
+    res.status(200).json(ingredientsUnit);
   } catch (err) {
     console.log(err);
     res.status(403).json({ err: "Error occured while adding a new recipe." });

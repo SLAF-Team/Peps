@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const AddRecipesTags = ({ recipe }) => {
   const [tags, setTags] = useState(null);
   const [value, setValue] = useState([]);
-  const token = Cookies.get("token")
+  const token = Cookies.get("token");
 
   async function getAllTags() {
     const result = await axios.get("/api/tag/getTags");
@@ -34,7 +34,6 @@ const AddRecipesTags = ({ recipe }) => {
   const handleClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    console.log(newValue)
     addTagsToRecipe(newValue);
   };
 
