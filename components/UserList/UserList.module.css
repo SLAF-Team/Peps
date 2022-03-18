@@ -10,6 +10,7 @@
 .top {
 	width: 100%;
 	margin-top: 3rem;
+	position: relative;
 }
 
 .letter {
@@ -36,4 +37,11 @@
 
 @media only screen and (min-width: 33.75em) {
 	/* 540px */
+}
+
+.float {
+	margin-top: 0.5rem;
+	position: absolute;
+	right: 0;
+	text-align: right;
 }

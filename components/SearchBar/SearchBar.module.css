@@ -7,6 +7,10 @@
 	font-family: Lato, sans-serif;
 }
 
+.search:hover {
+	background-color: #faf5f0;
+}
+
 .img {
 	position: relative;
 	margin-top: -28px;

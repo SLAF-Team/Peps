@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../context/UserContext";
+import ButtonForm from "../ButtonForm";
+import styles from "./EditUser.module.css";
 
 const EditUser = ({ user, handleUpdateUser }) => {
   const token = Cookies.get("token");
@@ -19,6 +21,22 @@ const EditUser = ({ user, handleUpdateUser }) => {
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
+
+  // delete user bloc
+  const handleDeleteUser = () => {
+    if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
+      deleteUser();
+    }
+  };
+
+  async function deleteUser() {
+    await axios.delete("/api/user/deleteUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    Cookies.remove("token");
+    setUser(null);
+    router.push("/");
+  }
 
   async function editUser() {
     const result = await axios.put(
@@ -41,27 +59,28 @@ const EditUser = ({ user, handleUpdateUser }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="my-2">Nom</label>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div>
         <input
           onChange={handleName}
-          className="form-control"
+          className={styles.field}
           value={name}
           type="text"
         />
       </div>
-      <div className="form-group">
-        <label className="my-2">Email*</label>
+      <div>
         <input
           onChange={handleEmail}
-          className="form-control"
+          className={styles.field}
           value={email}
           type="email"
         />
       </div>
-      <button type="submit" className="btn btn-primary my-3">
-        J'édite
+      <button type="submit" className={styles.btnPrimary}>
+        ÉDITER
+      </button>
+      <button onClick={() => handleDeleteUser()} className={styles.btnDanger}>
+        SUPPRIMER
       </button>
     </form>
   );
