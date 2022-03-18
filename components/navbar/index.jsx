@@ -15,6 +15,7 @@ const NavBar = () => {
   const handleClick = () => {
     if (window.confirm("Es tu sûr de vouloir te déconnecter?")) {
       Cookies.remove("token");
+      setUser(null);
       router.push("/");
     }
   };
@@ -29,7 +30,7 @@ const NavBar = () => {
       <div className={styles.right}>
         <SearchBar placeholder="Chercher une recette" />
         {!user ? (
-          <Button label="Connexion" href="/signin" type="warning" />
+          <Button label="Connexion" href="/login" type="warning" />
         ) : (
           <Menu
             className={styles.burger}

@@ -6,48 +6,24 @@ import { useUserContext } from "../../../context/UserContext";
 import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngredients";
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
+import { Checkbox } from "@mantine/core";
+import classes from "./Recipe.module.css";
+import prisma from "../../../lib/prisma.ts";
 import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
-import { SegmentedControl } from "@mantine/core";
-import { Select } from "@mantine/core";
+import { SegmentedControl } from '@mantine/core';
+import { Select } from '@mantine/core';
 
-const newRecipe = () => {
+const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
-  const [countries, setCountries] = useState(null);
-  const [dishes, setDishes] = useState(null);
-  const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
   const [checked, setChecked] = useState(false);
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    getAllCountries();
-    getAllDishes();
-    getAllTypes();
-  }, []);
-
-  // get regions
-  async function getAllCountries() {
-    const result = await axios.get("/api/country/getCountries");
-    setCountries(result.data);
-  }
-
-  // get dish
-  async function getAllDishes() {
-    const result = await axios.get("/api/dish/getDishes");
-    setDishes(result.data);
-  }
-
-  // get types
-  async function getAllTypes() {
-    const result = await axios.get("/api/type/getTypes");
-    setTypes(result.data);
-  }
-
-  // add Dish
+  // add Recipe
   async function addNewRecipe(params) {
     setDisable(true);
     const {
@@ -170,24 +146,42 @@ const newRecipe = () => {
       </form>
       <div className={classes.ingredientform}>
         <h2 className={classes.h2}>II - Ajoute tes ingrédients</h2>
-        {recipe ? (
+        {recipe ?
           <>
             {[...Array(count)].map((e, i) => {
-              return <AddRecipesIngredients recipe={recipe} key={i} />;
+              return <AddRecipesIngredients recipe={recipe} key={i} ingredients={ingredients} units={units}/>;
             })}
-          </>
-        ) : null}
+          </> : null}
         <button onClick={handleClick}>Ajouter un ingrédient</button>
       </div>
       <div className={classes.stepsform}>
         <h2 className={classes.h2}>III - Décris les étapes de ta recette</h2>
         {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
         <h2 className={classes.h2}>IV - Un peu de référencement...</h2>
-        {recipe ? <AddRecipesTags /> : null}
-        <AddRecipesTags recipe={recipe} />
+        {/* {recipe ? <AddRecipesTags /> : null} */}
+        <AddRecipesTags recipe={recipe} tags={tags}/>
       </div>
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const allTypes = await prisma.type.findMany();
+  const allCountries = await prisma.country.findMany();
+  const allDishes = await prisma.dish.findMany();
+  const allIngredients = await prisma.ingredient.findMany();
+  const allUnits = await prisma.unit.findMany();
+  const allTags = await prisma.tag.findMany();
+  return {
+    props: {
+      dishes: allDishes,
+      types: allTypes,
+      countries: allCountries,
+      tags: allTags,
+      ingredients: allIngredients,
+      units: allUnits,
+    },
+  };
+}
 
 export default newRecipe;

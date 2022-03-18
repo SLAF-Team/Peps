@@ -1,0 +1,38 @@
+.recipe__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 220px;
+  height: 360px;
+}
+
+.recipe__img {
+  width: 220px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.recipe__title {
+  font-size: 18px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.recipe__likes {
+  font-size: 16px;
+}
+
+@media (max-width: 500px) {
+  .recipe__container {
+    display: flex;
+    flex-direction: column;
+    width: 165px;
+    height: 360px;
+  }
+  
+  .recipe__img {
+    width: 165px;
+    height: 230px;
+    object-fit: cover;
+  }
+}

@@ -2,8 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import classes from "../../styles/Home.module.css";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../../context/UserContext";
+import styles from "../Login.module.css";
+import ButtonForm from "../../ButtonForm";
 
 const SignUp = () => {
   const router = useRouter();
@@ -50,43 +51,34 @@ const SignUp = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center">
-      <div className={classes.forms}>
-        <form onSubmit={handleSubmit}>
-          <h1>Inscription</h1>
-          <div className="form-group">
-            <label>Nom</label>
-            <input
-              onChange={handleName}
-              value={name}
-              type="text"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email *</label>
-
-            <input
-              onChange={handleEmail}
-              value={email}
-              type="email"
-            />
-          </div>
-          <div className="form-group">
-            <label>Password *</label>
-
-            <input
-              onChange={handlePassword}
-              value={password}
-              type="password"
-            />
-          </div>
-
-          <button type="submit">
-            Inscription
-          </button>
-        </form>
+    <form onSubmit={handleSubmit} className={styles.size}>
+      <div className={styles.form}>
+        <input
+          id="name"
+          type="text"
+          onChange={handleEmail}
+          className={styles.field}
+          placeholder="Nom d'utilisateur"
+        />
+        <input
+          id="email"
+          type="text"
+          onChange={handleEmail}
+          className={styles.field}
+          placeholder="Email"
+        />
+        <input
+          id="password"
+          type="password"
+          onChange={handlePassword}
+          className={styles.field}
+          placeholder="Mot de passe"
+        />
       </div>
-    </div>
+      <div className={styles.button}>
+        <ButtonForm label="Inscription" type="warning" />
+      </div>
+    </form>
   );
 };
 

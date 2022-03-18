@@ -19,6 +19,7 @@ model User {
   createdAt DateTime         @default(now()) @map(name: "created_at")
   updatedAt DateTime         @updatedAt @map(name: "updated_at")
   recipes   Recipe[]
+  lists   List[]
   likes     LikesOnRecipes[]
 
   @@map(name: "users")
@@ -68,16 +69,17 @@ model Recipe {
   imageUrl        String?
   ingredientsUnit IngredientsandRecipes[]
   published       Boolean                 @default(false)
-  country         Country                 @relation(fields: [countryId], references: [id])
+  country         Country                 @relation(fields: [countryId], references: [id], onDelete: SetNull)
   countryId       Int
   cook            User                    @relation(fields: [cookId], references: [id], onDelete: Cascade)
   cookId          Int
   dish            Dish                    @relation(fields: [dishId], references: [id], onDelete: Cascade)
   dishId          Int
   tags            Tag[]                   @relation("_TagsAndRecipes")
-  type            Type                    @relation(fields: [typeId], references: [id])
+  type            Type                    @relation(fields: [typeId], references: [id], onDelete: SetNull)
   typeId          Int
-  LikesOnRecipes  LikesOnRecipes[]
+  likes           LikesOnRecipes[]
+  lists           List[]                   @relation("_ListAndRecipes")
 }
 
 model Dish {
@@ -85,27 +87,35 @@ model Dish {
   title       String
   description String
   recipes     Recipe[]
-  region      Region   @relation(fields: [regionId], references: [id])
+  region      Region   @relation(fields: [regionId], references: [id], onDelete: SetNull)
   regionId    Int
 }
 
 model IngredientsandRecipes {
   quantity     Int
-  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId     Int
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
   ingredientId Int
-  unit         Unit       @relation(fields: [unitId], references: [id])
+  unit         Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId       Int
 
   @@id([recipeId, ingredientId, unitId])
 }
 
 model LikesOnRecipes {
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
-  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId Int
 
   @@id([userId, recipeId])
+}
+
+model List {
+  id       Int      @id @default(autoincrement())
+  name     String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipes            Recipe[]                   @relation("_ListAndRecipes")
 }

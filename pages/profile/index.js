@@ -1,15 +1,18 @@
 import { useUserContext } from "../../context/UserContext";
-import { useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
+import RecipeCard from "../../components/recipeCard";
+import prisma from "../../lib/prisma.ts";
 
-const Profile = () => {
+const Profile = ({recipes}) => {
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
+
+  const recipesFromUser = user? recipes.filter((element) => element.cookId === user.id) : null
 
   // delete user bloc
   const handleDeleteUser = () => {
@@ -19,7 +22,7 @@ const Profile = () => {
   };
 
   async function deleteUser() {
-    const result = await axios.delete("/api/user/deleteUser", {
+    await axios.delete("/api/user/deleteUser", {
       headers: { Authorization: `Bearer ${token}` },
     });
     Cookies.remove("token");
@@ -38,14 +41,28 @@ const Profile = () => {
           <p className={styles.selectorText}>MES LISTES</p>
         </div>
       </div>
-      {user?.recipes.map((recipe) => (
-        <>
-          <h2>{recipe.name}</h2>
-          <p>{recipe.description}</p>
-        </>
-      ))}
+      {recipesFromUser &&
+        recipesFromUser.map((recipe, index) => (
+          <div key={`recipe-${index}`}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  console.log(context)
+  const allRecipes = await prisma.recipe.findMany({
+    include: {
+      _count: { select: { likes: true } },
+    },
+  });
+  return {
+    props: {
+      recipes: allRecipes,
+    },
+  };
+}
 
 export default Profile;
