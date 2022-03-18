@@ -27,7 +27,7 @@ const SelectedDish = ({ dish }) => {
 
   async function deleteDish() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-      await axios.delete(`/api/dish/${dish?.id}`, {
+      await axios.delete(`/api/dish/delete/${dish?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       router.push("/dishes/");
