@@ -77,7 +77,7 @@ model Recipe {
   tags            Tag[]                   @relation("_TagsAndRecipes")
   type            Type                    @relation(fields: [typeId], references: [id])
   typeId          Int
-  LikesOnRecipes  LikesOnRecipes[]
+  likes           LikesOnRecipes[]
 }
 
 model Dish {
