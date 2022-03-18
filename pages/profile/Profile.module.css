@@ -5,3 +5,15 @@
   width: 940px;
   row-gap: 15px;
 }
+
+@media (max-width: 500px) {
+  .container {
+    border: 3px solid orange;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 375px;
+    row-gap: 15px;
+    column-gap: 15px;
+  }
+}
