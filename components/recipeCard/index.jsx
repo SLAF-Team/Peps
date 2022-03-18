@@ -18,8 +18,9 @@ const handleCreateLike = () => {};
     <>
       <h1>{recipe.name}</h1>
       <h2>{recipe.description}</h2>
-      <h2>{recipe.cook.name}</h2>
-      {recipe.likes && <h2>Likes: {recipe._count.likes}</h2>}
+      <h2>{recipe.cookId.name}</h2>
+      <h2>Likes: {recipe._count}</h2>
+      {/* check si c'est déjà liké */}
       {isLiked ? (
         <Button
           className="success"

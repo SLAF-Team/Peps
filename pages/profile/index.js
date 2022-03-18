@@ -6,6 +6,7 @@ import axios from "axios";
 import UserList from "../../components/UserList";
 import Selector from "../../components/Selector";
 import styles from "./Profile.module.css";
+import RecipeCard from "../../components/recipeCard"
 
 const Profile = () => {
   const { user, setUser } = useUserContext();
@@ -31,12 +32,18 @@ const Profile = () => {
   return (
     <>
       <UserList user={user} handleDeleteUser={handleDeleteUser} />
-      <Selector left="MES CONTRIBUTION" right="MES LISTES" />
-      {user?.recipes.map((recipe) => (
-        <>
-          <h2>{recipe.name}</h2>
-          <p>{recipe.description}</p>
-        </>
+      <div className={styles.selector}>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES CONTRIBUTIONS</p>
+        </div>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES LISTES</p>
+        </div>
+      </div>
+      {user?.recipes.map((recipe, index) => (
+        <div key={`recipe-${index}`}>
+          <RecipeCard recipe={recipe} />
+        </div>
       ))}
     </>
   );
