@@ -1,7 +1,16 @@
 import prisma from "../../lib/prisma.ts";
 
 const SelectedRecipe = ({ recipe }) => {
-  return <h1>{recipe.name}</h1>;
+  return (
+    <div style={{ margin:"20px"}}>
+        <img src={recipe.imageUrl} style={{ width:"200px"}}/>
+        <h1>{recipe.name}</h1>
+        <h2>Une variante de NOMDUPLAT{recipe.dish}</h2>
+        <p>Description: {recipe.description}</p>
+        <p>Etapes: {recipe.steps}</p>
+
+    </div>
+  )
 };
 
 export async function getServerSideProps(context) {
