@@ -6,17 +6,6 @@ import prisma from "../../lib/prisma.ts";
 
 const Recipes = (props) => {
   const recipes = props.recipes;
-  // const [recipes, setRecipes] = useState(null);
-
-  // get recipes
-  // async function getAllRecipes() {
-  //   const result = await axios.get("/api/recipe/getRecipes");
-  //   setRecipes(result.data);
-  // }
-
-  // useEffect(() => {
-  //   getAllRecipes();
-  // }, []);
 
   console.log(recipes);
 

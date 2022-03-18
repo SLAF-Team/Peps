@@ -28,7 +28,6 @@ const AddRecipesTags = ({ recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
   }
 
   const handleClick = () => {

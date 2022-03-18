@@ -5,7 +5,7 @@ export default async (req, res) => {
     const result = await prisma.recipe.findMany({
       include: {
         cook: { select: { email: true, name: true, id: true } },
-        _count: {select:{likes: true}}
+        _count: { select: { likes: true } },
       },
     });
 
