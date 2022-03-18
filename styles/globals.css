@@ -233,3 +233,12 @@ a {
     display: block;
   }
 }
+
+.selectorBlock {
+  width: 100%;
+  text-align: center;
+}
+
+.selectorSelect {
+  border-bottom: 2px solid black;
+}
