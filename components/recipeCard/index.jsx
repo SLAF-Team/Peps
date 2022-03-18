@@ -5,7 +5,7 @@ import { useMemo } from "react";
 const RecipeCard = ({ recipe }) => {
   const { user, setUser } = useUserContext();
 
-  const isLiked = user?.likes.some((like) => like.recipeId === recipe.id)
+  const isLiked = user?.likes.some((like) => like.recipeId === recipe.id);
 
   return (
     <>
@@ -14,7 +14,7 @@ const RecipeCard = ({ recipe }) => {
       <h2>{recipe.cookId.name}</h2>
       <h2>Likes: {recipe._count}</h2>
       {/* check si c'est déjà liké */}
-      <button>{isLiked ? "true" : "false" }</button>
+      <button>{isLiked ? "true" : "false"}</button>
     </>
   );
 };
