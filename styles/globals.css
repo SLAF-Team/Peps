@@ -237,6 +237,7 @@ a {
 .selectorBlock {
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
 .selectorSelect {

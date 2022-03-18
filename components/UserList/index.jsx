@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "./UserList.module.css";
-import EditUser from "../editUser/index"
+import EditUser from "../editUser/index";
 
-const UserList = ({ user, handleDeleteUser }) => {
+const UserList = ({ user, handleDeleteUser, color }) => {
   const [form, setForm] = useState(false);
 
   const handleUpdateUser = () => {
@@ -12,7 +12,7 @@ const UserList = ({ user, handleDeleteUser }) => {
   return (
     <div className={styles.top + " row"}>
       <div className="col-3">
-        <div className={styles.avatar}>
+        <div className={styles.avatar} style={{ backgroundColor: color }}>
           <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
         </div>
       </div>
@@ -21,18 +21,23 @@ const UserList = ({ user, handleDeleteUser }) => {
           <p className={styles.name}>{user?.name}</p>
           <p className={styles.email}>{user?.email}</p>
         </div>
-        <div>
-          {" "}
-          {!form && (
-            <button onClick={() => handleUpdateUser()}>
-              Editer mon profil
+        {user.email ? (
+          <div>
+            {!form && (
+              <button onClick={() => handleUpdateUser()}>
+                Editer mon profil
+              </button>
+            )}
+            {form && (
+              <EditUser user={user} handleUpdateUser={handleUpdateUser} />
+            )}
+            <button onClick={() => handleDeleteUser()}>
+              <a>Supprimer mon compte</a>
             </button>
-          )}
-          {form && <EditUser user={user} handleUpdateUser={handleUpdateUser} />}
-          <button onClick={() => handleDeleteUser()}>
-            <a>Supprimer mon compte</a>
-          </button>
-        </div>
+          </div>
+        ) : (
+          <span>Créée par {user.user.name}</span>
+        )}
       </div>
     </div>
   );
