@@ -1,6 +1,6 @@
 import React from "react";
-import { useState } from "react/cjs/react.development";
-import { useRef } from "react/cjs/react.development";
+import { useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import classes from './AddRecipesIngredients.module.css'
