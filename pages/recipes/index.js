@@ -1,5 +1,5 @@
 import React from "react";
-import RecipeCard from "../../components/RecipeCard/index.jsx";
+import RecipeCard from "../../components/recipeCard/index.jsx";
 import prisma from "../../lib/prisma.ts";
 
 const Recipes = ({ recipes }) => {
