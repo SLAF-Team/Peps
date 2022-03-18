@@ -7,13 +7,17 @@ import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 
-const Profile = ({recipes}) => {
+const Profile = ({ recipes, lists }) => {
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
 
-  const recipesFromUser = user? recipes.filter((element) => element.cookId === user.id) : null
+  const recipesFromUser = user? recipes.filter((element) => element.cookId === user.id)
+    : null;
+    const listsFromUser = user? lists.filter((element) => element.userId === user.id)
+      : null;
 
+    console.log(listsFromUser);
   // delete user bloc
   const handleDeleteUser = () => {
     if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
@@ -37,16 +41,22 @@ const Profile = ({recipes}) => {
         <div className={styles.selectorBlock}>
           <p className={styles.selectorText}>MES CONTRIBUTIONS</p>
         </div>
+        {recipesFromUser &&
+          recipesFromUser.map((recipe, index) => (
+            <div key={`recipe-${index}`}>
+              <RecipeCard recipe={recipe} />
+            </div>
+          ))}
         <div className={styles.selectorBlock}>
           <p className={styles.selectorText}>MES LISTES</p>
+          {listsFromUser &&
+            listsFromUser.map((list, index) => (
+              <div key={index}>
+                {list.name}
+              </div>
+            ))}
         </div>
       </div>
-      {recipesFromUser &&
-        recipesFromUser.map((recipe, index) => (
-          <div key={`recipe-${index}`}>
-            <RecipeCard recipe={recipe} />
-          </div>
-        ))}
     </>
   );
 };
@@ -58,9 +68,12 @@ export async function getServerSideProps(context) {
       _count: { select: { likes: true } },
     },
   });
+    const allLists = await prisma.list.findMany({
+    });
   return {
     props: {
       recipes: allRecipes,
+      lists: allLists,
     },
   };
 }
