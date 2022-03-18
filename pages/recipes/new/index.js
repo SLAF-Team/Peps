@@ -7,45 +7,19 @@ import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngre
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
 import { Checkbox } from "@mantine/core";
-import classes from './Recipe.module.css'
+import classes from "./Recipe.module.css";
+import prisma from "../../../lib/prisma.ts";
 
-const newRecipe = () => {
+const newRecipe = ({ countries, types, dishes }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
-  const [countries, setCountries] = useState(null);
-  const [dishes, setDishes] = useState(null);
-  const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
   const [checked, setChecked] = useState(false);
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    getAllCountries();
-    getAllDishes();
-    getAllTypes();
-  }, []);
-
-  // get regions
-  async function getAllCountries() {
-    const result = await axios.get("/api/country/getCountries");
-    setCountries(result.data);
-  }
-
-  // get dish
-  async function getAllDishes() {
-    const result = await axios.get("/api/dish/getDishes");
-    setDishes(result.data);
-  }
-
-  // get types
-  async function getAllTypes() {
-    const result = await axios.get("/api/type/getTypes");
-    setTypes(result.data);
-  }
-
-  // add Dish
+  // add Recipe
   async function addNewRecipe(params) {
     setDisable(true);
     const {
@@ -180,5 +154,18 @@ const newRecipe = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const allTypes = await prisma.type.findMany();
+  const allCountries = await prisma.country.findMany();
+  const allDishes = await prisma.dish.findMany();
+  return {
+    props: {
+      dishes: allDishes,
+      types: allTypes,
+      countries: allCountries,
+    },
+  };
+}
 
 export default newRecipe;
