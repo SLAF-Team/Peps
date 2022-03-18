@@ -23,7 +23,7 @@ const Login = () => {
       <div className={styles.formControl}>
         <Selector
           left="SE CONNECTER"
-          right="S'INCRIRE"
+          right="S'INSCRIRE"
           handleClickLeft={handleClickLeft}
           handleClickRight={handleClickRight}
           style={style}
