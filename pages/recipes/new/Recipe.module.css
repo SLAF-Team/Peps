@@ -1,21 +1,74 @@
 .main {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.maintitle {
-
+.h1 {
+  font-size: 18px;
 }
 
-.recipeform {
+.h2 {
+  font-size: 14px;
+}
 
+.select {
+  width: 333px;
+  height: 48px;
+  left: 21px;
+  top: 266px;
+
+  /* White */
+
+  background: #FFFFFF;
+  /* Black */
+
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.input {
+  width: 333px;
+  height: 48px;
+  left: 21px;
+  top: 366px;
+
+  /* White */
+
+  background: #FFFFFF;
+  /* Black */
+
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.form {
+  width: 70%;
 }
 
 .toggle {
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
 }
 
-.dropdown {
+.step {
+ display: flex;
+ flex-direction: column;
+}
 
+.recipeform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.button {
+  margin-top: 20px;
 }
 
 .field {
@@ -31,44 +84,5 @@
 }
 
 .stepsform {
-
-}
-
-@media only screen and (min-width: 33.75em) {
-  .main {
-    
-  }
-
-  .maintitle {
-
-  }
-
-  .recipeform {
-
-  }
-
-  .toggle {
-
-  }
-
-  .dropdown {
-
-  }
-
-  .field {
-
-  }
-
-  .photo {
-
-  }
-
-  .ingredientform {
-
-  }
-
-  .stepsform {
-
-  }
 
 }

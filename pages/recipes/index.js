@@ -1,7 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react/cjs/react.development";
-import axios from "axios";
-import RecipeCard from "../../components/recipeCard";
+import RecipeCard from "../../components/RecipeCard";
 import prisma from "../../lib/prisma.ts";
 
 const Recipes = (props) => {
