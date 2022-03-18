@@ -4,6 +4,7 @@
   justify-content: space-between;
   width: 220px;
   height: 360px;
+  margin-right: 20px;
 }
 
 .recipe__img {
@@ -29,7 +30,7 @@
     width: 165px;
     height: 360px;
   }
-  
+
   .recipe__img {
     width: 165px;
     height: 230px;
