@@ -1,5 +1,5 @@
 .formControl {
-	width: 30vw;
+	width: 450px;
 }
 
 .loginForm {
@@ -7,5 +7,5 @@
 	height: 80vh;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	margin-top: 100px;
 }
