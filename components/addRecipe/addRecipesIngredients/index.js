@@ -3,6 +3,8 @@ import { useState, useEffect } from "react/cjs/react.development";
 import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
+import classes from './AddRecipesIngredients.module.css'
+import Button from "../../Button";
 
 const AddRecipesIngredients = ({ recipe }) => {
   const formRef = useRef();
@@ -57,15 +59,29 @@ const AddRecipesIngredients = ({ recipe }) => {
 
   return (
     <div>
-      <form ref={formRef}>
-        <div>
-          <label>Quantité</label>
-          <input name="addQuantity" type="text" />
+      <form className={classes.form} ref={formRef}>
+        <div className={classes.setups_small}>
+          <div className={classes.setup_small}>
+            <label>Quantité</label>
+            <input className={classes.input_small} name="addQuantity" type="text" />
+          </div>
+          {units ? (
+            <div className={classes.setup_small}>
+              <label>Unité</label>
+              <select className={classes.input_small} name="addUnit">
+                {units.map((unit) => (
+                  <option value={unit.id} key={unit.id}>
+                    {unit.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
         </div>
         {ingredients ? (
-          <div>
+          <div className={classes.setup_large}>
             <label>Ingrédient</label>
-            <select name="addIngredient">
+            <select className={classes.input_large} name="addIngredient">
               {ingredients.map((ingredient) => (
                 <option value={ingredient.id} key={ingredient.id}>
                   {ingredient.name}
@@ -74,24 +90,16 @@ const AddRecipesIngredients = ({ recipe }) => {
             </select>
           </div>
         ) : null}
-        {units ? (
-          <div>
-            <label>Unité</label>
-            <select name="addUnit">
-              {units.map((unit) => (
-                <option value={unit.id} key={unit.id}>
-                  {unit.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
+
         {submitted ? (
           <p>Ajouté!</p>
         ) : (
-          <button disabled={disable} onClick={() => addRecipeIngredients()}>
-            Ajouter
-          </button>
+          <Button
+            label='ajouter'
+            type="primary"
+            handleClick={() => addRecipeIngredients()}
+            href=''
+          />
         )}
       </form>
     </div>

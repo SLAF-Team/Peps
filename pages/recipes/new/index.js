@@ -7,10 +7,9 @@ import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngre
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
 import Button from "../../../components/Button";
-import classes from './Recipe.module.css'
-import { SegmentedControl } from '@mantine/core';
-import { Select } from '@mantine/core';
-
+import classes from "./Recipe.module.css";
+import { SegmentedControl } from "@mantine/core";
+import { Select } from "@mantine/core";
 
 const newRecipe = () => {
   const formRef = useRef();
@@ -21,7 +20,7 @@ const newRecipe = () => {
   const [dishes, setDishes] = useState(null);
   const [types, setTypes] = useState(null);
   const [recipe, setRecipe] = useState(null);
-  const [checked, setChecked] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -82,6 +81,7 @@ const newRecipe = () => {
     );
     setDisable(false);
     setRecipe(result.data);
+    console.log(recipe);
   }
 
   const handleClick = () => {
@@ -98,8 +98,8 @@ const newRecipe = () => {
           value={checked}
           onChange={setChecked}
           data={[
-            { label: 'Privée', value: 'false' },
-            { label: 'Publique', value: 'true' },
+            { label: "Privée", value: "false" },
+            { label: "Publique", value: "true" },
           ]}
         />
         {dishes ? (
@@ -160,31 +160,30 @@ const newRecipe = () => {
         /> */}
         <div className={classes.button}>
           <Button
-            label='Créer un plat'
+            label="Créer un plat"
             disabled={disable}
             type="primary"
             handleClick={() => addNewRecipe()}
-            href='/recipes'
+            href=""
           />
         </div>
-
       </form>
       <div className={classes.ingredientform}>
         <h2 className={classes.h2}>II - Ajoute tes ingrédients</h2>
-        {/* {recipe ? <> */}
-        {[...Array(count)].map((e, i) => {
-          return <AddRecipesIngredients recipe={recipe} key={i} />;
-        })}
-        {/* </> : null} */}
+        {recipe ? (
+          <>
+            {[...Array(count)].map((e, i) => {
+              return <AddRecipesIngredients recipe={recipe} key={i} />;
+            })}
+          </>
+        ) : null}
         <button onClick={handleClick}>Ajouter un ingrédient</button>
       </div>
       <div className={classes.stepsform}>
         <h2 className={classes.h2}>III - Décris les étapes de ta recette</h2>
-        {/* {recipe ? */}
-        <AddRecipesSteps recipe={recipe} />
-        {/* // : null} */}
+        {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
         <h2 className={classes.h2}>IV - Un peu de référencement...</h2>
-        {/* {recipe ? <AddRecipesTags /> : null} */}
+        {recipe ? <AddRecipesTags /> : null}
         <AddRecipesTags recipe={recipe} />
       </div>
     </div>
