@@ -3,8 +3,9 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import prisma from "../../lib/prisma.ts";
+import prisma from "../../../lib/prisma.ts";
 import axios from 'axios';
+import classes from './Dishes.module.css'
 
 const SelectedDish = ( { dish } ) => {
     
@@ -46,17 +47,24 @@ const SelectedDish = ( { dish } ) => {
           setDescriptionChange(e.target.value);
       };
 
-
+      console.log(dish)
 
     return(
         <>
-          <h2>Titre : </h2>{dish?.title} <br />
-          <h2>Description : </h2>{dish?.description}
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <div className={classes.jumbotron}></div>
+
+          <div>
+            <h1>{dish?.title}</h1>
+          </div>
+          <div>
+            <h2>:{dish?.region}</h2>
+            <p>{dish?.description}</p>
+          </div>
+
+          <div>
+              <h2>Recette ({dish?.recipes.length})</h2>
+          </div>
+
 
           <form >
             <label>Title</label> <br />
@@ -101,13 +109,13 @@ const SelectedDish = ( { dish } ) => {
 export async function getServerSideProps(context) {
     const { id } = context.params;
     const dish = await prisma.dish.findUnique({
-        where: { id: parseInt(id) },
-        include: { recipes: true }
+      where: { id: parseInt(id) },
+      include: { recipes: true, region: true },
     });
     return {
-        props: {
-            dish,
-        },
+      props: {
+        dish,
+      },
     };
 }
 
