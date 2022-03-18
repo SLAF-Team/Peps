@@ -28,7 +28,6 @@ const RecipeCard = ({ recipe }) => {
   }
 
   async function removeLike(post_id) {
-    setDisable(true);
     const result = await axios.put(
       "/api/recipe/editRecipe",
       {
@@ -43,12 +42,12 @@ const RecipeCard = ({ recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setDisable(false);
   }
 
   const handleDeleteLike = () => {
-    const id = user?.likes.some((like) => like.recipeId === recipe.id);
-    removeLike();
+    const id = user.likes.find((like) => like.recipeId === recipe.id);
+    console.log(id)
+    // removeLike();
   };
 
   const handleCreateLike = () => {
