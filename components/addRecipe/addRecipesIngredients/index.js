@@ -1,33 +1,14 @@
 import React from "react";
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState } from "react/cjs/react.development";
 import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const AddRecipesIngredients = ({ recipe }) => {
+const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
-  const [ingredients, setIngredients] = useState(null);
-  const [units, setUnits] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    getAllIngredients();
-    getAllUnits();
-  }, []);
-
-  // get regions
-  async function getAllIngredients() {
-    const result = await axios.get("/api/ingredient/getIngredients");
-    setIngredients(result.data);
-  }
-
-  // get unit
-  async function getAllUnits() {
-    const result = await axios.get("/api/unit/getUnits");
-    setUnits(result.data);
-  }
 
   async function addRecipeIngredients(params) {
     setDisable(true);
@@ -35,7 +16,7 @@ const AddRecipesIngredients = ({ recipe }) => {
     const ingredient = addIngredient.value;
     const quantity = addQuantity.value;
     const unit = addUnit.value;
-    const result = await axios.put(
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
