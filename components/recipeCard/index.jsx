@@ -1,19 +1,59 @@
-import { get } from "http";
 import { useUserContext } from "../../context/UserContext";
 import Button from "../Button";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
+  const token = Cookies.get("token")
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe.id);
 
-  console.log(recipe);
+  async function addLike() {
+    const result = await axios.put(
+      "/api/recipe/editRecipe",
+      {
+        id: recipe.id,
+        likes: {
+          create: [
+            {
+              userId: user.id,
+            },
+          ],
+        },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    console.log(result);
+  }
 
-const handleDeleteLike = () => {
+  async function removeLike(post_id) {
+    const result = await axios.put(
+      "/api/recipe/editRecipe",
+      {
+        id: recipe.id,
+        likes: {
+          delete: [
+            {
+              id: post_id,
+            },
+          ],
+        },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
 
-}
+  const handleDeleteLike = () => {
+    const id = user.likes.find((like) => like.recipeId === recipe.id);
+    console.log(id)
+    // removeLike();
+  };
 
-const handleCreateLike = () => {};
+  const handleCreateLike = () => {
+    addLike();
+  };
+
   return (
     <>
       <h1>{recipe.name}</h1>
@@ -22,19 +62,9 @@ const handleCreateLike = () => {};
       <h2>Likes: {recipe._count}</h2>
       {/* check si c'est déjà liké */}
       {isLiked ? (
-        <Button
-          className="success"
-          label="liké"
-          href=""
-          onClick={handleDeleteLike}
-        />
+        <button onClick={handleDeleteLike}>Liké</button>
       ) : (
-        <Button
-          className="primary"
-          label="like!"
-          href=""
-          onClick={handleCreateLike}
-        />
+        <button onClick={handleCreateLike}>Like!</button>
       )}
     </>
   );
