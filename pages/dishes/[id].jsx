@@ -2,12 +2,11 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useEffect } from "react";
 import prisma from "../../lib/prisma.ts";
 import axios from "axios";
+import Button from "../../components/Button";
 
 const SelectedDish = ({ dish }) => {
-  const [id, setId] = useState("");
   const token = Cookies.get("token");
   const router = useRouter();
   const [titleChange, setTitleChange] = useState();
@@ -42,8 +41,6 @@ const SelectedDish = ({ dish }) => {
     setDescriptionChange(e.target.value);
   };
 
-  console.log(dish);
-
   return (
     <>
       <h2>Titre : </h2>
@@ -52,10 +49,6 @@ const SelectedDish = ({ dish }) => {
       {dish?.description}
       <br />
       <h3>Ce plat nous vient de {dish?.region.name}</h3>
-      <br />
-      <br />
-      <br />
-      <br />
       <form>
         <label>Title</label> <br />
         <input
@@ -63,7 +56,7 @@ const SelectedDish = ({ dish }) => {
           type="text"
           defaultValue={dish.title}
           onChange={handleTitle}
-        />{" "}
+        />
         <br />
         <label>Description</label>
         <textarea
@@ -83,9 +76,17 @@ const SelectedDish = ({ dish }) => {
       <br />
       <br />
       <div>
-        <h2>Recette :</h2>
+        <h2>Recettes :</h2>
         {dish.recipes.map((recipe) => (
-          <p>{recipe.name}</p>
+          <div>
+            <br />
+            <h3>{recipe.name}</h3>
+            <Button
+              label="En savoir plus !"
+              className="primary"
+              href={`/recipes/${recipe.id}`}
+            />
+          </div>
         ))}
       </div>
     </>
@@ -98,7 +99,7 @@ export async function getServerSideProps(context) {
     where: { id: parseInt(id) },
     include: {
       recipes: true,
-      region: {select:{ name: true }},
+      region: { select: { name: true } },
     },
   });
   return {
