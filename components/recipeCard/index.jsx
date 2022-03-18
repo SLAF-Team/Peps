@@ -5,12 +5,12 @@ import Cookies from "js-cookie";
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
-  const token = Cookies.get("token")
+  const token = Cookies.get("token");
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe.id);
 
   async function addLike() {
-    const result = await axios.put(
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
@@ -24,30 +24,26 @@ const RecipeCard = ({ recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
   }
 
-  async function removeLike(post_id) {
-    const result = await axios.put(
+  async function removeLike() {
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
         likes: {
-          delete: [
-            {
-              id: post_id,
-            },
-          ],
+          deleteMany: {
+            userId: user.id,
+          },
         },
       },
+
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
 
   const handleDeleteLike = () => {
-    const id = user.likes.find((like) => like.recipeId === recipe.id);
-    console.log(id)
-    // removeLike();
+    removeLike();
   };
 
   const handleCreateLike = () => {
