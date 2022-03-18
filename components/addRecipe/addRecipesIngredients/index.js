@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState } from "react/cjs/react.development";
 import { useRef } from "react/cjs/react.development";
 import axios from "axios";
 import Cookies from "js-cookie";

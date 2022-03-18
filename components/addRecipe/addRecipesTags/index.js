@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState } from "react/cjs/react.development";
 import axios from "axios";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import Cookies from "js-cookie";
