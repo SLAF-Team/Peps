@@ -40,8 +40,8 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className={styles.size}>
+      <div className={styles.form}>
         <input
           id="email"
           type="text"
@@ -58,8 +58,9 @@ const SignIn = () => {
           placeholder="Mot de passe"
         />
       </div>
-
-      <ButtonForm label="Connexion" type="warning" />
+      <div className={styles.button}>
+        <ButtonForm label="Connexion" type="warning" />
+      </div>
     </form>
   );
 };

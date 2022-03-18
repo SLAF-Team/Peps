@@ -29,7 +29,7 @@ const NavBar = () => {
       <div className={styles.right}>
         <SearchBar placeholder="Chercher une recette" />
         {!user ? (
-          <Button label="Connexion" href="/signin" type="warning" />
+          <Button label="Connexion" href="/login" type="warning" />
         ) : (
           <Menu
             className={styles.burger}

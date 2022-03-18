@@ -51,8 +51,8 @@ const SignUp = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className={styles.size}>
+      <div className={styles.form}>
         <input
           id="name"
           type="text"
@@ -75,8 +75,9 @@ const SignUp = () => {
           placeholder="Mot de passe"
         />
       </div>
-
-      <ButtonForm label="Inscription" type="warning" />
+      <div className={styles.button}>
+        <ButtonForm label="Inscription" type="warning" />
+      </div>
     </form>
   );
 };
