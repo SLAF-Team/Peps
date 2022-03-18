@@ -7,7 +7,6 @@ import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngre
 import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
 import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
 import { Checkbox } from "@mantine/core";
-import classes from "./Recipe.module.css";
 import prisma from "../../../lib/prisma.ts";
 import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
