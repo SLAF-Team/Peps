@@ -1,31 +1,58 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "./NavBar.module.css";
+import Button from "../Button";
+import SearchBar from "../SearchBar";
+import { useUserContext } from "../../context/UserContext";
+import { Menu } from "@mantine/core";
+import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
 
 const NavBar = () => {
+  const { user, setUser } = useUserContext();
   const router = useRouter();
 
   const handleClick = () => {
     if (window.confirm("Es tu sûr de vouloir te déconnecter?")) {
       Cookies.remove("token");
+      setUser(null);
       router.push("/");
     }
   };
 
   return (
-    <div>
-      <Link href="/" exact>
-        <a>OM</a>
-      </Link>
-      <Link href="/signin" exact>
-        <a>Connexion</a>
-      </Link>
-      <Link href="/signup" exact>
-        <a>Inscription</a>
-      </Link>
-      <Link href="/signout" exact>
-        <a onClick={() => handleClick()}>Déconnexion</a>
-      </Link>
+    <div className={styles.navbar}>
+      <div>
+        <Link href="/" exact>
+          <span className={styles.brand}>Cookogs</span>
+        </Link>
+      </div>
+      <div className={styles.right}>
+        <SearchBar placeholder="Chercher une recette" />
+        {!user ? (
+          <Button label="Connexion" href="/login" type="warning" />
+        ) : (
+          <Menu
+            className={styles.burger}
+            sx={(theme) => ({
+              backgroundColor: "#FFD12F",
+              borderRadius: "4px",
+              "&:hover": {
+                backgroundColor: theme.fn.darken("#FFD12F", 0.05),
+              },
+            })}
+          >
+            <Menu.Label>Profil</Menu.Label>
+            <Menu.Item component={NextLink} href="/profile">
+              Mon Profil
+            </Menu.Item>
+            <Menu.Item>Mes Listes</Menu.Item>
+            <Menu.Item color="red" onClick={() => handleClick()}>
+              Déconnexion
+            </Menu.Item>
+          </Menu>
+        )}
+      </div>
     </div>
   );
 };

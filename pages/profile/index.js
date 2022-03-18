@@ -1,61 +1,68 @@
+import { useUserContext } from "../../context/UserContext";
 import Cookies from "js-cookie";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import UserList from "../../components/UserList";
+import styles from "./Profile.module.css";
+import RecipeCard from "../../components/recipeCard";
+import prisma from "../../lib/prisma.ts";
 
-const Profile = () => {
-  const [user, setUser] = useState(null);
+const Profile = ({recipes}) => {
+  const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
 
-  console.log("utilisateur connecté");
-  console.log(user);
-
-  // fetch current user
-  async function getUser() {
-    const result = await axios.get("/api/user/getCurrentUser", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setUser(result.data.user);
-  }
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const recipesFromUser = user? recipes.filter((element) => element.cookId === user.id) : null
 
   // delete user bloc
-  async function deleteUser() {
-    const result = await axios.delete("/api/user/deleteUser", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    Cookies.remove("token");
-    router.push("/");
-  }
-
-  const handleDelete = () => {
+  const handleDeleteUser = () => {
     if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
       deleteUser();
     }
   };
 
-  return (
-    <div>
-      {user ? (
-        <div>
-          <p>{user.name}</p>
-          <p>{user.email}</p>
-        </div>
-      ) : null}
-      <Link href="/" exact>
-        <a>Update</a>
-      </Link>
+  async function deleteUser() {
+    await axios.delete("/api/user/deleteUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    Cookies.remove("token");
+    setUser(null);
+    router.push("/");
+  }
 
-      <button onClick={() => handleDelete()}>
-        <a>Supprimer mon compte</a>
-      </button>
-    </div>
+  return (
+    <>
+      <UserList user={user} handleDeleteUser={handleDeleteUser} />
+      <div className={styles.selector}>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES CONTRIBUTIONS</p>
+        </div>
+        <div className={styles.selectorBlock}>
+          <p className={styles.selectorText}>MES LISTES</p>
+        </div>
+      </div>
+      {recipesFromUser &&
+        recipesFromUser.map((recipe, index) => (
+          <div key={`recipe-${index}`}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+    </>
   );
 };
+
+export async function getServerSideProps(context) {
+  console.log(context)
+  const allRecipes = await prisma.recipe.findMany({
+    include: {
+      _count: { select: { likes: true } },
+    },
+  });
+  return {
+    props: {
+      recipes: allRecipes,
+    },
+  };
+}
 
 export default Profile;

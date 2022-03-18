@@ -1,0 +1,25 @@
+.btn {
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 10px 37.5px;
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	color: white;
+}
+
+.primary {
+	background: #324376;
+}
+
+.warning {
+	background: #ffd12f;
+}
+
+.success {
+	background: #26c485;
+}
+
+.danger {
+	background: #fc440f;
+}
