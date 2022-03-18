@@ -1,14 +1,14 @@
 import { useUserContext } from "../../context/UserContext";
-import Button from "../Button";
 import axios from "axios";
 import Cookies from "js-cookie";
 import styles from "./RecipeCard.module.css";
+
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
 
-  const isLiked = user?.likes.some((like) => like.recipeId === recipe.id);
-  const hasLikes = recipe._count.likes ? true : false;
+  const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
+  const hasLikes = recipe?._count.likes ? true : false;
 
   async function addLike() {
     await axios.put(
@@ -55,11 +55,11 @@ const RecipeCard = ({ recipe }) => {
     <div className={styles.recipe__container}>
       <img
         className={styles.recipe__img}
-        src={recipe.imageUrl}
-        alt={`${recipe.name} illustration`}
+        src={recipe?.imageUrl}
+        alt={`${recipe?.name} illustration`}
       />
       <div className={styles.title__container}>
-        <h1 className={styles.recipe__title}>{recipe.name}</h1>
+        <h1 className={styles.recipe__title}>{recipe?.name}</h1>
       </div>
       {hasLikes ? (
         <div className={styles.recipe__likes}>Likes: {recipe._count.likes}</div>
