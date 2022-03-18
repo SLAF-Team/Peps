@@ -1,17 +1,32 @@
 import { useUserContext } from "../../context/UserContext";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import axios from "axios";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Button from "../../components/Button";
+import Selector from "../../components/Selector";
 
 const Profile = ({ recipes, lists }) => {
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
+  const [contribution, setContribution] = useState(false);
+  const [style, setStyle] = useState(false);
+
+  const handleClickLeft = () => {
+    setContribution(false);
+    setStyle(false);
+  };
+
+  const handleClickRight = () => {
+    setContribution(true);
+    setStyle(true);
+  };
 
   const recipesFromUser = user
     ? recipes.filter((element) => element.cookId === user.id)
@@ -20,15 +35,12 @@ const Profile = ({ recipes, lists }) => {
     ? lists.filter((element) => element.userId === user.id)
     : null;
 
-  console.log(listsFromUser);
   // delete user bloc
   const handleDeleteUser = () => {
     if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
       deleteUser();
     }
   };
-
-  console.log(listsFromUser);
 
   async function deleteUser() {
     await axios.delete("/api/user/deleteUser", {
@@ -41,49 +53,32 @@ const Profile = ({ recipes, lists }) => {
 
   return (
     <>
-      <UserList user={user} handleDeleteUser={handleDeleteUser} />
-      <div className={styles.selector}>
-        <div className={styles.selectorBlock}>
-          <p className={styles.selectorText}>MES CONTRIBUTIONS</p>
-        </div>
-        <div className={styles.container}>
-          {recipesFromUser &&
-            recipesFromUser.map((recipe, index) => (
-              <div key={`recipe-${index}`}>
-                <RecipeCard recipe={recipe} />
-              </div>
+      <UserList
+        user={user}
+        handleDeleteUser={handleDeleteUser}
+        color="#ffd12f"
+      />
+      <Selector
+        left="MES CONTRIBUTIONS"
+        right="MES LISTES"
+        handleClickLeft={handleClickLeft}
+        handleClickRight={handleClickRight}
+        style={style}
+      />
+      <div className={styles.cards}>
+        {!contribution
+          ? recipesFromUser?.map((recipe) => <RecipeCard recipe={recipe} />)
+          : listsFromUser?.map((list) => (
+              <Link href={"/lists/" + list.id} exact>
+                <a>Liste : {list.id}</a>
+              </Link>
             ))}
-        </div>
-
-        <div className={styles.selectorBlock}>
-          <p className={styles.selectorText}>MES LISTES</p>
-          {listsFromUser &&
-            listsFromUser.map((list, index) => (
-              <>
-                <div key={index}>
-                  <h3>Liste : {list.name}</h3>
-                </div>
-                {list.recipes &&
-                  list.recipes.map((recipe, index) => (
-                    <div key={`recipe-${index}`}>
-                      <p>{recipe.name}</p>
-                      <Button
-                        label="En savoir plus !"
-                        className="primary"
-                        href={`/recipes/${recipe.id}`}
-                      />
-                    </div>
-                  ))}
-              </>
-            ))}
-        </div>
       </div>
     </>
   );
 };
 
 export async function getServerSideProps(context) {
-  console.log(context);
   const allRecipes = await prisma.recipe.findMany({
     include: {
       _count: { select: { likes: true } },

@@ -1,19 +1,6 @@
-.container {
+.cards {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   flex-wrap: wrap;
-  width: 940px;
-  row-gap: 15px;
-}
-
-@media (max-width: 500px) {
-  .container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 375px;
-    row-gap: 15px;
-    column-gap: 15px;
-  }
+  align-items: center;
+  margin-top: 20px;
 }
