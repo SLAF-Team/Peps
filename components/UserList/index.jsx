@@ -1,6 +1,6 @@
 import { useState } from "react";
-import EditUser from "../../components/EditUser";
 import styles from "./UserList.module.css";
+import EditUser from "../editUser/index"
 
 const UserList = ({ user, handleDeleteUser }) => {
   const [form, setForm] = useState(false);

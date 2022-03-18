@@ -37,68 +37,62 @@ const SelectedDish = ( { dish } ) => {
         }
       }
 
+      const handleTitle = (e) => {
+          setTitleChange(e.target.value);
+      };
 
-
-
-        const handleTitle = (e) => {
-            setTitleChange(e.target.value);
-        };
-
-        
-        const handleDescription = (e) => {
-            setDescriptionChange(e.target.value);
-        };
+      
+      const handleDescription = (e) => {
+          setDescriptionChange(e.target.value);
+      };
 
 
 
     return(
         <>
-          {dish?.title} <br />
-          {dish?.description}
-
-
-
-
+          <h2>Titre : </h2>{dish?.title} <br />
+          <h2>Description : </h2>{dish?.description}
+          <br />
+          <br />
+          <br />
+          <br />
           <br />
 
-
-            <br />
-
           <form >
-                <label>Title</label>
-                <input
-                    name="shackTitle"
-                    type="text"
-                    defaultValue={dish.title}
-                    onChange={handleTitle}
-                /> <br />
-                <label>Description</label>
-                <textarea
-                    name="shackDescription"
-                    type="text"
-                    style={{ width: "100%", height: "100px" }}
-                    defaultValue={dish.description}
-                    onChange={handleDescription}
-                />
-                        <button type="submit" onClick={editDish}>
-                            J'édite
-                        </button>
-                </form>
-
-
-                <br />
-
-
+            <label>Title</label> <br />
+            <input
+              name="shackTitle"
+              type="text"
+              defaultValue={dish.title}
+              onChange={handleTitle}
+            /> <br />
+            <label>Description</label>
+            <textarea
+              name="shackDescription"
+              type="text"
+              style={{ width: "100%", height: "100px" }}
+              defaultValue={dish.description}
+              onChange={handleDescription}
+            />
+            <button type="submit" onClick={editDish}>
+              J'édite
+            </button>
+          </form>
+          <br />
 
           <button onClick={deleteDish} >
-                Supprimer
-            </button>
+            Supprimer
+          </button>
+          <br />
+          <br />
+          <br />
 
-
-
-            <br />
-
-     
+          <div>
+            <h2>Recette :</h2>
+            {dish.recipes.map(recipe => (
+              <p>{recipe.name}</p>
+            ))}
+          </div>
         </>
     );
 };
@@ -108,6 +102,7 @@ export async function getServerSideProps(context) {
     const { id } = context.params;
     const dish = await prisma.dish.findUnique({
         where: { id: parseInt(id) },
+        include: { recipes: true }
     });
     return {
         props: {
