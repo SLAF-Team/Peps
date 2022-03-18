@@ -35,29 +35,9 @@ const Profile = ({ recipes, lists }) => {
     ? lists.filter((element) => element.userId === user.id)
     : null;
 
-  // delete user bloc
-  const handleDeleteUser = () => {
-    if (window.confirm("Es tu sûr de vouloir supprimer ton compte?")) {
-      deleteUser();
-    }
-  };
-
-  async function deleteUser() {
-    await axios.delete("/api/user/deleteUser", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    Cookies.remove("token");
-    setUser(null);
-    router.push("/");
-  }
-
   return (
     <>
-      <UserList
-        user={user}
-        handleDeleteUser={handleDeleteUser}
-        color="#ffd12f"
-      />
+      <UserList user={user} color="#ffd12f" />
       <Selector
         left="MES CONTRIBUTIONS"
         right="MES LISTES"

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styles from "./UserList.module.css";
 import EditUser from "../editUser/index";
+import ButtonSettings from "../ButtonSettings";
 
-const UserList = ({ user, handleDeleteUser, color }) => {
+const UserList = ({ user, color }) => {
   const [form, setForm] = useState(false);
 
   const handleUpdateUser = () => {
@@ -17,27 +18,24 @@ const UserList = ({ user, handleDeleteUser, color }) => {
         </div>
       </div>
       <div className="col-9">
-        <div>
-          <p className={styles.name}>{user?.name}</p>
-          <p className={styles.email}>{user?.email}</p>
-        </div>
-        {user.email ? (
-          <div>
+        {user.email && (
+          <div className={styles.float}>
             {!form && (
-              <button onClick={() => handleUpdateUser()}>
-                Editer mon profil
-              </button>
+              <ButtonSettings
+                label="Éditer mon profil"
+                handleClick={() => handleUpdateUser()}
+              />
             )}
             {form && (
               <EditUser user={user} handleUpdateUser={handleUpdateUser} />
             )}
-            <button onClick={() => handleDeleteUser()}>
-              <a>Supprimer mon compte</a>
-            </button>
           </div>
-        ) : (
-          <span>Créée par {user.user.name}</span>
         )}
+        <div>
+          <p className={styles.name}>{user?.name}</p>
+          <p className={styles.email}>{user?.email}</p>
+        </div>
+        {!user.email && <span>Créée par {user.user.name}</span>}
       </div>
     </div>
   );
