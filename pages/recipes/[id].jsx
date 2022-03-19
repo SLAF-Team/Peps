@@ -2,11 +2,34 @@ import prisma from "../../lib/prisma.ts";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const SelectedRecipe = ({ recipe }) => {
   const token = Cookies.get("token");
   const router = useRouter();
+  const [nameChange, setNameChange] = useState();
+  const [descriptionChange, setDescriptionChange] = useState();
 
+
+  async function editRecipe() {
+    await axios.put(
+      "/api/recipe/editRecipe",
+      {
+        id: recipe.id,
+        name: nameChange,
+        description: descriptionChange,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  const handleName = (e) => {
+    setNameChange(e.target.value);
+  };
+
+  const handleDescription = (e) => {
+    setDescriptionChange(e.target.value);
+  };
 
 
   async function deleteRecipe() {
@@ -27,6 +50,28 @@ const SelectedRecipe = ({ recipe }) => {
         <p>Description: {recipe.description}</p>
         <p>Etapes: {recipe.steps}</p>
         <button onClick={deleteRecipe}>Supprimer</button>
+        <form>
+        <label>Name</label> <br />
+        <input
+          name="recipeName"
+          type="text"
+          defaultValue={recipe.name}
+          onChange={handleName}
+        />
+        <br />
+        <label>Description</label>
+        <textarea
+          name="recipeDescription"
+          type="text"
+          style={{ width: "100%", height: "100px" }}
+          defaultValue={recipe.description}
+          onChange={handleDescription}
+        />
+        <button type="submit" onClick={editRecipe}>
+          J'édite
+        </button>
+      </form>
+
     </div>
   )
 };
