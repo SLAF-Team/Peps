@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import styles from "./NavBar.module.css";
 import Button from "../Button";
 import SearchBar from "../SearchBar";
 import { useUserContext } from "../../context/UserContext";
-import { Menu } from "@mantine/core";
+import { Menu, Burger } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
 
 const NavBar = () => {
   const { user, setUser } = useUserContext();
   const router = useRouter();
+  const [opened, setOpened] = useState(false);
 
   const handleClick = () => {
     if (window.confirm("Es tu sûr de vouloir te déconnecter?")) {
@@ -30,7 +32,14 @@ const NavBar = () => {
       <div className={styles.right}>
         <SearchBar placeholder="Chercher une recette" />
         {!user ? (
-          <Button label="Connexion" href="/login" type="warning" />
+          <>
+            <div className={styles.btnResponsive}>
+              <Button label="Connexion" href="/login" type="warning" />
+            </div>
+            <div className={styles.burgerResponsive}>
+              <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
+            </div>
+          </>
         ) : (
           <Menu
             className={styles.burger}
