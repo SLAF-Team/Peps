@@ -2,7 +2,10 @@ import { useUserContext } from "../../context/UserContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./RecipeCard.module.css";
+import heart from "../../assets/images/heart.svg";
+import heartvar from "../../assets/images/heartvar.svg";
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
@@ -56,26 +59,32 @@ const RecipeCard = ({ recipe }) => {
 
   return (
     <div className={styles.recipe__container}>
+      <div className={styles.recipe__cardcontainer}>
+        <Link href={`/recipes/${recipe?.id}}`}>
+          <img
+            className={styles.recipe__img}
+            src={recipe?.imageUrl}
+            alt={`${recipe?.name} illustration`}
+          />
+        </Link>
+        <div className={styles.recipe__likes}>
+          {isLiked ? (
+            <Image src={heart} width={20} height={20} onClick={handleDeleteLike} />
+          ) : (
+            <Image src={heartvar} width={20} height={20} onClick={handleDeleteLike} />
+          )}
+          {hasLikes ? (
+            <div className={styles.recipe__likescount}>
+              {recipe._count.likes}
+            </div>
+          ) : null}
+        </div>
+      </div>
       <Link href={`/recipes/${recipe?.id}}`}>
-        <img
-          className={styles.recipe__img}
-          src={recipe?.imageUrl}
-          alt={`${recipe?.name} illustration`}
-        />
-      </Link>
-      <Link href={`/recipes/${recipe?.id}}`} >
         <div className={styles.title__container}>
           <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>
       </Link>
-      {hasLikes ? (
-        <div className={styles.recipe__likes}>Likes: {recipe._count.likes}</div>
-      ) : null}
-      {isLiked ? (
-        <button onClick={handleDeleteLike}>Liké</button>
-      ) : (
-        <button onClick={handleCreateLike}>Like!</button>
-      )}
     </div>
   );
 };

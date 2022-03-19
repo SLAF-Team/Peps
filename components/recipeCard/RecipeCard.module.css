@@ -3,32 +3,67 @@
   flex-direction: column;
   justify-content: space-between;
   width: 220px;
-  height: 360px;
+  height: 300px;
   margin-right: 20px;
+  margin-bottom: 40px;
+}
+
+.recipe__cardcontainer {
+  position: relative;
 }
 
 .recipe__img {
+  position: absolute;
   width: 220px;
   height: 250px;
   object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+
 }
 
 .recipe__title {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
   font-size: 18px;
-  line-height: 28px;
-  text-align: center;
+  line-height: 22px;
+  align-items: center;
+  word-wrap: break-word;
+  cursor: pointer;
 }
 
 .recipe__likes {
-  font-size: 16px;
+  position: relative;
+  font-size: 20px;
+  top: 210px;
+  left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.recipe__likescount {
+  color: white;
+	position: relative;
+	pointer-events: none;
+  margin-left: 10px;
+  font-weight: 400;
+}
+
+.title__container {
+  height:40px;
 }
 
 @media (max-width: 500px) {
   .recipe__container {
     display: flex;
     flex-direction: column;
-    width: 165px;
-    height: 360px;
+    justify-content: space-between;
+    margin-right: 30px;
+    width: 145px;
+    padding-bottom: 40px;
+
   }
 
   .recipe__img {
@@ -36,4 +71,35 @@
     height: 230px;
     object-fit: cover;
   }
+
+  .recipe__cardcontainer {
+    position: relative;
+
+  }
+
+  .recipe__likes {
+    position: relative;
+    font-size: 16px;
+    top: 195px;
+    left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .recipe__likescount {
+    color: white;
+    position: relative;
+    pointer-events: none;
+    margin-left: 10px;
+  }
+
+  .recipe__title {
+    font-size: 16px;
+  }
+
+  .title__container {
+    height:28px;
+  }
+
 }
