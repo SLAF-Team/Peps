@@ -1,4 +1,5 @@
 import { useUserContext } from "../../context/UserContext";
+import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -10,9 +11,10 @@ import heartvar from "../../assets/images/heartvar.svg";
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
+  const [likes, setLikes] = useState(recipe._count.likes);
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
-  const hasLikes = recipe?._count ? true : false;
+  const hasLikes = likes ? true : false;
 
   async function addLike() {
     await axios.put(
@@ -49,13 +51,13 @@ const RecipeCard = ({ recipe }) => {
 
   const handleDeleteLike = () => {
     removeLike();
+    setLikes(likes - 1);
   };
 
   const handleCreateLike = () => {
     addLike();
+    setLikes(likes + 1);
   };
-
-  console.log(recipe?.id);
 
   return (
     <div className={styles.recipe__container}>
@@ -69,9 +71,19 @@ const RecipeCard = ({ recipe }) => {
         </Link>
         <div className={styles.recipe__likes}>
           {isLiked ? (
-            <Image src={heart} width={20} height={20} onClick={handleDeleteLike} />
+            <Image
+              src={heart}
+              width={20}
+              height={20}
+              onClick={handleDeleteLike}
+            />
           ) : (
-            <Image src={heartvar} width={20} height={20} onClick={handleDeleteLike} />
+            <Image
+              src={heartvar}
+              width={20}
+              height={20}
+              onClick={handleCreateLike}
+            />
           )}
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
