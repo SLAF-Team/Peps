@@ -63,7 +63,7 @@ const SelectedRecipe = ({ recipe }) => {
         <p>Etapes: {recipe.steps}</p>
         <h3>Commentaires</h3>
         <CommentsList comments={comments} />
-        <CommentForm user={user} recipe={recipe}/>
+        <CommentForm user={user} recipe={recipe} />
       </div>
       <div className={classes.rightcontainer}>
         <div className={classes.detailscontainer}>
@@ -92,7 +92,7 @@ const SelectedRecipe = ({ recipe }) => {
             label="Supprimer"
             type="danger"
             handleClick={() => deleteRecipe()}
-            href=""
+            href="#"
             className={classes.button}
           />
           <br></br>
@@ -100,7 +100,7 @@ const SelectedRecipe = ({ recipe }) => {
             label="Editer"
             type="warning"
             handleClick={() => editRecipe()}
-            href=""
+            href="#"
             className={classes.button}
           />
         </div>

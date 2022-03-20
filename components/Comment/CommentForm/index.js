@@ -11,10 +11,11 @@ const CommentForm = ({ user, recipe }) => {
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
 
+console.log(comments)
   async function addComment(params) {
     const { addText } = formRef.current;
     const text = addText.value;
-    await axios.post(
+    const result = await axios.post(
       "/api/comment/addComment",
       {
         recipeId: recipe.id,
