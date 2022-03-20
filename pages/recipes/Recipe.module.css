@@ -27,6 +27,7 @@
   height: 893px;
   left: 955px;
   top: 73px;
+  padding: 20px;
 }
 
 .mainImage {
@@ -42,7 +43,70 @@
   -o-border-radius: 10px;
 }
 
-.title {
-  font-size: 28px;
+.titles {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.h1 {
+  font-size: 24px;
+}
+
+.h2 {
+  font-size: 16px;
   font-weight: 600;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+}
+
+.h3 {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+}
+
+.titlecontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+
+.dishtitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 2px;
+  margin-top: 20px;
+}
+
+.description {
+  font-style: italic;
+  font-size: 16px;
+}
+
+.detailscontainer {
+  border-bottom: solid 0.5px;
+}
+
+.editcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.li {
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 2;
+  list-style: none;
+}
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
