@@ -66,26 +66,30 @@ const RecipeCard = ({ recipe }) => {
     <div className={styles.recipe__container}>
       <div className={styles.recipe__cardcontainer}>
         <Link href={`/recipes/${recipe?.id}}`}>
-          <img
-            className={styles.recipe__img}
-            src={recipe?.imageUrl}
-            alt={`${recipe?.name} illustration`}
-          />
+          <div className={styles.recipe__imgparent}>
+            <div
+              className={styles.recipe__img}
+              style={{
+                backgroundImage: `url(${recipe?.imageUrl})`,
+              }}
+            >
+            </div>
+          </div>
         </Link>
         <div className={styles.recipe__likes}>
           {isLiked ? (
-            <Image
-              src={heart}
-              width={20}
-              height={20}
-              onClick={handleDeleteLike}
-            />
-          ) : (
             <Image
               src={heartvar}
               width={20}
               height={20}
               onClick={handleCreateLike}
+            />
+          ) : (
+            <Image
+              src={heart}
+              width={20}
+              height={20}
+              onClick={handleDeleteLike}
             />
           )}
           {hasLikes ? (
