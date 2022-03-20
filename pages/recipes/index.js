@@ -19,6 +19,7 @@ export async function getServerSideProps() {
     include: {
       cook: { select: { email: true, name: true, id: true } },
       _count: { select: { likes: true } },
+      _count: { select: { comments: true } },
     },
   });
   return {

@@ -18,7 +18,7 @@ const UserList = ({ user, color }) => {
         </div>
       </div>
       <div className="col-9">
-        {user.email && (
+        {user?.email && (
           <div className={styles.float}>
             {!form && (
               <ButtonSettings
@@ -35,7 +35,7 @@ const UserList = ({ user, color }) => {
           <p className={styles.name}>{user?.name}</p>
           <p className={styles.email}>{user?.email}</p>
         </div>
-        {!user.email && <span>Créée par {user.user.name}</span>}
+        {/* {!user?.email && <span>Créée par {user?.name}</span>} */}
       </div>
     </div>
   );

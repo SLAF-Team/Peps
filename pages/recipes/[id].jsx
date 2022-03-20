@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 
@@ -11,6 +12,7 @@ const SelectedRecipe = ({ recipe }) => {
   const router = useRouter();
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+  const [comments, setComments] = useState(recipe.comments);
 
   async function editRecipe() {
     await axios.put(
@@ -76,6 +78,9 @@ const SelectedRecipe = ({ recipe }) => {
             <li className={classes.li}>Piquant</li>
           </ul>
         </div>
+      <h3>Commentaires</h3>
+      <CommentsList comments={comments} />
+      <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}>
         </div>
         <div className={classes.editcontainer}>
@@ -96,7 +101,6 @@ const SelectedRecipe = ({ recipe }) => {
           />
         </div>
       </div>
-      {/*
       <form>
         <label>Name</label> <br />
         <input
@@ -117,7 +121,7 @@ const SelectedRecipe = ({ recipe }) => {
         <button type="submit" onClick={editRecipe}>
           J'édite
         </button>
-      </form> */}
+      </form>
     </div>
   );
 };
@@ -128,6 +132,13 @@ export async function getServerSideProps(context) {
     where: { id: parseInt(id) },
     include: {
       dish: { select: { title: true } },
+      cook: { select: { name: true } },
+      likes: true,
+      comments: {
+        include: {
+          user: true,
+        },
+      },
       type: { select: { name: true } },
     },
   });

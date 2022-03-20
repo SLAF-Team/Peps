@@ -1,4 +1,5 @@
 import { useUserContext } from "../../context/UserContext";
+import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -6,13 +7,17 @@ import Image from "next/image";
 import styles from "./RecipeCard.module.css";
 import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
+import comment from "../../assets/images/comment.svg";
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
+  const [likes, setLikes] = useState(recipe._count.likes);
+  const [comments, setComments] = useState(recipe._count.comments);
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
-  const hasLikes = recipe?._count ? true : false;
+  const hasLikes = likes ? true : false;
+  const hasComments = comments ? true : false;
 
   async function addLike() {
     await axios.put(
@@ -49,13 +54,13 @@ const RecipeCard = ({ recipe }) => {
 
   const handleDeleteLike = () => {
     removeLike();
+    setLikes(likes - 1);
   };
 
   const handleCreateLike = () => {
     addLike();
+    setLikes(likes + 1);
   };
-
-  console.log(recipe?.id);
 
   return (
     <div className={styles.recipe__container}>
@@ -90,6 +95,14 @@ const RecipeCard = ({ recipe }) => {
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
               {recipe._count.likes}
+            </div>
+          ) : null}
+        </div>
+        <div className={styles.recipe__likes}>
+          <Image src={comment} width={20} height={20} />
+          {hasComments ? (
+            <div className={styles.recipe__likescount}>
+              {recipe._count.comments}
             </div>
           ) : null}
         </div>
