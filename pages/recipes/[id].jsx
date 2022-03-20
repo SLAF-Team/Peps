@@ -4,6 +4,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CommentsList from "./../../components/Comment/CommentsList";
+import classes from "./Recipe.module.css";
+import Button from "../../components/Button";
 
 const SelectedRecipe = ({ recipe }) => {
   const token = Cookies.get("token");
@@ -42,16 +44,63 @@ const SelectedRecipe = ({ recipe }) => {
   }
 
   return (
-    <div style={{ margin: "20px" }}>
-      <img src={recipe.imageUrl} style={{ width: "200px" }} />
-      <h1>{recipe.name}</h1>
-      <h2>Une variante de {recipe.dish.title}</h2>
-      <p>Proposé par {recipe.cook.name}</p>
-      <p>Description: {recipe.description}</p>
-      <p>Etapes: {recipe.steps}</p>
+    <div style={{ margin: "20px" }} className={classes.maincontainer}>
+      <div className={classes.leftcontainer}>
+        <img src={recipe.imageUrl} className={classes.mainImage} />
+        <div className={classes.titlecontainer}>
+          <h1 className={classes.h1}>{recipe.name}</h1>
+          <h2 className={classes.h2}>{recipe.type.name}</h2>
+        </div>
+        <div className={classes.dishcontainer}>
+          <p className={classes.dishtitle}>
+            Une recette de {recipe.dish.title}
+          </p>
+        </div>
+        <p className={classes.description}>Description: {recipe.description}</p>
+        <p>Etapes: {recipe.steps}</p>
+      </div>
+      <div className={classes.rightcontainer}>
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Ingrédients</h3>
+          <ul>
+            <li className={classes.li}>Tomate</li>
+            <li className={classes.li}>Huile d'olive</li>
+            <li className={classes.li}>Oeufs</li>
+            <li className={classes.li}>Courgettes</li>
+            <li className={classes.li}>Ail</li>
+          </ul>
+        </div>
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Tags</h3>
+          <ul>
+            <li className={classes.li}>Vegan</li>
+            <li className={classes.li}>Sans Sucre</li>
+            <li className={classes.li}>Piquant</li>
+          </ul>
+        </div>
       <h3>Commentaires</h3>
       <CommentsList comments={comments} />
       <button onClick={deleteRecipe}>Supprimer</button>
+        <div className={classes.detailscontainer}>
+        </div>
+        <div className={classes.editcontainer}>
+        <br></br>
+          <Button
+            label="Supprimer"
+            type="danger"
+            handleClick={() => deleteRecipe()}
+            href=""
+            className={classes.button}
+          /><br></br>
+          <Button
+            label="Editer"
+            type="warning"
+            handleClick={() => editRecipe()}
+            href=""
+            className={classes.button}
+          />
+        </div>
+      </div>
       <form>
         <label>Name</label> <br />
         <input
@@ -90,6 +139,7 @@ export async function getServerSideProps(context) {
           user: true,
         },
       },
+      type: { select: { name: true } },
     },
   });
   return {
