@@ -79,7 +79,7 @@ const SelectedRecipe = ({ recipe }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const recipe_ = await prisma.recipe.findUnique({
+  const recipe = await prisma.recipe.findUnique({
     where: { id: parseInt(id) },
     include: {
       dish: { select: { title: true } },
@@ -92,7 +92,6 @@ export async function getServerSideProps(context) {
       },
     },
   });
-  const recipe = JSON.parse(JSON.stringify(recipe_));
   return {
     props: {
       recipe,
