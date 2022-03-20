@@ -72,8 +72,7 @@ const RecipeCard = ({ recipe }) => {
               style={{
                 backgroundImage: `url(${recipe?.imageUrl})`,
               }}
-            >
-            </div>
+            ></div>
           </div>
         </Link>
         <div className={styles.recipe__likes}>
@@ -105,7 +104,6 @@ const RecipeCard = ({ recipe }) => {
               {recipe._count?.comments}
             </div>
           ) : null}
-        </div>
       </div>
       <Link href={`/recipes/${recipe?.id}}`}>
         <div className={styles.title__container}>
