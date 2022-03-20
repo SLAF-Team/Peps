@@ -11,7 +11,6 @@ const CommentForm = ({ user, recipe }) => {
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
 
-console.log(comments)
   async function addComment(params) {
     const { addText } = formRef.current;
     const text = addText.value;
