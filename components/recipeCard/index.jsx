@@ -12,9 +12,11 @@ const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [likes, setLikes] = useState(recipe._count.likes);
+  const [comments, setComments] = useState(recipe._count.comments);
 
   const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
   const hasLikes = likes ? true : false;
+  const hasComments = comments ? true : false;
 
   async function addLike() {
     await axios.put(
@@ -88,6 +90,11 @@ const RecipeCard = ({ recipe }) => {
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
               {recipe._count.likes}
+            </div>
+          ) : null}
+          {hasComments ? (
+            <div className={styles.recipe__likescount}>
+              {recipe._count.comments}
             </div>
           ) : null}
         </div>

@@ -3,12 +3,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import CommentsList from "./../../components/Comment/CommentsList";
 
 const SelectedRecipe = ({ recipe }) => {
   const token = Cookies.get("token");
   const router = useRouter();
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+  const [comments, setComments] = useState(recipe.comments);
 
   async function editRecipe() {
     await axios.put(
@@ -47,6 +49,8 @@ const SelectedRecipe = ({ recipe }) => {
       <p>Proposé par {recipe.cook.name}</p>
       <p>Description: {recipe.description}</p>
       <p>Etapes: {recipe.steps}</p>
+      <h3>Commentaires</h3>
+      <CommentsList comments={comments} />
       <button onClick={deleteRecipe}>Supprimer</button>
       <form>
         <label>Name</label> <br />
@@ -75,13 +79,20 @@ const SelectedRecipe = ({ recipe }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const recipe = await prisma.recipe.findUnique({
+  const recipe_ = await prisma.recipe.findUnique({
     where: { id: parseInt(id) },
     include: {
       dish: { select: { title: true } },
       cook: { select: { name: true } },
+      likes: true,
+      comments: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
+  const recipe = JSON.parse(JSON.stringify(recipe_));
   return {
     props: {
       recipe,

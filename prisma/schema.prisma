@@ -69,7 +69,7 @@ model Recipe {
   steps           String?
   imageUrl        String?
   ingredientsUnit IngredientsandRecipes[]
-  createdAt DateTime         @default(now()) @map(name: "created_at")
+  createdAt       DateTime                @default(now()) @map(name: "created_at")
   published       Boolean                 @default(false)
   country         Country                 @relation(fields: [countryId], references: [id], onDelete: SetNull)
   countryId       Int
@@ -128,7 +128,6 @@ model List {
 model Comment {
   id       Int      @id @default(autoincrement())
   text     String
-  createdAt DateTime         @default(now()) @map(name: "created_at")
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
