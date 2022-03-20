@@ -7,6 +7,7 @@ import Image from "next/image";
 import styles from "./RecipeCard.module.css";
 import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
+import comment from "../../assets/images/comment.svg";
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUserContext();
@@ -92,6 +93,9 @@ const RecipeCard = ({ recipe }) => {
               {recipe._count.likes}
             </div>
           ) : null}
+        </div>
+        <div className={styles.recipe__likes}>
+          <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
               {recipe._count.comments}
