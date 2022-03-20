@@ -10,7 +10,6 @@ const SelectedRecipe = ({ recipe }) => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-
   async function editRecipe() {
     await axios.put(
       "/api/recipe/editRecipe",
@@ -31,7 +30,6 @@ const SelectedRecipe = ({ recipe }) => {
     setDescriptionChange(e.target.value);
   };
 
-
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
@@ -41,16 +39,16 @@ const SelectedRecipe = ({ recipe }) => {
     }
   }
 
-
   return (
-    <div style={{ margin:"20px"}}>
-        <img src={recipe.imageUrl} style={{ width:"200px"}}/>
-        <h1>{recipe.name}</h1>
-        <h2>Une variante de NOMDUPLAT{recipe.dish}</h2>
-        <p>Description: {recipe.description}</p>
-        <p>Etapes: {recipe.steps}</p>
-        <button onClick={deleteRecipe}>Supprimer</button>
-        <form>
+    <div style={{ margin: "20px" }}>
+      <img src={recipe.imageUrl} style={{ width: "200px" }} />
+      <h1>{recipe.name}</h1>
+      <h2>Une variante de {recipe.dish.title}</h2>
+      <p>Proposé par {recipe.cook.name}</p>
+      <p>Description: {recipe.description}</p>
+      <p>Etapes: {recipe.steps}</p>
+      <button onClick={deleteRecipe}>Supprimer</button>
+      <form>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -71,15 +69,18 @@ const SelectedRecipe = ({ recipe }) => {
           J'édite
         </button>
       </form>
-
     </div>
-  )
+  );
 };
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
   const recipe = await prisma.recipe.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      dish: { select: { title: true } },
+      cook: { select: { name: true } },
+    },
   });
   return {
     props: {

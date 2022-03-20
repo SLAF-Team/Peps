@@ -86,6 +86,7 @@ model Dish {
   id          Int      @id @default(autoincrement())
   title       String
   description String
+  imageUrl        String?
   recipes     Recipe[]
   region      Region   @relation(fields: [regionId], references: [id], onDelete: SetNull)
   regionId    Int

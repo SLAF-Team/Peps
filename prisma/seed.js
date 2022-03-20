@@ -103,6 +103,8 @@ async function main() {
   const couscous = await prisma.dish.create({
     data: {
       title: "Couscous",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       regionId: afrique.id,
@@ -112,12 +114,16 @@ async function main() {
   const dishes = [
     {
       title: "Pot au Feu à l'ancienne",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description:
         "Over the past two decades, Rails has taken countless companies to millions of users and billions in market valuations.",
       regionId: afrique.id,
     },
     {
       title: "Poutine",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description: "Sans commentaire.",
       regionId: afrique.id,
     },
@@ -125,7 +131,9 @@ async function main() {
 
   const recipe = await prisma.recipe.create({
     data: {
-      name: "Couscous de chez ma grand mère",
+      name: "Couscous en mode blanquette",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
@@ -135,19 +143,21 @@ async function main() {
     },
   });
 
-    const list = await prisma.list.create({
-      data: {
-        name: "A essayer",
-        userId: john.id,
-        recipes: {
-          connect: [{ id: recipe.id }],
-        },
+  const list = await prisma.list.create({
+    data: {
+      name: "A essayer",
+      userId: john.id,
+      recipes: {
+        connect: [{ id: recipe.id }],
       },
-    });
+    },
+  });
 
   const recipes = [
     {
       name: "Couscous de chez ma grand mère",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
@@ -157,6 +167,8 @@ async function main() {
     },
     {
       name: "Un autre couscous incroyable",
+      imageUrl:
+        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
