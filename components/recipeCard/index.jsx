@@ -15,7 +15,7 @@ const RecipeCard = ({ recipe }) => {
   const [likes, setLikes] = useState(recipe._count.likes);
   const [comments, setComments] = useState(recipe._count.comments);
 
-  const isLiked = user?.likes.some((like) => like.recipeId === recipe?.id);
+  const isLiked = user?.likes?.some((like) => like.recipeId === recipe?.id);
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
 
@@ -94,7 +94,7 @@ const RecipeCard = ({ recipe }) => {
           )}
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
-              {recipe._count.likes}
+              {recipe._count?.likes}
             </div>
           ) : null}
         </div>
@@ -102,7 +102,7 @@ const RecipeCard = ({ recipe }) => {
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
-              {recipe._count.comments}
+              {recipe._count?.comments}
             </div>
           ) : null}
         </div>

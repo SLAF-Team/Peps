@@ -1,20 +1,16 @@
 import { useUserContext } from "../../context/UserContext";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import axios from "axios";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
-import Button from "../../components/Button";
 import Selector from "../../components/Selector";
 
 const Profile = ({ recipes, lists }) => {
-  const { user, setUser } = useUserContext();
+  const { user } = useUserContext();
   const token = Cookies.get("token");
-  const router = useRouter();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
 
@@ -31,6 +27,7 @@ const Profile = ({ recipes, lists }) => {
   const recipesFromUser = user
     ? recipes.filter((element) => element.cookId === user.id)
     : null;
+
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
     : null;
@@ -47,7 +44,7 @@ const Profile = ({ recipes, lists }) => {
       />
       <div className={styles.cards}>
         {!contribution
-          ? recipesFromUser?.map((recipe) => <RecipeCard recipe={recipe} />)
+          ? recipesFromUser?.map((recipe, index) => <RecipeCard recipe={recipe} key={index} />)
           : listsFromUser?.map((list) => (
               <Link href={"/lists/" + list.id} exact>
                 <a>Liste : {list.id}</a>
