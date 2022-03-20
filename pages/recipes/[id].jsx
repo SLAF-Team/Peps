@@ -3,11 +3,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
+import CommentForm from "../../components/Comment/CommentForm";
 
 const SelectedRecipe = ({ recipe }) => {
+  const {user} = useUserContext()
   const token = Cookies.get("token");
   const router = useRouter();
   const [nameChange, setNameChange] = useState();
@@ -58,6 +61,9 @@ const SelectedRecipe = ({ recipe }) => {
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
         <p>Etapes: {recipe.steps}</p>
+        <h3>Commentaires</h3>
+        <CommentsList comments={comments} />
+        <CommentForm user={user} recipe={recipe}/>
       </div>
       <div className={classes.rightcontainer}>
         <div className={classes.detailscontainer}>
@@ -78,20 +84,18 @@ const SelectedRecipe = ({ recipe }) => {
             <li className={classes.li}>Piquant</li>
           </ul>
         </div>
-      <h3>Commentaires</h3>
-      <CommentsList comments={comments} />
-      <button onClick={deleteRecipe}>Supprimer</button>
-        <div className={classes.detailscontainer}>
-        </div>
+        <button onClick={deleteRecipe}>Supprimer</button>
+        <div className={classes.detailscontainer}></div>
         <div className={classes.editcontainer}>
-        <br></br>
+          <br></br>
           <Button
             label="Supprimer"
             type="danger"
             handleClick={() => deleteRecipe()}
             href=""
             className={classes.button}
-          /><br></br>
+          />
+          <br></br>
           <Button
             label="Editer"
             type="warning"
