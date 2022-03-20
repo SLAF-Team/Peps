@@ -72,8 +72,7 @@ const RecipeCard = ({ recipe }) => {
               style={{
                 backgroundImage: `url(${recipe?.imageUrl})`,
               }}
-            >
-            </div>
+            ></div>
           </div>
         </Link>
         <div className={styles.recipe__likes}>
@@ -95,14 +94,6 @@ const RecipeCard = ({ recipe }) => {
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
               {recipe._count.likes}
-            </div>
-          ) : null}
-        </div>
-        <div className={styles.recipe__likes}>
-          <Image src={comment} width={20} height={20} />
-          {hasComments ? (
-            <div className={styles.recipe__likescount}>
-              {recipe._count.comments}
             </div>
           ) : null}
         </div>
