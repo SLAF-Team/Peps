@@ -4,5 +4,45 @@
   align-items: center;
   margin-top: 20px;
   justify-content: center;
+}
 
+.maincontainer {
+  width: 940px;
+  height: 893px;
+  left: 250px;
+  top: 73px;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftcontainer {
+  width: 705px;
+  height: 893px;
+  left: 250px;
+  top: 73px;
+}
+
+.rightcontainer {
+  width: 234px;
+  height: 893px;
+  left: 955px;
+  top: 73px;
+}
+
+.mainImage {
+  width: 705px;
+  height: 405.57px;
+  left: 250px;
+  top: 73px;
+  object-fit: cover;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
 }
