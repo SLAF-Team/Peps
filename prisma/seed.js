@@ -178,6 +178,19 @@ async function main() {
     },
   ];
 
+    const comments = [
+      {
+        text: "Testé et approuvé !",
+        userId: john.id,
+        recipeId: recipe.id,
+      },
+      {
+        text: "En fait j'ai détesté !",
+        userId: john.id,
+        recipeId: recipe.id,
+      },
+    ];
+
   https: await prisma.user.createMany({
     data: users,
   });
@@ -212,6 +225,10 @@ async function main() {
 
   await prisma.unit.createMany({
     data: units,
+  });
+
+  await prisma.comment.createMany({
+    data: comments,
   });
 }
 

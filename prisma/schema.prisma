@@ -19,7 +19,8 @@ model User {
   createdAt DateTime         @default(now()) @map(name: "created_at")
   updatedAt DateTime         @updatedAt @map(name: "updated_at")
   recipes   Recipe[]
-  lists   List[]
+  comments  Comment[]
+  lists     List[]
   likes     LikesOnRecipes[]
 
   @@map(name: "users")
@@ -68,6 +69,7 @@ model Recipe {
   steps           String?
   imageUrl        String?
   ingredientsUnit IngredientsandRecipes[]
+  createdAt DateTime         @default(now()) @map(name: "created_at")
   published       Boolean                 @default(false)
   country         Country                 @relation(fields: [countryId], references: [id], onDelete: SetNull)
   countryId       Int
@@ -80,13 +82,15 @@ model Recipe {
   typeId          Int
   likes           LikesOnRecipes[]
   lists           List[]                   @relation("_ListAndRecipes")
+  comments        Comment[]
 }
 
 model Dish {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  imageUrl        String?
+  imageUrl    String?
+  createdAt DateTime         @default(now()) @map(name: "created_at")
   recipes     Recipe[]
   region      Region   @relation(fields: [regionId], references: [id], onDelete: SetNull)
   regionId    Int
@@ -119,4 +123,14 @@ model List {
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
   recipes            Recipe[]                   @relation("_ListAndRecipes")
+}
+
+model Comment {
+  id       Int      @id @default(autoincrement())
+  text     String
+  createdAt DateTime         @default(now()) @map(name: "created_at")
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId   Int
 }
