@@ -170,7 +170,7 @@ const SelectedRecipe = () => {
           />
         </div>
       </div>
-      <form>
+      <form onSubmit={editRecipe}>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -187,7 +187,7 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit" onClick={editRecipe}>
+        <button type="submit">
           J'édite
         </button>
       </form>
