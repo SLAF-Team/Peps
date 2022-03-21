@@ -23,9 +23,9 @@ const Profile = ({ lists }) => {
   return (
     <>
       <UserList user={lists} color="#26c485" />
-      <div className={styles.cards}>
+      <div className="row">
         {lists?.recipes.map((recipe) => (
-          <RecipeCard recipe={recipe} />
+          <RecipeCard recipe={recipe} col="col-3" />
         ))}
       </div>
     </>
