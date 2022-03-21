@@ -130,18 +130,21 @@ const SelectedRecipe = () => {
         <div className={classes.ingredientcontainer}>
           <h3 className={classes.h3}>Ingrédients</h3>
           <ul>
-            <li className={classes.li}>Tomate</li>
-            <li className={classes.li}>Huile d'olive</li>
-            <li className={classes.li}>Oeufs</li>
-            <li className={classes.li}>Courgettes</li>
-            <li className={classes.li}>Ail</li>
+            {recipe?.ingredientsUnit &&
+              recipe?.ingredientsUnit.map((element) => (
+                <li className={classes.li}>
+                  {element.quantity} {element.unit.name} de {element.ingredient.name}
+                </li>
+              ))}
           </ul>
         </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
             {recipe?.tags &&
-              recipe?.tags.map((tag) => <li className={classes.li}>{tag.name}</li>)}
+              recipe?.tags.map((tag) => (
+                <li className={classes.li}>{tag.name}</li>
+              ))}
           </ul>
         </div>
         <div className={classes.detailscontainer}>

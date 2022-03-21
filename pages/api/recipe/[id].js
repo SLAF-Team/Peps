@@ -19,7 +19,12 @@ export default async (req, res) => {
             user: true,
           },
         },
-        ingredientsUnit: true,
+        ingredientsUnit: {
+          include: {
+            ingredient: { select: { name: true } },
+            unit: { select: { name: true } },
+          },
+        },
         type: { select: { name: true } },
         tags: { select: { name: true } },
       },
@@ -27,9 +32,9 @@ export default async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    console.log('$' * 100)
+    console.log("$" * 100);
     console.log(err);
-    console.log('$' * 100)
+    console.log("$" * 100);
 
     res.status(400).json({ err: "Error while getting info." });
   }
