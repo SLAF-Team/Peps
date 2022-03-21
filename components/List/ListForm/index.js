@@ -99,7 +99,7 @@ const ListForm = ({ lists, recipe }) => {
         >
           {user?.lists ? (
             user?.lists.map((list) => (
-              <Checkbox value={list.id} label={list.name} />
+              <Checkbox value={list.id.toString()} label={list.name} />
             ))
           ) : (
             <p>Tu n'as pas encore de liste</p>
