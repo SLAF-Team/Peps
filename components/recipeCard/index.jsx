@@ -65,12 +65,12 @@ const RecipeCard = ({ recipe }) => {
   return (
     <div className={styles.recipe__container}>
       <div className={styles.recipe__cardcontainer}>
-        <Link href={`/recipes/${recipe?.id}}`}>
+        <Link href={`/recipes/${recipe.id}`}>
           <div className={styles.recipe__imgparent}>
             <div
               className={styles.recipe__img}
               style={{
-                backgroundImage: `url(${recipe?.imageUrl})`,
+                backgroundImage: `url(${recipe.imageUrl})`,
               }}
             ></div>
           </div>
@@ -105,7 +105,7 @@ const RecipeCard = ({ recipe }) => {
             </div>
           ) : null}
       </div>
-      <Link href={`/recipes/${recipe?.id}}`}>
+      <Link href={`/recipes/${recipe?.id}`}>
         <div className={styles.title__container}>
           <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>
