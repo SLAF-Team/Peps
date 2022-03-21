@@ -1,4 +1,3 @@
-import prisma from "../../lib/prisma.ts";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
@@ -8,16 +7,44 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
+import ListList from "../../components/List/ListsList";
+import ListsForm from "../../components/List/ListForm";
+import { useEffect } from "react";
+import { useCallback } from "react";
+import { Tabs } from "@mantine/core";
 
-const SelectedRecipe = ({ recipe }) => {
-  const {user} = useUserContext()
-  const token = Cookies.get("token");
+const SelectedRecipe = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const [recipe, setRecipe] = useState(null);
+  const { user } = useUserContext();
+  const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const [comments, setComments] = useState(recipe.comments);
 
-  async function editRecipe() {
+
+  const getRecipe = async () => {
+    if (!id) {
+      return;
+    }
+    try {
+      const result = await axios.get(
+        `/api/recipe/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      setRecipe(result.data);
+    } catch (err) {
+      console.log("error");
+    }
+  };
+
+  useEffect(() => {
+    getRecipe();
+  }, [id]);
+
+  const editRecipe = async (event) => {
+    event.preventDefault();
     await axios.put(
       "/api/recipe/editRecipe",
       {
@@ -27,6 +54,7 @@ const SelectedRecipe = ({ recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    getRecipe();
   }
 
   const handleName = (e) => {
@@ -46,27 +74,59 @@ const SelectedRecipe = ({ recipe }) => {
     }
   }
 
+  if (!recipe) {
+    return null;
+  }
+
+
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
+        <div className={classes.mobileImage}></div>
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
-          <h2 className={classes.h2}>{recipe.type.name}</h2>
         </div>
-        <div className={classes.dishcontainer}>
-          <p className={classes.dishtitle}>
-            Une recette de {recipe.dish.title}
-          </p>
+        <div className={classes.detailstitlecontainer}>
+          <h2 className={classes.h2}>{recipe.type.name}</h2>
+          <div className={classes.dishcontainer}>
+            <p className={classes.dishtitle}>{recipe.dish?.title}</p>
+          </div>
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
-        <p>Etapes: {recipe.steps}</p>
-        <h3>Commentaires</h3>
-        <CommentsList comments={comments} />
-        <CommentForm user={user} recipe={recipe} />
+        <div className={classes.mobiletabcontainer}>
+          <Tabs grow tabPadding="xl" position="center" color="dark">
+            <Tabs.Tab label="INGREDIENTS">
+              <ul>
+                <li className={classes.li}>Tomate</li>
+                <li className={classes.li}>Huile d'olive</li>
+                <li className={classes.li}>Oeufs</li>
+                <li className={classes.li}>Courgettes</li>
+                <li className={classes.li}>Ail</li>
+              </ul>
+            </Tabs.Tab>
+            <Tabs.Tab label="ETAPES">
+              <div className={classes.stepsmobilecontainer}>
+                <ul>
+                  <li className={classes.steps}>{recipe.steps}</li>
+                </ul>
+              </div>
+            </Tabs.Tab>
+          </Tabs>
+        </div>
+        <div className={classes.stepscontainer}>
+          <p>Etapes: {recipe.steps}</p>
+        </div>
+        <div className={classes.commentcontainer}>
+          <h3>Commentaires</h3>
+          {recipe.comments?.length && (
+            <CommentsList comments={recipe.comments} />
+          )}
+          <CommentForm user={user} recipe={recipe} />
+        </div>
       </div>
       <div className={classes.rightcontainer}>
-        <div className={classes.detailscontainer}>
+        <div className={classes.ingredientcontainer}>
           <h3 className={classes.h3}>Ingrédients</h3>
           <ul>
             <li className={classes.li}>Tomate</li>
@@ -76,13 +136,18 @@ const SelectedRecipe = ({ recipe }) => {
             <li className={classes.li}>Ail</li>
           </ul>
         </div>
-        <div className={classes.detailscontainer}>
+        {/* <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
             <li className={classes.li}>Vegan</li>
             <li className={classes.li}>Sans Sucre</li>
             <li className={classes.li}>Piquant</li>
           </ul>
+        </div> */}
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Listes</h3>
+          <ListList lists={recipe.lists} />
+          <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
@@ -105,7 +170,7 @@ const SelectedRecipe = ({ recipe }) => {
           />
         </div>
       </div>
-      <form>
+      <form onSubmit={editRecipe}>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -122,35 +187,12 @@ const SelectedRecipe = ({ recipe }) => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit" onClick={editRecipe}>
+        <button type="submit">
           J'édite
         </button>
       </form>
     </div>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const recipe = await prisma.recipe.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      dish: { select: { title: true } },
-      cook: { select: { name: true } },
-      likes: true,
-      comments: {
-        include: {
-          user: true,
-        },
-      },
-      type: { select: { name: true } },
-    },
-  });
-  return {
-    props: {
-      recipe,
-    },
-  };
-}
 
 export default SelectedRecipe;
