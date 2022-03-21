@@ -119,10 +119,8 @@ const SelectedRecipe = () => {
           <p>Etapes: {recipe.steps}</p>
         </div>
         <div className={classes.commentcontainer}>
-          <h3>Commentaires</h3>
-          {recipe.comments?.length && (
-            <CommentsList comments={recipe.comments} />
-          )}
+          <h3>{recipe?.comments.length} Commentaires</h3>
+          {recipe?.comments && <CommentsList comments={recipe.comments} />}
           <CommentForm user={user} recipe={recipe} />
         </div>
       </div>
