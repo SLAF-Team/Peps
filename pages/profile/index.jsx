@@ -1,16 +1,15 @@
 import { useUserContext } from "../../context/UserContext";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
+import AddList from "../../components/List/AddList";
 
 const Profile = ({ recipes, lists }) => {
   const { user } = useUserContext();
-  const token = Cookies.get("token");
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
 
@@ -32,9 +31,15 @@ const Profile = ({ recipes, lists }) => {
     ? lists.filter((element) => element.userId === user.id)
     : null;
 
+  // const updateList = (lists) => {
+  //   setListsFromUser(
+  //     user ? lists.filter((element) => element.userId === user.id) : null
+  //   );  };
+
   return (
     <>
       <UserList user={user} color="#ffd12f" />
+      <AddList user={user} />
       <Selector
         left="MES CONTRIBUTIONS"
         right="MES LISTES"
@@ -43,13 +48,32 @@ const Profile = ({ recipes, lists }) => {
         style={style}
       />
       <div className={styles.cards}>
-        {!contribution
-          ? recipesFromUser?.map((recipe, index) => <RecipeCard recipe={recipe} key={index} />)
-          : listsFromUser?.map((list) => (
-              <Link href={"/lists/" + list.id} exact>
-                <a>Liste : {list.id}</a>
-              </Link>
-            ))}
+        <div className="row">
+          {!contribution
+            ? recipesFromUser?.map((recipe, index) => (
+                <RecipeCard recipe={recipe} key={index} col="col-3" />
+              ))
+            : listsFromUser?.map((list) => (
+                <>
+                  <Link href={"/lists/" + list.id} exact>
+                    <div className={styles.listCards}>
+                      <div className="row">
+                        <div className="col-2">
+                          <div className={styles.avatar}>
+                            <span className={styles.letter}>
+                              {list?.name[0].toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-10">
+                          <p>{list.name}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </>
+              ))}
+        </div>
       </div>
     </>
   );
@@ -65,6 +89,7 @@ export async function getServerSideProps(context) {
   const allLists = await prisma.list.findMany({
     include: {
       recipes: true,
+      user: { select: { name: true } },
     },
   });
   return {

@@ -8,12 +8,8 @@
   margin-bottom: 40px;
 }
 
-.recipe__cardcontainer {
-  position: relative;
-}
-
 .recipe__imgparent {
-  width: 220px;
+  width: 100%;
   height: 250px;
   overflow: hidden;
   position: relative;
@@ -28,7 +24,7 @@
   cursor: pointer;
   background-position: center;
   background-size: cover;
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 .recipe__imgparent:hover .recipe__img,
@@ -41,7 +37,7 @@
 }
 
 .recipe__title {
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -50,7 +46,7 @@
   word-wrap: break-word;
   cursor: pointer;
   position: relative;
-  top: -20px
+  top: -20px;
 }
 
 .recipe__likes {
@@ -71,14 +67,14 @@
 
 .recipe__likescount {
   color: white;
-	position: relative;
-	pointer-events: none;
+  position: relative;
+  pointer-events: none;
   margin-left: 10px;
   font-weight: 400;
 }
 
 .title__container {
-  height:40px;
+  height: 40px;
 }
 
 @media (max-width: 500px) {
@@ -103,12 +99,17 @@
     object-fit: cover;
   }
 
-  .recipe__cardcontainer {
+  .recipe__likes {
     position: relative;
-    height: 100%;
+    font-size: 16px;
+    top: -36px;
+    left: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
-  .recipe__likes {
+  .recipe__comment {
     position: relative;
     font-size: 16px;
     top: -36px;
@@ -127,11 +128,9 @@
 
   .recipe__title {
     font-size: 16px;
-;
   }
 
   .title__container {
-    height:28px;
+    height: 28px;
   }
-
 }
