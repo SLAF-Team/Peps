@@ -14,8 +14,20 @@ export default async (req, res) => {
             user: true,
           },
         },
-        lists: true,
+        lists: {
+          include: {
+            user: true,
+          },
+        },
+        ingredientsUnit: {
+          include: {
+            ingredient: { select: { name: true } },
+            // unit: { select: { name: true } },
+            // quantity: true,
+          },
+        },
         type: { select: { name: true } },
+        tags: { select: { name: true } },
       },
     });
 

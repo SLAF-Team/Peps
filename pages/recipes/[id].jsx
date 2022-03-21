@@ -22,7 +22,6 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-
   const getRecipe = async () => {
     if (!id) {
       return;
@@ -42,6 +41,9 @@ const SelectedRecipe = () => {
   useEffect(() => {
     getRecipe();
   }, [id]);
+
+    console.log("recipe");
+  console.log(recipe)
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -77,7 +79,6 @@ const SelectedRecipe = () => {
   if (!recipe) {
     return null;
   }
-
 
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
@@ -149,7 +150,6 @@ const SelectedRecipe = () => {
           <ListList lists={recipe.lists} />
           <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
-        <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
         <div className={classes.editcontainer}>
           <br></br>
