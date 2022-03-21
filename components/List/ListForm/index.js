@@ -4,6 +4,7 @@ import { Modal } from "@mantine/core";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import ButtonForm from "../../ButtonForm";
+import Button from "../../Button";
 import Cookies from "js-cookie";
 
 const ListForm = ({ lists, recipe }) => {
@@ -12,6 +13,7 @@ const ListForm = ({ lists, recipe }) => {
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [userLists, setUserLists] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleClick = () => {
     setOpened(true);
@@ -26,7 +28,8 @@ const ListForm = ({ lists, recipe }) => {
   async function addNewList(params) {
     const { addName } = formRef.current;
     const name = addName.value;
-    const result = await axios.post(
+    console.log("test");
+    await axios.post(
       "/api/list/addList",
       {
         userId: user.id,
@@ -37,7 +40,8 @@ const ListForm = ({ lists, recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
+    setSubmitted(true);
+    setUserLists(user.lists);
   }
 
   return (
@@ -52,7 +56,18 @@ const ListForm = ({ lists, recipe }) => {
             size="40"
             placeholder="Ta nouvelle liste"
           />
-          <ButtonForm onClick={() => addNewList()} label="Créer ma liste" />
+          <div>
+            {submitted ? (
+              <p>Ajouté!</p>
+            ) : (
+              <Button
+                label="Créer ma liste"
+                type="success"
+                handleClick={() => addNewList()}
+                href="#"
+              />
+            )}
+          </div>
         </form>
         <p>Utiliser une liste existante</p>
         {userLists && userLists.map((list) => <p>{list.name}</p>)}
