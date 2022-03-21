@@ -89,10 +89,6 @@ const SelectedRecipe = ({ recipe }) => {
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Lists</h3>
           <ListsList lists={lists}/>
-          <ul>
-            <li className={classes.li}>Sans Sucre</li>
-            <li className={classes.li}>Piquant</li>
-          </ul>
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>

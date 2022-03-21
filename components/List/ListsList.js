@@ -1,14 +1,15 @@
 import classes from "./ListsList.module.css";
+import Link from "next/link";
 
 const ListsList = ({ lists }) => {
   return (
     <ul>
       {lists.map((list) => (
         <li className={classes.li}>
-          {list.name} par {list.user?.name}
+          <Link href={`/lists/${list?.id}}`}>{list.name}</Link> par
+          {list.user?.name}
         </li>
       ))}
-      ;
     </ul>
   );
 };
