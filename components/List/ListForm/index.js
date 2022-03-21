@@ -25,7 +25,6 @@ const ListForm = ({ lists, recipe }) => {
   async function addNewList(params) {
     const { addName } = formRef.current;
     const name = addName.value;
-    console.log("test");
     await axios.post(
       "/api/list/addList",
       {
@@ -42,7 +41,6 @@ const ListForm = ({ lists, recipe }) => {
   }
 
   // edit list
-
   async function editList(data) {
     const result = await axios.put(
       "/api/recipe/editRecipe",

@@ -22,7 +22,6 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-
   const getRecipe = async () => {
     if (!id) {
       return;

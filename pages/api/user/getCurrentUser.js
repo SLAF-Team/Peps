@@ -17,9 +17,6 @@ export default async (req, res) => {
       where: { id },
       include: {likes: true, recipes: true, lists: true},
     });
-    if (!user) {
-      return false;
-    }
     res.status(200).json({ user });
   } catch (err) {
     res.status(err).json({});
