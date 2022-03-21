@@ -44,7 +44,9 @@ const Profile = ({ recipes, lists }) => {
       />
       <div className={styles.cards}>
         {!contribution
-          ? recipesFromUser?.map((recipe, index) => <RecipeCard recipe={recipe} key={index} />)
+          ? recipesFromUser?.map((recipe, index) => (
+              <RecipeCard recipe={recipe} key={index} />
+            ))
           : listsFromUser?.map((list) => (
               <Link href={"/lists/" + list.id} exact>
                 <a>Liste : {list.id}</a>

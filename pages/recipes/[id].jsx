@@ -8,6 +8,7 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
+import ListForm from "../../components/List/ListForm";
 
 const SelectedRecipe = ({ recipe }) => {
   const {user} = useUserContext()
@@ -15,7 +16,8 @@ const SelectedRecipe = ({ recipe }) => {
   const router = useRouter();
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const [comments, setComments] = useState(recipe.comments);
+  const [comments, setComments] = useState(recipe?.comments);
+  const [lists, setLists] = useState(recipe?.lists);
 
   async function editRecipe() {
     await axios.put(
@@ -45,6 +47,7 @@ const SelectedRecipe = ({ recipe }) => {
       router.push("/recipes/");
     }
   }
+
 
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
@@ -83,6 +86,10 @@ const SelectedRecipe = ({ recipe }) => {
             <li className={classes.li}>Sans Sucre</li>
             <li className={classes.li}>Piquant</li>
           </ul>
+        </div>
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Listes</h3>
+          <ListForm lists={lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
@@ -129,6 +136,26 @@ const SelectedRecipe = ({ recipe }) => {
     </div>
   );
 };
+  // async function addTagsToRecipe(data) {
+  //   await axios.put(
+  //     "/api/recipe/editRecipe",
+  //     {
+  //       id: recipe.id,
+  //       tags: {
+  //         connect: data,
+  //       },
+  //     },
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+  //   setSubmitted(true);
+  // }
+          // create: [
+          //   {
+          //     ingredientId: parseInt(ingredient),
+          //     unitId: parseInt(unit),
+          //     quantity: parseInt(quantity),
+          //   },
+          // ],
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
@@ -139,6 +166,11 @@ export async function getServerSideProps(context) {
       cook: { select: { name: true } },
       likes: true,
       comments: {
+        include: {
+          user: true,
+        },
+      },
+      lists: {
         include: {
           user: true,
         },
