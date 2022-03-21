@@ -37,8 +37,8 @@ export async function getServerSideProps(context) {
   const allLists = await prisma.list.findUnique({
     where: { id: parseInt(id) },
     include: {
-      recipes: true,
       user: { select: { name: true } },
+      recipes: true,
     },
   });
   return {
