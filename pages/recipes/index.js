@@ -5,11 +5,13 @@ import classes from "./Recipe.module.css";
 
 const Recipes = ({ recipes }) => {
   return (
-    <div className={classes.cards}>
-      {recipes &&
-      recipes.map((recipe, i) => (
-          <RecipeCard recipe={recipe} key={i} />
-      ))}
+    <div className={classes.margin}>
+      <div className="row">
+        {recipes &&
+          recipes.map((recipe, i) => (
+            <RecipeCard recipe={recipe} key={i} col="col-3" />
+          ))}
+      </div>
     </div>
   );
 };
@@ -30,4 +32,3 @@ export async function getServerSideProps() {
 }
 
 export default Recipes;
-

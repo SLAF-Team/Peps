@@ -1,9 +1,5 @@
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+.margin {
   margin-top: 20px;
-  justify-content: center;
 }
 
 .maincontainer {
@@ -73,7 +69,6 @@
   align-items: baseline;
   justify-content: space-between;
 }
-
 
 .dishtitle {
   text-align: center;
