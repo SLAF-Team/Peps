@@ -8,6 +8,7 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
+import ListsList from "../../components/List/ListsList";
 
 const SelectedRecipe = ({ recipe }) => {
   const {user} = useUserContext()
@@ -15,7 +16,8 @@ const SelectedRecipe = ({ recipe }) => {
   const router = useRouter();
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const [comments, setComments] = useState(recipe.comments);
+  const [comments, setComments] = useState(recipe?.comments);
+  const [lists, setLists] = useState(recipe?.lists);
 
   async function editRecipe() {
     await axios.put(
@@ -84,6 +86,14 @@ const SelectedRecipe = ({ recipe }) => {
             <li className={classes.li}>Piquant</li>
           </ul>
         </div>
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Lists</h3>
+          <ListsList lists={lists}/>
+          <ul>
+            <li className={classes.li}>Sans Sucre</li>
+            <li className={classes.li}>Piquant</li>
+          </ul>
+        </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
         <div className={classes.editcontainer}>
@@ -139,6 +149,11 @@ export async function getServerSideProps(context) {
       cook: { select: { name: true } },
       likes: true,
       comments: {
+        include: {
+          user: true,
+        },
+      },
+      lists: {
         include: {
           user: true,
         },
