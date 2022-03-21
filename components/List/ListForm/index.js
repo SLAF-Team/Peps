@@ -6,6 +6,7 @@ import axios from "axios";
 import ButtonForm from "../../ButtonForm";
 import Button from "../../Button";
 import Cookies from "js-cookie";
+import classes from "./ListForm.module.css";
 
 const ListForm = ({ lists, recipe }) => {
   const formRef = useRef();
@@ -56,9 +57,9 @@ const ListForm = ({ lists, recipe }) => {
             size="40"
             placeholder="Ta nouvelle liste"
           />
-          <div>
+          <div className={classes.button}>
             {submitted ? (
-              <p>Ajouté!</p>
+              <p>Ajoutée !</p>
             ) : (
               <Button
                 label="Créer ma liste"
