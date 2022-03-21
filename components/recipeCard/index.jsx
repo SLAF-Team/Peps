@@ -104,12 +104,13 @@ const RecipeCard = ({ recipe }) => {
               {recipe._count?.comments}
             </div>
           ) : null}
-      </div>
-      <Link href={`/recipes/${recipe?.id}}`}>
-        <div className={styles.title__container}>
-          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>
-      </Link>
+        <Link href={`/recipes/${recipe?.id}}`}>
+          <div className={styles.title__container}>
+            <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
