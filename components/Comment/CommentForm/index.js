@@ -14,7 +14,7 @@ const CommentForm = ({ user, recipe }) => {
   async function addComment(params) {
     const { addText } = formRef.current;
     const text = addText.value;
-    const result = await axios.post(
+    await axios.post(
       "/api/comment/addComment",
       {
         recipeId: recipe.id,
