@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
@@ -9,8 +9,6 @@ import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListList from "../../components/List/ListsList";
 import ListsForm from "../../components/List/ListForm";
-import { useEffect } from "react";
-import { useCallback } from "react";
 import { Tabs } from "@mantine/core";
 
 const SelectedRecipe = () => {
@@ -42,9 +40,6 @@ const SelectedRecipe = () => {
     getRecipe();
   }, [id]);
 
-  console.log("recipe");
-  console.log(recipe);
-
   const editRecipe = async (event) => {
     event.preventDefault();
     await axios.put(
@@ -75,6 +70,8 @@ const SelectedRecipe = () => {
       router.push("/recipes/");
     }
   }
+
+  //todo : plutôt renvoyer vers une erreur ?? Not Found
 
   if (!recipe) {
     return null;

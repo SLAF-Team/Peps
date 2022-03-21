@@ -24,6 +24,24 @@ const CommentCard = ({ comment }) => {
     }
   }
 
+  async function updateComment() {
+    const result = await axios.put(
+      `/api/comment/editComment`,
+      {
+        text: text,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    console.log(result);
+    // router.push("/recipes/");
+  }
+
+  const editComment = () => {
+    console.log("coucou")
+  }
+
   return (
     <div>
       <h3>{comment.user?.name}</h3>
