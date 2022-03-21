@@ -9,7 +9,7 @@ import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, col }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [likes, setLikes] = useState(recipe?._count?.likes);
@@ -63,54 +63,52 @@ const RecipeCard = ({ recipe }) => {
   };
 
   return (
-    <div className={styles.recipe__container}>
-      <div className={styles.recipe__cardcontainer}>
-        <Link href={`/recipes/${recipe?.id}}`}>
-          <div className={styles.recipe__imgparent}>
-            <div
-              className={styles.recipe__img}
-              style={{
-                backgroundImage: `url(${recipe?.imageUrl})`,
-              }}
-            ></div>
-          </div>
-        </Link>
-        <div className={styles.recipe__likes}>
-          {isLiked ? (
-            <Image
-              src={heartvar}
-              width={20}
-              height={20}
-              onClick={handleCreateLike}
-            />
-          ) : (
-            <Image
-              src={heart}
-              width={20}
-              height={20}
-              onClick={handleDeleteLike}
-            />
-          )}
-          {hasLikes ? (
-            <div className={styles.recipe__likescount}>
-              {recipe._count?.likes}
-            </div>
-          ) : null}
+    <div className={col}>
+      <Link href={`/recipes/${recipe?.id}}`}>
+        <div className={styles.recipe__imgparent}>
+          <div
+            className={styles.recipe__img}
+            style={{
+              backgroundImage: `url(${recipe?.imageUrl})`,
+            }}
+          ></div>
         </div>
-        <div className={styles.recipe__comment}>
-          <Image src={comment} width={20} height={20} />
-          {hasComments ? (
-            <div className={styles.recipe__likescount}>
-              {recipe._count?.comments}
-            </div>
-          ) : null}
-        </div>
-        <Link href={`/recipes/${recipe?.id}}`}>
-          <div className={styles.title__container}>
-            <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+      </Link>
+      <div className={styles.recipe__likes}>
+        {isLiked ? (
+          <Image
+            src={heartvar}
+            width={20}
+            height={20}
+            onClick={handleCreateLike}
+          />
+        ) : (
+          <Image
+            src={heart}
+            width={20}
+            height={20}
+            onClick={handleDeleteLike}
+          />
+        )}
+        {hasLikes ? (
+          <div className={styles.recipe__likescount}>
+            {recipe._count?.likes}
           </div>
-        </Link>
+        ) : null}
       </div>
+      <div className={styles.recipe__comment}>
+        <Image src={comment} width={20} height={20} />
+        {hasComments ? (
+          <div className={styles.recipe__likescount}>
+            {recipe._count?.comments}
+          </div>
+        ) : null}
+      </div>
+      <Link href={`/recipes/${recipe?.id}}`}>
+        <div className={styles.title__container}>
+          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+        </div>
+      </Link>
     </div>
   );
 };
