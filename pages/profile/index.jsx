@@ -44,12 +44,32 @@ const Profile = ({ recipes, lists }) => {
         style={style}
       />
       <div className={styles.cards}>
-        {!contribution
-          ? (recipesFromUser?.map((recipe, index) => (
-              <RecipeCard recipe={recipe} key={index} />
-            )))
-          : (listsFromUser? <ListsList lists={listsFromUser}/> : null)
-            }
+        <div className="row">
+          {!contribution
+            ? recipesFromUser?.map((recipe, index) => (
+                <RecipeCard recipe={recipe} key={index} col="col-3" />
+              ))
+            : listsFromUser?.map((list) => (
+                <>
+                  <Link href={"/lists/" + list.id} exact>
+                    <div className={styles.listCards}>
+                      <div className="row">
+                        <div className="col-2">
+                          <div className={styles.avatar}>
+                            <span className={styles.letter}>
+                              {list?.name[0].toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-10">
+                          <p>{list.name}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </>
+              ))}
+        </div>
       </div>
     </>
   );

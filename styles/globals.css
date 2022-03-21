@@ -94,7 +94,7 @@ a {
 
 .row [class^="col"] {
   float: left;
-  margin: 0.5rem 2%;
+  margin: 0.4rem 1%;
   min-height: 0.125rem;
 }
 
@@ -189,7 +189,7 @@ a {
   }
 
   .col-3 {
-    width: 21%;
+    width: 23%;
   }
 
   .col-4 {
