@@ -7,7 +7,8 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import ListsList from "../../components/List/ListsList";
+import ListList from "../../components/List/ListsList";
+import ListsForm from "../../components/List/ListForm";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { Tabs } from "@mantine/core";
@@ -145,7 +146,8 @@ const SelectedRecipe = () => {
         </div> */}
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
-          <ListsList lists={recipe.lists} />
+          <ListList lists={recipe.lists} />
+          <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
