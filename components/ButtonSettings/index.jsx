@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Button.module.css";
 import Link from "next/link";
 
-const ButtonForm = ({ label, handleClick }) => {
+const ButtonSettings = ({ label, handleClick }) => {
 	return (
 		<>
 			<button className={styles.btn} onClick={handleClick}>
@@ -21,4 +21,4 @@ const ButtonForm = ({ label, handleClick }) => {
 	);
 };
 
-export default ButtonForm;
+export default ButtonSettings;
