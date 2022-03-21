@@ -7,8 +7,10 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
+import ListsList from "../../components/List/ListsList";
 import { useEffect } from "react";
 import { useCallback } from "react";
+import { Tabs } from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -19,7 +21,6 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-  // const [comments, setComments] = useState(recipe.comments);
 
   const getRecipe = async () => {
     if (!id) {
@@ -76,29 +77,55 @@ const SelectedRecipe = () => {
     return null;
   }
 
+
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
+        <div className={classes.mobileImage}></div>
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
-          <h2 className={classes.h2}>{recipe.type?.name}</h2>
         </div>
-        <div className={classes.dishcontainer}>
-          <p className={classes.dishtitle}>
-            Une recette de {recipe.dish?.title}
-          </p>
+        <div className={classes.detailstitlecontainer}>
+          <h2 className={classes.h2}>{recipe.type.name}</h2>
+          <div className={classes.dishcontainer}>
+            <p className={classes.dishtitle}>{recipe.dish?.title}</p>
+          </div>
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
-        <p>Etapes: {recipe.steps}</p>
-        <h3>Commentaires</h3>
-        {recipe.comments?.length && (
-          <CommentsList comments={recipe.comments} />
-        )}
-        <CommentForm user={user} recipe={recipe} />
+        <div className={classes.mobiletabcontainer}>
+          <Tabs grow tabPadding="xl" position="center" color="dark">
+            <Tabs.Tab label="INGREDIENTS">
+              <ul>
+                <li className={classes.li}>Tomate</li>
+                <li className={classes.li}>Huile d'olive</li>
+                <li className={classes.li}>Oeufs</li>
+                <li className={classes.li}>Courgettes</li>
+                <li className={classes.li}>Ail</li>
+              </ul>
+            </Tabs.Tab>
+            <Tabs.Tab label="ETAPES">
+              <div className={classes.stepsmobilecontainer}>
+                <ul>
+                  <li className={classes.steps}>{recipe.steps}</li>
+                </ul>
+              </div>
+            </Tabs.Tab>
+          </Tabs>
+        </div>
+        <div className={classes.stepscontainer}>
+          <p>Etapes: {recipe.steps}</p>
+        </div>
+        <div className={classes.commentcontainer}>
+          <h3>Commentaires</h3>
+          {recipe.comments?.length && (
+            <CommentsList comments={recipe.comments} />
+          )}
+          <CommentForm user={user} recipe={recipe} />
+        </div>
       </div>
       <div className={classes.rightcontainer}>
-        <div className={classes.detailscontainer}>
+        <div className={classes.ingredientcontainer}>
           <h3 className={classes.h3}>Ingrédients</h3>
           <ul>
             <li className={classes.li}>Tomate</li>
@@ -108,17 +135,17 @@ const SelectedRecipe = () => {
             <li className={classes.li}>Ail</li>
           </ul>
         </div>
-        <div className={classes.detailscontainer}>
+        {/* <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
             <li className={classes.li}>Vegan</li>
             <li className={classes.li}>Sans Sucre</li>
             <li className={classes.li}>Piquant</li>
           </ul>
-        </div>
+        </div> */}
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
-          <ListForm lists={lists} recipe={recipe} />
+          <ListsList lists={recipe.lists} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
@@ -141,7 +168,7 @@ const SelectedRecipe = () => {
           />
         </div>
       </div>
-      <form onSubmit={editRecipe}>
+      <form>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -158,32 +185,12 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit">
+        <button type="submit" onClick={editRecipe}>
           J'édite
         </button>
       </form>
     </div>
   );
 };
-  // async function addTagsToRecipe(data) {
-  //   await axios.put(
-  //     "/api/recipe/editRecipe",
-  //     {
-  //       id: recipe.id,
-  //       tags: {
-  //         connect: data,
-  //       },
-  //     },
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  //   setSubmitted(true);
-  // }
-          // create: [
-          //   {
-          //     ingredientId: parseInt(ingredient),
-          //     unitId: parseInt(unit),
-          //     quantity: parseInt(quantity),
-          //   },
-          // ],
 
 export default SelectedRecipe;
