@@ -8,6 +8,7 @@ import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
 import ListsList from "../../components/List/ListsList";
+import AddList from "../../components/List/AddList";
 
 const Profile = ({ recipes, lists }) => {
   const { user } = useUserContext();
@@ -48,7 +49,7 @@ const Profile = ({ recipes, lists }) => {
           ? (recipesFromUser?.map((recipe, index) => (
               <RecipeCard recipe={recipe} key={index} />
             )))
-          : (listsFromUser? <ListsList lists={listsFromUser}/> : null)
+          : (listsFromUser? <><AddList user={user}/><ListsList lists={listsFromUser}/></> : null)
             }
       </div>
     </>
