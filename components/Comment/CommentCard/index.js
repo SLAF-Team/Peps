@@ -24,24 +24,6 @@ const CommentCard = ({ comment }) => {
     }
   }
 
-  async function updateComment() {
-    const result = await axios.put(
-      `/api/comment/editComment`,
-      {
-        text: text,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    console.log(result);
-    // router.push("/recipes/");
-  }
-
-  const editComment = () => {
-    console.log("coucou")
-  }
-
   return (
     <div>
       <h3>{comment.user?.name}</h3>
@@ -53,14 +35,6 @@ const CommentCard = ({ comment }) => {
               label="Supprimer"
               type="danger"
               handleClick={() => deleteComment()}
-              href="#"
-              className={classes.button}
-            />
-            <br></br>
-            <Button
-              label="Editer"
-              type="warning"
-              handleClick={() => editComment()}
               href="#"
               className={classes.button}
             />
