@@ -97,19 +97,20 @@ const RecipeCard = ({ recipe }) => {
             </div>
           ) : null}
         </div>
-        <div className={styles.recipe__likes}>
+        <div className={styles.recipe__comment}>
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
               {recipe._count?.comments}
             </div>
           ) : null}
-      </div>
-      <Link href={`/recipes/${recipe?.id}}`}>
-        <div className={styles.title__container}>
-          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>
-      </Link>
+        <Link href={`/recipes/${recipe?.id}}`}>
+          <div className={styles.title__container}>
+            <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
