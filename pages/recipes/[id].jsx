@@ -87,8 +87,8 @@ const SelectedRecipe = ({ recipe }) => {
           </ul>
         </div>
         <div className={classes.detailscontainer}>
-          <h3 className={classes.h3}>Lists</h3>
-          <ListsList lists={lists}/>
+          <h3 className={classes.h3}>Listes</h3>
+            <ListsList lists={lists} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>

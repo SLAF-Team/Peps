@@ -6,8 +6,8 @@ const ListsList = ({ lists }) => {
     <ul>
       {lists.map((list) => (
         <li className={classes.li}>
-          <Link href={`/lists/${list?.id}}`}>{list.name}</Link> par
-          {list.user?.name}
+          <Link href={`/lists/${list?.id}}`}>{list?.name}</Link> par
+          {list?.user?.name}
         </li>
       ))}
     </ul>
