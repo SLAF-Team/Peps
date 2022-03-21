@@ -14,15 +14,11 @@
 .leftcontainer {
   width: 705px;
   height: 893px;
-  left: 250px;
-  top: 73px;
 }
 
 .rightcontainer {
   width: 234px;
   height: 893px;
-  left: 955px;
-  top: 73px;
   padding: 20px;
 }
 
@@ -125,16 +121,19 @@
 
   .maincontainer {
     width: 375px;
-    height: 888px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     margin: 20px;
+
   }
 
   .leftcontainer {
     display: flex;
     flex-direction: column;
     max-width: 100%;
+    margin-top: 110px;
+    height: 100%;
   }
 
   .classes.description {
@@ -154,10 +153,6 @@
     height: 249px;
     border-radius: 0px;
     z-index: -1;
-  }
-
-  .mobileImage {
-    height: 100px;
   }
 
   .mobiletabcontainer {
@@ -238,8 +233,7 @@
   }
 
   .commentcontainer {
-    position: absolute;
-    bottom: 0px;
+    font-size: 10px;
   }
 
   .li {

@@ -12,6 +12,9 @@ import ListsForm from "../../components/List/ListForm";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { Tabs } from "@mantine/core";
+import Layout from "../../components/layout";
+// import NestedLayout from '../components/NestedLayout'
+
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -21,6 +24,7 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+
 
   const getRecipe = async () => {
     if (!id) {
@@ -41,9 +45,6 @@ const SelectedRecipe = () => {
   useEffect(() => {
     getRecipe();
   }, [id]);
-
-    console.log("recipe");
-  console.log(recipe)
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -84,7 +85,6 @@ const SelectedRecipe = () => {
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
-        <div className={classes.mobileImage}></div>
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
         </div>
@@ -119,11 +119,11 @@ const SelectedRecipe = () => {
           <p>Etapes: {recipe.steps}</p>
         </div>
         <div className={classes.commentcontainer}>
-          <h3>Commentaires</h3>
+          <h1 className={classes.h1}>Commentaires</h1>
+          <CommentForm user={user} recipe={recipe} />
           {recipe.comments?.length && (
             <CommentsList comments={recipe.comments} />
           )}
-          <CommentForm user={user} recipe={recipe} />
         </div>
       </div>
       <div className={classes.rightcontainer}>
@@ -146,10 +146,11 @@ const SelectedRecipe = () => {
           </ul>
         </div> */}
         <div className={classes.detailscontainer}>
-          <h3 className={classes.h3}>Listes</h3>
-          <ListList lists={recipe.lists} />
-          <ListsForm lists={recipe.lists} recipe={recipe} />
+          <h1 className={classes.h1}>Listes</h1>
+            <ListList lists={recipe.lists} />
+            <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
+        <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
         <div className={classes.editcontainer}>
           <br></br>
@@ -170,7 +171,7 @@ const SelectedRecipe = () => {
           />
         </div>
       </div>
-      <form onSubmit={editRecipe}>
+      <form>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -187,12 +188,21 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit">
+        <button type="submit" onClick={editRecipe}>
           J'édite
         </button>
       </form>
     </div>
   );
 };
+
+
+// SelectedRecipe.getLayout = function getLayout(page) {
+//   return (
+//     <Layout>
+//       <NestedLayout>{page}</NestedLayout>
+//     </Layout>
+//   )
+// }
 
 export default SelectedRecipe;
