@@ -1,9 +1,8 @@
 import ListsList from "../ListsList";
 import { useUserContext } from "../../../context/UserContext";
 import { Modal } from "@mantine/core";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
-import ButtonForm from "../../ButtonForm";
 import Button from "../../Button";
 import Cookies from "js-cookie";
 import classes from "./ListForm.module.css";
@@ -14,11 +13,8 @@ const ListForm = ({ lists, recipe }) => {
   const { user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
-  // const [userLists, setUserLists] = useState(user?.lists);
   const [submitted, setSubmitted] = useState(false);
   const [value, setValue] = useState([]);
-
-  console.log(user);
 
   const handleClick = () => {
     setOpened(true);
@@ -65,7 +61,6 @@ const ListForm = ({ lists, recipe }) => {
   const handleEditClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    console.log(newValue);
     editList(newValue);
   };
 
