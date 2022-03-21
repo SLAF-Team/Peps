@@ -1,4 +1,3 @@
-import prisma from "../../lib/prisma.ts";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
@@ -8,18 +7,42 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import ListForm from "../../components/List/ListForm";
+import { useEffect } from "react";
+import { useCallback } from "react";
 
-const SelectedRecipe = ({ recipe }) => {
-  const {user} = useUserContext()
-  const token = Cookies.get("token");
+const SelectedRecipe = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const [recipe, setRecipe] = useState(null);
+  const { user } = useUserContext();
+  const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const [comments, setComments] = useState(recipe?.comments);
-  const [lists, setLists] = useState(recipe?.lists);
 
-  async function editRecipe() {
+  // const [comments, setComments] = useState(recipe.comments);
+
+  const getRecipe = async () => {
+    if (!id) {
+      return;
+    }
+    try {
+      const result = await axios.get(
+        `/api/recipe/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      setRecipe(result.data);
+    } catch (err) {
+      console.log("error");
+    }
+  };
+
+  useEffect(() => {
+    getRecipe();
+  }, [id]);
+
+  const editRecipe = async (event) => {
+    event.preventDefault();
     await axios.put(
       "/api/recipe/editRecipe",
       {
@@ -29,6 +52,7 @@ const SelectedRecipe = ({ recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    getRecipe();
   }
 
   const handleName = (e) => {
@@ -48,6 +72,9 @@ const SelectedRecipe = ({ recipe }) => {
     }
   }
 
+  if (!recipe) {
+    return null;
+  }
 
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
@@ -55,17 +82,19 @@ const SelectedRecipe = ({ recipe }) => {
         <img src={recipe.imageUrl} className={classes.mainImage} />
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
-          <h2 className={classes.h2}>{recipe.type.name}</h2>
+          <h2 className={classes.h2}>{recipe.type?.name}</h2>
         </div>
         <div className={classes.dishcontainer}>
           <p className={classes.dishtitle}>
-            Une recette de {recipe.dish.title}
+            Une recette de {recipe.dish?.title}
           </p>
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
         <p>Etapes: {recipe.steps}</p>
         <h3>Commentaires</h3>
-        <CommentsList comments={comments} />
+        {recipe.comments?.length && (
+          <CommentsList comments={recipe.comments} />
+        )}
         <CommentForm user={user} recipe={recipe} />
       </div>
       <div className={classes.rightcontainer}>
@@ -112,7 +141,7 @@ const SelectedRecipe = ({ recipe }) => {
           />
         </div>
       </div>
-      <form>
+      <form onSubmit={editRecipe}>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -129,7 +158,7 @@ const SelectedRecipe = ({ recipe }) => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit" onClick={editRecipe}>
+        <button type="submit">
           J'édite
         </button>
       </form>
@@ -156,33 +185,5 @@ const SelectedRecipe = ({ recipe }) => {
           //     quantity: parseInt(quantity),
           //   },
           // ],
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const recipe = await prisma.recipe.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      dish: { select: { title: true } },
-      cook: { select: { name: true } },
-      likes: true,
-      comments: {
-        include: {
-          user: true,
-        },
-      },
-      lists: {
-        include: {
-          user: true,
-        },
-      },
-      type: { select: { name: true } },
-    },
-  });
-  return {
-    props: {
-      recipe,
-    },
-  };
-}
 
 export default SelectedRecipe;
