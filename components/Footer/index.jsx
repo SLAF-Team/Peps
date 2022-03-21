@@ -35,13 +35,13 @@ const Footer = () => {
           <div className={styles.title}>
             <span>More from us</span>
           </div>
-          <Link href="/home">
+          <Link href="/">
             <p className={styles.link}>Home</p>
           </Link>
           <Link href="/profile">
             <p className={styles.link}>Mon Profil</p>
           </Link>
-          <Link href="/home">
+          <Link href="/">
             <p className={styles.link}>Home</p>
           </Link>
         </div>
@@ -49,13 +49,13 @@ const Footer = () => {
           <div className={styles.title}>
             <span>Connect with us</span>
           </div>
-          <Link href="/home">
+          <Link href="/">
             <p className={styles.link}>Home</p>
           </Link>
           <Link href="/profile">
             <p className={styles.link}>Mon Profil</p>
           </Link>
-          <Link href="/home">
+          <Link href="/">
             <p className={styles.link}>Home</p>
           </Link>
         </div>
