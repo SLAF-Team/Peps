@@ -1,11 +1,16 @@
 import React from "react";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import prisma from "../../lib/prisma.ts";
+import classes from "./Recipe.module.css";
 
 const Recipes = ({ recipes }) => {
   return (
-    recipes &&
-    recipes.map((recipe, i) => <RecipeCard recipe={recipe} key={i} />)
+    <div className={classes.cards}>
+      {recipes &&
+      recipes.map((recipe, i) => (
+          <RecipeCard recipe={recipe} key={i} />
+      ))}
+    </div>
   );
 };
 
@@ -14,6 +19,7 @@ export async function getServerSideProps() {
     include: {
       cook: { select: { email: true, name: true, id: true } },
       _count: { select: { likes: true } },
+      _count: { select: { comments: true } },
     },
   });
   return {
@@ -24,3 +30,4 @@ export async function getServerSideProps() {
 }
 
 export default Recipes;
+

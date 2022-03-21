@@ -12,10 +12,12 @@
   cursor: pointer;
   font-family: Merriweather, sans-serif;
   font-size: 32px;
+  margin-left: 2vw;
 }
 
 .right {
   display: flex;
+  margin-top: 2vh;
 }
 
 .burger {
@@ -23,9 +25,32 @@
   margin-left: -10px;
 }
 
+.btnResponsive {
+  display: none;
+}
+
+.burgerResponsive {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 5px;
+  background: #ffd12f;
+}
+
 @media only screen and (min-width: 33.75em) {
   /* 540px */
   .navbar {
     padding: 0.75rem 3rem;
+  }
+
+  .btnResponsive {
+    display: contents;
+  }
+
+  .right {
+    margin-top: 0;
+  }
+
+  .burgerResponsive {
+    display: none;
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import { useState } from "react/cjs/react.development";
-import { useRef } from "react/cjs/react.development";
+import { useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import classes from './AddRecipesIngredients.module.css'
@@ -9,11 +9,9 @@ import Button from "../../Button";
 const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [disable, setDisable] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   async function addRecipeIngredients(params) {
-    setDisable(true);
     const { addIngredient, addUnit, addQuantity } = formRef.current;
     const ingredient = addIngredient.value;
     const quantity = addQuantity.value;
@@ -34,7 +32,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setDisable(false);
+    setSubmitted(true);
   }
 
   return (
@@ -43,7 +41,11 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
         <div className={classes.setups_small}>
           <div className={classes.setup_small}>
             <label>Quantité</label>
-            <input className={classes.input_small} name="addQuantity" type="text" />
+            <input
+              className={classes.input_small}
+              name="addQuantity"
+              type="text"
+            />
           </div>
           {units ? (
             <div className={classes.setup_small}>
@@ -70,17 +72,18 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
             </select>
           </div>
         ) : null}
-
-        {submitted ? (
-          <p>Ajouté!</p>
-        ) : (
-          <Button
-            label='ajouter'
-            type="primary"
-            handleClick={() => addRecipeIngredients()}
-            href=''
-          />
-        )}
+        <div className={classes.button}>
+          {submitted ? (
+            <p>Ajouté!</p>
+          ) : (
+            <Button
+              label="Valider mon ingrédient"
+              type="success"
+              handleClick={() => addRecipeIngredients()}
+              href=""
+            />
+          )}
+        </div>
       </form>
     </div>
   );

@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Button.module.css";
-import Link from "next/link";
 
 const ButtonForm = ({ label, type }) => {
 	let btnStyle;

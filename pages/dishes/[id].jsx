@@ -52,7 +52,7 @@ const SelectedDish = ({ dish }) => {
       <form>
         <label>Title</label> <br />
         <input
-          name="shackTitle"
+          name="dishTitle"
           type="text"
           defaultValue={dish.title}
           onChange={handleTitle}
@@ -60,7 +60,7 @@ const SelectedDish = ({ dish }) => {
         <br />
         <label>Description</label>
         <textarea
-          name="shackDescription"
+          name="recipekDescription"
           type="text"
           style={{ width: "100%", height: "100px" }}
           defaultValue={dish.description}

@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Layout from "../components/layout"
+import Layout from "../components/layout";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -22,14 +22,12 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, [token]);
 
-  console.log("user from app");
-  console.log(user);
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Head>
         <title>Peps</title>
         <meta name="description" content="Peps" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

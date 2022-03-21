@@ -1,0 +1,33 @@
+.footer {
+  background-color: #faf5f0;
+  padding: 5vh 0;
+}
+
+.brand {
+  font-family: Merriweather, sans-serif;
+  font-size: 32px;
+}
+
+.description {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 2.5vh;
+  letter-spacing: 1px;
+}
+
+.link {
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 1vh;
+  margin-bottom: 0;
+  letter-spacing: 1px;
+}
+
+.title {
+  margin-bottom: 3vh;
+  letter-spacing: 1px;
+}
+
+.icon {
+  margin: 0.4vw;
+}

@@ -1,0 +1,112 @@
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.maincontainer {
+  width: 940px;
+  height: 893px;
+  left: 250px;
+  top: 73px;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftcontainer {
+  width: 705px;
+  height: 893px;
+  left: 250px;
+  top: 73px;
+}
+
+.rightcontainer {
+  width: 234px;
+  height: 893px;
+  left: 955px;
+  top: 73px;
+  padding: 20px;
+}
+
+.mainImage {
+  width: 705px;
+  height: 405.57px;
+  left: 250px;
+  top: 73px;
+  object-fit: cover;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.titles {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.h1 {
+  font-size: 24px;
+}
+
+.h2 {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+}
+
+.h3 {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+}
+
+.titlecontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+
+.dishtitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 2px;
+  margin-top: 20px;
+}
+
+.description {
+  font-style: italic;
+  font-size: 16px;
+}
+
+.detailscontainer {
+  border-bottom: solid 0.5px;
+}
+
+.editcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.li {
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 2;
+  list-style: none;
+}
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

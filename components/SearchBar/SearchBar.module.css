@@ -3,18 +3,35 @@
 	border: 0.7px solid #000000;
 	box-sizing: border-box;
 	border-radius: 4px;
-	padding: 10px 34px;
+	padding: 1.5vh 20vw 1.5vh 10vw;
 	font-family: Lato, sans-serif;
+	margin-left: 1.5vw;
+}
+
+.search:hover,
+.search:focus {
+	background-color: #faf5f0;
 }
 
 .img {
 	position: relative;
-	margin-top: -28px;
-	margin-left: 8px;
+	margin-top: -32px;
+	margin-left: 5vw;
 	pointer-events: none;
 }
 
 .size {
 	position: relative;
 	margin-right: 2.5rem;
+}
+
+@media only screen and (min-width: 33.75em) {
+	.search {
+		padding: 10px 34px;
+		margin-left: 0;
+	}
+	.img {
+		margin-top: -28px;
+		margin-left: 8px;
+	}
 }

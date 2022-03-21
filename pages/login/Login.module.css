@@ -4,8 +4,14 @@
 
 .loginForm {
 	width: 100%;
-	height: 80vh;
+	height: 65vh;
 	display: flex;
 	justify-content: center;
-	margin-top: 100px;
+	margin-top: 5vh;
+}
+
+@media only screen and (min-width: 33.75em) {
+	.loginForm {
+		margin-top: 12vh;
+	}
 }
