@@ -1,65 +1,63 @@
 import ListsList from "../ListsList";
 import { useUserContext } from "../../../context/UserContext";
 import { Modal } from "@mantine/core";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import ButtonForm from "../../ButtonForm";
 import Cookies from "js-cookie";
 
-const ListForm = ({ lists }) => {
+const ListForm = ({ lists, recipe }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
+  const [userLists, setUserLists] = useState(null);
 
   const handleClick = () => {
     setOpened(true);
   };
 
-  //   model List {
-  //   id       Int      @id @default(autoincrement())
-  //   name     String
-  //   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  //   userId   Int
-  //   recipes            Recipe[]                   @relation("_ListAndRecipes")
-  // }
+  useEffect(() => {
+    if (user) {
+      setUserLists(user.lists);
+    }
+  }, []);
+
   async function addNewList(params) {
     const { addName } = formRef.current;
     const name = addName.value;
-    await axios.put(
+    const result = await axios.post(
       "/api/list/addList",
       {
         userId: user.id,
         name,
+        recipes: {
+          connect: { id: recipe.id },
+        },
       },
-      // recipeId: recipe.id - create relation,
-
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log(result);
   }
+
   return (
     <>
       <button onClick={handleClick}>Ajouter à une liste</button>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-      >
+      <Modal opened={opened} onClose={() => setOpened(false)}>
         <form ref={formRef}>
-          <p>Créer une nouvelle liste</p>
-
+          <p>Ajouter à une nouvelle liste</p>
           <input
             type="text"
             name="addName"
             size="40"
-            placeholder="Nom de ta liste"
+            placeholder="Ta nouvelle liste"
           />
-          <ButtonForm onClick={() => addNewList()} label="Ajouter à ma liste"/>
+          <ButtonForm onClick={() => addNewList()} label="Créer ma liste" />
         </form>
         <p>Utiliser une liste existante</p>
-        {/* Toutes mes listes */}
-        {/* <button onClick={() => addRecipeSteps()}>
-          Ajouter à ces listes
-        </button> */}
+        {userLists && userLists.map((list) => <p>{list.name}</p>)}
+        <ButtonForm onClick={() => editList()} label="Valider mon choix" />
+        {/* {ajouter un label avec id (checkbox comme tag)} */}
       </Modal>
       <ListsList lists={lists} />
     </>

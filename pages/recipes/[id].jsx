@@ -91,7 +91,7 @@ const SelectedRecipe = ({ recipe }) => {
         </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
-          <ListForm lists={lists} />
+          <ListForm lists={lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
@@ -138,6 +138,26 @@ const SelectedRecipe = ({ recipe }) => {
     </div>
   );
 };
+  // async function addTagsToRecipe(data) {
+  //   await axios.put(
+  //     "/api/recipe/editRecipe",
+  //     {
+  //       id: recipe.id,
+  //       tags: {
+  //         connect: data,
+  //       },
+  //     },
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+  //   setSubmitted(true);
+  // }
+          // create: [
+          //   {
+          //     ingredientId: parseInt(ingredient),
+          //     unitId: parseInt(unit),
+          //     quantity: parseInt(quantity),
+          //   },
+          // ],
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
