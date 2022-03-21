@@ -14,6 +14,7 @@ export default async (req, res) => {
             user: true,
           },
         },
+        lists: true,
         type: { select: { name: true } },
       },
     });
