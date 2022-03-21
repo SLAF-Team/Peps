@@ -111,6 +111,7 @@ const RecipeCard = ({ recipe }) => {
         </div>
       </Link>
     </div>
+    </div>
   );
 };
 
