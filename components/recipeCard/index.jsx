@@ -9,11 +9,11 @@ import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, col }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [likes, setLikes] = useState(recipe._count.likes);
-  const [comments, setComments] = useState(recipe._count.comments);
+  const [likes, setLikes] = useState(recipe?._count?.likes);
+  const [comments, setComments] = useState(recipe?._count?.comments);
 
   const isLiked = user?.likes?.some((like) => like.recipeId === recipe?.id);
   const hasLikes = likes ? true : false;
@@ -97,20 +97,42 @@ const RecipeCard = ({ recipe }) => {
             </div>
           ) : null}
         </div>
-        <div className={styles.recipe__likes}>
-          <Image src={comment} width={20} height={20} />
-          {hasComments ? (
-            <div className={styles.recipe__likescount}>
-              {recipe._count?.comments}
-            </div>
-          ) : null}
+      </Link>
+      <div className={styles.recipe__likes}>
+        {isLiked ? (
+          <Image
+            src={heartvar}
+            width={20}
+            height={20}
+            onClick={handleCreateLike}
+          />
+        ) : (
+          <Image
+            src={heart}
+            width={20}
+            height={20}
+            onClick={handleDeleteLike}
+          />
+        )}
+        {hasLikes ? (
+          <div className={styles.recipe__likescount}>
+            {recipe._count?.likes}
+          </div>
+        ) : null}
+      </div>
+      <div className={styles.recipe__comment}>
+        <Image src={comment} width={20} height={20} />
+        {hasComments ? (
+          <div className={styles.recipe__likescount}>
+            {recipe._count?.comments}
+          </div>
+        ) : null}
       </div>
       <Link href={`/recipes/${recipe?.id}`}>
         <div className={styles.title__container}>
           <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>
       </Link>
-    </div>
     </div>
   );
 };

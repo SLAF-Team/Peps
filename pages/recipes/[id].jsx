@@ -18,6 +18,7 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+
   // const [comments, setComments] = useState(recipe.comments);
 
   const getRecipe = async () => {
@@ -71,11 +72,10 @@ const SelectedRecipe = () => {
     }
   }
 
-  console.log(recipe);
-
   if (!recipe) {
     return null;
   }
+
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
@@ -115,6 +115,10 @@ const SelectedRecipe = () => {
             <li className={classes.li}>Sans Sucre</li>
             <li className={classes.li}>Piquant</li>
           </ul>
+        </div>
+        <div className={classes.detailscontainer}>
+          <h3 className={classes.h3}>Listes</h3>
+          <ListForm lists={lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
@@ -161,5 +165,25 @@ const SelectedRecipe = () => {
     </div>
   );
 };
+  // async function addTagsToRecipe(data) {
+  //   await axios.put(
+  //     "/api/recipe/editRecipe",
+  //     {
+  //       id: recipe.id,
+  //       tags: {
+  //         connect: data,
+  //       },
+  //     },
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+  //   setSubmitted(true);
+  // }
+          // create: [
+          //   {
+          //     ingredientId: parseInt(ingredient),
+          //     unitId: parseInt(unit),
+          //     quantity: parseInt(quantity),
+          //   },
+          // ],
 
 export default SelectedRecipe;
