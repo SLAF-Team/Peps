@@ -7,6 +7,7 @@ import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
+import ListsList from "../../components/List/ListsList";
 
 const Profile = ({ recipes, lists }) => {
   const { user } = useUserContext();
@@ -84,6 +85,7 @@ export async function getServerSideProps(context) {
   const allLists = await prisma.list.findMany({
     include: {
       recipes: true,
+      user: {select: {name: true}},
     },
   });
   return {
