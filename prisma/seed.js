@@ -54,6 +54,10 @@ async function main() {
     { name: "Courgette" },
   ];
 
+    const tag = await prisma.type.create({
+      data: { name: "Carnivore" },
+    });
+
   const entree = await prisma.type.create({
     data: { name: "Entrée" },
   });

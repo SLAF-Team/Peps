@@ -42,7 +42,7 @@ const SelectedRecipe = () => {
     getRecipe();
   }, [id]);
 
-    console.log("recipe");
+  console.log("recipe");
   console.log(recipe)
 
   const editRecipe = async (event) => {
@@ -137,14 +137,13 @@ const SelectedRecipe = () => {
             <li className={classes.li}>Ail</li>
           </ul>
         </div>
-        {/* <div className={classes.detailscontainer}>
+        <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
-            <li className={classes.li}>Vegan</li>
-            <li className={classes.li}>Sans Sucre</li>
-            <li className={classes.li}>Piquant</li>
+            {recipe?.tags &&
+              recipe?.tags.map((tag) => <li className={classes.li}>{tag.name}</li>)}
           </ul>
-        </div> */}
+        </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
           <ListList lists={recipe.lists} />
@@ -187,9 +186,7 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit">
-          J'édite
-        </button>
+        <button type="submit">J'édite</button>
       </form>
     </div>
   );
