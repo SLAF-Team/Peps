@@ -97,7 +97,7 @@ const RecipeCard = ({ recipe, col }) => {
             </div>
           ) : null}
         </div>
-      </Link>
+      </div>
       <div className={styles.recipe__likes}>
         {isLiked ? (
           <Image
