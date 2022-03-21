@@ -107,11 +107,6 @@ const RecipeCard = ({ recipe, col }) => {
             ) : null}
           </div>
         </div>
-      <Link href={`/recipes/${recipe?.id}`}>
-        <div className={styles.title__container}>
-          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
-        </div>
-
         <Link href={`/recipes/${recipe?.id}`}>
           <div className={styles.title__container}>
             <h1 className={styles.recipe__title}>{recipe?.name}</h1>
