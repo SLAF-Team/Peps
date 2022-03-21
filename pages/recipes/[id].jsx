@@ -22,16 +22,16 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
+  const isAuthor = recipe?.cookId == user?.id ? true : false;
+
   const getRecipe = async () => {
     if (!id) {
       return;
     }
     try {
-      const result = await axios.get(
-        `/api/recipe/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const result = await axios.get(`/api/recipe/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setRecipe(result.data);
     } catch (err) {
       console.log("error");
@@ -43,7 +43,7 @@ const SelectedRecipe = () => {
   }, [id]);
 
   console.log("recipe");
-  console.log(recipe)
+  console.log(recipe);
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -57,7 +57,7 @@ const SelectedRecipe = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     getRecipe();
-  }
+  };
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -133,7 +133,8 @@ const SelectedRecipe = () => {
             {recipe?.ingredientsUnit &&
               recipe?.ingredientsUnit.map((element) => (
                 <li className={classes.li}>
-                  {element.quantity} {element.unit.name} de {element.ingredient.name}
+                  {element.quantity} {element.unit.name} de{" "}
+                  {element.ingredient.name}
                 </li>
               ))}
           </ul>
@@ -152,25 +153,26 @@ const SelectedRecipe = () => {
           <ListList lists={recipe.lists} />
           <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
-        <div className={classes.detailscontainer}></div>
-        <div className={classes.editcontainer}>
-          <br></br>
-          <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => deleteRecipe()}
-            href="#"
-            className={classes.button}
-          />
-          <br></br>
-          <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => editRecipe()}
-            href="#"
-            className={classes.button}
-          />
-        </div>
+        {isAuthor && (
+          <div className={classes.editcontainer}>
+            <br></br>
+            <Button
+              label="Supprimer"
+              type="danger"
+              handleClick={() => deleteRecipe()}
+              href="#"
+              className={classes.button}
+            />
+            <br></br>
+            <Button
+              label="Editer"
+              type="warning"
+              handleClick={() => editRecipe()}
+              href="#"
+              className={classes.button}
+            />
+          </div>
+        )}
       </div>
       <form onSubmit={editRecipe}>
         <label>Name</label> <br />
