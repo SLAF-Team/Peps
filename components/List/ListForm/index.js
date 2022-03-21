@@ -68,8 +68,8 @@ const ListForm = ({ lists, recipe }) => {
     <>
       <button onClick={handleClick}>Ajouter à une liste</button>
       <Modal opened={opened} onClose={() => setOpened(false)}>
+        <p>Ajouter à une nouvelle liste</p>
         <form ref={formRef}>
-          <p>Ajouter à une nouvelle liste</p>
           <input
             type="text"
             name="addName"
