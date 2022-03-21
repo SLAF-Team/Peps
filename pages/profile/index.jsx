@@ -7,6 +7,7 @@ import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
+import ListsList from "../../components/List/ListsList";
 
 const Profile = ({ recipes, lists }) => {
   const { user } = useUserContext();
@@ -44,14 +45,11 @@ const Profile = ({ recipes, lists }) => {
       />
       <div className={styles.cards}>
         {!contribution
-          ? recipesFromUser?.map((recipe, index) => (
+          ? (recipesFromUser?.map((recipe, index) => (
               <RecipeCard recipe={recipe} key={index} />
-            ))
-          : listsFromUser?.map((list) => (
-              <Link href={"/lists/" + list.id} exact>
-                <a>Liste : {list.id}</a>
-              </Link>
-            ))}
+            )))
+          : (listsFromUser? <ListsList lists={listsFromUser}/> : null)
+            }
       </div>
     </>
   );
@@ -67,6 +65,7 @@ export async function getServerSideProps(context) {
   const allLists = await prisma.list.findMany({
     include: {
       recipes: true,
+      user: {select: {name: true}},
     },
   });
   return {

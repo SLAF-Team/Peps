@@ -1,11 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import UserList from "../../components/UserList";
 import styles from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
-import Button from "../../components/Button";
-import Selector from "../../components/Selector";
 
 const Profile = ({ lists }) => {
   const [style, setStyle] = useState(false);
@@ -17,8 +14,6 @@ const Profile = ({ lists }) => {
   const handleClickRight = () => {
     setStyle(true);
   };
-
-  console.log(lists);
 
   return (
     <>
