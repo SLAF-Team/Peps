@@ -97,7 +97,7 @@ const RecipeCard = ({ recipe }) => {
             </div>
           ) : null}
         </div>
-        <div className={styles.recipe__likes}>
+        <div className={styles.recipe__comment}>
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
