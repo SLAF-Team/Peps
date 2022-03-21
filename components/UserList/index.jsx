@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./UserList.module.css";
-import EditUser from "../editUser/index";
+import EditUser from "../EditUser/index";
 import ButtonSettings from "../ButtonSettings";
 
 const UserList = ({ user, color }) => {

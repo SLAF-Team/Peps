@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../context/UserContext";
-import ButtonForm from "../ButtonForm";
 import styles from "./EditUser.module.css";
 
 const EditUser = ({ user, handleUpdateUser }) => {
@@ -55,7 +54,6 @@ const EditUser = ({ user, handleUpdateUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     editUser();
-    window.location.reload();
   };
 
   return (

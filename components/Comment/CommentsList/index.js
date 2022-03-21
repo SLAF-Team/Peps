@@ -6,7 +6,6 @@ const CommentsList = ({ comments }) => {
       {comments.map((comment, index) => (
         <CommentCard comment={comment} key={index}/>
       ))}
-      ;
     </>
   );
 };
