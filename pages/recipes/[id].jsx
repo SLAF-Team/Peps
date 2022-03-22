@@ -10,6 +10,7 @@ import CommentForm from "../../components/Comment/CommentForm";
 import { useEffect } from "react";
 import { useCallback } from "react";
 
+
 const SelectedRecipe = () => {
   const router = useRouter();
   const { id } = router.query;
