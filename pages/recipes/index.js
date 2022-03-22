@@ -50,9 +50,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           some: { id: { in: filterTag } },
         },
         // ingredientsUnit: {
-        //   some: {
-        //     ingredients: { id: { in: filterIngredient } },
-        //   },
+        //   // where: {
+        //     ingredientID: { in: filterIngredient },
+        //   // },
         // },
       },
     };
