@@ -1,0 +1,18 @@
+.selector {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	border-bottom: 0.5px solid black;
+	margin-top: 1rem;
+}
+
+.selectorText {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.bold {
+	font-size: 16px;
+}

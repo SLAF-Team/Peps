@@ -1,14 +1,15 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import ListList from "../../components/List/ListsList";
+import ListsForm from "../../components/List/ListForm";
+import { Tabs } from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -19,18 +20,16 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-  // const [comments, setComments] = useState(recipe.comments);
+  const isAuthor = recipe?.cookId == user?.id ? true : false;
 
   const getRecipe = async () => {
     if (!id) {
       return;
     }
     try {
-      const result = await axios.get(
-        `/api/recipe/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const result = await axios.get(`/api/recipe/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setRecipe(result.data);
     } catch (err) {
       console.log("error");
@@ -53,7 +52,7 @@ const SelectedRecipe = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     getRecipe();
-  }
+  };
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -72,6 +71,8 @@ const SelectedRecipe = () => {
     }
   }
 
+  //todo : plutôt renvoyer vers une erreur ?? Not Found
+
   if (!recipe) {
     return null;
   }
@@ -80,66 +81,93 @@ const SelectedRecipe = () => {
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
+        <div className={classes.mobileImage}></div>
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
-          <h2 className={classes.h2}>{recipe.type?.name}</h2>
         </div>
-        <div className={classes.dishcontainer}>
-          <p className={classes.dishtitle}>
-            Une recette de {recipe.dish?.title}
-          </p>
+        <div className={classes.detailstitlecontainer}>
+          <h2 className={classes.h2}>{recipe.type.name}</h2>
+          <div className={classes.dishcontainer}>
+            <p className={classes.dishtitle}>{recipe.dish?.title}</p>
+          </div>
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
-        <p>Etapes: {recipe.steps}</p>
-        <h3>Commentaires</h3>
-        {recipe.comments?.length && (
-          <CommentsList comments={recipe.comments} />
-        )}
-        <CommentForm user={user} recipe={recipe} />
+        <div className={classes.mobiletabcontainer}>
+          <Tabs grow tabPadding="xl" position="center" color="dark">
+            <Tabs.Tab label="INGREDIENTS">
+              <ul>
+                <li className={classes.li}>Tomate</li>
+                <li className={classes.li}>Huile d'olive</li>
+                <li className={classes.li}>Oeufs</li>
+                <li className={classes.li}>Courgettes</li>
+                <li className={classes.li}>Ail</li>
+              </ul>
+            </Tabs.Tab>
+            <Tabs.Tab label="ETAPES">
+              <div className={classes.stepsmobilecontainer}>
+                <ul>
+                  <li className={classes.steps}>{recipe.steps}</li>
+                </ul>
+              </div>
+            </Tabs.Tab>
+          </Tabs>
+        </div>
+        <div className={classes.stepscontainer}>
+          <p>Etapes: {recipe.steps}</p>
+        </div>
+        <div className={classes.commentcontainer}>
+          <h3>{recipe?.comments.length} Commentaires</h3>
+          {recipe?.comments && <CommentsList comments={recipe.comments} />}
+          <CommentForm user={user} recipe={recipe} />
+        </div>
       </div>
       <div className={classes.rightcontainer}>
-        <div className={classes.detailscontainer}>
+        <div className={classes.ingredientcontainer}>
           <h3 className={classes.h3}>Ingrédients</h3>
           <ul>
-            <li className={classes.li}>Tomate</li>
-            <li className={classes.li}>Huile d'olive</li>
-            <li className={classes.li}>Oeufs</li>
-            <li className={classes.li}>Courgettes</li>
-            <li className={classes.li}>Ail</li>
+            {recipe?.ingredientsUnit &&
+              recipe?.ingredientsUnit.map((element) => (
+                <li className={classes.li}>
+                  {element.quantity} {element.unit.name} de{" "}
+                  {element.ingredient.name}
+                </li>
+              ))}
           </ul>
         </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
-            <li className={classes.li}>Vegan</li>
-            <li className={classes.li}>Sans Sucre</li>
-            <li className={classes.li}>Piquant</li>
+            {recipe?.tags &&
+              recipe?.tags.map((tag) => (
+                <li className={classes.li}>{tag.name}</li>
+              ))}
           </ul>
         </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
-          <ListForm lists={lists} recipe={recipe} />
+          <ListList lists={recipe.lists} />
+          <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
-        <button onClick={deleteRecipe}>Supprimer</button>
-        <div className={classes.detailscontainer}></div>
-        <div className={classes.editcontainer}>
-          <br></br>
-          <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => deleteRecipe()}
-            href="#"
-            className={classes.button}
-          />
-          <br></br>
-          <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => editRecipe()}
-            href="#"
-            className={classes.button}
-          />
-        </div>
+        {isAuthor && (
+          <div className={classes.editcontainer}>
+            <br></br>
+            <Button
+              label="Supprimer"
+              type="danger"
+              handleClick={() => deleteRecipe()}
+              href="#"
+              className={classes.button}
+            />
+            <br></br>
+            <Button
+              label="Editer"
+              type="warning"
+              handleClick={() => editRecipe()}
+              href="#"
+              className={classes.button}
+            />
+          </div>
+        )}
       </div>
       <form onSubmit={editRecipe}>
         <label>Name</label> <br />
@@ -158,32 +186,10 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit">
-          J'édite
-        </button>
+        <button type="submit">J'édite</button>
       </form>
     </div>
   );
 };
-  // async function addTagsToRecipe(data) {
-  //   await axios.put(
-  //     "/api/recipe/editRecipe",
-  //     {
-  //       id: recipe.id,
-  //       tags: {
-  //         connect: data,
-  //       },
-  //     },
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  //   setSubmitted(true);
-  // }
-          // create: [
-          //   {
-          //     ingredientId: parseInt(ingredient),
-          //     unitId: parseInt(unit),
-          //     quantity: parseInt(quantity),
-          //   },
-          // ],
 
 export default SelectedRecipe;

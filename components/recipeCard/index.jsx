@@ -63,19 +63,18 @@ const RecipeCard = ({ recipe, col }) => {
   };
 
   return (
-    <div className={styles.recipe__container}>
-      <div className={styles.recipe__cardcontainer}>
-        <Link href={`/recipes/${recipe.id}`}>
-          <div className={styles.recipe__imgparent}>
-            <div
-              className={styles.recipe__img}
-              style={{
-                backgroundImage: `url(${recipe.imageUrl})`,
-              }}
-            ></div>
-          </div>
-        </Link>
-
+    <div className={col}>
+      <Link href={`/recipes/${recipe?.id}`}>
+        <div className={styles.recipe__imgparent}>
+          <div
+            className={styles.recipe__img}
+            style={{
+              backgroundImage: `url(${recipe.imageUrl})`,
+            }}
+          ></div>
+        </div>
+      </Link>
+      <div className={styles.recipe__reaction}>
         <div className={styles.recipe__likes}>
           {isLiked ? (
             <Image
@@ -98,31 +97,7 @@ const RecipeCard = ({ recipe, col }) => {
             </div>
           ) : null}
         </div>
-
         <div className={styles.recipe__likes}>
-          {isLiked ? (
-            <Image
-              src={heartvar}
-              width={20}
-              height={20}
-              onClick={handleCreateLike}
-            />
-          ) : (
-            <Image
-              src={heart}
-              width={20}
-              height={20}
-              onClick={handleDeleteLike}
-            />
-          )}
-          {hasLikes ? (
-            <div className={styles.recipe__likescount}>
-              {recipe._count?.likes}
-            </div>
-          ) : null}
-        </div>
-
-        <div className={styles.recipe__comment}>
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
@@ -130,13 +105,12 @@ const RecipeCard = ({ recipe, col }) => {
             </div>
           ) : null}
         </div>
-
-        <Link href={`/recipes/${recipe?.id}`}>
-          <div className={styles.title__container}>
-            <h1 className={styles.recipe__title}>{recipe?.name}</h1>
-          </div>
-        </Link>
       </div>
+      <Link href={`/recipes/${recipe?.id}`}>
+        <div className={styles.title__container}>
+          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+        </div>
+      </Link>
     </div>
   );
 };

@@ -31,11 +31,6 @@ const Profile = ({ recipes, lists }) => {
     ? lists.filter((element) => element.userId === user.id)
     : null;
 
-  // const updateList = (lists) => {
-  //   setListsFromUser(
-  //     user ? lists.filter((element) => element.userId === user.id) : null
-  //   );  };
-
   return (
     <>
       <UserList user={user} color="#ffd12f" />

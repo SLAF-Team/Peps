@@ -25,7 +25,6 @@ const ListForm = ({ lists, recipe }) => {
   async function addNewList(params) {
     const { addName } = formRef.current;
     const name = addName.value;
-    console.log("test");
     await axios.post(
       "/api/list/addList",
       {
@@ -42,7 +41,6 @@ const ListForm = ({ lists, recipe }) => {
   }
 
   // edit list
-
   async function editList(data) {
     const result = await axios.put(
       "/api/recipe/editRecipe",
@@ -99,7 +97,7 @@ const ListForm = ({ lists, recipe }) => {
         >
           {user?.lists ? (
             user?.lists.map((list) => (
-              <Checkbox value={list.id} label={list.name} />
+              <Checkbox value={list.id.toString()} label={list.name} />
             ))
           ) : (
             <p>Tu n'as pas encore de liste</p>

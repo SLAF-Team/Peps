@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Selector.module.css";
-import search from "../../assets/images/search.svg";
 import Image from "next/image";
 
 const Selector = ({
