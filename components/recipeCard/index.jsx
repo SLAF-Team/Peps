@@ -8,9 +8,12 @@ import styles from "./RecipeCard.module.css";
 import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
+import { useEffect } from "react";
 
 const RecipeCard = ({ recipe, col }) => {
   const { user } = useUserContext();
+  let lign = "S".repeat(10);
+  
   const token = Cookies.get("token");
   const [likes, setLikes] = useState(recipe?._count?.likes);
   const [comments, setComments] = useState(recipe?._count?.comments);
@@ -21,16 +24,10 @@ const RecipeCard = ({ recipe, col }) => {
 
   async function addLike() {
     await axios.put(
-      "/api/recipe/editRecipe",
+      "/api/like/addLike",
       {
-        id: recipe.id,
-        likes: {
-          create: [
-            {
-              userId: user.id,
-            },
-          ],
-        },
+        recipeId: recipe.id,
+        userId: user.id,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -38,16 +35,11 @@ const RecipeCard = ({ recipe, col }) => {
 
   async function removeLike() {
     await axios.put(
-      "/api/recipe/editRecipe",
+      "/api/like/removeLike",
       {
-        id: recipe.id,
-        likes: {
-          deleteMany: {
-            userId: user.id,
-          },
-        },
+        recipeId: recipe.id,
+        userId: user.id,
       },
-
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
@@ -81,14 +73,14 @@ const RecipeCard = ({ recipe, col }) => {
               src={heartvar}
               width={20}
               height={20}
-              onClick={handleCreateLike}
+              onClick={handleDeleteLike}
             />
           ) : (
             <Image
               src={heart}
               width={20}
               height={20}
-              onClick={handleDeleteLike}
+              onClick={handleCreateLike}
             />
           )}
           {hasLikes ? (

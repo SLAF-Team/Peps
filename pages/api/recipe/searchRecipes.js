@@ -1,8 +1,6 @@
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
-  console.log("req.body");
-  console.log(req.body);
   const data = req.body
   try {
     const result = await prisma.recipe.findMany({
