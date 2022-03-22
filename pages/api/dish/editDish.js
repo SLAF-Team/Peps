@@ -1,8 +1,14 @@
-import { checkAuth, checkIfOwnerIsMe } from "../../../lib/auth";
+import { checkAuth, checkIfCook } from "../../../lib/auth";
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
   const data = req.body;
+
+  const isTheOwner = await checkIfCook(req, req.body.ownerId);
+  if (!isTheOwner) {
+    res.status(403).json({ err: "Forbidden" });
+    return;
+  }
 
   try {
     const result = await prisma.dish.update({
