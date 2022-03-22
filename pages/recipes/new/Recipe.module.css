@@ -1,26 +1,22 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #faf5f0;
+  border-radius: 20px;
+  margin-top: 5vh;
 }
 
-.h1 {
-  font-size: 18px;
-}
-
-.h2 {
-  font-size: 14px;
+.title {
+  margin-bottom: 0.5rem;
 }
 
 .select {
-  width: 333px;
+  width: 100%;
   height: 48px;
   left: 21px;
   top: 266px;
 
   /* White */
 
-  background: #FFFFFF;
+  background: #ffffff;
   /* Black */
 
   border: 1px solid #000000;
@@ -36,7 +32,7 @@
 
   /* White */
 
-  background: #FFFFFF;
+  background: #ffffff;
   /* Black */
 
   border: 1px solid #000000;
@@ -55,15 +51,20 @@
   width: 100%;
 }
 
+.label {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  margin-top: 1.75rem;
+}
+
 .step {
- display: flex;
- flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .recipeform {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
   margin-bottom: 30px;
 }
 
@@ -71,25 +72,33 @@
   margin-top: 20px;
 }
 
-.field {
+.selector {
+  width: 100%;
+  display: flex;
+  border-bottom: 2px solid black;
+  margin-top: 1rem;
+}
 
+.selectorText {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.field {
 }
 
 .photo {
-
 }
 
 .ingredientform {
-
 }
 
 .stepsform {
-
 }
 
-
 @media only screen and (min-width: 33.75em) {
-
   .main {
     display: flex;
     flex-direction: column;
@@ -105,14 +114,14 @@
   }
 
   .select {
-    width: 333px;
+    width: 100%;
     height: 48px;
     left: 21px;
     top: 266px;
 
     /* White */
 
-    background: #FFFFFF;
+    background: #ffffff;
     /* Black */
 
     border: 1px solid #000000;
@@ -128,7 +137,7 @@
 
     /* White */
 
-    background: #FFFFFF;
+    background: #ffffff;
     /* Black */
 
     border: 1px solid #000000;
@@ -153,9 +162,8 @@
   }
 
   .recipeform {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    padding: 0 4rem;
     margin-bottom: 30px;
   }
 
@@ -164,18 +172,14 @@
   }
 
   .field {
-
   }
 
   .photo {
-
   }
 
   .ingredientform {
-
   }
 
   .stepsform {
-
   }
 }
