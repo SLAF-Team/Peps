@@ -1,18 +1,16 @@
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
-    console.log("coucou");
-  console.log(req)
-  const data = req.body;
+  console.log("req.body");
+  console.log(req.body);
+  const data = req.body
   try {
-    const recipe = await prisma.recipe.findMany({
-      data: {
-        ...data,
-      },
+    const result = await prisma.recipe.findMany({
+      ...data,
     });
-    res.status(200).json(recipe);
+    res.status(200).json(result);
   } catch (err) {
     console.log(err);
-    res.status(403).json({ err: "Error occured while adding a new recipe." });
+    res.status(403).json({ err: "Error occured while searching recipes." });
   }
 };

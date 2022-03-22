@@ -13,34 +13,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
-  console.log(filterTag + filterCountry + filterType + filterIngredient);
-  console.log(filteredRecipes);
-
-  useEffect(() => {
-    const data = {
-      where: {
-        AND: [
-          {
-            countryId: { in: filterCountry },
-          },
-          {
-            typeId: { in: filterType },
-          },
-          {
-            tags: { where: { id: { in: filterTag } } },
-          },
-        ],
-      },
-      include: {
-        cook: { select: { email: true, name: true, id: true } },
-        tags: { select: { id: true } },
-        _count: { select: { likes: true } },
-        _count: { select: { comments: true } },
-      },
-    };
-    getRecipes();
-  }, [filterTag, filterCountry, filterType]);
-
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -57,51 +29,36 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
-  async function addNewList(params) {
-    const { addName } = formRef.current;
-    const name = addName.value;
-    await axios.post(
-      "/api/list/addList",
-      {
-        userId: user.id,
-        name,
+  useEffect(() => {
+    if (!filterTag && !filterCountry && !filterType && !filterIngredient) {
+      setFilterRecipes(recipes);
+    }
+    const data = {
+      where: {
+        countryId: {
+          in: filterCountry,
+        },
+        typeId: {
+          in: filterType,
+        },
+        tags: {
+          some: {id: { in: filterTag } },
+          },
       },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setSubmitted(true);
-  }
+    };
+    getRecipes(data);
+  }, [filterTag, filterCountry, filterType]);
 
-        const result = await axios.get(`/api/recipe/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
   const getRecipes = async (data) => {
     try {
-      const result = await axios.get(`/api/recipe/searchRecipes`, {
-          where: {
-            AND: [
-              {
-                countryId: { in: filterCountry },
-              },
-              {
-                typeId: { in: filterType },
-              },
-              {
-                tags: { where: { id: { in: filterTag } } },
-              },
-            ],
-          },
-          include: {
-            cook: { select: { email: true, name: true, id: true } },
-            tags: { select: { id: true } },
-            _count: { select: { likes: true } },
-            _count: { select: { comments: true } },
-          },
-        },
-      );
+      const result = await axios.post(`/api/recipe/searchRecipes`, {
+        ...data,
+      });
+      console.log("résultat CALL API");
       console.log(result.data);
+      // setFilterRecipes(result.data);
     } catch (err) {
       console.log("error");
-      console.log(err);
     }
   };
 
@@ -132,8 +89,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           onChange={setFilterIngredient}
           placeholder="ingrédients"
         />
-        {recipes &&
-          recipes.map((recipe, i) => (
+        {filteredRecipes &&
+          filteredRecipes.map((recipe, i) => (
             <RecipeCard recipe={recipe} key={i} col="col-3" />
           ))}
       </div>
