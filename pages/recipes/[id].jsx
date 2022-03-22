@@ -13,7 +13,7 @@ import ListForm from "../../components/List/ListForm";
 import { Tabs } from "@mantine/core";
 import Layout from "../../components/layout";
 import { Modal } from "@mantine/core";
-// import NestedLayout from '../components/NestedLayout'
+import { Anchor } from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
   const [opened, setOpened] = useState(false);
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false);
 
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
@@ -92,12 +92,15 @@ const SelectedRecipe = () => {
         <img src={recipe.imageUrl} className={classes.mainImage} />
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
+          <h2 className={classes.h2}>
+            <Anchor href={"/dishes/" + recipe.dish?.id} target="_blank" color="cookogsyellow">
+            {recipe.dish?.title}
+            </Anchor>
+          </h2>
         </div>
         <div className={classes.detailstitlecontainer}>
-          <h2 className={classes.h2}>{recipe.type.name}</h2>
-          <div className={classes.dishcontainer}>
-            <p className={classes.dishtitle}>{recipe.dish?.title}</p>
-          </div>
+          <h2 className={classes.h2}>TYPE: {recipe.type.name}</h2>
+          <div className={classes.dishcontainer}></div>
         </div>
         <p className={classes.description}>Description: {recipe.description}</p>
         <div className={classes.mobiletabcontainer}>
@@ -109,6 +112,7 @@ const SelectedRecipe = () => {
                 <li className={classes.li}>Oeufs</li>
                 <li className={classes.li}>Courgettes</li>
                 <li className={classes.li}>Ail</li>
+                <li className={classes.li}>{recipe.ingredients}</li>
               </ul>
             </Tabs.Tab>
             <Tabs.Tab label="ETAPES">
@@ -179,7 +183,6 @@ const SelectedRecipe = () => {
         </div>
       </div>
 
-
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -201,7 +204,6 @@ const SelectedRecipe = () => {
           <button type="submit">J'édite</button>
         </form>
       </Modal>
-
     </div>
   );
 };
