@@ -38,14 +38,6 @@ const CommentCard = ({ comment }) => {
               href="#"
               className={classes.button}
             />
-            <br></br>
-            <Button
-              label="Editer"
-              type="warning"
-              handleClick={() => editComment()}
-              href="#"
-              className={classes.button}
-            />
           </div>
         </div>
       )}

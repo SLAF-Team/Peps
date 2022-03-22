@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
@@ -9,8 +9,6 @@ import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListList from "../../components/List/ListsList";
 import ListsForm from "../../components/List/ListForm";
-import { useEffect } from "react";
-import { useCallback } from "react";
 import { Tabs } from "@mantine/core";
 
 const SelectedRecipe = () => {
@@ -22,16 +20,16 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
+  const isAuthor = recipe?.cookId == user?.id ? true : false;
+
   const getRecipe = async () => {
     if (!id) {
       return;
     }
     try {
-      const result = await axios.get(
-        `/api/recipe/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const result = await axios.get(`/api/recipe/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setRecipe(result.data);
     } catch (err) {
       console.log("error");
@@ -41,9 +39,6 @@ const SelectedRecipe = () => {
   useEffect(() => {
     getRecipe();
   }, [id]);
-
-    console.log("recipe");
-  console.log(recipe)
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -57,7 +52,7 @@ const SelectedRecipe = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     getRecipe();
-  }
+  };
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -75,6 +70,8 @@ const SelectedRecipe = () => {
       router.push("/recipes/");
     }
   }
+
+  //todo : plutôt renvoyer vers une erreur ?? Not Found
 
   if (!recipe) {
     return null;
@@ -119,10 +116,8 @@ const SelectedRecipe = () => {
           <p>Etapes: {recipe.steps}</p>
         </div>
         <div className={classes.commentcontainer}>
-          <h3>Commentaires</h3>
-          {recipe.comments?.length && (
-            <CommentsList comments={recipe.comments} />
-          )}
+          <h3>{recipe?.comments.length} Commentaires</h3>
+          {recipe?.comments && <CommentsList comments={recipe.comments} />}
           <CommentForm user={user} recipe={recipe} />
         </div>
       </div>
@@ -130,45 +125,49 @@ const SelectedRecipe = () => {
         <div className={classes.ingredientcontainer}>
           <h3 className={classes.h3}>Ingrédients</h3>
           <ul>
-            <li className={classes.li}>Tomate</li>
-            <li className={classes.li}>Huile d'olive</li>
-            <li className={classes.li}>Oeufs</li>
-            <li className={classes.li}>Courgettes</li>
-            <li className={classes.li}>Ail</li>
+            {recipe?.ingredientsUnit &&
+              recipe?.ingredientsUnit.map((element) => (
+                <li className={classes.li}>
+                  {element.quantity} {element.unit.name} de{" "}
+                  {element.ingredient.name}
+                </li>
+              ))}
           </ul>
         </div>
-        {/* <div className={classes.detailscontainer}>
+        <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Tags</h3>
           <ul>
-            <li className={classes.li}>Vegan</li>
-            <li className={classes.li}>Sans Sucre</li>
-            <li className={classes.li}>Piquant</li>
+            {recipe?.tags &&
+              recipe?.tags.map((tag) => (
+                <li className={classes.li}>{tag.name}</li>
+              ))}
           </ul>
-        </div> */}
+        </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
           <ListList lists={recipe.lists} />
           <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
-        <div className={classes.detailscontainer}></div>
-        <div className={classes.editcontainer}>
-          <br></br>
-          <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => deleteRecipe()}
-            href="#"
-            className={classes.button}
-          />
-          <br></br>
-          <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => editRecipe()}
-            href="#"
-            className={classes.button}
-          />
-        </div>
+        {isAuthor && (
+          <div className={classes.editcontainer}>
+            <br></br>
+            <Button
+              label="Supprimer"
+              type="danger"
+              handleClick={() => deleteRecipe()}
+              href="#"
+              className={classes.button}
+            />
+            <br></br>
+            <Button
+              label="Editer"
+              type="warning"
+              handleClick={() => editRecipe()}
+              href="#"
+              className={classes.button}
+            />
+          </div>
+        )}
       </div>
       <form onSubmit={editRecipe}>
         <label>Name</label> <br />
@@ -187,9 +186,7 @@ const SelectedRecipe = () => {
           defaultValue={recipe.description}
           onChange={handleDescription}
         />
-        <button type="submit">
-          J'édite
-        </button>
+        <button type="submit">J'édite</button>
       </form>
     </div>
   );
