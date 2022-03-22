@@ -86,9 +86,6 @@ const SelectedRecipe = () => {
 
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
-      <div style={{ width: 400, backgroundColor: "red", position: "relative" }}>
-        <LoadingOverlay visible={visible}  transitionDuration={0} />
-      </div>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
         <div className={classes.titlecontainer}>
