@@ -8,26 +8,37 @@ import { MultiSelect } from "@mantine/core";
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState([]);
   const [filterCountry, setFilterCountry] = useState([]);
+  const [filterType, setFilterType] = useState([]);
+
+  const [filterIngredient, setFilterIngredient] = useState([]);
+
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
   useEffect(() => {
-    const data= {
-    include: {
-      cook: { select: { email: true, name: true, id: true } },
-      tags: { select: { id: true } },
-      _count: { select: { likes: true } },
-      _count: { select: { comments: true } },
-    },
-  where: {
-        countryId: {in: filterCountry},
-    }
-  }
+    const data = {
+      include: {
+        cook: { select: { email: true, name: true, id: true } },
+        tags: { select: { id: true } },
+        _count: { select: { likes: true } },
+        _count: { select: { comments: true } },
+      },
+      where: {
+        AND: [
+          {
+            countryId: { in: filterCountry },
+          },
+          {
+            typeId: { in: filterType },
+          },
+        ],
+      },
+    };
     setFilterRecipes(getRecipes(data));
   }, [filterTag, filterCountry]);
 
-  console.log(filterTag)
-    console.log(filterCountry);
-  // à simplifier ??
+  console.log(filterTag);
+  console.log(filterCountry);
+
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -36,10 +47,19 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataCountries.push({ value: country.id, label: country.name })
   );
 
+  const dataTypes = [];
+  types?.map((type) => dataTypes.push({ value: type.id, label: type.name }));
+
+  const dataIngredients = [];
+  ingredients?.map((ingredient) =>
+    dataIngredients.push({ value: ingredient.id, label: ingredient.name })
+  );
+
   const getRecipes = async (data) => {
     try {
       const result = await axios.get(`/api/recipe/getRecipes`, {
-data      });
+        data,
+      });
       console.log(data);
     } catch (err) {
       console.log("error");
@@ -78,29 +98,29 @@ data      });
 
   //   try {
   //     const result = await prisma.cabane.findMany(
-        // {
-        //   where: {
-        //     OR: [
-        //       {
-        //         description: {
-        //           contains: data,
-        //           mode: "insensitive",
-        //         },
-        //       },
-        //       {
-        //         title: {
-        //           contains: data,
-        //           mode: "insensitive",
-        //         },
-        //       },
-        //     ],
-        //   },
-        // },
-        // {
-        //   orderBy: {
-        //     createdAt: "asc",
-        //   },
-        // }
+  // {
+  //   where: {
+  //     OR: [
+  //       {
+  //         description: {
+  //           contains: data,
+  //           mode: "insensitive",
+  //         },
+  //       },
+  //       {
+  //         title: {
+  //           contains: data,
+  //           mode: "insensitive",
+  //         },
+  //       },
+  //     ],
+  //   },
+  // },
+  // {
+  //   orderBy: {
+  //     createdAt: "asc",
+  //   },
+  // }
   //     );
   //     res.status(200).json(result);
   //   } catch (err) {
@@ -122,6 +142,18 @@ data      });
           value={filterCountry}
           onChange={setFilterCountry}
           placeholder="pays"
+        />
+        <MultiSelect
+          data={dataTypes}
+          value={filterType}
+          onChange={setFilterType}
+          placeholder="types"
+        />
+        <MultiSelect
+          data={dataIngredients}
+          value={filterIngredient}
+          onChange={setFilterIngredient}
+          placeholder="ingrédients"
         />
         {recipes &&
           recipes.map((recipe, i) => (
