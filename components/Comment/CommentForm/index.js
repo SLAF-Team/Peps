@@ -58,16 +58,12 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
             <label className={classes.label}>Commentaire</label><br></br>
             <input className={classes.input_small} name="addText" type="text" />
             <div className={classes.button}>
-              {submitted ? (
-                <p>Ajouté!</p>
-                ) : (
                   <Button
                   label="Commenter"
                   type="alert"
                   handleClick={() => addComment()}
                   href="#"
                   />
-                  )}
             </div>
           </div>
         </div>
