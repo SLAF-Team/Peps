@@ -93,7 +93,7 @@ const SelectedRecipe = () => {
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
           <h2 className={classes.h2}>
-            <Anchor href={"/dishes/" + recipe.dish?.id} target="_blank" color="blue[9]">
+            <Anchor href={"/dishes/" + recipe.dish?.id} target="_blank" color="cookogsyellow">
             {recipe.dish?.title}
             </Anchor>
           </h2>
