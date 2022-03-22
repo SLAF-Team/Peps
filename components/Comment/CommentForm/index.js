@@ -1,30 +1,48 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import classes from "./CommentForm.module.css";
 import Button from "../../Button";
 import Link from "next/link";
+import { useNotifications } from "@mantine/notifications";
 
-const CommentForm = ({ user, recipe }) => {
+const CommentForm = ({ user, recipe, setSubmitted }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [submitted, setSubmitted] = useState(false);
+  const notifications = useNotifications();
+
+  useEffect(() => {
+    setSubmitted(false);
+  }, []);
 
   async function addComment(params) {
     const { addText } = formRef.current;
     const text = addText.value;
-    await axios.post(
-      "/api/comment/addComment",
-      {
-        recipeId: recipe.id,
-        userId: user.id,
-        text,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setSubmitted(true);
+    if (!text) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Votre commentaire ne peut être vide.",
+        color: "red"
+      });
+    } else {
+      await axios.post(
+        "/api/comment/addComment",
+        {
+          recipeId: recipe.id,
+          userId: user.id,
+          text,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSubmitted(true);
+      notifications.showNotification({
+        title: "Bravo!",
+        message: "Votre commentaire a été publié avec succès",
+        color: "green",
+      });
+    }
   }
 
     if(token != null){

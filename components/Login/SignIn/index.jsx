@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 import { useUserContext } from "../../../context/UserContext";
 import styles from "../Login.module.css";
 import ButtonForm from "../../ButtonForm";
+import { useNotifications } from "@mantine/notifications";
 
 const SignIn = () => {
   const router = useRouter();
   const { setUser } = useUserContext();
+  const notifications = useNotifications();
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -27,16 +29,29 @@ const SignIn = () => {
     });
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user);
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Un plaisir de vous retrouver parmi nous",
+      color: "green",
+    });
     router.push("/");
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      email: email,
-      password: password,
-    };
-    signUserIn(data);
+    if (!email || !password) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "email ou mot de passe manquant",
+        color: "red",
+      });
+    } else {
+      const data = {
+        email: email,
+        password: password,
+      };
+      signUserIn(data);
+    }
   };
 
   return (

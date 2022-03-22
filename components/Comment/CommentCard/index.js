@@ -10,13 +10,9 @@ const CommentCard = ({ comment }) => {
   const token = Cookies.get("token");
   const { user } = useUserContext();
 
-  //todo
-  // Ajouter un routing nested
-  // Ajouter update
-  // CSS
-
   const isAuthor = comment.userId == user?.id ? true : false;
 
+  // delete qui ne marche plus
   async function deleteComment() {
     if (window.confirm("Souhaitez vous supprimer ce commentaire?")) {
       await axios.delete(`/api/comment/delete/${comment?.id}`, {
@@ -46,13 +42,6 @@ const CommentCard = ({ comment }) => {
           <div className={classes.editcontainer}>
             <Image src={cross} width={12} height={12} onClick={() => deleteComment()}/>
             <br></br>
-            {/* <Button
-              label="Editer"
-              type="warning"
-              handleClick={() => editComment()}
-              href="#"
-              className={classes.button}
-            /> */}
           </div>
         )}
       </div>
