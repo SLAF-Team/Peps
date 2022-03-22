@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import Head from "next/head";
+import { NotificationsProvider } from "@mantine/notifications";
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
@@ -22,19 +23,24 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, [token]);
 
+  console.log("user from app")
+  console.log(user)
+  
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <Head>
-        <title>Peps</title>
-        <meta name="description" content="Peps" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Layout>
-        <div className="container">
-          <Component {...pageProps} />
-        </div>
-      </Layout>
+      <NotificationsProvider>
+        <Head>
+          <title>Peps</title>
+          <meta name="description" content="Peps" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Layout>
+          <div className="container">
+            <Component {...pageProps} />
+          </div>
+        </Layout>
+      </NotificationsProvider>
     </UserContext.Provider>
   );
 }

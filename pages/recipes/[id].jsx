@@ -24,6 +24,7 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
   const [opened, setOpened] = useState(false);
+  const [submitted, setSubmitted] = useState(false)
 
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
@@ -43,7 +44,7 @@ const SelectedRecipe = () => {
 
   useEffect(() => {
     getRecipe();
-  }, [id]);
+  }, [id, submitted]);
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -80,8 +81,6 @@ const SelectedRecipe = () => {
       router.push("/recipes/");
     }
   }
-
-  //todo : plutôt renvoyer vers une erreur ?? Not Found
 
   if (!recipe) {
     return null;
@@ -126,7 +125,11 @@ const SelectedRecipe = () => {
         </div>
         <div className={classes.commentcontainer}>
           <h1 className={classes.h1}>{recipe?.comments.length} Commentaires</h1>
-          <CommentForm user={user} recipe={recipe} />
+          <CommentForm
+            user={user}
+            recipe={recipe}
+            setSubmitted={setSubmitted}
+          />
           {recipe?.comments && <CommentsList comments={recipe.comments} />}
         </div>
       </div>

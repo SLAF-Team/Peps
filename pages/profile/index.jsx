@@ -1,17 +1,32 @@
 import { useUserContext } from "../../context/UserContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
 import AddList from "../../components/List/AddList";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Profile = ({ recipes, lists }) => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const token = Cookies.get("token");
+
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUser(result.data.user);
+  }
+
+  useEffect(() => {
+    getUser();
+  }, [submitted]);
 
   const handleClickLeft = () => {
     setContribution(false);
@@ -34,7 +49,6 @@ const Profile = ({ recipes, lists }) => {
   return (
     <>
       <UserList user={user} color="#ffd12f" />
-      <AddList user={user} />
       <Selector
         left="MES CONTRIBUTIONS"
         right="MES LISTES"
@@ -44,11 +58,19 @@ const Profile = ({ recipes, lists }) => {
       />
       <div className={styles.cards}>
         <div className="row">
-          {!contribution
-            ? recipesFromUser?.map((recipe, index) => (
-                <RecipeCard recipe={recipe} key={index} col="col-3" />
-              ))
-            : listsFromUser?.map((list) => (
+          {!contribution ? (
+            recipesFromUser?.map((recipe, index) => (
+              <RecipeCard recipe={recipe} key={index} col="col-3" />
+            ))
+          ) : (
+            <>
+              <div className={styles.center}>
+                <AddList
+                  user={user}
+                  setSubmitted={setSubmitted}
+                />
+              </div>
+              {listsFromUser?.map((list) => (
                 <>
                   <Link href={"/lists/" + list.id} exact>
                     <div className={styles.listCards}>
@@ -68,6 +90,8 @@ const Profile = ({ recipes, lists }) => {
                   </Link>
                 </>
               ))}
+            </>
+          )}
         </div>
       </div>
     </>
