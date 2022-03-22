@@ -8,10 +8,15 @@ import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
 import Button from "../../components/Button";
 import Cookies from "js-cookie";
+import { useNotifications } from "@mantine/notifications";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const Profile = ({ list }) => {
   const {user} = useUserContext();
-  const token = Cookies.get("token")
+  const token = Cookies.get("token");
+  const router = useRouter();
+  const notifications = useNotifications();
 
   const handleClickLeft = () => {
     setStyle(false);
@@ -23,17 +28,19 @@ const Profile = ({ list }) => {
 
   async function deleteList() {
       if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-        await axios.delete(`/api/list/delete/${list?.id}`, {
+        const result = await axios.delete(`/api/list/delete/${list?.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
+      router.push('/lists')
+      console.log(result);
     }
 
-  const handleLeleteList = () => {
+  const handleDeleteList = () => {
     //notif
     deleteList();
     //notif
-  }
+  };
 
     const updateList = () => {};
 
@@ -51,7 +58,7 @@ const Profile = ({ list }) => {
           <Button
             label="Supprimer"
             type="danger"
-            handleClick={() => handleLeleteList()}
+            handleClick={() => handleDeleteList()}
             href="#"
             className={classes.button}
           />

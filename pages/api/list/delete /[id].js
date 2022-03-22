@@ -1,14 +1,21 @@
 import prisma from "../../../../lib/prisma.ts";
-import { checkAuth } from "../../../../lib/auth";
+import { checkAuth, checkIfAuthor } from "../../../../lib/auth";
 
 export default async (req, res) => {
+  console.log(req)
+  const { id } = req.query;
+
   const isAuth = await checkAuth(req);
   if (!isAuth) {
     res.status(403).json({ err: "Forbidden" });
     return;
   }
 
-  const { id } = req.query;
+    const isAuthor = await checkIfAuthor(req, list, id);
+    if (!isAuthor) {
+      res.status(403).json({ err: "Forbidden" });
+      return;
+    }
 
   try {
     const deleteList = await prisma.list.delete({
