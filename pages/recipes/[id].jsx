@@ -29,8 +29,7 @@ const SelectedRecipe = () => {
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
   const getRecipe = async () => {
-    if (!id) {
-      return;
+    if (!id) {     return;
     }
     try {
       const result = await axios.get(`/api/recipe/${id}`, {
