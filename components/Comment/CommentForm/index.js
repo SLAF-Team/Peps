@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import classes from "./CommentForm.module.css";
 import Button from "../../Button";
+import Link from "next/link";
 import { useNotifications } from "@mantine/notifications";
 
 const CommentForm = ({ user, recipe, setSubmitted }) => {
@@ -44,35 +45,41 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     }
   }
 
-  return (
-    <form className={classes.form} ref={formRef}>
-      <div className={classes.setups_small}>
-        <div className={classes.profilepic}>
-          <div
-            className={classes.avatar}
-            style={{ backgroundColor: "#ffd12f" }}
-          >
-            <span className={classes.letter}>
-              {user?.name[0].toUpperCase()}
-            </span>
+    if(token != null){
+      return (      
+        <form className={classes.form} ref={formRef}>
+        <div className={classes.setups_small}>
+          <div className={classes.profilepic}>
+            <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
+              <span className={classes.letter}>{user?.name[0].toUpperCase()}</span>
+            </div>
+          </div>
+          <div className={classes.setup_small}>
+            <label className={classes.label}>Commentaire</label><br></br>
+            <input className={classes.input_small} name="addText" type="text" />
+            <div className={classes.button}>
+              {submitted ? (
+                <p>Ajouté!</p>
+                ) : (
+                  <Button
+                  label="Commenter"
+                  type="alert"
+                  handleClick={() => addComment()}
+                  href="#"
+                  />
+                  )}
+            </div>
           </div>
         </div>
-        <div className={classes.setup_small}>
-          <label className={classes.label}>Commentaire</label>
-          <br></br>
-          <input className={classes.input_small} name="addText" type="text" />
-          <div className={classes.button}>
-            <Button
-              label="Commenter"
-              type="alert"
-              handleClick={() => addComment()}
-              href="#"
-            />
-          </div>
-        </div>
-      </div>
-    </form>
-  );
+      </form>
+    );
+  } else {
+    return (
+      <>
+      <p>Veuillez vous <b><a href='/login/'>connecter</a></b> pour écrire un commentaire</p>
+      </>
+    )
+  }
 };
 
 export default CommentForm;
