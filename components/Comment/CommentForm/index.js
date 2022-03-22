@@ -5,6 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import classes from "./CommentForm.module.css";
 import Button from "../../Button";
+import Link from "next/link";
 
 const CommentForm = ({ user, recipe }) => {
   const formRef = useRef();
@@ -26,8 +27,9 @@ const CommentForm = ({ user, recipe }) => {
     setSubmitted(true);
   }
 
-    return (
-      <form className={classes.form} ref={formRef}>
+    if(token != null){
+      return (      
+        <form className={classes.form} ref={formRef}>
         <div className={classes.setups_small}>
           <div className={classes.profilepic}>
             <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
@@ -40,19 +42,26 @@ const CommentForm = ({ user, recipe }) => {
             <div className={classes.button}>
               {submitted ? (
                 <p>Ajouté!</p>
-              ) : (
-                <Button
+                ) : (
+                  <Button
                   label="Commenter"
                   type="alert"
                   handleClick={() => addComment()}
                   href="#"
-                />
-              )}
+                  />
+                  )}
             </div>
           </div>
         </div>
       </form>
     );
+  } else {
+    return (
+      <>
+      <p>Veuillez vous <b><a href='/login/'>connecter</a></b> pour écrire un commentaire</p>
+      </>
+    )
+  }
 };
 
 export default CommentForm;
