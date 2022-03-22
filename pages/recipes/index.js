@@ -7,10 +7,18 @@ import { MultiSelect } from "@mantine/core";
 import axios from "axios";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
-  const [filterTag, setFilterTag] = useState([]);
-  const [filterCountry, setFilterCountry] = useState([]);
-  const [filterType, setFilterType] = useState([]);
-  const [filterIngredient, setFilterIngredient] = useState([]);
+  const idTags = [];
+  tags?.map((element) => idTags.push(element.id));
+  const [filterTag, setFilterTag] = useState(idTags);
+  const idCountries = [];
+  countries?.map((element) => idCountries.push(element.id));
+  const [filterCountry, setFilterCountry] = useState(idCountries);
+  const idTypes = [];
+  types?.map((element) => idTypes.push(element.id));
+  const [filterType, setFilterType] = useState(idTypes);
+  const idIngredients = [];
+  ingredients?.map((element) => idIngredients.push(element.id));
+  const [filterIngredient, setFilterIngredient] = useState(idIngredients);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
   const dataTags = [];
@@ -30,9 +38,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   );
 
   useEffect(() => {
-    if (!filterTag && !filterCountry && !filterType && !filterIngredient) {
-      setFilterRecipes(recipes);
-    }
     const data = {
       where: {
         countryId: {
@@ -42,8 +47,13 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           in: filterType,
         },
         tags: {
-          some: {id: { in: filterTag } },
-          },
+          some: { id: { in: filterTag } },
+        },
+        // ingredientsUnit: {
+        //   some: {
+        //     ingredients: { id: { in: filterIngredient } },
+        //   },
+        // },
       },
     };
     getRecipes(data);
@@ -56,7 +66,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       });
       console.log("résultat CALL API");
       console.log(result.data);
-      // setFilterRecipes(result.data);
+      setFilterRecipes(result.data);
     } catch (err) {
       console.log("error");
     }
