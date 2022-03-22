@@ -7,87 +7,106 @@ import { MultiSelect } from "@mantine/core";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState([]);
-  const [recipes, setRecipes] = useState(recipes);
+  const [filterCountry, setFilterCountry] = useState([]);
+  const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
   useEffect(() => {
-    setRecipes(getRecipes());
-  }, [filterTag]);
+    const data= {
+    include: {
+      cook: { select: { email: true, name: true, id: true } },
+      tags: { select: { id: true } },
+      _count: { select: { likes: true } },
+      _count: { select: { comments: true } },
+    },
+  where: {
+        countryId: {in: filterCountry},
+    }
+  }
+    setFilterRecipes(getRecipes(data));
+  }, [filterTag, filterCountry]);
 
+  console.log(filterTag)
+    console.log(filterCountry);
+  // à simplifier ??
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
-    const getRecipes = async () => {
-      try {
-        const result = await axios.get(`/api/recipe/getRecipes`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setRecipe(result.data);
-      } catch (err) {
-        console.log("error");
-      }
-    };
+  const dataCountries = [];
+  countries?.map((country) =>
+    dataCountries.push({ value: country.id, label: country.name })
+  );
 
-        //   include: {
-        // cook: { select: { email: true, name: true, id: true } },
-        // tags: { select: { id: true } },
-        // _count: { select: { likes: true } },
-        // _count: { select: { comments: true } },
+  const getRecipes = async (data) => {
+    try {
+      const result = await axios.get(`/api/recipe/getRecipes`, {
+data      });
+      console.log(data);
+    } catch (err) {
+      console.log("error");
+    }
+  };
 
-          // const [showAddShackModal, setShowAddShackModal] = useState(false);
-          // const [filter, setFilter] = useState("");
-          // const [shacks, setShacks] = useState(props.shacks);
+  //   include: {
+  // cook: { select: { email: true, name: true, id: true } },
+  // tags: { select: { id: true } },
+  // _count: { select: { likes: true } },
+  // _count: { select: { comments: true } },
 
-          // const handleFilter = (e) => {
-          //   setFilter(e.target.value);
-          // };
+  // const [showAddShackModal, setShowAddShackModal] = useState(false);
+  // const [filter, setFilter] = useState("");
+  // const [shacks, setShacks] = useState(props.shacks);
 
-          // async function getSearchedShacks(filter) {
-          //   const result = await axios.post("/api/shack/searchShacks", {
-          //     filter,
-          //   });
-          //   setShacks(result.data);
-          // }
+  // const handleFilter = (e) => {
+  //   setFilter(e.target.value);
+  // };
 
-          // useEffect(() => {
-          //   getSearchedShacks(filter);
-          // }, [filter]);
+  // async function getSearchedShacks(filter) {
+  //   const result = await axios.post("/api/shack/searchShacks", {
+  //     filter,
+  //   });
+  //   setShacks(result.data);
+  // }
 
-//           import prisma from "../../../lib/prisma.ts";
+  // useEffect(() => {
+  //   getSearchedShacks(filter);
+  // }, [filter]);
 
-// export default async (req, res) => {
-//   const data = req.body.filter;
+  //           import prisma from "../../../lib/prisma.ts";
 
-//   try {
-//     const result = await prisma.cabane.findMany(
-//       {
-//         where: {
-//           OR: [
-//             {
-//               description: {
-//                 contains: data,
-//                 mode: "insensitive",
-//               },
-//             },
-//             {
-//               title: {
-//                 contains: data,
-//                 mode: "insensitive",
-//               },
-//             },
-//           ],
-//         },
-//       },
-//       {
-//         orderBy: {
-//           createdAt: "asc",
-//         },
-//       }
-//     );
-//     res.status(200).json(result);
-//   } catch (err) {
-//     res.status(400).json({ err: "Error while searching shacks." });
-//   }
-// };
+  // export default async (req, res) => {
+  //   const data = req.body.filter;
+
+  //   try {
+  //     const result = await prisma.cabane.findMany(
+        // {
+        //   where: {
+        //     OR: [
+        //       {
+        //         description: {
+        //           contains: data,
+        //           mode: "insensitive",
+        //         },
+        //       },
+        //       {
+        //         title: {
+        //           contains: data,
+        //           mode: "insensitive",
+        //         },
+        //       },
+        //     ],
+        //   },
+        // },
+        // {
+        //   orderBy: {
+        //     createdAt: "asc",
+        //   },
+        // }
+  //     );
+  //     res.status(200).json(result);
+  //   } catch (err) {
+  //     res.status(400).json({ err: "Error while searching shacks." });
+  //   }
+  // };
 
   return (
     <div className={classes.margin}>
@@ -97,6 +116,12 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           value={filterTag}
           onChange={setFilterTag}
           placeholder="tags"
+        />
+        <MultiSelect
+          data={dataCountries}
+          value={filterCountry}
+          onChange={setFilterCountry}
+          placeholder="pays"
         />
         {recipes &&
           recipes.map((recipe, i) => (
