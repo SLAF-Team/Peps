@@ -10,6 +10,7 @@ async function main() {
   await prisma.tag.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.region.deleteMany({});
+  await prisma.unit.deleteMany({});
 
   const john = await prisma.user.create({
     data: {
@@ -53,6 +54,10 @@ async function main() {
     { name: "Eau" },
     { name: "Courgette" },
   ];
+
+    const tag = await prisma.type.create({
+      data: { name: "Carnivore" },
+    });
 
   const entree = await prisma.type.create({
     data: { name: "Entrée" },
