@@ -19,8 +19,6 @@ const SelectedRecipe = () => {
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
 
-  // const [comments, setComments] = useState(recipe.comments);
-
   const getRecipe = async () => {
     if (!id) {
       return;
@@ -165,25 +163,5 @@ const SelectedRecipe = () => {
     </div>
   );
 };
-  // async function addTagsToRecipe(data) {
-  //   await axios.put(
-  //     "/api/recipe/editRecipe",
-  //     {
-  //       id: recipe.id,
-  //       tags: {
-  //         connect: data,
-  //       },
-  //     },
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  //   setSubmitted(true);
-  // }
-          // create: [
-          //   {
-          //     ingredientId: parseInt(ingredient),
-          //     unitId: parseInt(unit),
-          //     quantity: parseInt(quantity),
-          //   },
-          // ],
 
 export default SelectedRecipe;
