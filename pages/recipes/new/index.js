@@ -19,7 +19,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [recipe, setRecipe] = useState(null);
   const [checked, setChecked] = useState(false);
   const [style, setStyle] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
+  const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
   const handleClickRight = () => {
@@ -65,6 +66,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     );
     setSubmitted(true);
     setRecipe(result.data);
+    setStep(step + 1);
   }
 
   const handleClick = () => {
@@ -74,121 +76,147 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
-      <Selector
-        left="PRIVÉE"
-        right="PUBLIQUE"
-        handleClickRight={handleClickRight}
-        handleClickLeft={handleClickLeft}
-        style={style}
-      />
-      <form ref={formRef} className={classes.recipeform}>
-        {dishes ? (
-          <div className={classes.step}>
-            <label className={classes.label}>Plat associé</label>
-            <select className={classes.select} name="addDish">
-              {dishes.map((dish) => (
-                <option value={dish.id} key={dish.id}>
-                  {dish.title}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-        <div className={classes.step}>
-          <label className={classes.label}>Nom de la recette</label>
-          <input className={classes.input} name="addName" type="text" />
-        </div>
-        <div className={classes.step}>
-          <label className={classes.label}>Ajouter une photo</label>
-          <input className={classes.input} name="addImageUrl" type="text" />
-        </div>
-        {countries ? (
-          <div className={classes.step}>
-            <label className={classes.label}>Pays</label>
-            <select className={classes.select} name="addCountry">
-              {countries.map((country) => (
-                <option value={country.id} key={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-        {types ? (
-          <div className={classes.step}>
-            <label className={classes.label}>Type de plat</label>
-            <select className={classes.select} name="addType">
-              {types.map((type) => (
-                <option value={type.id} key={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-        <div className={classes.step}>
-          <label className={classes.label}>Description</label>
-          <input className={classes.input} name="addDescription" type="text" />
-        </div>
-        <div className={classes.button}>
-          {submitted ? (
-            <p>Recette créée ! Continue </p>
-          ) : (
-            <Button
-              label="Créer ma recette"
-              type="primary"
-              handleClick={() => addNewRecipe()}
-              href="#"
-            />
-          )}
-        </div>
-      </form>
-      <div className={classes.selector}>
-        <div className="selectorBlock">
-          <p className={classes.selectorText}>AJOUTER DES INGRÉDIENTS</p>
-        </div>
-      </div>
-      <div className={classes.ingredientform}>
-        {recipe ? (
-          <>
-            {[...Array(count)].map((e, i) => {
-              return (
-                <AddRecipesIngredients
-                  recipe={recipe}
-                  key={i}
-                  ingredients={ingredients}
-                  units={units}
-                />
-              );
-            })}
-          </>
-        ) : null}
-        <div className={classes.button}>
-          <Button
-            label="Ajouter un ingrédient"
-            type="primary"
-            handleClick={handleClick}
-            href="#"
+      {step === 0 && (
+        <>
+          <Selector
+            left="PRIVÉE"
+            right="PUBLIQUE"
+            handleClickRight={handleClickRight}
+            handleClickLeft={handleClickLeft}
+            style={style}
           />
-        </div>
-      </div>
-      <div className={classes.selector}>
-        <div className="selectorBlock">
-          <p className={classes.selectorText}>ÉTAPES DE LA RECETTE</p>
-        </div>
-      </div>
-      <div className={classes.stepsform}>
-        {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
-      </div>
-      <div className={classes.selector}>
-        <div className="selectorBlock">
-          <p className={classes.selectorText}>AJOUTER DES TAGS</p>
-        </div>
-      </div>
-      <div className={classes.stepsform}>
-        {/* {recipe ? <AddRecipesTags /> : null} */}
-        <AddRecipesTags recipe={recipe} tags={tags} />
-      </div>
+          <form ref={formRef} className={classes.recipeform}>
+            {dishes ? (
+              <div className={classes.step}>
+                <label className={classes.label}>Plat associé</label>
+                <select className={classes.select} name="addDish">
+                  <option value="" selected disabled hidden>
+                    Choisissez le plat associé
+                  </option>
+                  {dishes.map((dish) => (
+                    <option value={dish.id} key={dish.id}>
+                      {dish.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
+            <div className={classes.step}>
+              <label className={classes.label}>Nom de la recette</label>
+              <input
+                className={classes.input}
+                name="addName"
+                type="text"
+                placeholder="Ex: Tarte aux pommes de ma grand mère"
+              />
+            </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Ajouter une photo</label>
+              <input
+                className={classes.input}
+                name="addImageUrl"
+                type="text"
+                placeholder="Ex: https://masuperimagedetarte.com"
+              />
+            </div>
+            {countries ? (
+              <div className={classes.step}>
+                <label className={classes.label}>Pays</label>
+                <select className={classes.select} name="addCountry">
+                  <option value="" selected disabled hidden>
+                    Choisissez un pays
+                  </option>
+                  {countries.map((country) => (
+                    <option value={country.id} key={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
+            {types ? (
+              <div className={classes.step}>
+                <label className={classes.label}>Type de plat</label>
+                <select className={classes.select} name="addType">
+                  <option value="" selected disabled hidden>
+                    Choisissez le type de plat
+                  </option>
+                  {types.map((type) => (
+                    <option value={type.id} key={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
+            <div className={classes.step}>
+              <label className={classes.label}>Description</label>
+              <input
+                className={classes.input}
+                name="addDescription"
+                type="text"
+              />
+            </div>
+            <div className={classes.button}>
+              <Button
+                label="Créer ma recette"
+                type="primary"
+                handleClick={() => addNewRecipe()}
+                href="#"
+              />
+            </div>
+          </form>
+        </>
+      )}
+      {step === 1 && (
+        <>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>AJOUTER DES INGRÉDIENTS</p>
+            </div>
+          </div>
+          <div className={classes.ingredientform}>
+            {recipe ? (
+              <>
+                {[...Array(count)].map((e, i) => {
+                  return (
+                    <AddRecipesIngredients
+                      recipe={recipe}
+                      key={i}
+                      ingredients={ingredients}
+                      units={units}
+                    />
+                  );
+                })}
+              </>
+            ) : null}
+            <div className={classes.button}>
+              <Button
+                label="Ajouter un ingrédient"
+                type="primary"
+                handleClick={handleClick}
+                href="#"
+              />
+            </div>
+          </div>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>ÉTAPES DE LA RECETTE</p>
+            </div>
+          </div>
+          <div className={classes.stepsform}>
+            {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
+          </div>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>AJOUTER DES TAGS</p>
+            </div>
+          </div>
+          <div className={classes.stepsform}>
+            <AddRecipesTags recipe={recipe} tags={tags} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
