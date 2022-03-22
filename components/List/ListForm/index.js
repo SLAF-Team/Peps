@@ -52,7 +52,6 @@ const ListForm = ({ lists, recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result)
     setSubmitted(true);
   }
 

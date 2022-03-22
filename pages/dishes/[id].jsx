@@ -1,10 +1,10 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "../../components/Button";
-import { useEffect } from "react";
+import { useUserContext } from "../../context/UserContext";
 
 const SelectedDish = () => {
   const token = Cookies.get("token");
@@ -13,18 +13,13 @@ const SelectedDish = () => {
   const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  
+  const { user } = useUserContext();
 
   const getDish = async () => {
-    if (!id) {
-      return;
-    }
     try {
-      const result = await axios.get(
-        `/api/dish/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const result = await axios.get(`/api/dish/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setDish(result.data);
     } catch (err) {
       console.log(err);
@@ -36,7 +31,7 @@ const SelectedDish = () => {
   }, [id]);
 
   async function editDish(event) {
-    event.preventDefault()
+    event.preventDefault();
     await axios.put(
       "/api/dish/editDish",
       {
@@ -46,7 +41,7 @@ const SelectedDish = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    getDish()
+    getDish();
   }
 
   async function deleteDish() {
@@ -66,11 +61,6 @@ const SelectedDish = () => {
     setDescriptionChange(e.target.value);
   };
 
-
-  if (!dish) {
-    return null;
-  }
-
   return (
     <>
       <h2>Titre : </h2>
@@ -79,35 +69,9 @@ const SelectedDish = () => {
       {dish?.description}
       <br />
       <h3>Ce plat nous vient de {dish?.region.name}</h3>
-      <form onSubmit={editDish}>
-        <label>Title</label> <br />
-        <input
-          name="dishTitle"
-          type="text"
-          defaultValue={dish?.title}
-          onChange={handleTitle}
-        />
-        <br />
-        <label>Description</label>
-        <textarea
-          name="recipekDescription"
-          type="text"
-          style={{ width: "100%", height: "100px" }}
-          defaultValue={dish?.description}
-          onChange={handleDescription}
-        />
-        <button type="submit">
-          J'édite
-        </button>
-      </form>
-      <br />
-      <button onClick={deleteDish}>Supprimer</button>
-      <br />
-      <br />
-      <br />
       <div>
         <h2>Recettes :</h2>
-        {dish.recipes.map((recipe) => (
+        {dish?.recipes.map((recipe) => (
           <div>
             <br />
             <h3>{recipe.name}</h3>
@@ -119,24 +83,35 @@ const SelectedDish = () => {
           </div>
         ))}
       </div>
+      <br />
+      {user?.isadmin && (
+        <>
+          <h2>Admin </h2>
+          <form onSubmit={editDish}>
+            <label>Title</label> <br />
+            <input
+              name="dishTitle"
+              type="text"
+              defaultValue={dish?.title}
+              onChange={handleTitle}
+            />
+            <br />
+            <label>Description</label>
+            <textarea
+              name="recipekDescription"
+              type="text"
+              style={{ width: "100%", height: "100px" }}
+              defaultValue={dish?.description}
+              onChange={handleDescription}
+            />
+            <button type="submit">J'édite</button>
+          </form>
+          <br />
+          <button onClick={deleteDish}>Supprimer</button>
+        </>
+      )}
     </>
   );
 };
-
-// export async function getServerSideProps(context) {
-//   const { id } = context.params;
-//   const dish = await prisma.dish.findUnique({
-//     where: { id: parseInt(id) },
-//     include: {
-//       recipes: true,
-//       region: { select: { name: true } },
-//     },
-//   });
-//   return {
-//     props: {
-//       dish,
-//     },
-//   };
-// }
 
 export default SelectedDish;
