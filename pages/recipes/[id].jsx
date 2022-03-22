@@ -10,10 +10,8 @@ import CommentForm from "../../components/Comment/CommentForm";
 import { useCallback } from "react";
 import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
-import { Tabs } from "@mantine/core";
 import Layout from "../../components/layout";
-import { Modal } from "@mantine/core";
-import { Anchor } from "@mantine/core";
+import { Modal, LoadingOverlay, Anchor, Tabs } from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -25,7 +23,7 @@ const SelectedRecipe = () => {
   const [descriptionChange, setDescriptionChange] = useState();
   const [opened, setOpened] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
+  const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
   const getRecipe = async () => {
@@ -88,6 +86,9 @@ const SelectedRecipe = () => {
 
   return (
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
+      <div style={{ width: 400, backgroundColor: "red", position: "relative" }}>
+        <LoadingOverlay visible={visible}  transitionDuration={0} />
+      </div>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
         <div className={classes.titlecontainer}>
@@ -110,22 +111,22 @@ const SelectedRecipe = () => {
         <div className={classes.mobiletabcontainer}>
           <Tabs grow tabPadding="xl" position="center" color="dark">
             <Tabs.Tab label="INGREDIENTS">
-            <ul>
-            {recipe?.ingredientsUnit &&
-              recipe?.ingredientsUnit.map((element) => (
-                <li className={classes.li}>
-                  {element.quantity} {element.unit.name} de{" "}
-                  <Anchor
-                    href={"/ingredient/" + element.ingredient.id}
-                    target="_blank"
-                    color="cookogsyellow"
-                    size="xs"
-                  >
-                  {element.ingredient.name}
-                  </Anchor>
-                </li>
-              ))}
-          </ul>
+              <ul>
+                {recipe?.ingredientsUnit &&
+                  recipe?.ingredientsUnit.map((element) => (
+                    <li className={classes.li}>
+                      {element.quantity} {element.unit.name} de{" "}
+                      <Anchor
+                        href={"/ingredient/" + element.ingredient.id}
+                        target="_blank"
+                        color="cookogsyellow"
+                        size="xs"
+                      >
+                        {element.ingredient.name}
+                      </Anchor>
+                    </li>
+                  ))}
+              </ul>
             </Tabs.Tab>
             <Tabs.Tab label="ETAPES">
               <div className={classes.stepsmobilecontainer}>
@@ -163,7 +164,7 @@ const SelectedRecipe = () => {
                     color="cookogsyellow"
                     size="xs"
                   >
-                  {element.ingredient.name}
+                    {element.ingredient.name}
                   </Anchor>
                 </li>
               ))}
