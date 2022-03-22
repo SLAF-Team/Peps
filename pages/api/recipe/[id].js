@@ -21,7 +21,7 @@ export default async (req, res) => {
         },
         ingredientsUnit: {
           include: {
-            ingredient: { select: { name: true } },
+            ingredient: { select: { name: true, id: true } },
             unit: { select: { name: true } },
           },
         },

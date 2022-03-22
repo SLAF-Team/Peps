@@ -93,8 +93,12 @@ const SelectedRecipe = () => {
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
           <h2 className={classes.h2}>
-            <Anchor href={"/dishes/" + recipe.dish?.id} target="_blank" color="cookogsyellow">
-            {recipe.dish?.title}
+            <Anchor
+              href={"/dishes/" + recipe.dish?.id}
+              target="_blank"
+              color="cookogsyellow"
+            >
+              {recipe.dish?.title}
             </Anchor>
           </h2>
         </div>
@@ -106,14 +110,22 @@ const SelectedRecipe = () => {
         <div className={classes.mobiletabcontainer}>
           <Tabs grow tabPadding="xl" position="center" color="dark">
             <Tabs.Tab label="INGREDIENTS">
-              <ul>
-                <li className={classes.li}>Tomate</li>
-                <li className={classes.li}>Huile d'olive</li>
-                <li className={classes.li}>Oeufs</li>
-                <li className={classes.li}>Courgettes</li>
-                <li className={classes.li}>Ail</li>
-                <li className={classes.li}>{recipe.ingredients}</li>
-              </ul>
+            <ul>
+            {recipe?.ingredientsUnit &&
+              recipe?.ingredientsUnit.map((element) => (
+                <li className={classes.li}>
+                  {element.quantity} {element.unit.name} de{" "}
+                  <Anchor
+                    href={"/ingredient/" + element.ingredient.id}
+                    target="_blank"
+                    color="cookogsyellow"
+                    size="xs"
+                  >
+                  {element.ingredient.name}
+                  </Anchor>
+                </li>
+              ))}
+          </ul>
             </Tabs.Tab>
             <Tabs.Tab label="ETAPES">
               <div className={classes.stepsmobilecontainer}>
@@ -145,7 +157,14 @@ const SelectedRecipe = () => {
               recipe?.ingredientsUnit.map((element) => (
                 <li className={classes.li}>
                   {element.quantity} {element.unit.name} de{" "}
+                  <Anchor
+                    href={"/ingredient/" + element.ingredient.id}
+                    target="_blank"
+                    color="cookogsyellow"
+                    size="xs"
+                  >
                   {element.ingredient.name}
+                  </Anchor>
                 </li>
               ))}
           </ul>
