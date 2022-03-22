@@ -4,11 +4,16 @@ import { CheckboxGroup, Checkbox } from "@mantine/core";
 import Cookies from "js-cookie";
 import classes from "./AddRecipesTags.module.css";
 import Button from "../../Button";
+import { MultiSelect } from "@mantine/core";
 
 const AddRecipesTags = ({ recipe, tags }) => {
   const [value, setValue] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
+  const tagsList = [];
+  const tagsSelect = tags.map((tag) => {
+    return { value: tag.id, label: tag.name };
+  });
 
   async function addTagsToRecipe(data) {
     await axios.put(
@@ -25,21 +30,25 @@ const AddRecipesTags = ({ recipe, tags }) => {
   }
 
   const handleClick = () => {
-    const newValue = [];
-    value.map((element) => newValue.push({ id: parseInt(element) }));
     addTagsToRecipe(newValue);
   };
 
-    const items = tags ? tags.map((tag, index) => (
-      <Checkbox
-        label={tag.name}
-        key={tag.id}
-        checked={tag.checked}
-        onChange={(event) =>
-          handlers.setItemProp(index, "checked", event.currentTarget.checked)
-        }
-      />
-    )) : null;
+  const handleTags = (e) => {
+    setValue(e);
+  };
+
+  const items = tags
+    ? tags.map((tag, index) => (
+        <Checkbox
+          label={tag.name}
+          key={tag.id}
+          checked={tag.checked}
+          onChange={(event) =>
+            handlers.setItemProp(index, "checked", event.currentTarget.checked)
+          }
+        />
+      ))
+    : null;
 
   return (
     <div className={classes.form}>
@@ -52,9 +61,19 @@ const AddRecipesTags = ({ recipe, tags }) => {
         required
       >
         {tags
-          ? tags.map((tag) => <Checkbox value={tag.id.toString()} label={tag.name} />)
+          ? tags.map((tag) => (
+              <Checkbox value={tag.id.toString()} label={tag.name} />
+            ))
           : null}
-      </CheckboxGroup>
+      </CheckboxGroup>{" "}
+      <MultiSelect
+        data={tagsSelect}
+        label="Tags"
+        onChange={(e) => handleTags(e)}
+        description="Choisis un ou plusieurs Tags pour identifier ta recette"
+        maxDropdownHeight={160}
+        required
+      />
       <div className={classes.button}>
         {submitted ? (
           <p>Ajouté!</p>

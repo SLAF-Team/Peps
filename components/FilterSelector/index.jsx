@@ -2,7 +2,11 @@ import React from "react";
 import styles from "./FilterSelector.module.css";
 import Image from "next/image";
 
-const FilterSelector = ({ left, handleClickRight }) => {
+const FilterSelector = ({ left, handleSelect }) => {
+	const handleSelection = (e) => {
+		handleSelect(e.target.value);
+	};
+
 	return (
 		<div className={styles.selector}>
 			<div>
@@ -11,11 +15,11 @@ const FilterSelector = ({ left, handleClickRight }) => {
 				</p>
 			</div>
 			<div>
-				<p className={styles.selectorText} onClick={handleClickRight}>
+				<p className={styles.selectorText}>
 					Filtrer :&nbsp;
-					<select name="filter">
-						<option>Likes</option>
-						<option>Commentaires</option>
+					<select name="filter" onChange={handleSelection}>
+						<option value="like">Likes</option>
+						<option value="comment">Commentaires</option>
 					</select>
 				</p>
 			</div>
