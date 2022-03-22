@@ -34,6 +34,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
     );
     setSubmitted(true);
   }
+  
 
   return (
     <div>
