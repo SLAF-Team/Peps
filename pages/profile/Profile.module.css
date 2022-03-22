@@ -1,6 +1,6 @@
 .listCards {
   width: 100%;
-  height: 90px;
+  height: 92px;
   border-bottom: 0.5px solid black;
   cursor: pointer;
 }
@@ -12,13 +12,12 @@
 }
 
 .avatar {
-  height: 5rem;
-  width: 5rem;
   background-color: black;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 2rem;
 }
 
 .letter {
@@ -33,5 +32,5 @@
 }
 
 .center {
-text-align: center;
+  text-align: center;
 }
