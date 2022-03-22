@@ -11,13 +11,9 @@
 .select {
   width: 100%;
   height: 48px;
-  left: 21px;
-  top: 266px;
-
-  /* White */
-
-  background: #ffffff;
-  /* Black */
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 16px;
 
   border: 1px solid #000000;
   box-sizing: border-box;
@@ -25,15 +21,11 @@
 }
 
 .input {
-  width: 333px;
+  width: 100%;
   height: 48px;
-  left: 21px;
-  top: 366px;
-
-  /* White */
-
-  background: #ffffff;
-  /* Black */
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 16px;
 
   border: 1px solid #000000;
   box-sizing: border-box;
@@ -75,7 +67,7 @@
 .selector {
   width: 100%;
   display: flex;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #324376;
   margin-top: 1rem;
 }
 
@@ -86,6 +78,11 @@
   font-weight: 400;
 }
 
+.input:focus-visible,
+.select:focus-visible {
+  outline: #324376 auto 1px;
+}
+
 .field {
 }
 
@@ -93,6 +90,10 @@
 }
 
 .ingredientform {
+  width: 100%;
+  margin-bottom: 30px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 .stepsform {
@@ -116,13 +117,6 @@
   .select {
     width: 100%;
     height: 48px;
-    left: 21px;
-    top: 266px;
-
-    /* White */
-
-    background: #ffffff;
-    /* Black */
 
     border: 1px solid #000000;
     box-sizing: border-box;
@@ -130,7 +124,7 @@
   }
 
   .input {
-    width: 333px;
+    width: 100%;
     height: 48px;
     left: 21px;
     top: 366px;
@@ -143,6 +137,11 @@
     border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 2px;
+  }
+
+  .input:focus-visible,
+  .select:focus-visible {
+    outline: #324376 auto 1px;
   }
 
   .form {
@@ -168,7 +167,9 @@
   }
 
   .button {
-    margin-top: 20px;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    text-align: right;
   }
 
   .field {

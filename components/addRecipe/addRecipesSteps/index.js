@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import classes from "./AddRecipesSteps.module.css";
+import Button from "../../Button";
 
 const AddRecipesSteps = ({ recipe }) => {
   const formRef = useRef();
@@ -23,17 +25,19 @@ const AddRecipesSteps = ({ recipe }) => {
   }
 
   return (
-    <div>
+    <div className={classes.block}>
       <form ref={formRef}>
         <input
           type="text"
           name="addSteps"
-          size="40"
-          placeholder="indique ici tes étapes"
+          placeholder="Indiquez ici les étapes"
+          className={classes.input}
         />
-        <button disabled={disable} onClick={() => addRecipeSteps()}>
-          Ajouter mes étapes
-        </button>
+        <Button
+          label="Valider l'étape"
+          handleClick={() => addRecipeSteps()}
+          href=""
+        />
       </form>
     </div>
   );
