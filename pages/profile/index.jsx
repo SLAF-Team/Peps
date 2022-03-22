@@ -16,6 +16,7 @@ const Profile = ({ recipes, lists }) => {
   const [style, setStyle] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
+  console.log(lists[0].updatedAt);
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -56,44 +57,52 @@ const Profile = ({ recipes, lists }) => {
         handleClickRight={handleClickRight}
         style={style}
       />
-      <div className={styles.cards}>
-        <div className="row">
-          {!contribution ? (
-            recipesFromUser?.map((recipe, index) => (
+      {!contribution ? (
+        <div className={styles.cards}>
+          <div className="row">
+            {recipesFromUser?.map((recipe, index) => (
               <RecipeCard recipe={recipe} key={index} col="col-3" />
-            ))
-          ) : (
-            <>
-              <div className={styles.center}>
-                <AddList
-                  user={user}
-                  setSubmitted={setSubmitted}
-                />
-              </div>
-              {listsFromUser?.map((list) => (
-                <>
-                  <Link href={"/lists/" + list.id} exact>
-                    <div className={styles.listCards}>
-                      <div className="row">
-                        <div className="col-2">
-                          <div className={styles.avatar}>
-                            <span className={styles.letter}>
-                              {list?.name[0].toUpperCase()}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="col-10">
-                          <p>{list.name}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </>
-              ))}
-            </>
-          )}
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {listsFromUser?.map((list) => (
+            <div className="row">
+              <div className={styles.listCards}>
+                <Link href={"/lists/" + list.id} exact>
+                  <div className="col-2 col-4-sm">
+                    <div className={styles.avatar}>
+                      <span className={styles.letter}>
+                        {list?.name[0].toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+                <Link href={"/lists/" + list.id} exact>
+                  <div
+                    className="col-6 col-4-sm"
+                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                  >
+                    <p>{list.name}</p>
+                  </div>
+                </Link>
+                <Link href={"/lists/" + list.id} exact>
+                  <div
+                    className="col-4 col-4-sm"
+                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                  >
+                    <p>Mis à jour le {list.name}</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          ))}
+          <div className={styles.center}>
+            <AddList user={user} setSubmitted={setSubmitted} />
+          </div>
+        </>
+      )}
     </>
   );
 };

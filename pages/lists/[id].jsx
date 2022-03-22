@@ -21,6 +21,7 @@ const Profile = ({ recipes, listId }) => {
 
   const handleSelect = (event) => {
     setFilter(event);
+    console.log(recipes[0].lists.filter((list) => list.id == listId)[0]);
   };
 
   // async function getSearchedRecipes(filter) {
@@ -38,7 +39,7 @@ const Profile = ({ recipes, listId }) => {
   return (
     <>
       <UserList
-        user={recipes[0].lists.filter((list) => list.id == listId)[0].user}
+        user={recipes[0].lists.filter((list) => list.id == listId)[0]}
         color="#26c485"
       />
       <FilterSelector left={recipes.length} handleSelect={handleSelect} />
@@ -68,7 +69,11 @@ export async function getServerSideProps(context) {
     },
     include: {
       lists: {
-        select: { id: true, user: { select: { name: true, email: true } } },
+        select: {
+          id: true,
+          name: true,
+          user: { select: { name: true, email: true } },
+        },
       },
       _count: { select: { likes: true } },
       _count: { select: { comments: true } },
