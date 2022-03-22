@@ -9,6 +9,11 @@ import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import { useEffect } from "react";
 import { useCallback } from "react";
+import ListList from "../../components/List/ListsList";
+import ListForm from "../../components/List/ListForm";
+import { Tabs } from "@mantine/core";
+import Layout from "../../components/layout";
+// import NestedLayout from '../components/NestedLayout'
 
 
 const SelectedRecipe = () => {
@@ -117,7 +122,7 @@ const SelectedRecipe = () => {
         </div>
         <div className={classes.detailscontainer}>
           <h3 className={classes.h3}>Listes</h3>
-          <ListForm lists={lists} recipe={recipe} />
+          <ListForm lists={recipe.lists} recipe={recipe} />
         </div>
         <button onClick={deleteRecipe}>Supprimer</button>
         <div className={classes.detailscontainer}></div>
