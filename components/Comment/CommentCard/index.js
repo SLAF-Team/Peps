@@ -26,8 +26,15 @@ const CommentCard = ({ comment }) => {
 
   return (
     <div>
-      <h3>{comment.user?.name}</h3>
-      <p>{comment.text}</p>
+      <div className={classes.modulecontainer}>
+        <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
+          <span className={classes.letter}>{user?.name[0].toUpperCase()}</span>
+        </div>
+        <div className={classes.textcontainer}>
+          <p className={classes.commentauthor}>{comment.user?.name}</p>
+          <p className={classes.commentauthor}>{comment.text}</p>
+        </div>
+      </div>
       {isAuthor && (
         <div className={classes.detailscontainer}>
           <div className={classes.editcontainer}>
@@ -38,6 +45,14 @@ const CommentCard = ({ comment }) => {
               href="#"
               className={classes.button}
             />
+            <br></br>
+            {/* <Button
+              label="Editer"
+              type="warning"
+              handleClick={() => editComment()}
+              href="#"
+              className={classes.button}
+            /> */}
           </div>
         </div>
       )}

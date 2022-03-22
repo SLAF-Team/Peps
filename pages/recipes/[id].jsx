@@ -10,6 +10,9 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListList from "../../components/List/ListsList";
 import ListsForm from "../../components/List/ListForm";
 import { Tabs } from "@mantine/core";
+import Layout from "../../components/layout";
+// import NestedLayout from '../components/NestedLayout'
+
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -81,7 +84,6 @@ const SelectedRecipe = () => {
     <div style={{ margin: "20px" }} className={classes.maincontainer}>
       <div className={classes.leftcontainer}>
         <img src={recipe.imageUrl} className={classes.mainImage} />
-        <div className={classes.mobileImage}></div>
         <div className={classes.titlecontainer}>
           <h1 className={classes.h1}>{recipe.name}</h1>
         </div>
@@ -116,9 +118,9 @@ const SelectedRecipe = () => {
           <p>Etapes: {recipe.steps}</p>
         </div>
         <div className={classes.commentcontainer}>
-          <h3>{recipe?.comments.length} Commentaires</h3>
-          {recipe?.comments && <CommentsList comments={recipe.comments} />}
+          <h1 className={classes.h1}>{recipe?.comments.length} Commentaires</h1>
           <CommentForm user={user} recipe={recipe} />
+          {recipe?.comments && <CommentsList comments={recipe.comments} />}
         </div>
       </div>
       <div className={classes.rightcontainer}>
@@ -144,9 +146,9 @@ const SelectedRecipe = () => {
           </ul>
         </div>
         <div className={classes.detailscontainer}>
-          <h3 className={classes.h3}>Listes</h3>
-          <ListList lists={recipe.lists} />
-          <ListsForm lists={recipe.lists} recipe={recipe} />
+          <h1 className={classes.h1}>Listes</h1>
+            <ListList lists={recipe.lists} />
+            <ListsForm lists={recipe.lists} recipe={recipe} />
         </div>
         {isAuthor && (
           <div className={classes.editcontainer}>
@@ -169,7 +171,7 @@ const SelectedRecipe = () => {
           </div>
         )}
       </div>
-      <form onSubmit={editRecipe}>
+      <form>
         <label>Name</label> <br />
         <input
           name="recipeName"
@@ -191,5 +193,14 @@ const SelectedRecipe = () => {
     </div>
   );
 };
+
+
+// SelectedRecipe.getLayout = function getLayout(page) {
+//   return (
+//     <Layout>
+//       <NestedLayout>{page}</NestedLayout>
+//     </Layout>
+//   )
+// }
 
 export default SelectedRecipe;
