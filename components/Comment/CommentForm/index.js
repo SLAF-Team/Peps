@@ -19,20 +19,29 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
   async function addComment(params) {
     const { addText } = formRef.current;
     const text = addText.value;
-    await axios.post(
-      "/api/comment/addComment",
-      {
-        recipeId: recipe.id,
-        userId: user.id,
-        text,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setSubmitted(true);
-    notifications.showNotification({
-      title: "Bravo!",
-      message: "Votre commentaire a été publié avec succès",
-    });
+    if (!text) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Votre commentaire ne peut être vide.",
+        color: "red"
+      });
+    } else {
+      await axios.post(
+        "/api/comment/addComment",
+        {
+          recipeId: recipe.id,
+          userId: user.id,
+          text,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSubmitted(true);
+      notifications.showNotification({
+        title: "Bravo!",
+        message: "Votre commentaire a été publié avec succès",
+        color: "green",
+      });
+    }
   }
 
   return (
@@ -53,12 +62,12 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
           <br></br>
           <input className={classes.input_small} name="addText" type="text" />
           <div className={classes.button}>
-              <Button
-                label="Commenter"
-                type="alert"
-                handleClick={() => addComment()}
-                href="#"
-              />
+            <Button
+              label="Commenter"
+              type="alert"
+              handleClick={() => addComment()}
+              href="#"
+            />
           </div>
         </div>
       </div>
