@@ -36,10 +36,11 @@ const SignUp = () => {
     });
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user);
-    router.push("/");
+    router.push("/profile");
   }
 
   // Handling the form submission + fetch data + update state
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -56,7 +57,7 @@ const SignUp = () => {
         <input
           id="name"
           type="text"
-          onChange={handleEmail}
+          onChange={handleName}
           className={styles.field}
           placeholder="Nom d'utilisateur"
         />
