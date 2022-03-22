@@ -12,8 +12,8 @@ import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
 import { Tabs } from "@mantine/core";
 import Layout from "../../components/layout";
+import { Modal } from "@mantine/core";
 // import NestedLayout from '../components/NestedLayout'
-
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -23,7 +23,7 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-
+  const [opened, setOpened] = useState(false);
 
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
@@ -47,6 +47,7 @@ const SelectedRecipe = () => {
 
   const editRecipe = async (event) => {
     event.preventDefault();
+
     await axios.put(
       "/api/recipe/editRecipe",
       {
@@ -65,6 +66,10 @@ const SelectedRecipe = () => {
 
   const handleDescription = (e) => {
     setDescriptionChange(e.target.value);
+  };
+
+  const handleClick = () => {
+    setOpened(true);
   };
 
   async function deleteRecipe() {
@@ -151,8 +156,6 @@ const SelectedRecipe = () => {
           <h3 className={classes.h3}>Listes</h3>
           <ListForm lists={recipe.lists} recipe={recipe} />
         </div>
-        <button onClick={deleteRecipe}>Supprimer</button>
-        <div className={classes.detailscontainer}></div>
         <div className={classes.editcontainer}>
           <br></br>
           <Button
@@ -166,51 +169,36 @@ const SelectedRecipe = () => {
           <Button
             label="Editer"
             type="warning"
-            handleClick={() => editRecipe()}
+            handleClick={() => handleClick()}
             href="#"
             className={classes.button}
           />
         </div>
-        {isAuthor && (
-          <div className={classes.editcontainer}>
-            <br></br>
-            <Button
-              label="Supprimer"
-              type="danger"
-              handleClick={() => deleteRecipe()}
-              href="#"
-              className={classes.button}
-            />
-            <br></br>
-            <Button
-              label="Editer"
-              type="warning"
-              handleClick={() => editRecipe()}
-              href="#"
-              className={classes.button}
-            />
-          </div>
-        )}
       </div>
-      <form>
-        <label>Name</label> <br />
-        <input
-          name="recipeName"
-          type="text"
-          defaultValue={recipe.name}
-          onChange={handleName}
-        />
-        <br />
-        <label>Description</label>
-        <textarea
-          name="recipeDescription"
-          type="text"
-          style={{ width: "100%", height: "100px" }}
-          defaultValue={recipe.description}
-          onChange={handleDescription}
-        />
-        <button type="submit">J'édite</button>
-      </form>
+
+
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form onSubmit={editRecipe}>
+          <label>Name</label> <br />
+          <input
+            name="recipeName"
+            type="text"
+            defaultValue={recipe.name}
+            onChange={handleName}
+          />
+          <br />
+          <label>Description</label>
+          <textarea
+            name="recipeDescription"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.description}
+            onChange={handleDescription}
+          />
+          <button type="submit">J'édite</button>
+        </form>
+      </Modal>
+
     </div>
   );
 };
