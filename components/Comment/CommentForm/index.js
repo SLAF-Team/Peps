@@ -29,21 +29,26 @@ const CommentForm = ({ user, recipe }) => {
   return (
     <form className={classes.form} ref={formRef}>
       <div className={classes.setups_small}>
-        <div className={classes.setup_small}>
-          <label>Commentaire</label>
-          <input className={classes.input_small} name="addText" type="text" />
+        <div className={classes.profilepic}>
+          <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
+            <span className={classes.letter}>{user?.name[0].toUpperCase()}</span>
+          </div>
         </div>
-        <div className={classes.button}>
-          {submitted ? (
-            <p>Ajouté!</p>
-          ) : (
-            <Button
-              label="Commenter"
-              type="success"
-              handleClick={() => addComment()}
-              href="#"
-            />
-          )}
+        <div className={classes.setup_small}>
+          <label className={classes.label}>Commentaire</label><br></br>
+          <input className={classes.input_small} name="addText" type="text" />
+          <div className={classes.button}>
+            {submitted ? (
+              <p>Ajouté!</p>
+            ) : (
+              <Button
+                label="Commenter"
+                type="alert"
+                handleClick={() => addComment()}
+                href="#"
+              />
+            )}
+          </div>
         </div>
       </div>
     </form>
