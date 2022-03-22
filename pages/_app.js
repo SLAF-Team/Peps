@@ -22,9 +22,6 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     getUser();
   }, [token]);
-
-  console.log("user from app")
-  console.log(user)
   
   return (
     <UserContext.Provider value={{ user, setUser }}>
