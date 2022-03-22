@@ -4,24 +4,20 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
+import { axios } from "axios";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState([]);
   const [filterCountry, setFilterCountry] = useState([]);
   const [filterType, setFilterType] = useState([]);
-
   const [filterIngredient, setFilterIngredient] = useState([]);
-
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
+
+  console.log("filters");
+  console.log(filterTag + filterCountry + filterType + filterIngredient);
 
   useEffect(() => {
     const data = {
-      include: {
-        cook: { select: { email: true, name: true, id: true } },
-        tags: { select: { id: true } },
-        _count: { select: { likes: true } },
-        _count: { select: { comments: true } },
-      },
       where: {
         AND: [
           {
@@ -30,14 +26,20 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           {
             typeId: { in: filterType },
           },
+          {
+            tags: { where: { id: { in: filterTag } } },
+          },
         ],
+      },
+      include: {
+        cook: { select: { email: true, name: true, id: true } },
+        tags: { select: { id: true } },
+        _count: { select: { likes: true } },
+        _count: { select: { comments: true } },
       },
     };
     setFilterRecipes(getRecipes(data));
-  }, [filterTag, filterCountry]);
-
-  console.log(filterTag);
-  console.log(filterCountry);
+  }, [filterTag, filterCountry, filterType]);
 
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
@@ -57,10 +59,10 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
   const getRecipes = async (data) => {
     try {
-      const result = await axios.get(`/api/recipe/getRecipes`, {
-        data,
+      const result = await axios.get(`/api/recipe/searchRecipes`, {
+        ...data,
       });
-      console.log(data);
+      console.log(result);
     } catch (err) {
       console.log("error");
     }
