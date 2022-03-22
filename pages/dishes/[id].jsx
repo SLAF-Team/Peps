@@ -2,17 +2,41 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import prisma from "../../lib/prisma.ts";
 import axios from "axios";
 import Button from "../../components/Button";
+import { useEffect } from "react";
 
-const SelectedDish = ({ dish }) => {
+const SelectedDish = () => {
   const token = Cookies.get("token");
   const router = useRouter();
+  const { id } = router.query;
+  const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+  
 
-  async function editDish() {
+  const getDish = async () => {
+    if (!id) {
+      return;
+    }
+    try {
+      const result = await axios.get(
+        `/api/dish/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      setDish(result.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getDish();
+  }, [id]);
+
+  async function editDish(event) {
+    event.preventDefault()
     await axios.put(
       "/api/dish/editDish",
       {
@@ -22,6 +46,7 @@ const SelectedDish = ({ dish }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    getDish()
   }
 
   async function deleteDish() {
@@ -41,6 +66,11 @@ const SelectedDish = ({ dish }) => {
     setDescriptionChange(e.target.value);
   };
 
+
+  if (!dish) {
+    return null;
+  }
+
   return (
     <>
       <h2>Titre : </h2>
@@ -49,12 +79,12 @@ const SelectedDish = ({ dish }) => {
       {dish?.description}
       <br />
       <h3>Ce plat nous vient de {dish?.region.name}</h3>
-      <form>
+      <form onSubmit={editDish}>
         <label>Title</label> <br />
         <input
           name="dishTitle"
           type="text"
-          defaultValue={dish.title}
+          defaultValue={dish?.title}
           onChange={handleTitle}
         />
         <br />
@@ -63,10 +93,10 @@ const SelectedDish = ({ dish }) => {
           name="recipekDescription"
           type="text"
           style={{ width: "100%", height: "100px" }}
-          defaultValue={dish.description}
+          defaultValue={dish?.description}
           onChange={handleDescription}
         />
-        <button type="submit" onClick={editDish}>
+        <button type="submit">
           J'édite
         </button>
       </form>
@@ -93,20 +123,20 @@ const SelectedDish = ({ dish }) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const dish = await prisma.dish.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      recipes: true,
-      region: { select: { name: true } },
-    },
-  });
-  return {
-    props: {
-      dish,
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const { id } = context.params;
+//   const dish = await prisma.dish.findUnique({
+//     where: { id: parseInt(id) },
+//     include: {
+//       recipes: true,
+//       region: { select: { name: true } },
+//     },
+//   });
+//   return {
+//     props: {
+//       dish,
+//     },
+//   };
+// }
 
 export default SelectedDish;

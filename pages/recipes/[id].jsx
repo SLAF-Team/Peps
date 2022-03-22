@@ -7,8 +7,9 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
+import { useCallback } from "react";
 import ListList from "../../components/List/ListsList";
-import ListsForm from "../../components/List/ListForm";
+import ListForm from "../../components/List/ListForm";
 import { Tabs } from "@mantine/core";
 import Layout from "../../components/layout";
 // import NestedLayout from '../components/NestedLayout'
@@ -22,6 +23,7 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+
 
   const isAuthor = recipe?.cookId == user?.id ? true : false;
 
@@ -146,9 +148,28 @@ const SelectedRecipe = () => {
           </ul>
         </div>
         <div className={classes.detailscontainer}>
-          <h1 className={classes.h1}>Listes</h1>
-            <ListList lists={recipe.lists} />
-            <ListsForm lists={recipe.lists} recipe={recipe} />
+          <h3 className={classes.h3}>Listes</h3>
+          <ListForm lists={recipe.lists} recipe={recipe} />
+        </div>
+        <button onClick={deleteRecipe}>Supprimer</button>
+        <div className={classes.detailscontainer}></div>
+        <div className={classes.editcontainer}>
+          <br></br>
+          <Button
+            label="Supprimer"
+            type="danger"
+            handleClick={() => deleteRecipe()}
+            href="#"
+            className={classes.button}
+          />
+          <br></br>
+          <Button
+            label="Editer"
+            type="warning"
+            handleClick={() => editRecipe()}
+            href="#"
+            className={classes.button}
+          />
         </div>
         {isAuthor && (
           <div className={classes.editcontainer}>
@@ -193,14 +214,5 @@ const SelectedRecipe = () => {
     </div>
   );
 };
-
-
-// SelectedRecipe.getLayout = function getLayout(page) {
-//   return (
-//     <Layout>
-//       <NestedLayout>{page}</NestedLayout>
-//     </Layout>
-//   )
-// }
 
 export default SelectedRecipe;
