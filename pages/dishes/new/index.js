@@ -6,13 +6,17 @@ import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
 import { checkAdminAuth, checkLogAuth } from "../../../lib/authfront";
+import { useNotifications } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 const newDish = ({ regions }) => {
+  const router = useRouter();
   const { user } = useUserContext();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
   const [auth, setAuth] = useState(false);
+  const notifications = useNotifications();
 
   useEffect(() => {
     if (checkAdminAuth(user) && checkLogAuth(user)) setAuth(true);
@@ -24,16 +28,30 @@ const newDish = ({ regions }) => {
     const title = addTitle.value;
     const description = addDescription.value;
     const region = addRegion.value;
-    await axios.post(
-      "/api/dish/addDish",
-      {
-        title: title,
-        description: description,
-        regionId: parseInt(region),
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setDisable(false);
+    if (!title || !description) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Titre ou description vide.",
+        color: "red",
+      });
+    } else {
+      await axios.post(
+        "/api/dish/addDish",
+        {
+          title: title,
+          description: description,
+          regionId: parseInt(region),
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setDisable(false);
+      notifications.showNotification({
+        title: "Bravo!",
+        message: "Votre recette a été publiée avec succès",
+        color: "green",
+      });
+      router.push("/dishes");
+    }
   }
 
   if (auth) {
@@ -77,7 +95,7 @@ const newDish = ({ regions }) => {
         <b>
           <a href="/login/">connecter</a>
         </b>{" "}
-        pour écrire un commentaire
+        pour créer un plat
       </p>
     );
   }
