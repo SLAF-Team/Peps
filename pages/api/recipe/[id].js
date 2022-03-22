@@ -6,7 +6,7 @@ export default async (req, res) => {
     const result = await prisma.recipe.findUnique({
       where: { id: parseInt(id, 10) },
       include: {
-        dish: { select: { title: true } },
+        dish: { select: { title: true, id: true } },
         cook: { select: { name: true } },
         likes: true,
         comments: {
