@@ -7,9 +7,7 @@ export default async (req, res) => {
     res.status(403).json({ err: "Forbidden" });
     return;
   }
-
   const data = req.body;
-  console.log(data);
   try {
     const list = await prisma.list.create({
       data: {

@@ -24,9 +24,6 @@ function MyApp({ Component, pageProps }) {
     getUser();
   }, [token]);
 
-  console.log("user from app");
-  console.log(user);
-
   return (
     <MantineProvider theme={{
       colors: {
