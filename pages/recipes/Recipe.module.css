@@ -125,14 +125,13 @@
     display: flex;
     flex-direction: column;
     margin: 20px;
-
   }
 
   .leftcontainer {
     display: flex;
     flex-direction: column;
     max-width: 100%;
-    margin-top: 110px;
+    margin-top: 170px;
     height: 100%;
   }
 
@@ -204,7 +203,6 @@
     align-items: baseline;
     justify-content: space-between;
     border-bottom: 1px;
-
   }
 
   .dishtitle {
@@ -262,5 +260,4 @@
   .ingredientcontainer {
     display: none;
   }
-
 }

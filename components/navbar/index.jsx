@@ -23,46 +23,53 @@ const NavBar = () => {
   };
 
   return (
-    <div className={styles.navbar}>
-      <div>
-        <Link href="/" exact>
-          <span className={styles.brand}>Cookogs</span>
-        </Link>
+    <>
+
+      <div className={styles.navbar}>
+        <div>
+          <Link href="/" exact>
+            <span className={styles.brand}>Cookogs</span>
+          </Link>
+        </div>
+        <div className={styles.right}>
+          <SearchBar placeholder="Chercher une recette" />
+          {!user ? (
+            <>
+              <div className={styles.btnResponsive}>
+                <Button label="Connexion" href="/login" type="warning" />
+              </div>
+              <div className={styles.burgerResponsive}>
+                <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
+              </div>
+            </>
+          ) : (
+            <Menu
+              className={styles.burger}
+              sx={(theme) => ({
+                backgroundColor: "#FFD12F",
+                borderRadius: "4px",
+                "&:hover": {
+                  backgroundColor: theme.fn.darken("#FFD12F", 0.05),
+                },
+              })}
+            >
+              <Menu.Label>Profil</Menu.Label>
+              <Menu.Item component={NextLink} href="/profile">
+                Mon Profil
+              </Menu.Item>
+              <Menu.Item>Mes Listes</Menu.Item>
+              <Menu.Item color="red" onClick={() => handleClick()}>
+                Déconnexion
+              </Menu.Item>
+            </Menu>
+          )}
+        </div>
       </div>
-      <div className={styles.right}>
-        <SearchBar placeholder="Chercher une recette" />
-        {!user ? (
-          <>
-            <div className={styles.btnResponsive}>
-              <Button label="Connexion" href="/login" type="warning" />
-            </div>
-            <div className={styles.burgerResponsive}>
-              <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
-            </div>
-          </>
-        ) : (
-          <Menu
-            className={styles.burger}
-            sx={(theme) => ({
-              backgroundColor: "#FFD12F",
-              borderRadius: "4px",
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFD12F", 0.05),
-              },
-            })}
-          >
-            <Menu.Label>Profil</Menu.Label>
-            <Menu.Item component={NextLink} href="/profile">
-              Mon Profil
-            </Menu.Item>
-            <Menu.Item>Mes Listes</Menu.Item>
-            <Menu.Item color="red" onClick={() => handleClick()}>
-              Déconnexion
-            </Menu.Item>
-          </Menu>
-        )}
-      </div>
-    </div>
+
+
+    </>
+
+
   );
 };
 
