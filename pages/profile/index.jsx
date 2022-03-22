@@ -1,17 +1,32 @@
 import { useUserContext } from "../../context/UserContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
 import prisma from "../../lib/prisma.ts";
 import Selector from "../../components/Selector";
 import AddList from "../../components/List/AddList";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Profile = ({ recipes, lists }) => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const token = Cookies.get("token");
+
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUser(result.data.user);
+  }
+
+  useEffect(() => {
+    getUser();
+  }, [submitted]);
 
   const handleClickLeft = () => {
     setContribution(false);
@@ -50,7 +65,10 @@ const Profile = ({ recipes, lists }) => {
           ) : (
             <>
               <div className={styles.center}>
-                <AddList user={user} />
+                <AddList
+                  user={user}
+                  setSubmitted={setSubmitted}
+                />
               </div>
               {listsFromUser?.map((list) => (
                 <>
