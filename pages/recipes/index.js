@@ -4,40 +4,14 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
+import axios from "axios";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState([]);
   const [filterCountry, setFilterCountry] = useState([]);
   const [filterType, setFilterType] = useState([]);
-
   const [filterIngredient, setFilterIngredient] = useState([]);
-
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
-
-  useEffect(() => {
-    const data = {
-      include: {
-        cook: { select: { email: true, name: true, id: true } },
-        tags: { select: { id: true } },
-        _count: { select: { likes: true } },
-        _count: { select: { comments: true } },
-      },
-      where: {
-        AND: [
-          {
-            countryId: { in: filterCountry },
-          },
-          {
-            typeId: { in: filterType },
-          },
-        ],
-      },
-    };
-    setFilterRecipes(getRecipes(data));
-  }, [filterTag, filterCountry]);
-
-  console.log(filterTag);
-  console.log(filterCountry);
 
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
@@ -55,78 +29,38 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
+  useEffect(() => {
+    if (!filterTag && !filterCountry && !filterType && !filterIngredient) {
+      setFilterRecipes(recipes);
+    }
+    const data = {
+      where: {
+        countryId: {
+          in: filterCountry,
+        },
+        typeId: {
+          in: filterType,
+        },
+        tags: {
+          some: {id: { in: filterTag } },
+          },
+      },
+    };
+    getRecipes(data);
+  }, [filterTag, filterCountry, filterType]);
+
   const getRecipes = async (data) => {
     try {
-      const result = await axios.get(`/api/recipe/getRecipes`, {
-        data,
+      const result = await axios.post(`/api/recipe/searchRecipes`, {
+        ...data,
       });
-      console.log(data);
+      console.log("résultat CALL API");
+      console.log(result.data);
+      // setFilterRecipes(result.data);
     } catch (err) {
       console.log("error");
     }
   };
-
-  //   include: {
-  // cook: { select: { email: true, name: true, id: true } },
-  // tags: { select: { id: true } },
-  // _count: { select: { likes: true } },
-  // _count: { select: { comments: true } },
-
-  // const [showAddShackModal, setShowAddShackModal] = useState(false);
-  // const [filter, setFilter] = useState("");
-  // const [shacks, setShacks] = useState(props.shacks);
-
-  // const handleFilter = (e) => {
-  //   setFilter(e.target.value);
-  // };
-
-  // async function getSearchedShacks(filter) {
-  //   const result = await axios.post("/api/shack/searchShacks", {
-  //     filter,
-  //   });
-  //   setShacks(result.data);
-  // }
-
-  // useEffect(() => {
-  //   getSearchedShacks(filter);
-  // }, [filter]);
-
-  //           import prisma from "../../../lib/prisma.ts";
-
-  // export default async (req, res) => {
-  //   const data = req.body.filter;
-
-  //   try {
-  //     const result = await prisma.cabane.findMany(
-  // {
-  //   where: {
-  //     OR: [
-  //       {
-  //         description: {
-  //           contains: data,
-  //           mode: "insensitive",
-  //         },
-  //       },
-  //       {
-  //         title: {
-  //           contains: data,
-  //           mode: "insensitive",
-  //         },
-  //       },
-  //     ],
-  //   },
-  // },
-  // {
-  //   orderBy: {
-  //     createdAt: "asc",
-  //   },
-  // }
-  //     );
-  //     res.status(200).json(result);
-  //   } catch (err) {
-  //     res.status(400).json({ err: "Error while searching shacks." });
-  //   }
-  // };
 
   return (
     <div className={classes.margin}>
@@ -155,8 +89,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           onChange={setFilterIngredient}
           placeholder="ingrédients"
         />
-        {recipes &&
-          recipes.map((recipe, i) => (
+        {filteredRecipes &&
+          filteredRecipes.map((recipe, i) => (
             <RecipeCard recipe={recipe} key={i} col="col-3" />
           ))}
       </div>
