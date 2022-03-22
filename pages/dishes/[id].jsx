@@ -13,18 +13,17 @@ const SelectedDish = () => {
   const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  
 
   const getDish = async () => {
-    if (!id) {
-      return;
-    }
     try {
       const result = await axios.get(
         `/api/dish/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         });
+                console.log("result");
+
+        console.log(result)
       setDish(result.data);
     } catch (err) {
       console.log(err);
@@ -34,6 +33,8 @@ const SelectedDish = () => {
   useEffect(() => {
     getDish();
   }, [id]);
+  console.log(id)
+    console.log(dish);
 
   async function editDish(event) {
     event.preventDefault()
