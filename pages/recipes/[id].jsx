@@ -7,7 +7,6 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import { useEffect } from "react";
 import { useCallback } from "react";
 import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
@@ -24,6 +23,9 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
+
+
+  const isAuthor = recipe?.cookId == user?.id ? true : false;
 
   const getRecipe = async () => {
     if (!id) {
