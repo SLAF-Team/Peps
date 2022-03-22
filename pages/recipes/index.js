@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import { axios } from "axios";
+import axios from "axios";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState([]);
@@ -13,8 +13,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
-  console.log("filters");
   console.log(filterTag + filterCountry + filterType + filterIngredient);
+  console.log(filteredRecipes);
 
   useEffect(() => {
     const data = {
@@ -38,7 +38,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         _count: { select: { comments: true } },
       },
     };
-    setFilterRecipes(getRecipes(data));
+    getRecipes();
   }, [filterTag, filterCountry, filterType]);
 
   const dataTags = [];
@@ -57,78 +57,53 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
+  async function addNewList(params) {
+    const { addName } = formRef.current;
+    const name = addName.value;
+    await axios.post(
+      "/api/list/addList",
+      {
+        userId: user.id,
+        name,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setSubmitted(true);
+  }
+
+        const result = await axios.get(`/api/recipe/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
   const getRecipes = async (data) => {
     try {
       const result = await axios.get(`/api/recipe/searchRecipes`, {
-        ...data,
-      });
-      console.log(result);
+          where: {
+            AND: [
+              {
+                countryId: { in: filterCountry },
+              },
+              {
+                typeId: { in: filterType },
+              },
+              {
+                tags: { where: { id: { in: filterTag } } },
+              },
+            ],
+          },
+          include: {
+            cook: { select: { email: true, name: true, id: true } },
+            tags: { select: { id: true } },
+            _count: { select: { likes: true } },
+            _count: { select: { comments: true } },
+          },
+        },
+      );
+      console.log(result.data);
     } catch (err) {
       console.log("error");
+      console.log(err);
     }
   };
-
-  //   include: {
-  // cook: { select: { email: true, name: true, id: true } },
-  // tags: { select: { id: true } },
-  // _count: { select: { likes: true } },
-  // _count: { select: { comments: true } },
-
-  // const [showAddShackModal, setShowAddShackModal] = useState(false);
-  // const [filter, setFilter] = useState("");
-  // const [shacks, setShacks] = useState(props.shacks);
-
-  // const handleFilter = (e) => {
-  //   setFilter(e.target.value);
-  // };
-
-  // async function getSearchedShacks(filter) {
-  //   const result = await axios.post("/api/shack/searchShacks", {
-  //     filter,
-  //   });
-  //   setShacks(result.data);
-  // }
-
-  // useEffect(() => {
-  //   getSearchedShacks(filter);
-  // }, [filter]);
-
-  //           import prisma from "../../../lib/prisma.ts";
-
-  // export default async (req, res) => {
-  //   const data = req.body.filter;
-
-  //   try {
-  //     const result = await prisma.cabane.findMany(
-  // {
-  //   where: {
-  //     OR: [
-  //       {
-  //         description: {
-  //           contains: data,
-  //           mode: "insensitive",
-  //         },
-  //       },
-  //       {
-  //         title: {
-  //           contains: data,
-  //           mode: "insensitive",
-  //         },
-  //       },
-  //     ],
-  //   },
-  // },
-  // {
-  //   orderBy: {
-  //     createdAt: "asc",
-  //   },
-  // }
-  //     );
-  //     res.status(200).json(result);
-  //   } catch (err) {
-  //     res.status(400).json({ err: "Error while searching shacks." });
-  //   }
-  // };
 
   return (
     <div className={classes.margin}>
