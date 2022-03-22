@@ -34,7 +34,6 @@ const Profile = ({ recipes, lists }) => {
   return (
     <>
       <UserList user={user} color="#ffd12f" />
-      <AddList user={user} />
       <Selector
         left="MES CONTRIBUTIONS"
         right="MES LISTES"
@@ -44,11 +43,16 @@ const Profile = ({ recipes, lists }) => {
       />
       <div className={styles.cards}>
         <div className="row">
-          {!contribution
-            ? recipesFromUser?.map((recipe, index) => (
-                <RecipeCard recipe={recipe} key={index} col="col-3" />
-              ))
-            : listsFromUser?.map((list) => (
+          {!contribution ? (
+            recipesFromUser?.map((recipe, index) => (
+              <RecipeCard recipe={recipe} key={index} col="col-3" />
+            ))
+          ) : (
+            <>
+              <div className={styles.center}>
+                <AddList user={user} />
+              </div>
+              {listsFromUser?.map((list) => (
                 <>
                   <Link href={"/lists/" + list.id} exact>
                     <div className={styles.listCards}>
@@ -68,6 +72,8 @@ const Profile = ({ recipes, lists }) => {
                   </Link>
                 </>
               ))}
+            </>
+          )}
         </div>
       </div>
     </>

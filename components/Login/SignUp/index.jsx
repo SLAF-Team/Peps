@@ -38,6 +38,11 @@ const SignUp = () => {
     });
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user);
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Bienvenue sur Cookogs !",
+      color: "green",
+    });
     router.push("/profile");
   }
 

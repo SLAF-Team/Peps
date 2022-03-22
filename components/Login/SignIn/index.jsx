@@ -29,6 +29,11 @@ const SignIn = () => {
     });
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user);
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Un plaisir de vous retrouver parmi nous",
+      color: "green",
+    });
     router.push("/");
   }
 
