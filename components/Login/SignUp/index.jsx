@@ -48,7 +48,7 @@ const SignUp = () => {
     if (!email || !password) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire",
-        message: "Email ou Mot de Passe manquant",
+        message: "email ou mot de passe manquant",
         color: "red",
       });
     } else {

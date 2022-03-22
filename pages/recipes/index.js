@@ -54,9 +54,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       const result = await axios.post(`/api/recipe/searchRecipes`, {
         ...data,
       });
-      console.log("résultat CALL API");
-      console.log(result.data);
-      // setFilterRecipes(result.data);
     } catch (err) {
       console.log("error");
     }
