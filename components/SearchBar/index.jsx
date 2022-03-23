@@ -38,14 +38,17 @@ const SearchBar = ({ placeholder, handleSubmit}) => {
 		  ...data,
 		});
 		setDataSearch(result.data);
-		console.log(result.data)
 	};
 
 	useEffect(() => {
 	  getSearchedRecipe(recipeSearch);
 	}, [recipeSearch]);
 
-	console.log('recipe :' + recipeSearch)
+	// useEffect(() => {
+	// 	dataSearch?.map(element =>  {
+	// 		console.log(element.name)
+	// 	})
+	// }, [handleChange])
 
 	return (
 		<div className={styles.size}>
