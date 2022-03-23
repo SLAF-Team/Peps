@@ -71,7 +71,13 @@ const NavBar = () => {
               <Menu.Item component={NextLink} href="/profile">
                 Mon Profil
               </Menu.Item>
-              <Menu.Item>Mes Listes</Menu.Item>
+              <Menu.Item
+                component={NextLink}
+                href="/profile?list=true"
+                as="/profile"
+              >
+                Mes Listes
+              </Menu.Item>
               <Menu.Item color="red" onClick={() => handleClick()}>
                 Déconnexion
               </Menu.Item>
