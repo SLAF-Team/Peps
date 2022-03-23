@@ -12,10 +12,11 @@ import { useNotifications } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const Profile = ({ list, recipes, listId }) => {
+const Profile = ({ list }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
+  
   const notifications = useNotifications();
   const [filter, setFilter] = useState("");
   const [lists, setLists] = useState(recipes);
@@ -28,6 +29,10 @@ const Profile = ({ list, recipes, listId }) => {
     }
     router.push("/lists");
   }
+
+  console.log("authorisation");
+  console.log(list);
+  console.log(user?.id);
 
   const handleDeleteList = () => {
     //notif
@@ -52,6 +57,7 @@ const Profile = ({ list, recipes, listId }) => {
   };
 
   useEffect(() => {
+    console.log("filtre");
     console.log(filter);
     const data =
       filter === "like"
@@ -104,6 +110,8 @@ const Profile = ({ list, recipes, listId }) => {
     getRecipes(data);
   }, [filter]);
 
+  console.log(checkAuthorAuth(user, lists));
+
   return (
     <>
       <UserList
@@ -118,7 +126,7 @@ const Profile = ({ list, recipes, listId }) => {
           ))}
         </div>
       </div>
-      {checkAuthorAuth(user, list) && (
+      {checkAuthorAuth(user, lists) && (
         <>
           <Button
             label="Supprimer"
@@ -143,28 +151,22 @@ const Profile = ({ list, recipes, listId }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const allRecipes = await prisma.recipe.findMany({
-    where: {
-      lists: {
-        some: { id: parseInt(id) },
-      },
-    },
+  const List = await prisma.list.findUnique({
+    where: { id: parseInt(id) },
     include: {
-      lists: {
-        select: {
-          id: true,
-          name: true,
-          user: { select: { name: true, email: true } },
+      recipes: {
+        include: {
+          _count: { select: { likes: true } },
+          _count: { select: { comments: true } },
         },
       },
-      _count: { select: { likes: true } },
-      _count: { select: { comments: true } },
+      user: { select: { name: true } },
     },
   });
+  console.log(List)
   return {
     props: {
-      recipes: allRecipes,
-      listId: id,
+      list: List,
     },
   };
 }
