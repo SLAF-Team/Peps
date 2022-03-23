@@ -7,10 +7,7 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import { useCallback } from "react";
-import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
-import Layout from "../../components/layout";
 import {
   Modal,
   LoadingOverlay,
@@ -47,7 +44,6 @@ const SelectedRecipe = () => {
       console.log("error");
     }
   };
-  console.log(loading);
 
   useEffect(() => {
     getRecipe();
@@ -140,7 +136,7 @@ const SelectedRecipe = () => {
                 <ul>
                   {recipe?.ingredientsUnit &&
                     recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li}>
+                      <li className={classes.li} key={element.id}>
                         {element.quantity} {element.unit.name} de{" "}
                         <Anchor
                           href={"/ingredient/" + element.ingredient.id}
@@ -173,16 +169,17 @@ const SelectedRecipe = () => {
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
           <div className={classes.commentcontainer}>
-            <h1 className={classes.h1}>
-              Commenter
-            </h1>
+            <h1 className={classes.h1}>Commenter</h1>
             <CommentForm
               user={user}
               recipe={recipe}
               setSubmitted={setSubmitted}
-            /><br></br>
-            <Accordion >
-              <Accordion.Item label={"Voir les " + recipe?.comments.length + " commentaires"}>
+            />
+            <br></br>
+            <Accordion>
+              <Accordion.Item
+                label={"Voir les " + recipe?.comments.length + " commentaires"}
+              >
                 {recipe?.comments && (
                   <CommentsList comments={recipe.comments} />
                 )}
@@ -199,7 +196,7 @@ const SelectedRecipe = () => {
             <ul>
               {recipe?.ingredientsUnit &&
                 recipe?.ingredientsUnit.map((element) => (
-                  <li className={classes.li}>
+                  <li className={classes.li} key={element.id}>
                     {element.quantity} {element.unit.name} de{" "}
                     <Anchor
                       href={"/ingredient/" + element.ingredient.id}
@@ -220,7 +217,9 @@ const SelectedRecipe = () => {
             <ul>
               {recipe?.tags &&
                 recipe?.tags.map((tag) => (
-                  <li className={classes.li}>{tag.name}</li>
+                  <li className={classes.li} key={tag.id}>
+                    {tag.name}
+                  </li>
                 ))}
             </ul>
           </div>
@@ -228,7 +227,11 @@ const SelectedRecipe = () => {
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
           <div className={classes.detailscontainer}>
             <h3 className={classes.h3}>Listes</h3>
-            <ListForm lists={recipe.lists} recipe={recipe} />
+            <ListForm
+              lists={recipe.lists}
+              recipe={recipe}
+              setSubmitted={setSubmitted}
+            />
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
