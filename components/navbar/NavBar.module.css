@@ -18,6 +18,7 @@
 .right {
   display: flex;
   margin-top: 2vh;
+  align-items: center;
 }
 
 .burger {

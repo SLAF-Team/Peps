@@ -4,10 +4,12 @@ import { useState } from "react";
 import styles from "./NavBar.module.css";
 import Button from "../Button";
 import SearchBar from "../SearchBar";
+import Image from "next/image";
 import { useUserContext } from "../../context/UserContext";
 import { Menu, Burger } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
+import profile from "../../assets/images/profile.svg";
 
 const NavBar = () => {
   const { user, setUser } = useUserContext();
@@ -44,16 +46,22 @@ const NavBar = () => {
           ) : (
             <Menu
               control={
-                <Burger
-                  size={16}
-                  onClick={() => setOpened((o) => !o)}
-                  opened={opened}
-                />
+                <div
+                  style={{
+                    width: "2.5rem",
+                    height: "2.5rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image src={profile} width={20} height={20} />
+                </div>
               }
               className={styles.burger}
               sx={(theme) => ({
                 backgroundColor: "#FFD12F",
-                borderRadius: "4px",
+                borderRadius: "10px",
                 "&:hover": {
                   backgroundColor: theme.fn.darken("#FFD12F", 0.05),
                 },
