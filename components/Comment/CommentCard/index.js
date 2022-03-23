@@ -3,7 +3,7 @@ import classes from "./CommentCard.module.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
-import cross from "../../../assets/images/cross.svg";
+import cross from "../../../assets/images/cross.SVG";
 import Image from "next/image";
 import moment from "moment";
 import { useNotifications } from "@mantine/notifications";

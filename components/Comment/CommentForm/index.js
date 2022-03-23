@@ -37,6 +37,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
+      addText.value = '';
       notifications.showNotification({
         title: "Bravo!",
         message: "Votre commentaire a été publié avec succès",

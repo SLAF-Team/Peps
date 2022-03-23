@@ -8,8 +8,6 @@ import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import { useCallback } from "react";
-import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
 import heart from "../../assets/images/heart.svg";
@@ -74,6 +72,11 @@ const SelectedRecipe = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    notifications.showNotification({
+      title: "Bravo!",
+      message: "Votre recette a été publié avec succès",
+      color: "green",
+    });
     getRecipe();
   };
 
@@ -140,7 +143,7 @@ const SelectedRecipe = () => {
                 <ul>
                   {recipe?.ingredientsUnit &&
                     recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li}>
+                      <li className={classes.li} key={element.id}>
                         {element.quantity} {element.unit.name} de{" "}
                         <Anchor
                           href={"/ingredient/" + element.ingredient.id}

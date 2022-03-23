@@ -32,17 +32,26 @@ const RecipeCard = ({ recipe, col }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
+  //   recipeId: recipe.id,
+  //   userId: user.id,
 
   async function removeLike() {
     await axios.delete(
-      "/api/like/removeLike",
-      {
-        recipeId: recipe.id,
-        userId: user.id,
-      },
+      `/api/like/${recipe.id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
   }
+
+  // async function removeLike() {
+  //   await axios.delete(
+  //     "/api/like/removeLike",
+  //     {
+  //       recipeId: recipe.id,
+  //       userId: user.id,
+  //     },
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+  // }
 
   const handleDeleteLike = () => {
     removeLike();

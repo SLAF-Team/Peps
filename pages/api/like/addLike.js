@@ -4,9 +4,7 @@ export default async (req, res) => {
   const data = req.body;
   try {
     const likesOnRecipes = await prisma.likesOnRecipes.create({
-      data: {
-        ...data,
-      },
+      data
     });
     res.status(200).json(likesOnRecipes);
   } catch (err) {

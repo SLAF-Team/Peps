@@ -76,6 +76,16 @@
   align-items: center;
 }
 
+.titlecontainerindex {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.actionicon {
+  margin-left: 10px;
+}
+
 .dishtitle {
   text-align: center;
   font-weight: 400;
@@ -116,6 +126,18 @@
 
 .stepsmobilecontainer {
   display: none;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.multiselect {
+  font-size: 10px;
 }
 
 @media (max-width: 500px) {
