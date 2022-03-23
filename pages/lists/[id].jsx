@@ -160,7 +160,13 @@ const Profile = () => {
           <div className={classes.cards}>
             <div className="row">
               {recipes?.map((recipe) => (
-                <RecipeCard recipe={recipe} key={recipe.id} col="col-3" />
+                <RecipeCard
+                  recipe={recipe}
+                  key={recipe.id}
+                  like_count={recipe?._count?.likes}
+                  comment_count={recipe?._count?.comments}
+                  col="col-3"
+                />
               ))}
             </div>
           </div>

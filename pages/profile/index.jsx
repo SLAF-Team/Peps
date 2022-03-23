@@ -70,7 +70,13 @@ const Profile = ({ recipes, lists }) => {
         <div className={styles.cards}>
           <div className="row">
             {recipesFromUser?.map((recipe, index) => (
-              <RecipeCard recipe={recipe} key={index} col="col-3" />
+              <RecipeCard
+                recipe={recipe}
+                key={index}
+                like_count={recipe?._count?.likes}
+                comment_count={recipe?._count?.comments}
+                col="col-3"
+              />
             ))}
           </div>
         </div>

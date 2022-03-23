@@ -97,7 +97,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
           },
         }
       : null;
-    console.log(data);
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 

@@ -24,7 +24,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   }, [user]);
 
   async function addLike() {
-    const result = await axios.put(
+    await axios.put(
       "/api/like/addLike",
       {
         recipeId: recipe.id,
@@ -32,7 +32,6 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
   }
 
   async function removeLike() {
