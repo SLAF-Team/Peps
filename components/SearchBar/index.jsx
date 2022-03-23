@@ -62,6 +62,12 @@ const SearchBar = ({ placeholder, handleSubmit}) => {
 			<div className={styles.img}>
 				<Image src={search} width={20} height={20} />
 			</div>
+			<div>
+
+				{recipeSearch != '' ? dataSearch?.map(element => {
+					return <p>{element.name}</p>
+				}) : ''}
+			</div>
 		</div>
 	);
 };
