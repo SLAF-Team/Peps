@@ -4,8 +4,10 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import { Switch } from "@mantine/core";
+import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
+import adjust from "../../assets/images/adjust.svg";
+import Image from "next/image";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   // set up state for multiselect
@@ -13,11 +15,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
   const [filterTag, setFilterTag] = useState(idTags);
-
   const idCountries = [];
   countries?.map((element) => idCountries.push(element.id));
   const [filterCountry, setFilterCountry] = useState(idCountries);
-
   const idTypes = [];
   types?.map((element) => idTypes.push(element.id));
   const [filterType, setFilterType] = useState(idTypes);
@@ -28,11 +28,11 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
-  const [filter, setFilter] = useState(true);
+  const [filter, setFilter] = useState(false);
 
   // set up data for multiselect
   const dataTags = [];
-  tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
+  tags?.sort().map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
   const dataCountries = [];
   countries?.map((country) =>
@@ -46,6 +46,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   ingredients?.map((ingredient) =>
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
+
+  // set up drawer
+  const [opened, setOpened] = useState(false);
 
   // async search fonction
   const getRecipes = async (data) => {
@@ -70,22 +73,28 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       ? {
           where: {
             countryId: {
-              in: filterCountry,
+              in: filterCountry.length > 0 ? filterCountry : idCountries,
             },
             typeId: {
-              in: filterType,
+              in: filterType.length > 0 ? filterType : idTypes,
             },
             tags: {
-              some: { id: { in: filterTag } },
+              some: { id: { in: filterTag.length > 0 ? filterTag : idTags } },
             },
             ingredientsUnit: {
               some: {
-                ingredientId: { in: filterIngredient },
+                ingredientId: {
+                  in:
+                    filterIngredient.length > 0
+                      ? filterIngredient
+                      : idIngredients,
+                },
               },
             },
           },
         }
       : null;
+    console.log(data);
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
@@ -93,49 +102,90 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     <div className={classes.margin}>
       <div className="column">
         <div className="row">
-          <Switch
-            label="Utiliser les filtres"
-            checked={filter}
-            onChange={handleChange}
-            color="cyan"
-          />
-          {filter && (
-            <>
-              <MultiSelect
-                data={dataTags}
-                value={filterTag}
-                onChange={setFilterTag}
-                placeholder="tags"
-                searchable
-                clearable
+          <>
+            <Drawer
+              opened={opened}
+              onClose={() => setOpened(false)}
+              title="Utiliser les filtres"
+              padding="xl"
+              size="xl"
+            >
+              <Switch
+                label="Activer/Désactiver"
+                checked={filter}
+                onChange={handleChange}
+                color="cookogsyellow"
+                size="md"
               />
-              <MultiSelect
-                data={dataCountries}
-                value={filterCountry}
-                onChange={setFilterCountry}
-                placeholder="pays"
-                searchable
-                clearable
-              />
-              <MultiSelect
-                data={dataTypes}
-                value={filterType}
-                onChange={setFilterType}
-                placeholder="types"
-                searchable
-                clearable
-              />
-              <MultiSelect
-                data={dataIngredients}
-                value={filterIngredient}
-                onChange={setFilterIngredient}
-                placeholder="ingrédients"
-                searchable
-                clearable
-              />
-            </>
-          )}
+              <div className={classes.filters}>
+                <h2 className={classes.h2}>Par Tag</h2>
+                <MultiSelect
+                  data={dataTags}
+                  value={filterTag}
+                  onChange={setFilterTag}
+                  placeholder="tags"
+                  searchable
+                  clearable
+                  className={classes.multiselect}
+                  size="xs"
+                  styles={{ label: { fontSize: 14 } }}
+                />
+                <h2 className={classes.h2}>Par Pays</h2>
+                <MultiSelect
+                  data={dataCountries}
+                  value={filterCountry}
+                  onChange={setFilterCountry}
+                  placeholder="pays"
+                  searchable
+                  clearable
+                  className={classes.multiselect}
+                  size="xs"
+                  styles={{ label: { fontSize: 14 } }}
+                />
+                <h2 className={classes.h2}>Par Type de recette</h2>
+                <MultiSelect
+                  data={dataTypes}
+                  value={filterType}
+                  onChange={setFilterType}
+                  placeholder="types"
+                  searchable
+                  clearable
+                  className={classes.multiselect}
+                  size="xs"
+                  styles={{ label: { fontSize: 14 } }}
+                />
+                <h2 className={classes.h2}>Par Ingrédient</h2>
+                <MultiSelect
+                  data={dataIngredients}
+                  value={filterIngredient}
+                  onChange={setFilterIngredient}
+                  placeholder="ingrédients"
+                  searchable
+                  clearable
+                  className={classes.multiselect}
+                  size="xs"
+                  styles={{ label: { fontSize: 14 } }}
+                />
+              </div>
+            </Drawer>
+
+            <Group position="right"></Group>
+          </>
         </div>
+        <div className={classes.titlecontainerindex}>
+          <h1 className={classes.h1}>Toutes les recettes </h1>
+          <ActionIcon
+            onClick={() => setOpened(true)}
+            color="cookogsyellow"
+            variant="transparent"
+            size="xl"
+            radius="md"
+            className={classes.actionicon}
+          >
+            <Image src={adjust} />
+          </ActionIcon>
+        </div>
+
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
