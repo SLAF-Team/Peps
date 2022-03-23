@@ -15,6 +15,7 @@ const NavBar = () => {
   const { user, setUser } = useUserContext();
   const router = useRouter();
   const [opened, setOpened] = useState(false);
+  const [pivot, setPivot] = useState(false);
 
   const handleClick = () => {
     if (window.confirm("Es tu sûr de vouloir te déconnecter?")) {
@@ -46,8 +47,15 @@ const NavBar = () => {
           ) : (
             <Menu
               control={
-                <div className={styles.animation} id="pic" tabIndex="0">
-                  <Image src={profile} width={28} height={28} />
+                <div
+                  className={
+                    !pivot
+                      ? styles.animationEnd + styles.animation
+                      : styles.animation
+                  }
+                  onClick={() => setPivot((o) => !o)}
+                >
+                  <Image src={profile} width={26} height={26} />
                 </div>
               }
               className={styles.burger}

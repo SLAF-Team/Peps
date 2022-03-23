@@ -2,6 +2,7 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
   font-family: "Lato", sans-serif;
 }
@@ -45,6 +46,8 @@ h6 {
 p {
   font-weight: 300;
   font-size: 18px;
+  line-height: 2rem;
+  letter-spacing: 0.1rem;
 }
 
 span {
@@ -240,8 +243,4 @@ a {
 
 .selectorSelect {
   border-bottom: 2px solid #324376;
-}
-
-#pic:focus {
-  transform: rotate(90deg);
 }

@@ -25,7 +25,6 @@
 .burger {
   padding: 5px;
   margin-left: -10px;
-  top: 3px;
   display: grid;
   place-items: center;
 }
@@ -37,6 +36,10 @@
 .animation {
   transform: rotate(0deg);
   transition: transform 0.5s;
+}
+
+.animationEnd {
+  transform: rotate(90deg);
 }
 
 .burgerResponsive {
@@ -73,6 +76,7 @@
 
   .btnResponsive {
     display: contents;
+    margin-top: 5px;
   }
 
   .right {

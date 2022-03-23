@@ -24,7 +24,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
       notifications.showNotification({
         title: "Erreur dans votre formulaire",
         message: "Votre commentaire ne peut être vide.",
-        color: "red"
+        color: "red",
       });
     } else {
       await axios.post(
@@ -46,25 +46,29 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     }
   }
 
-    if(token != null){
-      return (      
-        <form className={classes.form} ref={formRef}>
+  if (token != null) {
+    return (
+      <form className={classes.form} ref={formRef}>
         <div className={classes.setups_small}>
           <div className={classes.profilepic}>
-            <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
-              <span className={classes.letter}>{user?.name[0].toUpperCase()}</span>
+            <div
+              className={classes.avatar}
+              style={{ backgroundColor: "#ffd12f" }}
+            >
+              <span className={classes.letter}>
+                {user?.name[0].toUpperCase()}
+              </span>
             </div>
           </div>
           <div className={classes.setup_small}>
-            <label className={classes.label}>Commentaire</label><br></br>
             <input className={classes.input_small} name="addText" type="text" />
             <div className={classes.button}>
-                  <Button
-                  label="Commenter"
-                  type="alert"
-                  handleClick={() => addComment()}
-                  href="#"
-                  />
+              <Button
+                label="Publier"
+                type="alert"
+                handleClick={() => addComment()}
+                href="#"
+              />
             </div>
           </div>
         </div>
@@ -73,9 +77,15 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
   } else {
     return (
       <>
-      <p>Veuillez vous <b><a href='/login/'>connecter</a></b> pour écrire un commentaire</p>
+        <p>
+          Veuillez vous{" "}
+          <b>
+            <a href="/login/">connecter</a>
+          </b>{" "}
+          pour écrire un commentaire
+        </p>
       </>
-    )
+    );
   }
 };
 
