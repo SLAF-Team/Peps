@@ -43,6 +43,13 @@ const NavBar = () => {
             </>
           ) : (
             <Menu
+              control={
+                <Burger
+                  size={16}
+                  onClick={() => setOpened((o) => !o)}
+                  opened={opened}
+                />
+              }
               className={styles.burger}
               sx={(theme) => ({
                 backgroundColor: "#FFD12F",
