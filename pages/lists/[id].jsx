@@ -21,10 +21,7 @@ const Profile = () => {
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-
-  //fix userlist
-  // gérer delete
-  // gérer update
+  const [auth, setAuth] = useState(false);
 
   // search list + call axios
   async function searchList(data) {
@@ -58,11 +55,17 @@ const Profile = () => {
             },
           },
         },
-        user: { select: { name: true } },
+        user: { select: { name: true, id: true } },
       },
     };
     searchList(data);
   }
+
+  useEffect(() => {
+    if (!user && !list) {
+      setAuth(checkAuthorAuth(user, list));
+    }
+  }, [list, user]);
 
   useEffect(() => {
     getList("like");
@@ -72,6 +75,7 @@ const Profile = () => {
     getList(filter);
   }, [filter]);
 
+  console.log(auth);
   const handleSelect = (event) => {
     setFilter(event);
   };
@@ -91,14 +95,9 @@ const Profile = () => {
     //notif
   };
 
-  console.log(list)
-
   return (
     <>
-{      list && <UserList
-        user={list[0]}
-        color="#26c485"
-      />}
+      {list && <UserList user={list[0]} color="#26c485" />}
       <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
       <div className={classes.cards}>
         <div className="row">
@@ -107,7 +106,7 @@ const Profile = () => {
           ))}
         </div>
       </div>
-      {checkAuthorAuth(user, list) && (
+      {auth && (
         <>
           <Button
             label="Supprimer"
