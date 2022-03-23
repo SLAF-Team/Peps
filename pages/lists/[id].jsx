@@ -11,6 +11,7 @@ import { useNotifications } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Modal } from "@mantine/core";
+import { CheckboxGroup, Checkbox } from "@mantine/core";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -25,6 +26,7 @@ const Profile = () => {
   const [auth, setAuth] = useState(false);
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState();
+  const [value, setValue] = useState([]);
 
   // search list + call axios
   async function searchList(data) {
@@ -66,23 +68,39 @@ const Profile = () => {
 
   //update list
 
+  console.log("recettes");
+  console.log(list)
+  list? console.log(list.recipes) : null
+
+  // ajouter un bouton ajouter d'autres recettes
+
   const handleName = (e) => {
     setNameChange(e.target.value);
   };
 
   const editList = async (event) => {
-    console.log(nameChange)
+    console.log(nameChange);
     event.preventDefault();
+    const newValue = [];
+    value.map((element) => newValue.push({ id: parseInt(element) }));
     const result = await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
         name: nameChange,
-        // un truc sur les recettes disconnect
+        // recipes: {
+        //   disconnect: data,
+        // },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result)
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Votre liste a bien été mise à jour",
+      color: "green",
+    });
+    setOpened(false);
+    getList(filter);
   };
 
   useEffect(() => {
@@ -105,23 +123,23 @@ const Profile = () => {
     setFilter(event);
   };
 
-  // async function deleteList() {
-  //   if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-  //     const result = await axios.delete(`/api/list/delete/${parseInt(id)}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //   }
-  //   console.log(result)
-  //   router.push("/profile?list=true");
-  // }
+  async function deleteList() {
+    if (window.confirm("Souhaitez vous supprimer cette liste?")) {
+      await axios.delete(`/api/list/delete/${parseInt(id)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/profile?list=true");
+    }
+  }
 
-  // const handleDeleteList = () => {
-  //   deleteList();
-  //   notifications.showNotification({
-  //     title: "Bravo !",
-  //     message: "Votre liste a bien été supprimée",
-  //     color: "green",
-  //   });  };
+  const handleDeleteList = () => {
+    deleteList();
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Votre liste a bien été supprimée",
+      color: "green",
+    });
+  };
 
   return (
     <>
@@ -143,26 +161,41 @@ const Profile = () => {
             defaultValue={list?.name}
             onChange={handleName}
           />
+          <CheckboxGroup
+            value={value}
+            onChange={setValue}
+            label="Retirer des recettes"
+            description=""
+            required
+          >
+            {list?.recipes ? (
+              list.recipes.map((recipe) => (
+                <Checkbox value={recipe.id.toString()} label={recipe.name} />
+              ))
+            ) : (
+              <p>Tu n'as pas encore de liste</p>
+            )}
+          </CheckboxGroup>
           <button type="submit">J'édite</button>
         </form>
       </Modal>
       {auth && (
         <>
-          {/* <Button
+          <Button
             label="Supprimer"
             type="danger"
             handleClick={() => handleDeleteList()}
             href="#"
             className={classes.button}
           />
-        <br></br> */}
-        <Button
-          label="Editer"
-          type="warning"
-          handleClick={() => setOpened(true)}
-          href="#"
-          className={classes.button}
-        />
+          <br></br>
+          <Button
+            label="Editer"
+            type="warning"
+            handleClick={() => setOpened(true)}
+            href="#"
+            className={classes.button}
+          />
         </>
       )}
     </>
