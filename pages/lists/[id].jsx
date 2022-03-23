@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import UserList from "../../components/UserList";
 import classes from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
-import prisma from "../../lib/prisma.ts";
 import FilterSelector from "../../components/FilterSelector";
 import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
@@ -12,13 +11,70 @@ import { useNotifications } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const Profile = ({ list, recipes, listId }) => {
+const Profile = () => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
+  const { query } = useRouter();
+  const [recipes, setRecipes] = useState(null);
+  const { id } = query;
+  const [filter, setFilter] = useState("like");
+  const [list, setList] = useState(null);
   const notifications = useNotifications();
-  const [filter, setFilter] = useState("");
-  const [lists, setLists] = useState(recipes);
+
+  //fix userlist
+  // gérer delete
+  // gérer update
+
+  // search list + call axios
+  async function searchList(data) {
+    try {
+      const result = await axios.post(`/api/list/searchLists`, {
+        ...data,
+      });
+      setList(result.data);
+      setRecipes(result.data[0].recipes);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // getlist
+  async function getList(filtre) {
+    let coucou = "likes";
+    if (filtre === "comment") {
+      coucou = "comments";
+    }
+    let data = {
+      where: { id: parseInt(id) },
+      include: {
+        recipes: {
+          include: {
+            _count: { select: { likes: true, comments: true } },
+          },
+          orderBy: {
+            [coucou]: {
+              _count: "asc",
+            },
+          },
+        },
+        user: { select: { name: true } },
+      },
+    };
+    searchList(data);
+  }
+
+  useEffect(() => {
+    getList("like");
+  }, [id]);
+
+  useEffect(() => {
+    getList(filter);
+  }, [filter]);
+
+  const handleSelect = (event) => {
+    setFilter(event);
+  };
 
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
@@ -35,86 +91,19 @@ const Profile = ({ list, recipes, listId }) => {
     //notif
   };
 
-  const handleSelect = (event) => {
-    setFilter(event);
-  };
-
-  // async search fonction
-  const getRecipes = async (data) => {
-    try {
-      const result = await axios.post(`/api/recipe/searchRecipes`, {
-        ...data,
-      });
-      setLists(result.data);
-    } catch (err) {
-      console.log("error");
-    }
-  };
-
-  useEffect(() => {
-    console.log(filter);
-    const data =
-      filter === "like"
-        ? {
-            orderBy: {
-              likes: {
-                _count: "asc",
-              },
-            },
-            where: {
-              lists: {
-                some: { id: parseInt(listId) },
-              },
-            },
-            include: {
-              lists: {
-                select: {
-                  id: true,
-                  name: true,
-                  user: { select: { name: true, email: true } },
-                },
-              },
-              _count: { select: { likes: true } },
-              _count: { select: { comments: true } },
-            },
-          }
-        : {
-            orderBy: {
-              comments: {
-                _count: "desc",
-              },
-            },
-            where: {
-              lists: {
-                some: { id: parseInt(listId) },
-              },
-            },
-            include: {
-              lists: {
-                select: {
-                  id: true,
-                  name: true,
-                  user: { select: { name: true, email: true } },
-                },
-              },
-              _count: { select: { likes: true } },
-              _count: { select: { comments: true } },
-            },
-          };
-    getRecipes(data);
-  }, [filter]);
+  console.log(list)
 
   return (
     <>
-      <UserList
-        user={recipes[0].lists.filter((list) => list.id == listId)[0]}
+{      list && <UserList
+        user={list[0]}
         color="#26c485"
-      />
-      <FilterSelector left={recipes.length} handleSelect={handleSelect} />
+      />}
+      <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
       <div className={classes.cards}>
         <div className="row">
-          {lists.map((recipe) => (
-            <RecipeCard recipe={recipe} col="col-3" />
+          {recipes?.map((recipe) => (
+            <RecipeCard recipe={recipe} key={recipe.id} col="col-3" />
           ))}
         </div>
       </div>
@@ -140,33 +129,5 @@ const Profile = ({ list, recipes, listId }) => {
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const allRecipes = await prisma.recipe.findMany({
-    where: {
-      lists: {
-        some: { id: parseInt(id) },
-      },
-    },
-    include: {
-      lists: {
-        select: {
-          id: true,
-          name: true,
-          user: { select: { name: true, email: true } },
-        },
-      },
-      _count: { select: { likes: true } },
-      _count: { select: { comments: true } },
-    },
-  });
-  return {
-    props: {
-      recipes: allRecipes,
-      listId: id,
-    },
-  };
-}
 
 export default Profile;

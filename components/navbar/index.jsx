@@ -46,7 +46,7 @@ const NavBar = () => {
           ) : (
             <Menu
               control={
-                <div className={styles.animation} id="pic" tabindex="0">
+                <div className={styles.animation} id="pic" tabIndex="0">
                   <Image src={profile} width={28} height={28} />
                 </div>
               }
