@@ -25,6 +25,15 @@
 	margin-right: 2.5rem;
 }
 
+.iconImg{
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	object-fit: cover;
+}
+
 @media only screen and (min-width: 33.75em) {
 	.search {
 		padding: 10px 34px;
