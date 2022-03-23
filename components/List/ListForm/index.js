@@ -7,6 +7,7 @@ import Button from "../../Button";
 import Cookies from "js-cookie";
 import classes from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
 
 const ListForm = ({ lists, recipe }) => {
   const formRef = useRef();
@@ -15,16 +16,23 @@ const ListForm = ({ lists, recipe }) => {
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
   const [value, setValue] = useState([]);
+  const notifications = useNotifications();
 
   const handleClick = () => {
     setOpened(true);
   };
 
   // Add new
-
   async function addNewList(params) {
     const { addName } = formRef.current;
     const name = addName.value;
+    if (!name) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Votre liste nécessite un nom",
+        color: "red",
+      });
+    }
     await axios.post(
       "/api/list/addList",
       {
@@ -38,9 +46,14 @@ const ListForm = ({ lists, recipe }) => {
     );
     setSubmitted(true);
     setUserLists(user.lists);
+    notifications.showNotification({
+      message: "Votre liste a bien été créée",
+      color: "green",
+    });
   }
 
   // edit list
+
   async function editList(data) {
     const result = await axios.put(
       "/api/recipe/editRecipe",
@@ -53,6 +66,10 @@ const ListForm = ({ lists, recipe }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setSubmitted(true);
+    notifications.showNotification({
+      message: "Votre liste a bien été mise à jour",
+      color: "green",
+    });
   }
 
   const handleEditClick = () => {
