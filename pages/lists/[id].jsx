@@ -69,8 +69,8 @@ const Profile = () => {
   //update list
 
   console.log("recettes");
-  console.log(list)
-  list? console.log(list.recipes) : null
+  console.log(list);
+  list ? console.log(list[0].recipes) : null;
 
   // ajouter un bouton ajouter d'autres recettes
 
@@ -79,18 +79,17 @@ const Profile = () => {
   };
 
   const editList = async (event) => {
-    console.log(nameChange);
     event.preventDefault();
-    const newValue = [];
-    value.map((element) => newValue.push({ id: parseInt(element) }));
+    const data = [];
+    value.map((element) => data.push({ id: parseInt(element) }));
     const result = await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
         name: nameChange,
-        // recipes: {
-        //   disconnect: data,
-        // },
+        recipes: {
+          disconnect: data,
+        },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -143,59 +142,66 @@ const Profile = () => {
 
   return (
     <>
-      {list && <UserList user={list[0]} color="#26c485" />}
-      <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
-      <div className={classes.cards}>
-        <div className="row">
-          {recipes?.map((recipe) => (
-            <RecipeCard recipe={recipe} key={recipe.id} col="col-3" />
-          ))}
-        </div>
-      </div>
-      <Modal opened={opened} onClose={() => setOpened(false)}>
-        <form onSubmit={editList}>
-          <label>Name</label> <br />
-          <input
-            name="listName"
-            type="text"
-            defaultValue={list?.name}
-            onChange={handleName}
-          />
-          <CheckboxGroup
-            value={value}
-            onChange={setValue}
-            label="Retirer des recettes"
-            description=""
-            required
-          >
-            {list?.recipes ? (
-              list.recipes.map((recipe) => (
-                <Checkbox value={recipe.id.toString()} label={recipe.name} />
-              ))
-            ) : (
-              <p>Tu n'as pas encore de liste</p>
-            )}
-          </CheckboxGroup>
-          <button type="submit">J'édite</button>
-        </form>
-      </Modal>
-      {auth && (
+      {list && (
         <>
-          <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => handleDeleteList()}
-            href="#"
-            className={classes.button}
-          />
-          <br></br>
-          <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => setOpened(true)}
-            href="#"
-            className={classes.button}
-          />
+          <UserList user={list[0]} color="#26c485" />
+          <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
+          <div className={classes.cards}>
+            <div className="row">
+              {recipes?.map((recipe) => (
+                <RecipeCard recipe={recipe} key={recipe.id} col="col-3" />
+              ))}
+            </div>
+          </div>
+          <Modal opened={opened} onClose={() => setOpened(false)}>
+            <form onSubmit={editList}>
+              <label>Name</label> <br />
+              <input
+                name="listName"
+                type="text"
+                defaultValue={list?.name}
+                onChange={handleName}
+              />
+              <CheckboxGroup
+                value={value}
+                onChange={setValue}
+                label="Retirer des recettes"
+                description=""
+                required
+              >
+                {list[0].recipes ? (
+                  list[0].recipes.map((recipe) => (
+                    <Checkbox
+                      value={recipe.id.toString()}
+                      label={recipe.name}
+                    />
+                  ))
+                ) : (
+                  <p>Tu n'as pas encore de liste</p>
+                )}
+              </CheckboxGroup>
+              <button type="submit">J'édite</button>
+            </form>
+          </Modal>
+          {auth && (
+            <>
+              <Button
+                label="Supprimer"
+                type="danger"
+                handleClick={() => handleDeleteList()}
+                href="#"
+                className={classes.button}
+              />
+              <br></br>
+              <Button
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+                className={classes.button}
+              />
+            </>
+          )}
         </>
       )}
     </>
