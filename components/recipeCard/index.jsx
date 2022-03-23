@@ -34,7 +34,7 @@ const RecipeCard = ({ recipe, col }) => {
   }
 
   async function removeLike() {
-    await axios.put(
+    await axios.delete(
       "/api/like/removeLike",
       {
         recipeId: recipe.id,

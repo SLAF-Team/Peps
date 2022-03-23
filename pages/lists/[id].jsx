@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import UserList from "../../components/UserList";
 import classes from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
-import prisma from "../../lib/prisma.ts";
 import FilterSelector from "../../components/FilterSelector";
 import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
@@ -36,9 +35,9 @@ const Profile = () => {
       setList(result.data);
       setRecipes(result.data[0].recipes);
     } catch (err) {
-      console.log("error");
+      console.log(err);
     }
-  };
+  }
 
   // getlist
   async function getList(filtre) {
@@ -65,13 +64,17 @@ const Profile = () => {
     searchList(data);
   }
 
-  const handleSelect = (event) => {
-    setFilter(event);
-  };
+  useEffect(() => {
+    getList("like");
+  }, [id]);
 
   useEffect(() => {
     getList(filter);
   }, [filter]);
+
+  const handleSelect = (event) => {
+    setFilter(event);
+  };
 
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
@@ -88,17 +91,19 @@ const Profile = () => {
     //notif
   };
 
+  console.log(list)
+
   return (
     <>
-      {/* <UserList
-        user={recipes[0].lists.filter((list) => list.id == listId)[0]}
+{      list && <UserList
+        user={list[0]}
         color="#26c485"
-      /> */}
+      />}
       <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
       <div className={classes.cards}>
         <div className="row">
           {recipes?.map((recipe) => (
-            <RecipeCard recipe={recipe} col="col-3" />
+            <RecipeCard recipe={recipe} key={recipe.id} col="col-3" />
           ))}
         </div>
       </div>
@@ -124,31 +129,5 @@ const Profile = () => {
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const List = await prisma.list.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      recipes: {
-        include: {
-          _count: { select: { likes: true, comments: true } },
-        },
-        orderBy: {
-          likes: {
-            _count: "asc",
-          },
-        },
-      },
-      user: { select: { name: true } },
-    },
-  });
-  console.log(List);
-  return {
-    props: {
-      list: List,
-    },
-  };
-}
 
 export default Profile;
