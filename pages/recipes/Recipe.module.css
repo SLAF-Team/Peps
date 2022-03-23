@@ -4,7 +4,6 @@
 
 .maincontainer {
   width: 940px;
-  height: 893px;
   left: 250px;
   top: 73px;
   display: flex;
@@ -13,12 +12,10 @@
 
 .leftcontainer {
   width: 705px;
-  height: 893px;
 }
 
 .rightcontainer {
   width: 234px;
-  height: 893px;
   padding: 20px;
 }
 

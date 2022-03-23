@@ -11,7 +11,14 @@ import { useCallback } from "react";
 import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
-import { Modal, LoadingOverlay, Anchor, Tabs, Skeleton } from "@mantine/core";
+import {
+  Modal,
+  LoadingOverlay,
+  Anchor,
+  Tabs,
+  Skeleton,
+  Accordion,
+} from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -162,14 +169,20 @@ const SelectedRecipe = () => {
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
           <div className={classes.commentcontainer}>
             <h1 className={classes.h1}>
-              {recipe?.comments.length} Commentaires
+              Commenter
             </h1>
             <CommentForm
               user={user}
               recipe={recipe}
               setSubmitted={setSubmitted}
-            />
-            {recipe?.comments && <CommentsList comments={recipe.comments} />}
+            /><br></br>
+            <Accordion >
+              <Accordion.Item label={"Voir les " + recipe?.comments.length + " commentaires"}>
+                {recipe?.comments && (
+                  <CommentsList comments={recipe.comments} />
+                )}
+              </Accordion.Item>
+            </Accordion>
           </div>
         </Skeleton>
       </div>
