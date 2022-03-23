@@ -13,7 +13,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 const Profile = ({ list, recipes, listId }) => {
-  const {user} = useUserContext();
+  const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const notifications = useNotifications();
@@ -30,14 +30,14 @@ const Profile = ({ list, recipes, listId }) => {
   };
 
   async function deleteList() {
-      if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-        const result = await axios.delete(`/api/list/delete/${list?.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-      router.push('/lists')
-      console.log(result);
+    if (window.confirm("Souhaitez vous supprimer cette liste?")) {
+      const result = await axios.delete(`/api/list/delete/${list?.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     }
+    router.push("/lists");
+    console.log(result);
+  }
 
   const handleDeleteList = () => {
     //notif
@@ -45,18 +45,9 @@ const Profile = ({ list, recipes, listId }) => {
     //notif
   };
 
-    const updateList = () => {};
+  const updateList = () => {};
 
-  return (
-    <>
-      <UserList user={list} color="#26c485" />
-      <FilterSelector left={list?.recipes.length} />
-      <div className="row">
-        {list?.recipes.map((recipe) => (
-          <RecipeCard recipe={recipe} col="col-3" />
-        ))}
-
-        const handleSelect = (event) => {
+  const handleSelect = (event) => {
     setFilter(event);
     console.log(recipes[0].lists.filter((list) => list.id == listId)[0]);
   };
@@ -80,7 +71,7 @@ const Profile = ({ list, recipes, listId }) => {
         color="#26c485"
       />
       <FilterSelector left={recipes.length} handleSelect={handleSelect} />
-      <div className={styles.cards}>
+      <div className={classes.cards}>
         <div className="row">
           {recipes.map((recipe) => (
             <RecipeCard recipe={recipe} col="col-3" />
@@ -112,8 +103,6 @@ const Profile = ({ list, recipes, listId }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  const oneList = await prisma.list.findUnique({
-    where: { id: parseInt(id) },
   const allRecipes = await prisma.recipe.findMany({
     orderBy: {
       comments: {
@@ -159,7 +148,6 @@ export async function getServerSideProps(context) {
   // });
   return {
     props: {
-      list: oneList,
       recipes: allRecipes,
       listId: id,
     },

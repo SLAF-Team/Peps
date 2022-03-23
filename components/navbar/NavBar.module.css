@@ -24,10 +24,18 @@
 .burger {
   padding: 5px;
   margin-left: -10px;
+  top: 3px;
+  display: grid;
+  place-items: center;
 }
 
 .btnResponsive {
   display: none;
+}
+
+.animation {
+  transform: rotate(0deg);
+  transition: transform 0.5s;
 }
 
 .burgerResponsive {

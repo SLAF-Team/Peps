@@ -76,6 +76,17 @@ const Profile = ({ recipes, lists }) => {
         </div>
       ) : (
         <>
+          <div className="row">
+            <div className={styles.listHeader}>
+              <div className="col-2 col-4-sm"></div>
+              <div className="col-6 col-4-sm">
+                <span className={styles.spanHeader}>Titre</span>
+              </div>
+              <div className="col-4 col-4-sm">
+                <span className={styles.spanHeader}>Dernière mise à jour</span>
+              </div>
+            </div>
+          </div>
           {listsFromUser?.map((list) => (
             <div className="row">
               <div className={styles.listCards}>
