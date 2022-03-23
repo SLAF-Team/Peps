@@ -1,6 +1,7 @@
 import { useUserContext } from "../../context/UserContext";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import UserList from "../../components/UserList";
 import styles from "./Profile.module.css";
 import RecipeCard from "../../components/recipeCard";
@@ -11,12 +12,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const Profile = ({ recipes, lists }) => {
+  const { query } = useRouter();
   const { user, setUser } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
-  console.log(lists[0].updatedAt);
+  console.log(new Date(lists[0].updatedAt));
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -28,6 +30,13 @@ const Profile = ({ recipes, lists }) => {
   useEffect(() => {
     getUser();
   }, [submitted]);
+
+  useEffect(() => {
+    if (query.list) {
+      setContribution(true);
+      setStyle(true);
+    }
+  }, [query.list]);
 
   const handleClickLeft = () => {
     setContribution(false);

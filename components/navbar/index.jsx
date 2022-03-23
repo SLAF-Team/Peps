@@ -24,7 +24,6 @@ const NavBar = () => {
 
   return (
     <>
-
       <div className={styles.navbar}>
         <div>
           <Link href="/" exact>
@@ -44,6 +43,13 @@ const NavBar = () => {
             </>
           ) : (
             <Menu
+              control={
+                <Burger
+                  size={16}
+                  onClick={() => setOpened((o) => !o)}
+                  opened={opened}
+                />
+              }
               className={styles.burger}
               sx={(theme) => ({
                 backgroundColor: "#FFD12F",
@@ -57,7 +63,13 @@ const NavBar = () => {
               <Menu.Item component={NextLink} href="/profile">
                 Mon Profil
               </Menu.Item>
-              <Menu.Item>Mes Listes</Menu.Item>
+              <Menu.Item
+                component={NextLink}
+                href="/profile?list=true"
+                as="/profile"
+              >
+                Mes Listes
+              </Menu.Item>
               <Menu.Item color="red" onClick={() => handleClick()}>
                 Déconnexion
               </Menu.Item>
@@ -65,11 +77,7 @@ const NavBar = () => {
           )}
         </div>
       </div>
-
-
     </>
-
-
   );
 };
 
