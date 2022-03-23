@@ -13,8 +13,10 @@ const UserList = ({ user, color }) => {
   return (
     <div className={styles.top + " row"}>
       <div className="col-3">
-        <div className={styles.avatar} style={{ backgroundColor: color }}>
-          <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
+        <div className={styles.avatarDiv}>
+          <div className={styles.avatar} style={{ backgroundColor: color }}>
+            <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
+          </div>
         </div>
       </div>
       <div className="col-9">

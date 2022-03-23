@@ -9,7 +9,6 @@ import Button from "../../Button";
 const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [submitted, setSubmitted] = useState(false);
 
   async function addRecipeIngredients(params) {
     const { addIngredient, addUnit, addQuantity } = formRef.current;
@@ -32,9 +31,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setSubmitted(true);
   }
-  
 
   return (
     <div className={classes.block}>
@@ -43,41 +40,35 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
           <label className={classes.label}>Quantité</label>
           <input className={classes.input} name="addQuantity" type="text" />
         </div>
-        {units ? (
-          <div className="col-3">
-            <label className={classes.label}>Unité</label>
-            <select className={classes.select} name="addUnit">
-              {units.map((unit) => (
-                <option value={unit.id} key={unit.id}>
-                  {unit.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-        {ingredients ? (
-          <div className="col-6">
-            <label className={classes.label}>Ingrédient</label>
-            <select className={classes.select} name="addIngredient">
-              {ingredients.map((ingredient) => (
-                <option value={ingredient.id} key={ingredient.id}>
-                  {ingredient.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-      </form>
-      {!submitted && (
-        <div className={classes.button}>
-          <Button
-            label="Valider mon ingrédient"
-            type="success"
-            handleClick={() => addRecipeIngredients()}
-            href=""
-          />
+        <div className="col-3">
+          <label className={classes.label}>Unité</label>
+          <select className={classes.select} name="addUnit">
+            {units.map((unit) => (
+              <option value={unit.id} key={unit.id}>
+                {unit.name}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
+        <div className="col-6">
+          <label className={classes.label}>Ingrédient</label>
+          <select className={classes.select} name="addIngredient">
+            {ingredients.map((ingredient) => (
+              <option value={ingredient.id} key={ingredient.id}>
+                {ingredient.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </form>
+      <div className={classes.button}>
+        <Button
+          label="Valider mon ingrédient"
+          type="success"
+          handleClick={() => addRecipeIngredients()}
+          href=""
+        />
+      </div>
     </div>
   );
 };

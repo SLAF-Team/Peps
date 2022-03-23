@@ -90,7 +90,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               <div className={classes.step}>
                 <label className={classes.label}>Plat associé</label>
                 <select className={classes.select} name="addDish">
-                  <option value="" selected disabled hidden>
+                  <option value="" selected disabled>
                     Choisissez le plat associé
                   </option>
                   {dishes.map((dish) => (
@@ -123,7 +123,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               <div className={classes.step}>
                 <label className={classes.label}>Pays</label>
                 <select className={classes.select} name="addCountry">
-                  <option value="" selected disabled hidden>
+                  <option value="" selected disabled>
                     Choisissez un pays
                   </option>
                   {countries.map((country) => (
@@ -138,7 +138,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               <div className={classes.step}>
                 <label className={classes.label}>Type de plat</label>
                 <select className={classes.select} name="addType">
-                  <option value="" selected disabled hidden>
+                  <option value="" selected disabled>
                     Choisissez le type de plat
                   </option>
                   {types.map((type) => (
@@ -207,16 +207,16 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           <div className={classes.stepsform}>
             {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
           </div>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <p className={classes.selectorText}>AJOUTER DES TAGS</p>
-            </div>
-          </div>
-          <div className={classes.stepsform}>
-            <AddRecipesTags recipe={recipe} tags={tags} />
-          </div>
         </>
       )}
+      <div className={classes.selector}>
+        <div className="selectorBlock">
+          <p className={classes.selectorText}>AJOUTER DES TAGS</p>
+        </div>
+      </div>
+      <div className={classes.stepsform}>
+        <AddRecipesTags recipe={recipe} tags={tags} />
+      </div>
     </div>
   );
 };
