@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import classes from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 const ListForm = ({ lists, recipe }) => {
   const formRef = useRef();
@@ -17,6 +18,7 @@ const ListForm = ({ lists, recipe }) => {
   const [submitted, setSubmitted] = useState(false);
   const [value, setValue] = useState([]);
   const notifications = useNotifications();
+  const router = useRouter();
 
   const handleClick = () => {
     setOpened(true);
@@ -44,8 +46,8 @@ const ListForm = ({ lists, recipe }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    router.push(`/recipes/${recipe.id}`);
     setSubmitted(true);
-    setUserLists(user.lists);
     notifications.showNotification({
       message: "Votre liste a bien été créée",
       color: "green",
@@ -53,7 +55,6 @@ const ListForm = ({ lists, recipe }) => {
   }
 
   // edit list
-
   async function editList(data) {
     const result = await axios.put(
       "/api/recipe/editRecipe",
@@ -113,7 +114,11 @@ const ListForm = ({ lists, recipe }) => {
         >
           {user?.lists ? (
             user?.lists.map((list) => (
-              <Checkbox value={list.id.toString()} label={list.name} />
+              <Checkbox
+                value={list.id.toString()}
+                label={list.name}
+                key={list.id}
+              />
             ))
           ) : (
             <p>Tu n'as pas encore de liste</p>
