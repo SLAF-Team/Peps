@@ -140,7 +140,6 @@ export async function getServerSideProps(context) {
       user: { select: { name: true } },
     },
   });
-  console.log(allLists)
   return {
     props: {
       recipes: allRecipes,
