@@ -20,11 +20,15 @@ const Profile = () => {
   const [recipes, setRecipes] = useState(null);
   const { id } = query;
   const [filter, setFilter] = useState("like");
-  const [list, setList] = useState(recipes);
+  const [list, setList] = useState(null);
   const notifications = useNotifications();
 
-  //
-  const searchList = async (data) => {
+  //fix userlist
+  // gérer delete
+  // gérer update
+
+  // search list + call axios
+  async function searchList(data) {
     try {
       const result = await axios.post(`/api/list/searchLists`, {
         ...data,
@@ -35,6 +39,7 @@ const Profile = () => {
       console.log("error");
     }
   };
+
   // getlist
   async function getList(filtre) {
     let coucou = "likes";
@@ -60,27 +65,6 @@ const Profile = () => {
     searchList(data);
   }
 
-  // mettre axios
-  //   const List = await prisma.list.findUnique({
-  //     where: { id: parseInt(id) },
-  //     include: {
-  //       recipes: {
-  //         include: {
-  //           _count: { select: { likes: true, comments: true } },
-  //         },
-  //         orderBy: {
-  //           [coucou]: {
-  //             _count: "asc",
-  //           },
-  //         },
-  //       },
-  //       user: { select: { name: true } },
-  //     },
-  //   });
-  // setList(List)
-  // setRecipes(List.recipes)
-  // }
-
   const handleSelect = (event) => {
     setFilter(event);
   };
@@ -103,15 +87,6 @@ const Profile = () => {
     deleteList();
     //notif
   };
-
-  // gérer son filtre => il marche, mais pas encore efficace
-  // gérer delete
-  // gérer update
-
-  console.log("recipes");
-  console.log(recipes);
-
-  console.log(checkAuthorAuth(user, list));
 
   return (
     <>
