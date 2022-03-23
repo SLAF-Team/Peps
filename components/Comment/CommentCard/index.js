@@ -15,15 +15,14 @@ const CommentCard = ({ comment }) => {
   const { user } = useUserContext();
   const notifications = useNotifications();
   const isAuthor = comment.userId == user?.id ? true : false;
-  const recipeId = comment.recipeId
-  console.log(recipeId)
+  const recipeId = comment.recipeId;
 
   async function deleteComment() {
     if (window.confirm("Souhaitez vous supprimer ce commentaire?")) {
       await axios.delete(`/api/comment/delete/${comment?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      router.push(`/recipes/${recipeId}`)
+      router.push(`/recipes/${recipeId}`);
       notifications.showNotification({
         title: "Bravo",
         message: "Votre commentaire a bien été supprimé.",
