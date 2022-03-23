@@ -80,22 +80,23 @@ const Profile = () => {
     setFilter(event);
   };
 
-  async function deleteList() {
-    if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-      const result = await axios.delete(`/api/list/delete/${list?.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    }
-    console.log(result)
-    router.push("/profile?list=true");
-  }
+  // async function deleteList() {
+  //   if (window.confirm("Souhaitez vous supprimer cette liste?")) {
+  //     const result = await axios.delete(`/api/list/delete/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //   }
+  //   console.log(result)
+  //   router.push("/profile?list=true");
+  // }
 
-  const handleDeleteList = () => {
-    //notif
-    console.log("coucou")
-    deleteList();
-    //notif
-  };
+  // const handleDeleteList = () => {
+  //   deleteList();
+  //   notifications.showNotification({
+  //     title: "Bravo !",
+  //     message: "Votre liste a bien été supprimée",
+  //     color: "green",
+  //   });  };
 
   // edition : enlever une recette
   // edition : changer le nom (settings boutton)
@@ -112,15 +113,15 @@ const Profile = () => {
         </div>
       </div>
       {auth && (
-        <>
-          <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => handleDeleteList()}
-            href="#"
-            className={classes.button}
-          />
-          <br></br>
+        // <>
+        //   <Button
+        //     label="Supprimer"
+        //     type="danger"
+        //     handleClick={() => handleDeleteList()}
+        //     href="#"
+        //     className={classes.button}
+        //   />
+          // <br></br>
           <Button
             label="Editer"
             type="warning"
@@ -128,7 +129,7 @@ const Profile = () => {
             href="#"
             className={classes.button}
           />
-        </>
+        // </>
       )}
     </>
   );
