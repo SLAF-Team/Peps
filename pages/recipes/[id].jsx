@@ -239,7 +239,7 @@ const SelectedRecipe = () => {
             </div>
           </div>
           <div className={classes.detailscontainer}>
-            <ListForm lists={recipe.lists} recipe={recipe} />
+            <ListForm lists={recipe.lists} recipe={recipe} setSubmitted={setSubmitted}/>
           </div>
         </Skeleton>
       </div>

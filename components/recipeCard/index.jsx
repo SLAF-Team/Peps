@@ -10,20 +10,24 @@ import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 import { useEffect } from "react";
 
-const RecipeCard = ({ recipe, col }) => {
+const RecipeCard = ({ recipe, like_count, col }) => {
   const { user } = useUserContext();
-  let lign = "S".repeat(10);
-  
   const token = Cookies.get("token");
-  const [likes, setLikes] = useState(recipe?._count?.likes);
   const [comments, setComments] = useState(recipe?._count?.comments);
-
-  const isLiked = user?.likes?.some((like) => like.recipeId === recipe?.id);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(like_count);
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
 
+  // le _count ne passe pas en props, pourquoi ?
+  // Pourtant le parent les envoie
+
+  useEffect(() => {
+    setIsLiked(user?.likes.some((like) => like.recipeId === recipe.id));
+  }, [user]);
+
   async function addLike() {
-    await axios.put(
+    const result = await axios.put(
       "/api/like/addLike",
       {
         recipeId: recipe.id,
@@ -31,36 +35,25 @@ const RecipeCard = ({ recipe, col }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log(result);
   }
-  //   recipeId: recipe.id,
-  //   userId: user.id,
 
   async function removeLike() {
-    await axios.delete(
-      `/api/like/${recipe.id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    await axios.delete(`/api/like/${recipe.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
-
-  // async function removeLike() {
-  //   await axios.delete(
-  //     "/api/like/removeLike",
-  //     {
-  //       recipeId: recipe.id,
-  //       userId: user.id,
-  //     },
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  // }
 
   const handleDeleteLike = () => {
     removeLike();
     setLikes(likes - 1);
+    setIsLiked(!isLiked);
   };
 
   const handleCreateLike = () => {
     addLike();
     setLikes(likes + 1);
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -82,14 +75,14 @@ const RecipeCard = ({ recipe, col }) => {
               src={heartvar}
               width={20}
               height={20}
-              onClick={handleDeleteLike}
+              onClick={() => handleDeleteLike()}
             />
           ) : (
             <Image
               src={heart}
               width={20}
               height={20}
-              onClick={handleCreateLike}
+              onClick={() => handleCreateLike()}
             />
           )}
           {hasLikes ? (

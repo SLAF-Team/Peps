@@ -130,8 +130,7 @@ const Profile = ({ recipes, lists }) => {
 export async function getServerSideProps(context) {
   const allRecipes = await prisma.recipe.findMany({
     include: {
-      _count: { select: { likes: true } },
-      _count: { select: { comments: true } },
+        _count: { select: { likes: true, comments: true } },
     },
   });
   const allLists = await prisma.list.findMany({

@@ -10,8 +10,11 @@ import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
-  // set up state for multiselect
 
+  console.log("recettes from recette")
+  console.log(recipes)
+
+  // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
   const [filterTag, setFilterTag] = useState(idTags);
@@ -91,6 +94,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
                 },
               },
             },
+          },
+          include: {
+            _count: { select: { likes: true, comments: true } },
           },
         }
       : null;
@@ -189,7 +195,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
-              <RecipeCard recipe={recipe} key={i} col="col-3" />
+              <RecipeCard recipe={recipe} key={i} like_count={recipe?._count?.likes} col="col-3" />
             ))}
         </div>
       </div>
@@ -202,8 +208,7 @@ export async function getServerSideProps() {
     include: {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
-      _count: { select: { likes: true } },
-      _count: { select: { comments: true } },
+        _count: { select: { likes: true, comments: true } },
     },
   });
   const allTags = await prisma.tag.findMany({});
