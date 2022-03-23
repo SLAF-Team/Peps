@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { useNotifications } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { Modal } from "@mantine/core";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -22,6 +23,8 @@ const Profile = () => {
   const [list, setList] = useState(null);
   const notifications = useNotifications();
   const [auth, setAuth] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [nameChange, setNameChange] = useState();
 
   // search list + call axios
   async function searchList(data) {
@@ -61,6 +64,27 @@ const Profile = () => {
     searchList(data);
   }
 
+  //update list
+
+  const handleName = (e) => {
+    setNameChange(e.target.value);
+  };
+
+  const editList = async (event) => {
+    console.log(nameChange)
+    event.preventDefault();
+    const result = await axios.put(
+      "/api/list/editList",
+      {
+        id: parseInt(id),
+        name: nameChange,
+        // un truc sur les recettes disconnect
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    console.log(result)
+  };
+
   useEffect(() => {
     if (!user && !list) {
       setAuth(checkAuthorAuth(user, list));
@@ -71,18 +95,19 @@ const Profile = () => {
     getList("like");
   }, [id]);
 
+  // Filter
+
   useEffect(() => {
     getList(filter);
   }, [filter]);
 
-  console.log(auth);
   const handleSelect = (event) => {
     setFilter(event);
   };
 
   // async function deleteList() {
   //   if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-  //     const result = await axios.delete(`/api/list/delete/${id}`, {
+  //     const result = await axios.delete(`/api/list/delete/${parseInt(id)}`, {
   //       headers: { Authorization: `Bearer ${token}` },
   //     });
   //   }
@@ -98,9 +123,6 @@ const Profile = () => {
   //     color: "green",
   //   });  };
 
-  // edition : enlever une recette
-  // edition : changer le nom (settings boutton)
-
   return (
     <>
       {list && <UserList user={list[0]} color="#26c485" />}
@@ -112,24 +134,36 @@ const Profile = () => {
           ))}
         </div>
       </div>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form onSubmit={editList}>
+          <label>Name</label> <br />
+          <input
+            name="listName"
+            type="text"
+            defaultValue={list?.name}
+            onChange={handleName}
+          />
+          <button type="submit">J'édite</button>
+        </form>
+      </Modal>
       {auth && (
-        // <>
-        //   <Button
-        //     label="Supprimer"
-        //     type="danger"
-        //     handleClick={() => handleDeleteList()}
-        //     href="#"
-        //     className={classes.button}
-        //   />
-          // <br></br>
-          <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => updateList()}
+        <>
+          {/* <Button
+            label="Supprimer"
+            type="danger"
+            handleClick={() => handleDeleteList()}
             href="#"
             className={classes.button}
           />
-        // </>
+        <br></br> */}
+        <Button
+          label="Editer"
+          type="warning"
+          handleClick={() => setOpened(true)}
+          href="#"
+          className={classes.button}
+        />
+        </>
       )}
     </>
   );
