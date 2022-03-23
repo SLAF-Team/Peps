@@ -4,10 +4,12 @@ import { useState } from "react";
 import styles from "./NavBar.module.css";
 import Button from "../Button";
 import SearchBar from "../SearchBar";
+import Image from "next/image";
 import { useUserContext } from "../../context/UserContext";
 import { Menu, Burger } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
+import profile from "../../assets/images/profile.svg";
 
 const NavBar = () => {
   const { user, setUser } = useUserContext();
@@ -24,7 +26,6 @@ const NavBar = () => {
 
   return (
     <>
-
       <div className={styles.navbar}>
         <div>
           <Link href="/" exact>
@@ -44,6 +45,11 @@ const NavBar = () => {
             </>
           ) : (
             <Menu
+              control={
+                <div className={styles.animation} id="pic" tabindex="0">
+                  <Image src={profile} width={28} height={28} />
+                </div>
+              }
               className={styles.burger}
               sx={(theme) => ({
                 backgroundColor: "#FFD12F",
@@ -57,7 +63,13 @@ const NavBar = () => {
               <Menu.Item component={NextLink} href="/profile">
                 Mon Profil
               </Menu.Item>
-              <Menu.Item>Mes Listes</Menu.Item>
+              <Menu.Item
+                component={NextLink}
+                href="/profile?list=true"
+                as="/profile"
+              >
+                Mes Listes
+              </Menu.Item>
               <Menu.Item color="red" onClick={() => handleClick()}>
                 Déconnexion
               </Menu.Item>
@@ -65,11 +77,7 @@ const NavBar = () => {
           )}
         </div>
       </div>
-
-
     </>
-
-
   );
 };
 

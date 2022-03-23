@@ -241,3 +241,7 @@ a {
 .selectorSelect {
   border-bottom: 2px solid #324376;
 }
+
+#pic:focus {
+  transform: rotate(90deg);
+}

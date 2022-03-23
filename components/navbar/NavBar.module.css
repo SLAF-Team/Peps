@@ -18,15 +18,24 @@
 .right {
   display: flex;
   margin-top: 2vh;
+  align-items: center;
 }
 
 .burger {
-  margin-top: 5px;
+  padding: 5px;
   margin-left: -10px;
+  top: 3px;
+  display: grid;
+  place-items: center;
 }
 
 .btnResponsive {
   display: none;
+}
+
+.animation {
+  transform: rotate(0deg);
+  transition: transform 0.5s;
 }
 
 .burgerResponsive {
@@ -38,7 +47,6 @@
 
 @media only screen and (min-width: 33.75em) {
   /* 540px */
-
 
   .navbar {
     padding: 0.75rem 3rem;
@@ -58,7 +66,6 @@
 }
 
 @media only screen and (max-width: 500px) {
-
   .brand {
     font-size: 18px;
   }
@@ -77,7 +84,5 @@
 
   .search {
     width: 100%;
-
   }
 }
-

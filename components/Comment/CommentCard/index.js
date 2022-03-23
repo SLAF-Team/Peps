@@ -12,7 +12,7 @@ const CommentCard = ({ comment }) => {
 
   const isAuthor = comment.userId == user?.id ? true : false;
 
-  // delete qui ne marche plus
+  //todo : check si ça marche
   async function deleteComment() {
     if (window.confirm("Souhaitez vous supprimer ce commentaire?")) {
       await axios.delete(`/api/comment/delete/${comment?.id}`, {
