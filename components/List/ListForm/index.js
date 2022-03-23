@@ -63,7 +63,12 @@ const ListForm = ({ lists, recipe }) => {
 
   return (
     <>
-      <button onClick={handleClick}>Ajouter à une liste</button>
+      <ListsList lists={lists} />
+      <div className={classes.center}>
+        <button className={classes.btn} onClick={handleClick}>
+          Ajouter à une liste
+        </button>
+      </div>
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <p>Ajouter à une nouvelle liste</p>
         <form ref={formRef}>
@@ -111,7 +116,6 @@ const ListForm = ({ lists, recipe }) => {
           />
         </div>
       </Modal>
-      <ListsList lists={lists} />
     </>
   );
 };

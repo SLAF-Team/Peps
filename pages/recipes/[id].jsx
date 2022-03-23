@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -11,11 +12,12 @@ import { useCallback } from "react";
 import ListList from "../../components/List/ListsList";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
+import heart from "../../assets/images/heart.svg";
 import {
   Modal,
   LoadingOverlay,
-  Anchor,
   Tabs,
+  Anchor,
   Skeleton,
   Accordion,
 } from "@mantine/core";
@@ -47,7 +49,6 @@ const SelectedRecipe = () => {
       console.log("error");
     }
   };
-  console.log(loading);
 
   useEffect(() => {
     getRecipe();
@@ -57,7 +58,7 @@ const SelectedRecipe = () => {
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -102,35 +103,39 @@ const SelectedRecipe = () => {
   }
 
   return (
-    <div style={{ margin: "20px" }} className={classes.maincontainer}>
-      <div className={classes.leftcontainer}>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
+    <div className="row">
+      <div className="col-9">
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <img src={recipe.imageUrl} className={classes.mainImage} />
         </Skeleton>
-        <br></br>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.titlecontainer}>
             <h1 className={classes.h1}>{recipe.name}</h1>
-            <h2 className={classes.h2}>
-              <Anchor
-                href={"/dishes/" + recipe.dish?.id}
-                target="_blank"
-                color="cookogsyellow"
-              >
-                {recipe.dish?.title}
-              </Anchor>
-            </h2>
+            <p className={classes.selectorName}>Par {recipe.cook.name}</p>
+            {/*<Image src={heart} width={40} height={40} />*/}
+          </div>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <Link href={"/dishes/" + recipe.dish?.id}>
+                <p className={classes.selectorText}>
+                  Une variante de{" "}
+                  <span className={classes.selectorSpan}>
+                    {recipe.dish?.title}
+                  </span>
+                </p>
+              </Link>
+            </div>
           </div>
         </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
-          <p className={classes.description}>
-            Description: {recipe.description}
-          </p>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.stepscontainer}>
+            <p>Etapes: {recipe.steps}</p>
+          </div>
         </Skeleton>
 
         <div className={classes.mobiletabcontainer}>
           <Tabs grow tabPadding="xl" position="center" color="dark">
-            <Skeleton visible={loading} style={{ marginTop: 10 }}>
+            <Skeleton visible={loading} style={{ marginTop: 6 }}>
               <Tabs.Tab label="INGREDIENTS">
                 <ul>
                   {recipe?.ingredientsUnit &&
@@ -150,7 +155,7 @@ const SelectedRecipe = () => {
                 </ul>
               </Tabs.Tab>
             </Skeleton>
-            <Skeleton visible={loading} style={{ marginTop: 10 }}>
+            <Skeleton visible={loading} style={{ marginTop: 6 }}>
               <Tabs.Tab label="ETAPES">
                 <div className={classes.stepsmobilecontainer}>
                   <ul>
@@ -161,93 +166,80 @@ const SelectedRecipe = () => {
             </Skeleton>
           </Tabs>
         </div>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
-          <div className={classes.stepscontainer}>
-            <p>Etapes: {recipe.steps}</p>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
-            <h1 className={classes.h1}>
-              Commenter
-            </h1>
+            <p className={classes.h2}>Commenter</p>
             <CommentForm
               user={user}
               recipe={recipe}
               setSubmitted={setSubmitted}
-            /><br></br>
-            <Accordion >
-              <Accordion.Item label={"Voir les " + recipe?.comments.length + " commentaires"}>
-                {recipe?.comments && (
-                  <CommentsList comments={recipe.comments} />
-                )}
-              </Accordion.Item>
-            </Accordion>
+            />
+            <br></br>
+            {recipe?.comments.length != 0 && (
+              <Accordion>
+                <Accordion.Item
+                  label={
+                    "Voir les " + recipe?.comments.length + " commentaires"
+                  }
+                >
+                  {recipe?.comments && (
+                    <CommentsList comments={recipe.comments} />
+                  )}
+                </Accordion.Item>
+              </Accordion>
+            )}
           </div>
         </Skeleton>
       </div>
-
-      <div className={classes.rightcontainer}>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
-          <div className={classes.ingredientcontainer}>
-            <h3 className={classes.h3}>Ingrédients</h3>
+      <div className="col-3">
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>INGRÉDIENTS</p>
+            </div>
+          </div>
+          <div>
             <ul>
               {recipe?.ingredientsUnit &&
                 recipe?.ingredientsUnit.map((element) => (
                   <li className={classes.li}>
-                    {element.quantity} {element.unit.name} de{" "}
-                    <Anchor
-                      href={"/ingredient/" + element.ingredient.id}
-                      target="_blank"
-                      color="cookogsyellow"
-                      size="xs"
-                    >
+                    <a href="#">
+                      {element.quantity} {element.unit.name} de{" "}
                       {element.ingredient.name}
-                    </Anchor>
+                    </a>
                   </li>
                 ))}
             </ul>
           </div>
         </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
-          <div className={classes.detailscontainer}>
-            <h3 className={classes.h3}>Tags</h3>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>TAGS</p>
+            </div>
+          </div>
+          <div>
             <ul>
               {recipe?.tags &&
                 recipe?.tags.map((tag) => (
-                  <li className={classes.li}>{tag.name}</li>
+                  <li className={classes.li}>
+                    <a href="#">#{tag.name}</a>
+                  </li>
                 ))}
             </ul>
           </div>
         </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>LISTES</p>
+            </div>
+          </div>
           <div className={classes.detailscontainer}>
-            <h3 className={classes.h3}>Listes</h3>
             <ListForm lists={recipe.lists} recipe={recipe} />
           </div>
         </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 10 }}>
-          <div className={classes.editcontainer}>
-            <br></br>
-            <Button
-              label="Supprimer"
-              type="danger"
-              handleClick={() => deleteRecipe()}
-              href="#"
-              className={classes.button}
-            />
-            <br></br>
-            <Button
-              label="Editer"
-              type="warning"
-              handleClick={() => handleClick()}
-              href="#"
-              className={classes.button}
-            />
-          </div>
-        </Skeleton>
       </div>
-
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />

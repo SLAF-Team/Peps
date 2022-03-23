@@ -1,6 +1,8 @@
 .li {
-  font-size: 12px;
+  margin-left: -1rem;
   text-transform: uppercase;
+  font-size: 14px;
   line-height: 2;
   list-style: none;
+  color: #324376;
 }
