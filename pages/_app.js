@@ -8,6 +8,10 @@ import { UserContext } from "../context/UserContext";
 import Head from "next/head";
 import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Button } from '@mantine/core';
+import moment from "moment";
+import "moment/locale/fr";
+
+moment.locale("fr");
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
