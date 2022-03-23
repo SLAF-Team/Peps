@@ -16,3 +16,10 @@
 .custom-shape-divider-bottom-1647700017 .shape-fill {
   fill: #faf5f0;
 }
+
+.wrapper {
+  min-height: 100%;
+  display: grid;
+  height: 100vh;
+}
+
