@@ -10,6 +10,7 @@ import Selector from "../../components/Selector";
 import AddList from "../../components/List/AddList";
 import axios from "axios";
 import Cookies from "js-cookie";
+import moment from "moment";
 
 const Profile = ({ recipes, lists }) => {
   const { query } = useRouter();
@@ -18,7 +19,6 @@ const Profile = ({ recipes, lists }) => {
   const [style, setStyle] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
-  console.log(new Date(lists[0].updatedAt));
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -112,7 +112,7 @@ const Profile = ({ recipes, lists }) => {
                     className="col-4 col-4-sm"
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                   >
-                    <p>Mis à jour le {list.name}</p>
+                    <p>{moment(list.updatedAt).fromNow()}</p>
                   </div>
                 </Link>
               </div>
@@ -140,6 +140,7 @@ export async function getServerSideProps(context) {
       user: { select: { name: true } },
     },
   });
+  console.log(allLists)
   return {
     props: {
       recipes: allRecipes,
