@@ -17,26 +17,16 @@ const Profile = ({ list, recipes, listId }) => {
   const token = Cookies.get("token");
   const router = useRouter();
   const notifications = useNotifications();
-  const [style, setStyle] = useState(false);
   const [filter, setFilter] = useState("");
   const [lists, setLists] = useState(recipes);
 
-  const handleClickLeft = () => {
-    setStyle(false);
-  };
-
-  const handleClickRight = () => {
-    setStyle(true);
-  };
-
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-      const result = await axios.delete(`/api/list/delete/${list?.id}`, {
+      const result = await axios.delete(`/api/list/delete/${listId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     }
     router.push("/lists");
-    console.log(result);
   }
 
   const handleDeleteList = () => {
@@ -45,24 +35,74 @@ const Profile = ({ list, recipes, listId }) => {
     //notif
   };
 
-  const updateList = () => {};
-
   const handleSelect = (event) => {
     setFilter(event);
-    console.log(recipes[0].lists.filter((list) => list.id == listId)[0]);
   };
 
-  // async function getSearchedRecipes(filter) {
-  //   const result = await axios.post("/api/recipe/filterRecipes", {
-  //     filter,
-  //     listId,
-  //   });
-  //   setLists(result);
-  // }
+  // async search fonction
+  const getRecipes = async (data) => {
+    try {
+      const result = await axios.post(`/api/recipe/searchRecipes`, {
+        ...data,
+      });
+      setLists(result.data);
+    } catch (err) {
+      console.log("error");
+    }
+  };
 
-  // useEffect(() => {
-  //   getSearchedRecipes(filter);
-  // }, [filter]);
+  useEffect(() => {
+    console.log(filter);
+    const data =
+      filter === "like"
+        ? {
+            orderBy: {
+              likes: {
+                _count: "asc",
+              },
+            },
+            where: {
+              lists: {
+                some: { id: parseInt(listId) },
+              },
+            },
+            include: {
+              lists: {
+                select: {
+                  id: true,
+                  name: true,
+                  user: { select: { name: true, email: true } },
+                },
+              },
+              _count: { select: { likes: true } },
+              _count: { select: { comments: true } },
+            },
+          }
+        : {
+            orderBy: {
+              comments: {
+                _count: "desc",
+              },
+            },
+            where: {
+              lists: {
+                some: { id: parseInt(listId) },
+              },
+            },
+            include: {
+              lists: {
+                select: {
+                  id: true,
+                  name: true,
+                  user: { select: { name: true, email: true } },
+                },
+              },
+              _count: { select: { likes: true } },
+              _count: { select: { comments: true } },
+            },
+          };
+    getRecipes(data);
+  }, [filter]);
 
   return (
     <>
@@ -73,7 +113,7 @@ const Profile = ({ list, recipes, listId }) => {
       <FilterSelector left={recipes.length} handleSelect={handleSelect} />
       <div className={classes.cards}>
         <div className="row">
-          {recipes.map((recipe) => (
+          {lists.map((recipe) => (
             <RecipeCard recipe={recipe} col="col-3" />
           ))}
         </div>
@@ -104,11 +144,6 @@ const Profile = ({ list, recipes, listId }) => {
 export async function getServerSideProps(context) {
   const { id } = context.params;
   const allRecipes = await prisma.recipe.findMany({
-    orderBy: {
-      comments: {
-        _count: "asc",
-      },
-    },
     where: {
       lists: {
         some: { id: parseInt(id) },
@@ -126,26 +161,6 @@ export async function getServerSideProps(context) {
       _count: { select: { comments: true } },
     },
   });
-  // const allLists = await prisma.list.findUnique({
-  //   where: { id: parseInt(id) },
-  //   include: {
-  //     user: { select: { name: true } },
-  //     recipes: {
-  //       select: {
-  //         id: true,
-  //         name: true,
-  //         imageUrl: true,
-  //         _count: { select: { likes: true } },
-  //         _count: { select: { comments: true } },
-  //       },
-  //     },
-  //   },
-  //   orderBy: {
-  //     comments: {
-  //       count: "asc",
-  //     },
-  //   },
-  // });
   return {
     props: {
       recipes: allRecipes,

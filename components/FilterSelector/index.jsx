@@ -16,7 +16,7 @@ const FilterSelector = ({ left, handleSelect }) => {
 			</div>
 			<div>
 				<p className={styles.selectorText}>
-					Filtrer :&nbsp;
+					Filtrer par :&nbsp;
 					<select name="filter" onChange={handleSelection}>
 						<option value="like">Likes</option>
 						<option value="comment">Commentaires</option>
