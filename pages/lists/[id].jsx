@@ -12,6 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Modal } from "@mantine/core";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
+import ButtonSettings from "../../components/ButtonSettings";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -43,10 +44,7 @@ const Profile = () => {
 
   // getlist
   async function getList(filtre) {
-    let coucou = "likes";
-    if (filtre === "comment") {
-      coucou = "comments";
-    }
+    let dataFilter = (filtre === "comment")? "comments" : "likes";
     let data = {
       where: { id: parseInt(id) },
       include: {
@@ -55,7 +53,7 @@ const Profile = () => {
             _count: { select: { likes: true, comments: true } },
           },
           orderBy: {
-            [coucou]: {
+            [dataFilter]: {
               _count: "asc",
             },
           },
@@ -66,13 +64,7 @@ const Profile = () => {
     searchList(data);
   }
 
-  //update list
-
-  console.log("recettes");
-  console.log(list);
-  list ? console.log(list[0].recipes) : null;
-
-  // ajouter un bouton ajouter d'autres recettes
+// update list bloc
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -145,6 +137,25 @@ const Profile = () => {
       {list && (
         <>
           <UserList user={list[0]} color="#26c485" />
+          {auth && (
+            <>
+              <Button
+                label="Supprimer"
+                type="danger"
+                handleClick={() => handleDeleteList()}
+                href="#"
+                className={classes.button}
+              />
+              <br></br>
+              <ButtonSettings
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+                className={classes.button}
+              />
+            </>
+          )}
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
           <div className={classes.cards}>
             <div className="row">
@@ -155,11 +166,11 @@ const Profile = () => {
           </div>
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <form onSubmit={editList}>
-              <label>Name</label> <br />
+              <label>Nom</label> <br />
               <input
                 name="listName"
                 type="text"
-                defaultValue={list?.name}
+                ref={list.name}
                 onChange={handleName}
               />
               <CheckboxGroup
@@ -182,26 +193,13 @@ const Profile = () => {
               </CheckboxGroup>
               <button type="submit">J'édite</button>
             </form>
+            <Button
+              label="Ajouter d'autres recette"
+              type="danger"
+              href="/recipes"
+              className={classes.button}
+            />
           </Modal>
-          {auth && (
-            <>
-              <Button
-                label="Supprimer"
-                type="danger"
-                handleClick={() => handleDeleteList()}
-                href="#"
-                className={classes.button}
-              />
-              <br></br>
-              <Button
-                label="Editer"
-                type="warning"
-                handleClick={() => setOpened(true)}
-                href="#"
-                className={classes.button}
-              />
-            </>
-          )}
         </>
       )}
     </>
