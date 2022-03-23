@@ -2,6 +2,7 @@ import prisma from "../../../../lib/prisma.ts";
 import { checkAuth, checkIfAuthor } from "../../../../lib/auth";
 
 export default async (req, res) => {
+  console.log("REQUETE")
   console.log(req)
   const { id } = req.query;
 
@@ -31,3 +32,4 @@ export default async (req, res) => {
       .json({ err: "Error occured while deleting a Recipe item." });
   }
 };
+

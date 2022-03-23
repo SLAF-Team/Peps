@@ -82,18 +82,23 @@ const Profile = () => {
 
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
-      const result = await axios.delete(`/api/list/delete/${listId}`, {
+      const result = await axios.delete(`/api/list/delete/${list?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     }
-    router.push("/lists");
+    console.log(result)
+    router.push("/profile?list=true");
   }
 
   const handleDeleteList = () => {
     //notif
+    console.log("coucou")
     deleteList();
     //notif
   };
+
+  // edition : enlever une recette
+  // edition : changer le nom (settings boutton)
 
   return (
     <>
