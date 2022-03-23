@@ -46,22 +46,14 @@ const NavBar = () => {
           ) : (
             <Menu
               control={
-                <div
-                  style={{
-                    width: "2.5rem",
-                    height: "2.5rem",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Image src={profile} width={20} height={20} />
+                <div className={styles.animation} id="pic" tabindex="0">
+                  <Image src={profile} width={28} height={28} />
                 </div>
               }
               className={styles.burger}
               sx={(theme) => ({
                 backgroundColor: "#FFD12F",
-                borderRadius: "10px",
+                borderRadius: "4px",
                 "&:hover": {
                   backgroundColor: theme.fn.darken("#FFD12F", 0.05),
                 },
