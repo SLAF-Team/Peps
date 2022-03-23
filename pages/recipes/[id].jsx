@@ -73,6 +73,11 @@ const SelectedRecipe = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    notifications.showNotification({
+      title: "Bravo!",
+      message: "Votre recette a été publié avec succès",
+      color: "green",
+    });
     getRecipe();
   };
 
