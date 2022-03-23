@@ -10,17 +10,14 @@ import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 import { useEffect } from "react";
 
-const RecipeCard = ({ recipe, like_count, col }) => {
+const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [comments, setComments] = useState(recipe?._count?.comments);
+  const [comments, setComments] = useState(comment_count);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(like_count);
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
-
-  // le _count ne passe pas en props, pourquoi ?
-  // Pourtant le parent les envoie
 
   useEffect(() => {
     setIsLiked(user?.likes.some((like) => like.recipeId === recipe.id));
@@ -87,7 +84,7 @@ const RecipeCard = ({ recipe, like_count, col }) => {
           )}
           {hasLikes ? (
             <div className={styles.recipe__likescount}>
-              {recipe._count?.likes}
+              {likes}
             </div>
           ) : null}
         </div>
@@ -95,7 +92,7 @@ const RecipeCard = ({ recipe, like_count, col }) => {
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>
-              {recipe._count?.comments}
+              {comments}
             </div>
           ) : null}
         </div>

@@ -11,9 +11,6 @@ import Image from "next/image";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
-  console.log("recettes from recette")
-  console.log(recipes)
-
   // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
@@ -195,7 +192,13 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
-              <RecipeCard recipe={recipe} key={i} like_count={recipe?._count?.likes} col="col-3" />
+              <RecipeCard
+                recipe={recipe}
+                key={i}
+                like_count={recipe?._count?.likes}
+                comment_count={recipe?._count?.comments}
+                 col="col-3"
+              />
             ))}
         </div>
       </div>
