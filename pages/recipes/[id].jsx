@@ -196,50 +196,56 @@ const SelectedRecipe = () => {
       </div>
       <div className="col-3">
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <p className={classes.selectorText}>INGRÉDIENTS</p>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>INGRÉDIENTS</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <ul>
-              {recipe?.ingredientsUnit &&
-                recipe?.ingredientsUnit.map((element) => (
-                  <li className={classes.li}>
-                    <a href="#">
-                      {element.quantity} {element.unit.name} de{" "}
-                      {element.ingredient.name}
-                    </a>
-                  </li>
-                ))}
-            </ul>
+            <div>
+              <ul>
+                {recipe?.ingredientsUnit &&
+                  recipe?.ingredientsUnit.map((element) => (
+                    <li className={classes.li}>
+                      <a href="#">
+                        {element.quantity} {element.unit.name} de{" "}
+                        {element.ingredient.name}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <p className={classes.selectorText}>TAGS</p>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>TAGS</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <ul>
-              {recipe?.tags &&
-                recipe?.tags.map((tag) => (
-                  <li className={classes.li}>
-                    <a href="#">#{tag.name}</a>
-                  </li>
-                ))}
-            </ul>
+            <div>
+              <ul>
+                {recipe?.tags &&
+                  recipe?.tags.map((tag) => (
+                    <li className={classes.li}>
+                      <a href="#">#{tag.name}</a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <p className={classes.selectorText}>LISTES</p>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>LISTES</p>
+              </div>
             </div>
-          </div>
-          <div className={classes.detailscontainer}>
-            <ListForm lists={recipe.lists} recipe={recipe} />
+            <div className={classes.detailscontainer}>
+              <ListForm lists={recipe.lists} recipe={recipe} />
+            </div>
           </div>
         </Skeleton>
       </div>
