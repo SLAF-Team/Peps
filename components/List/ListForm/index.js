@@ -10,12 +10,11 @@ import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 
-const ListForm = ({ lists, recipe }) => {
+const ListForm = ({ lists, recipe, setSubmitted }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
-  const [submitted, setSubmitted] = useState(false);
   const [value, setValue] = useState([]);
   const notifications = useNotifications();
   const router = useRouter();
@@ -52,6 +51,7 @@ const ListForm = ({ lists, recipe }) => {
       message: "Votre liste a bien été créée",
       color: "green",
     });
+    setOpened(false);
   }
 
   // edit list
@@ -92,16 +92,12 @@ const ListForm = ({ lists, recipe }) => {
             placeholder="Ta nouvelle liste"
           />
           <div className={classes.button}>
-            {submitted ? (
-              <p>Ajoutée !</p>
-            ) : (
-              <Button
-                label="Créer ma liste"
-                type="success"
-                handleClick={() => addNewList()}
-                href="#"
-              />
-            )}
+            <Button
+              label="Créer ma liste"
+              type="success"
+              handleClick={() => addNewList()}
+              href="#"
+            />
           </div>
         </form>
         <p>Utiliser une liste existante</p>

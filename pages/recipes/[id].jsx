@@ -227,7 +227,11 @@ const SelectedRecipe = () => {
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
           <div className={classes.detailscontainer}>
             <h3 className={classes.h3}>Listes</h3>
-            <ListForm lists={recipe.lists} recipe={recipe} />
+            <ListForm
+              lists={recipe.lists}
+              recipe={recipe}
+              setSubmitted={setSubmitted}
+            />
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 10 }}>
