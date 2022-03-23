@@ -65,7 +65,7 @@ const SearchBar = ({ placeholder, handleSubmit}) => {
 			<div>
 
 				{recipeSearch != '' ? dataSearch?.map(element => {
-					return <p>{element.name}</p>
+					return <div> <a href={`recipes/${element.id}`}>{element.name}</a>  <br /> </div>
 				}) : ''}
 			</div>
 		</div>
