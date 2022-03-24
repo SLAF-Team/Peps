@@ -4,12 +4,20 @@
   align-items: center;
 }
 
+.modulecontainer {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
 .setups_small {
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-
 }
 
 .setup_small {
@@ -31,7 +39,6 @@
   box-sizing: border-box;
 }
 
-
 .input_large {
   width: 333px;
   height: 48px;
@@ -47,13 +54,96 @@
   margin-bottom: 10px;
 }
 
-.detailscontainer {
-  border-bottom: solid 0.5px;
-}
-
 .editcontainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
+
+.avatar {
+	height: 2.5rem;
+	width: 2.5rem;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+
+.avatarcontainer {
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.textcontainer {
+  display: flex;
+  flex-direction: column;
+  width: 78%;
+  margin-left: 30px;
+}
+
+.letter {
+	font-family: Merriweather, sans-serif;
+	font-weight: 700;
+	font-size: 1.5rem;
+	color: white;
+}
+
+.editcontainer {
+  margin-top: 20px;
+}
+
+
+@media (max-width: 500px) {
+
+  .avatar {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+
+  .letter {
+    font-family: Merriweather, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+  }
+
+  .modulecontainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .editcontainer {
+  }
+
+  .commentauthor {
+    font-weight: 400;
+    font-size: 16px;
+  }
+
+  .editcontainer {
+    margin-top: 20px;
+    margin-right: 2px;
+  }
+
+  }

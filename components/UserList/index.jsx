@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./UserList.module.css";
-import EditUser from "../EditUser/index";
+import EditUser from "../editUser/index";
 import ButtonSettings from "../ButtonSettings";
 
 const UserList = ({ user, color }) => {
@@ -13,8 +13,10 @@ const UserList = ({ user, color }) => {
   return (
     <div className={styles.top + " row"}>
       <div className="col-3">
-        <div className={styles.avatar} style={{ backgroundColor: color }}>
-          <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
+        <div className={styles.avatarDiv}>
+          <div className={styles.avatar} style={{ backgroundColor: color }}>
+            <span className={styles.letter}>{user?.name[0].toUpperCase()}</span>
+          </div>
         </div>
       </div>
       <div className="col-9">
@@ -35,7 +37,7 @@ const UserList = ({ user, color }) => {
           <p className={styles.name}>{user?.name}</p>
           <p className={styles.email}>{user?.email}</p>
         </div>
-        {/* {!user?.email && <span>Créée par {user?.name}</span>} */}
+        {!user?.email && <span>Créée par {user?.name}</span>}
       </div>
     </div>
   );

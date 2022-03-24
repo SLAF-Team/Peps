@@ -30,6 +30,19 @@ const AddRecipesTags = ({ recipe, tags }) => {
     addTagsToRecipe(newValue);
   };
 
+  const items = tags
+    ? tags.map((tag, index) => (
+        <Checkbox
+          label={tag.name}
+          key={tag.id}
+          checked={tag.checked}
+          onChange={(event) =>
+            handlers.setItemProp(index, "checked", event.currentTarget.checked)
+          }
+        />
+      ))
+    : null;
+
   return (
     <div className={classes.form}>
       <CheckboxGroup
@@ -41,7 +54,9 @@ const AddRecipesTags = ({ recipe, tags }) => {
         required
       >
         {tags
-          ? tags.map((tag) => <Checkbox value={tag.id} label={tag.name} />)
+          ? tags.map((tag) => (
+              <Checkbox value={tag.id.toString()} label={tag.name} />
+            ))
           : null}
       </CheckboxGroup>
       <div className={classes.button}>

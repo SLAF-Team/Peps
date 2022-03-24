@@ -1,46 +1,11 @@
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+.margin {
   margin-top: 20px;
-  justify-content: center;
-}
-
-.maincontainer {
-  width: 940px;
-  height: 893px;
-  left: 250px;
-  top: 73px;
-  display: flex;
-  flex-direction: row;
-}
-
-.leftcontainer {
-  width: 705px;
-  height: 893px;
-  left: 250px;
-  top: 73px;
-}
-
-.rightcontainer {
-  width: 234px;
-  height: 893px;
-  left: 955px;
-  top: 73px;
-  padding: 20px;
 }
 
 .mainImage {
-  width: 705px;
-  height: 405.57px;
-  left: 250px;
-  top: 73px;
+  width: 100%;
   object-fit: cover;
   border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
 }
 
 .titles {
@@ -49,8 +14,51 @@
   justify-content: space-between;
 }
 
+.padding {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.selector {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid #324376;
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.selectorText {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.selectorName {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 400;
+  background: linear-gradient(
+    120deg,
+    rgba(149, 213, 255, 0.5) 0%,
+    rgba(149, 213, 255, 0.5) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 95%;
+}
+
+.selectorSpan {
+  font-size: 16px;
+  font-weight: 400;
+  color: #324376;
+}
+
 .h1 {
-  font-size: 24px;
+  font-size: 28px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .h2 {
@@ -69,11 +77,19 @@
 
 .titlecontainer {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: center;
 }
 
+.titlecontainerindex {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.actionicon {
+  margin-left: 10px;
+}
 
 .dishtitle {
   text-align: center;
@@ -88,10 +104,6 @@
   font-size: 16px;
 }
 
-.detailscontainer {
-  border-bottom: solid 0.5px;
-}
-
 .editcontainer {
   display: flex;
   flex-direction: column;
@@ -100,13 +112,198 @@
 }
 
 .li {
-  font-size: 12px;
+  margin-left: -1rem;
   text-transform: uppercase;
+  font-size: 14px;
   line-height: 2;
   list-style: none;
+  color: #324376;
 }
+
+
+  .input {
+    width: 50%;
+    height: 24px;
+    left: 10px;
+    top: 150px;
+
+    /* White */
+
+    background: #ffffff;
+    /* Black */
+
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 2px;
+  }
+
 
 .button {
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.mobiletabcontainer {
+  display: none;
+}
+
+.stepsmobilecontainer {
+  display: none;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.multiselect {
+  font-size: 10px;
+}
+
+@media (max-width: 500px) {
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .maincontainer {
+    width: 375px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  .leftcontainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .classes.description {
+    display: none;
+  }
+
+  .rightcontainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mainImage {
+    width: 100%;
+  }
+
+  .mobiletabcontainer {
+    display: block;
+    margin-top: 20px;
+  }
+
+  .stepsmobilecontainer {
+    display: block;
+    font-size: 12px;
+  }
+
+  .leftmobilecontainer {
+    position: relative;
+  }
+
+  .titles {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .h1 {
+    font-size: 24px;
+  }
+
+  .h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "Lato", sans-serif;
+  }
+
+  .h3 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Lato", sans-serif;
+    text-align: center;
+  }
+
+  .titlecontainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detailstitlecontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px;
+  }
+
+  .dishtitle {
+    font-weight: 400;
+    font-size: 16px;
+    margin: 2px;
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  .description {
+    font-style: italic;
+    font-size: 16px;
+    display: none;
+  }
+
+  .detailscontainer {
+    border-bottom: solid 0.5px;
+  }
+
+  .editcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .commentcontainer {
+    font-size: 10px;
+  }
+
+  .li {
+    font-size: 16px;
+    text-transform: none;
+    line-height: 2;
+    list-style: none;
+  }
+
+  .steps {
+    font-size: 14px;
+    line-height: 2;
+    font-weight: 500;
+    list-style: none;
+  }
+
+  .button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .stepscontainer {
+    display: none;
+  }
+
+  .ingredientcontainer {
+    display: none;
+  }
 }

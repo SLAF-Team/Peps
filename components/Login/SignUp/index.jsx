@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 import { useUserContext } from "../../../context/UserContext";
 import styles from "../Login.module.css";
 import ButtonForm from "../../ButtonForm";
+import { useNotifications } from "@mantine/notifications";
 
 const SignUp = () => {
   const router = useRouter();
   const { setUser } = useUserContext();
+  const notifications = useNotifications();
 
   // States for registration
   const [name, setName] = useState("");
@@ -36,18 +38,32 @@ const SignUp = () => {
     });
     Cookies.set("token", result.data.token, { expires: 7 });
     setUser(result.data.user);
-    router.push("/");
+    notifications.showNotification({
+      title: "Bravo !",
+      message: "Bienvenue sur Cookogs !",
+      color: "green",
+    });
+    router.push("/profile");
   }
 
   // Handling the form submission + fetch data + update state
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      name: name,
-      email: email,
-      password: password,
-    };
-    signUserUp(data);
+    if (!email || !password) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "email ou mot de passe manquant",
+        color: "red",
+      });
+    } else {
+      const data = {
+        name: name,
+        email: email,
+        password: password,
+      };
+      signUserUp(data);
+    }
   };
 
   return (
@@ -56,7 +72,7 @@ const SignUp = () => {
         <input
           id="name"
           type="text"
-          onChange={handleEmail}
+          onChange={handleName}
           className={styles.field}
           placeholder="Nom d'utilisateur"
         />

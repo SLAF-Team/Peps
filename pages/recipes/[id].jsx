@@ -1,14 +1,25 @@
 import axios from "axios";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import ListForm from "../../components/List/ListForm";
+import Layout from "../../components/layout";
+import heart from "../../assets/images/heart.svg";
+import {
+  Modal,
+  LoadingOverlay,
+  Tabs,
+  Anchor,
+  Skeleton,
+  Accordion,
+  NumberInput,
+} from "@mantine/core";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -18,18 +29,22 @@ const SelectedRecipe = () => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  // const [comments, setComments] = useState(recipe.comments);
+  const [opened, setOpened] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const isAuthor = recipe?.cookId == user?.id ? true : false;
+  const [personsValue, setPersonsValue] = useState(0);
+  const personsRatio = (personsValue / recipe?.persons)
 
   const getRecipe = async () => {
     if (!id) {
       return;
     }
     try {
-      const result = await axios.get(
-        `/api/recipe/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const result = await axios.get(`/api/recipe/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setRecipe(result.data);
     } catch (err) {
       console.log("error");
@@ -37,11 +52,24 @@ const SelectedRecipe = () => {
   };
 
   useEffect(() => {
+    setPersonsValue(recipe?.persons);
+  }, [recipe]);
+
+  useEffect(() => {
     getRecipe();
-  }, [id]);
+  }, [id, submitted]);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const editRecipe = async (event) => {
     event.preventDefault();
+
     await axios.put(
       "/api/recipe/editRecipe",
       {
@@ -51,8 +79,13 @@ const SelectedRecipe = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    notifications.showNotification({
+      title: "Bravo!",
+      message: "Votre recette a été publié avec succès",
+      color: "green",
+    });
     getRecipe();
-  }
+  };
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -60,6 +93,10 @@ const SelectedRecipe = () => {
 
   const handleDescription = (e) => {
     setDescriptionChange(e.target.value);
+  };
+
+  const handleClick = () => {
+    setOpened(true);
   };
 
   async function deleteRecipe() {
@@ -71,93 +108,199 @@ const SelectedRecipe = () => {
     }
   }
 
-  console.log(recipe);
-
   if (!recipe) {
     return null;
   }
+
   return (
-    <div style={{ margin: "20px" }} className={classes.maincontainer}>
-      <div className={classes.leftcontainer}>
-        <img src={recipe.imageUrl} className={classes.mainImage} />
-        <div className={classes.titlecontainer}>
-          <h1 className={classes.h1}>{recipe.name}</h1>
-          <h2 className={classes.h2}>{recipe.type?.name}</h2>
+    <div className="row">
+      <div className="col-9">
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <img src={recipe.imageUrl} className={classes.mainImage} />
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.titlecontainer}>
+            <h1 className={classes.h1}>{recipe.name}</h1>
+            <p className={classes.selectorName}>Par {recipe.cook.name}</p>
+            {/*<Image src={heart} width={40} height={40} />*/}
+          </div>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <Link href={"/dishes/" + recipe.dish?.id}>
+                <p className={classes.selectorText}>
+                  Une variante de{" "}
+                  <span className={classes.selectorSpan}>
+                    {recipe.dish?.title}
+                  </span>
+                </p>
+              </Link>
+            </div>
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.stepscontainer}>
+            <p>Etapes: {recipe.steps}</p>
+          </div>
+        </Skeleton>
+
+        <div className={classes.mobiletabcontainer}>
+          <Tabs grow tabPadding="xl" position="center" color="dark">
+            <Skeleton visible={loading} style={{ marginTop: 6 }}>
+              <Tabs.Tab label="INGREDIENTS">
+                <ul>
+                  {recipe?.ingredientsUnit &&
+                    recipe?.ingredientsUnit.map((element) => (
+                      <li className={classes.li} key={element.id}>
+                        {element.quantity} {element.unit.name} de{" "}
+                        <Anchor
+                          href={"/ingredient/" + element.ingredient.id}
+                          target="_blank"
+                          color="cookogsyellow"
+                          size="xs"
+                        >
+                          {element.ingredient.name}
+                        </Anchor>
+                      </li>
+                    ))}
+                </ul>
+              </Tabs.Tab>
+            </Skeleton>
+            <Skeleton visible={loading} style={{ marginTop: 6 }}>
+              <Tabs.Tab label="ETAPES">
+                <div className={classes.stepsmobilecontainer}>
+                  <ul>
+                    <li className={classes.steps}>{recipe.steps}</li>
+                  </ul>
+                </div>
+              </Tabs.Tab>
+            </Skeleton>
+          </Tabs>
         </div>
-        <div className={classes.dishcontainer}>
-          <p className={classes.dishtitle}>
-            Une recette de {recipe.dish?.title}
-          </p>
-        </div>
-        <p className={classes.description}>Description: {recipe.description}</p>
-        <p>Etapes: {recipe.steps}</p>
-        <h3>Commentaires</h3>
-        {recipe.comments?.length && (
-          <CommentsList comments={recipe.comments} />
-        )}
-        <CommentForm user={user} recipe={recipe} />
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.commentcontainer}>
+            <p className={classes.h2}>Commenter</p>
+            <CommentForm
+              user={user}
+              recipe={recipe}
+              setSubmitted={setSubmitted}
+            />
+            <br></br>
+            {recipe?.comments.length != 0 && (
+              <Accordion>
+                <Accordion.Item
+                  label={
+                    "Voir les " + recipe?.comments.length + " commentaires"
+                  }
+                >
+                  {recipe?.comments && (
+                    <CommentsList comments={recipe.comments} />
+                  )}
+                </Accordion.Item>
+              </Accordion>
+            )}
+          </div>
+        </Skeleton>
       </div>
-      <div className={classes.rightcontainer}>
-        <div className={classes.detailscontainer}>
-          <h3 className={classes.h3}>Ingrédients</h3>
-          <ul>
-            <li className={classes.li}>Tomate</li>
-            <li className={classes.li}>Huile d'olive</li>
-            <li className={classes.li}>Oeufs</li>
-            <li className={classes.li}>Courgettes</li>
-            <li className={classes.li}>Ail</li>
-          </ul>
-        </div>
-        <div className={classes.detailscontainer}>
-          <h3 className={classes.h3}>Tags</h3>
-          <ul>
-            <li className={classes.li}>Vegan</li>
-            <li className={classes.li}>Sans Sucre</li>
-            <li className={classes.li}>Piquant</li>
-          </ul>
-        </div>
-        <button onClick={deleteRecipe}>Supprimer</button>
-        <div className={classes.detailscontainer}></div>
-        <div className={classes.editcontainer}>
-          <br></br>
+      <div className="col-3">
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>INGRÉDIENTS pour </p>
+                <NumberInput
+                  value={personsValue}
+                  onChange={(val) => setPersonsValue(val)}
+                  required
+                  min={1}
+                  max={15}
+                />
+                <label className={classes.label}> convives</label>
+              </div>
+            </div>
+            <div>
+              <ul>
+                {recipe?.ingredientsUnit &&
+                  recipe?.ingredientsUnit.map((element) => (
+                    <li className={classes.li}>
+                      <a href="#">
+                        {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
+                        {element.unit.name} de {element.ingredient.name}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>TAGS</p>
+              </div>
+            </div>
+            <div>
+              <ul>
+                {recipe?.tags &&
+                  recipe?.tags.map((tag) => (
+                    <li className={classes.li}>
+                      <a href="#">#{tag.name}</a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>LISTES</p>
+              </div>
+            </div>
+            <div className={classes.detailscontainer}>
+              <ListForm
+                lists={recipe.lists}
+                recipe={recipe}
+                setSubmitted={setSubmitted}
+              />
+            </div>
+          </div>
+        </Skeleton>
+          </div>
           <Button
-            label="Supprimer"
-            type="danger"
-            handleClick={() => deleteRecipe()}
-            href="#"
-            className={classes.button}
+                label="Editer"
+                type="success"
+                handleClick={() => setOpened(true)}
+                href="#"
           />
-          <br></br>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form onSubmit={editRecipe}>
+          <label>Name</label> <br />
+          <input
+            name="recipeName"
+            type="text"
+            defaultValue={recipe.name}
+            onChange={handleName}
+          />
+          <br />
+          <label>Description</label>
+          <textarea
+            name="recipeDescription"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.description}
+            onChange={handleDescription}
+          />
+          <br />
+          <br />
           <Button
-            label="Editer"
-            type="warning"
-            handleClick={() => editRecipe()}
+            label="J'édite"
+            type='submit'
             href="#"
-            className={classes.button}
           />
-        </div>
-      </div>
-      <form onSubmit={editRecipe}>
-        <label>Name</label> <br />
-        <input
-          name="recipeName"
-          type="text"
-          defaultValue={recipe.name}
-          onChange={handleName}
-        />
-        <br />
-        <label>Description</label>
-        <textarea
-          name="recipeDescription"
-          type="text"
-          style={{ width: "100%", height: "100px" }}
-          defaultValue={recipe.description}
-          onChange={handleDescription}
-        />
-        <button type="submit">
-          J'édite
-        </button>
-      </form>
+        </form>
+      </Modal>
     </div>
   );
 };

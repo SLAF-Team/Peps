@@ -2,6 +2,7 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
   font-family: "Lato", sans-serif;
 }
@@ -45,6 +46,8 @@ h6 {
 p {
   font-weight: 300;
   font-size: 18px;
+  line-height: 2rem;
+  letter-spacing: 0.1rem;
 }
 
 span {
@@ -94,7 +97,7 @@ a {
 
 .row [class^="col"] {
   float: left;
-  margin: 0.5rem 2%;
+  margin: 0.4rem 1%;
   min-height: 0.125rem;
 }
 
@@ -189,7 +192,7 @@ a {
   }
 
   .col-3 {
-    width: 21%;
+    width: 23%;
   }
 
   .col-4 {
@@ -236,9 +239,8 @@ a {
 .selectorBlock {
   width: 100%;
   text-align: center;
-  cursor: pointer;
 }
 
 .selectorSelect {
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #324376;
 }

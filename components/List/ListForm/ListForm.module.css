@@ -1,0 +1,15 @@
+.btn {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #324376;
+  background: #faf5f0;
+  border: 1px solid #324376;
+}
+
+.center {
+  text-align: center;
+}

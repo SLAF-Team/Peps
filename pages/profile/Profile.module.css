@@ -1,6 +1,48 @@
-.cards {
+.listCards {
+  width: 100%;
+  height: 92px;
+  border-bottom: 0.5px solid black;
+  cursor: pointer;
+}
+
+.listHeader {
+  width: 100%;
+  height: 35px;
+  border-bottom: 0.5px solid black;
+  cursor: pointer;
+  background-color: #faf5f0;
+}
+
+.spanHeader {
+  font-size: 12px;
+}
+
+.listAvatar {
+  background-color: white;
+  width: 70%;
+  border-radius: 8px;
+}
+
+.avatar {
+  background-color: black;
+  border-radius: 14px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  margin-top: 20px;
+  justify-content: center;
+  margin-right: 2rem;
+}
+
+.letter {
+  font-family: Merriweather, sans-serif;
+  font-weight: 700;
+  font-size: 64px;
+  color: white;
+}
+
+.cards {
+  margin-top: 1rem;
+}
+
+.center {
+  text-align: center;
 }

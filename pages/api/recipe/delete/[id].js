@@ -1,6 +1,13 @@
 import prisma from "../../../../lib/prisma.ts"
+import { checkAuth } from "../../../../lib/auth";
 
 export default async (req, res) => {
+  const isAuth = await checkAuth(req);
+  if(!isAuth) {
+    res.status(403).json({ err: "Forbidden" });
+    return;
+  }
+
   const { id } = req.query;
   try {
     const deleteRecipe = await prisma.recipe.delete({

@@ -3,11 +3,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../context/UserContext";
 import styles from "./EditUser.module.css";
+import { useRouter } from "next/router";
 
 const EditUser = ({ user, handleUpdateUser }) => {
   const token = Cookies.get("token");
   const { setUser } = useUserContext();
-
+  const router = useRouter();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
 

@@ -10,6 +10,7 @@ async function main() {
   await prisma.tag.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.region.deleteMany({});
+  await prisma.unit.deleteMany({});
 
   const john = await prisma.user.create({
     data: {
@@ -53,6 +54,10 @@ async function main() {
     { name: "Eau" },
     { name: "Courgette" },
   ];
+
+    const tag = await prisma.type.create({
+      data: { name: "Carnivore" },
+    });
 
   const entree = await prisma.type.create({
     data: { name: "Entrée" },
@@ -104,7 +109,7 @@ async function main() {
     data: {
       title: "Couscous",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       regionId: afrique.id,
@@ -115,7 +120,7 @@ async function main() {
     {
       title: "Pot au Feu à l'ancienne",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description:
         "Over the past two decades, Rails has taken countless companies to millions of users and billions in market valuations.",
       regionId: afrique.id,
@@ -123,7 +128,7 @@ async function main() {
     {
       title: "Poutine",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description: "Sans commentaire.",
       regionId: afrique.id,
     },
@@ -133,19 +138,20 @@ async function main() {
     data: {
       name: "Couscous en mode blanquette",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 4,
     },
   });
 
   const list = await prisma.list.create({
     data: {
-      name: "A essayer",
+      name: "À essayer",
       userId: john.id,
       recipes: {
         connect: [{ id: recipe.id }],
@@ -157,24 +163,26 @@ async function main() {
     {
       name: "Couscous de chez ma grand mère",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 10,
     },
     {
       name: "Un autre couscous incroyable",
       imageUrl:
-        "https://www.guide-piscine.fr/medias/image/concours-de-plats-22507-1200-800.jpg",
+        "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
       description:
         "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 2,
     },
   ];
 

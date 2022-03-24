@@ -15,18 +15,38 @@
   margin-left: 2vw;
 }
 
+.displayResponsive {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .right {
   display: flex;
   margin-top: 2vh;
+  margin-bottom: 1vh;
+  align-items: center;
+  width: 100vw;
 }
 
 .burger {
-  margin-top: 5px;
+  padding: 5px;
   margin-left: -10px;
+  display: grid;
+  place-items: center;
 }
 
 .btnResponsive {
   display: none;
+}
+
+.animation {
+  transform: rotate(0deg);
+  transition: transform 0.5s;
+}
+
+.animationEnd {
+  transform: rotate(90deg);
 }
 
 .burgerResponsive {
@@ -38,6 +58,16 @@
 
 @media only screen and (min-width: 33.75em) {
   /* 540px */
+
+  .right {
+    width: initial;
+  }
+
+  .displayResponsive {
+    width: 100%;
+    display: contents;
+  }
+
   .navbar {
     padding: 0.75rem 3rem;
   }
@@ -48,6 +78,7 @@
 
   .right {
     margin-top: 0;
+    margin-bottom: initial;
   }
 
   .burgerResponsive {

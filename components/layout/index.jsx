@@ -1,13 +1,13 @@
-import Navbar from "../Navbar";
+import Navbar from "../navbar";
 import Footer from "../Footer";
-import styles from "./Layout.module.css";
+import classes from "./Layout.module.css";
 
 export default function Layout({ children }) {
   return (
-    <>
+    <div>
       <Navbar />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }
