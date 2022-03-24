@@ -40,7 +40,7 @@ const SignUp = () => {
     setUser(result.data.user);
     notifications.showNotification({
       title: "Bravo !",
-      message: "Bienvenue sur Cookogs !",
+      message: "Bienvenue sur Peps !",
       color: "green",
     });
     router.push("/profile");
