@@ -1,11 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import classes from "./CommentForm.module.css";
 import Button from "../../Button";
-import Link from "next/link";
 import { useNotifications } from "@mantine/notifications";
 
 const CommentForm = ({ user, recipe, setSubmitted }) => {
