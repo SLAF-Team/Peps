@@ -31,7 +31,7 @@ const SignIn = () => {
     setUser(result.data.user);
     notifications.showNotification({
       title: "Bravo !",
-      message: "Un plaisir de vous retrouver parmi nous",
+      message: "Un plaisir de vous retrouver sur Peps",
       color: "green",
     });
     router.push("/");
