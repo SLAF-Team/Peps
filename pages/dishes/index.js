@@ -3,12 +3,10 @@ import DishCard from "../../components/DishCard/DishCard.jsx"
 import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
-import { Switch, Drawer, Button, Group, ActionIcon, MultiSelect } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import axios from "axios";
-import adjust from "../../assets/images/adjust.svg";
-import Image from "next/image";
 
-const Dishes = ({ dishes, regions, recipes }) => {
+const Dishes = ({ dishes, regions  }) => {
   // set up state for multiselect
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
@@ -24,9 +22,6 @@ const Dishes = ({ dishes, regions, recipes }) => {
   regions?.map((region) =>
     dataRegions.push({ value: region.id, label: region.name })
   );
-
-  // set up drawer
-  const [opened, setOpened] = useState(false);
 
   // async search fonction
   const getDishes = async (data) => {
