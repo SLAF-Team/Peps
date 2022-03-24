@@ -29,6 +29,13 @@ const Profile = () => {
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
 
+  // initial checkbox value
+
+  // const initialValue = []
+  // list? list[0].recipes.map((recipe) => initialValue.push(recipe.id.toString())) : null;
+  // console.log("initialValue");
+  // console.log(initialValue)
+
   // search list + call axios
   async function searchList(data) {
     try {
@@ -43,6 +50,7 @@ const Profile = () => {
   }
 
   // getlist
+
   async function getList(filtre) {
     let dataFilter = (filtre === "comment")? "comments" : "likes";
     let data = {
@@ -114,6 +122,8 @@ const Profile = () => {
     setFilter(event);
   };
 
+  console.log(list)
+
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
       await axios.delete(`/api/list/delete/${parseInt(id)}`, {
@@ -180,6 +190,7 @@ const Profile = () => {
                 onChange={handleName}
               />
               <CheckboxGroup
+                // defaultValue={initialValue}
                 value={value}
                 onChange={setValue}
                 label="Retirer des recettes"
@@ -200,8 +211,8 @@ const Profile = () => {
               <button type="submit">J'édite</button>
             </form>
             <Button
-              label="Ajouter d'autres recette"
-              type="danger"
+              label="Ajouter à d'autres recettes"
+              type="success"
               href="/recipes"
               className={classes.button}
             />
