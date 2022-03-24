@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Button.module.css";
 
-const ButtonForm = ({ label, type }) => {
+const ButtonForm = ({ label, theme }) => {
 	let btnStyle;
-	switch (type) {
+	switch (theme) {
 		case "primary":
 			btnStyle = styles.primary;
 			break;
@@ -22,7 +22,7 @@ const ButtonForm = ({ label, type }) => {
 	}
 
 	return (
-		<button className={`${styles.btn} ${btnStyle}`} type="submit">
+		<button className={`${styles.btn} ${btnStyle}`}>
 			{label.toUpperCase()}
 		</button>
 	);

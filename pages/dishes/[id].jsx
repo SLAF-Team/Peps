@@ -7,6 +7,8 @@ import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
 import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
+import ButtonForm from "../../components/ButtonForm";
+import Button from "../../components/Button";
 
 const SelectedDish = () => {
   const { user } = useUserContext();
@@ -58,6 +60,7 @@ const SelectedDish = () => {
   }
 
   async function deleteDish() {
+    console.log("coucou");
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/dish/delete/${dish?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -103,6 +106,7 @@ const SelectedDish = () => {
                 {dish?.recipes &&
                   dish?.recipes.map((recipe) => (
                     <RecipeCard
+                      key={recipe.id}
                       recipe={recipe}
                       like_count={recipe?._count?.likes}
                       comment_count={recipe?._count?.comments}
@@ -165,16 +169,18 @@ const SelectedDish = () => {
           <br />
           <label>Description</label>
           <textarea
-            name="recipekDescription"
+            name="dishDescription"
             type="text"
             style={{ width: "100%", height: "100px" }}
             defaultValue={dish?.description}
             onChange={handleDescription}
           />
-          <button type="submit">J'édite</button>
+          <ButtonForm label={"j'édite"} theme="success" />
         </form>
         <br />
-        {user?.isadmin ? <button onClick={deleteDish}>Supprimer</button> : null}
+        {user?.isadmin ? (
+          <button onClick={() => deleteDish()}>Supprimer</button>
+        ) : null}
       </Modal>
     </>
   );

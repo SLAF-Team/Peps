@@ -92,7 +92,7 @@ const SignUp = () => {
         />
       </div>
       <div className={styles.button}>
-        <ButtonForm label="Inscription" type="warning" />
+        <ButtonForm label="Inscription" theme="warning" />
       </div>
     </form>
   );
