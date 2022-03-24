@@ -1,34 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Cookogs
 
-## Getting Started
+## Table of contents
 
-First, run the development server:
+- [The task](#the-task)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- [The stack](#the-stack)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [The driving concept](#the-driving-concept)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [See it for yourself!](#see-it-for-yourself!)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+---
+## The Task
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+After having spent about 2 months learning ReactJS at The Hacking Project, we've been tasked with building a website that combines this library to our own back-end API.
 
-## Learn More
+We decided to build a collaborative cooking webiste whose main asset lies within the handling of the database.
 
-To learn more about Next.js, take a look at the following resources:
+## The Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+We've selected NextJS combined with Prisma in order to build our API. Additionnaly, we've used other tools that fit our needs such as the Axios or Mantine.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## The driving concept
 
-## Deploy on Vercel
+It's no secret that the internet is already well served in terms of cooking websites.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+However, according to numerous testimonies, two main issues tend to be uncountered while navigating:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. It's often annoying to have to scroll past the unnecessary introduction to get to the recipe itself.
+
+2. Most classification systems make it hard to discover all varieties of a given dish.
+
+To answer this, our system is heavily based on [Discogs](https://www.discogs.com/), a music database and marketplace whose success is mainly based on its clever architecture, the main principle being that products are ordered through a two-level system: master releases and releases, the former having a 1:N relationship with the latter.
+
+We've adapted this principle to the cooking world by setting up main dishes that can be adapted into as many recipes as the users will be able to provide. For example, while pizza is a dish, neapolitan pizze and calzoni are recipes.
+
+## See it for yourself!
+
+Discover it [here](XXX)
+Connect, browse & contribute!
