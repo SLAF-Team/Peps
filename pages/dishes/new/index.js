@@ -60,11 +60,11 @@ const newDish = ({ regions }) => {
         <form ref={formRef}>
           <div>
             <label>Titre</label>
-            <input name="addTitle" type="text" />
+            <input name="addTitle" type="text" placeholder="Ex: Le Bortsch" />
           </div>
           <div>
             <label>Description</label>
-            <input name="addDescription" type="text" />
+            <input name="addDescription" type="text" placeholder="Ex: Le Bortsch est un potage d'origine ukrainienne consommé dans de nombreux pays slaves ainsi qu'en d'Asie du Nord." />
           </div>
           {regions ? (
             <div>
