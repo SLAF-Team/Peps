@@ -114,7 +114,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
                         className={styles.link}
                         href={`/recipes/${element.id}`}
                       >
-                        <div className={styles.a}>{element.name}</div>
+                        <a className={styles.a}>{element.name}</a>
                       </Link>
                     </div>
                   );
