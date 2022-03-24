@@ -1,0 +1,104 @@
+.margin {
+  margin-top: 20px;
+}
+
+.mainImage {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.selector {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid #324376;
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.selectorText {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.selectorName {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 400;
+  background: linear-gradient(
+    120deg,
+    rgba(149, 213, 255, 0.5) 0%,
+    rgba(149, 213, 255, 0.5) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 95%;
+}
+
+.selectorSpan {
+  font-size: 16px;
+  font-weight: 400;
+  color: #324376;
+}
+
+.h1 {
+  font-size: 28px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.titlecontainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dishtitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 2px;
+  margin-top: 20px;
+}
+
+.li {
+  margin-left: -1rem;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 2;
+  list-style: none;
+  color: #324376;
+}
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.padding {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.multiselect {
+  font-size: 10px;
+}
+
+@media only screen and (min-width: 33.75em) {
+  .cards {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.75rem;
+  }
+}
