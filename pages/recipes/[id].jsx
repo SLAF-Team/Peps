@@ -11,6 +11,8 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
 import heart from "../../assets/images/heart.svg";
+import { Select } from '@mantine/core';
+
 import {
   Modal,
   LoadingOverlay,
@@ -38,6 +40,7 @@ const SelectedRecipe = () => {
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = (personsValue / recipe?.persons)
+  const [ingredients, setIngredients] = useState();
 
   const getRecipe = async () => {
     if (!id) {
@@ -49,24 +52,36 @@ const SelectedRecipe = () => {
       });
       setRecipe(result.data);
     } catch (err) {
-      console.log("error");
+      console.log("Error regarding the loading of recipes.");
     }
   };
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
+  const getIngredients = async () => {
+    if (!id) {
+      return;
     }
-  }, [getRecipe])
+    try {
+      const result = await axios.get('/api/ingredient/getIngredients', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setIngredients(result.data);
+    } catch (err) {
+      console.log("Error regarding the loading of ingredients.");
+    }
+  };
 
   useEffect(() => {
     setPersonsValue(recipe?.persons);
   }, [recipe]);
 
+  // useEffect(() => {
+  //   console.log(ingredients);
+  //   console.log(recipe);
+  // }, [getIngredients])
+  
   useEffect(() => {
     getRecipe();
+    getIngredients();
   }, [id, submitted]);
 
   useEffect(() => {
@@ -76,6 +91,11 @@ const SelectedRecipe = () => {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+
+
+
+
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -89,11 +109,11 @@ const SelectedRecipe = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    // notifications.showNotification({
-    //   title: "Bravo!",
-    //   message: "Votre recette a été publié avec succès",
-    //   color: "green",
-    // });
+    notifications.showNotification({
+      title: "Bravo!",
+      message: "Votre recette a été publié avec succès",
+      color: "green",
+    });
     getRecipe();
   };
 
@@ -104,10 +124,6 @@ const SelectedRecipe = () => {
   const handleDescription = (e) => {
     setDescriptionChange(e.target.value);
   };
-
-  // const handleClick = () => {
-  //   setOpened(true);
-  // };
 
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
