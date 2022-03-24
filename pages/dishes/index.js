@@ -3,7 +3,7 @@ import DishCard from "../../components/DishCard/DishCard.jsx"
 import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
-import { MultiSelect } from "@mantine/core";
+import { MultiSelect, Switch } from "@mantine/core";
 import axios from "axios";
 
 const Dishes = ({ dishes, regions  }) => {
@@ -11,10 +11,8 @@ const Dishes = ({ dishes, regions  }) => {
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
   const [filterRegion, setFilterRegion] = useState(idRegions);
-
   const [filteredDishes, setFilterDishes] = useState(dishes);
-
-  const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(true);
 
   // set up data for multiselect
 
@@ -35,10 +33,7 @@ const Dishes = ({ dishes, regions  }) => {
     }
   };
 
-  // change filter state
-  const handleChange = () => {
-    setFilter(!filter);
-  };
+  console.log(filteredDishes)
 
   //useEffect for filter with exception if filter not used (ternary <3)
   useEffect(() => {
