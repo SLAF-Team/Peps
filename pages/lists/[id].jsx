@@ -52,7 +52,7 @@ const Profile = () => {
   // getlist
 
   async function getList(filtre) {
-    let dataFilter = (filtre === "comment")? "comments" : "likes";
+    let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {
       where: { id: parseInt(id) },
       include: {
@@ -72,7 +72,7 @@ const Profile = () => {
     searchList(data);
   }
 
-// update list bloc
+  // update list bloc
 
   const handleName = (e) => {
     setNameChange(e.target.value);
@@ -122,7 +122,7 @@ const Profile = () => {
     setFilter(event);
   };
 
-  console.log(list)
+  console.log(list);
 
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {
@@ -175,7 +175,7 @@ const Profile = () => {
                   key={recipe.id}
                   like_count={recipe?._count?.likes}
                   comment_count={recipe?._count?.comments}
-                  col="col-3"
+                  col="col-3 col-6-sm"
                 />
               ))}
             </div>

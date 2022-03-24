@@ -75,7 +75,7 @@ const Profile = ({ recipes, lists }) => {
                 key={index}
                 like_count={recipe?._count?.likes}
                 comment_count={recipe?._count?.comments}
-                col="col-3"
+                col="col-3 col-6-sm"
               />
             ))}
           </div>
@@ -110,7 +110,7 @@ const Profile = ({ recipes, lists }) => {
                     className="col-6 col-4-sm"
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                   >
-                    <p>{list.name}</p>
+                    <p className={styles.listText}>{list.name}</p>
                   </div>
                 </Link>
                 <Link href={"/lists/" + list.id} exact>
@@ -118,7 +118,9 @@ const Profile = ({ recipes, lists }) => {
                     className="col-4 col-4-sm"
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                   >
-                    <p>{moment(list.updatedAt).fromNow()}</p>
+                    <p className={styles.listText}>
+                      {moment(list.updatedAt).fromNow()}
+                    </p>
                   </div>
                 </Link>
               </div>
@@ -136,7 +138,7 @@ const Profile = ({ recipes, lists }) => {
 export async function getServerSideProps(context) {
   const allRecipes = await prisma.recipe.findMany({
     include: {
-        _count: { select: { likes: true, comments: true } },
+      _count: { select: { likes: true, comments: true } },
     },
   });
   const allLists = await prisma.list.findMany({
