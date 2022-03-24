@@ -4,8 +4,9 @@ import { Modal } from "@mantine/core";
 import { useState, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
+import ButtonForm from "../../ButtonForm";
 import Cookies from "js-cookie";
-import classes from "./ListForm.module.css";
+import styles from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
@@ -84,10 +85,8 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
   return (
     <>
       <ListsList lists={lists} />
-      <div className={classes.center}>
-        <button className={classes.btn} onClick={handleClick}>
-          Ajouter à une liste
-        </button>
+      <div className={styles.form}>
+        <Button label="Ajouter" className={styles.button} handleClick={handleClick} href="#"/>
       </div>
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <p>Ajouter à une nouvelle liste</p>
@@ -97,8 +96,9 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
             name="addName"
             size="40"
             placeholder="Ta nouvelle liste"
+            className={styles.field}
           />
-          <div className={classes.button}>
+          <div className={styles.button}>
             <Button
               label="Créer ma liste"
               type="success"
@@ -127,7 +127,7 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
             <p>Tu n'as pas encore de liste</p>
           )}
         </CheckboxGroup>
-        <div className={classes.button}>
+        <div className={styles.button}>
           <Button
             label="Valider mon choix"
             type="success"
