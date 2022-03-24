@@ -15,6 +15,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
   const router = useRouter();
 
+
   // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
@@ -200,7 +201,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
             <Image src={adjust} />
           </ActionIcon>
         </div>
-
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
@@ -209,7 +209,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
                 key={i}
                 like_count={recipe?._count?.likes}
                 comment_count={recipe?._count?.comments}
-                 col="col-3"
+                col="col-3 col-6-sm"
               />
             ))}
         </div>
@@ -223,7 +223,7 @@ export async function getServerSideProps() {
     include: {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
-        _count: { select: { likes: true, comments: true } },
+      _count: { select: { likes: true, comments: true } },
     },
   });
   const allTags = await prisma.tag.findMany({});

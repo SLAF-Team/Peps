@@ -132,7 +132,7 @@ const SelectedDish = () => {
                       recipe={recipe}
                       like_count={recipe?._count?.likes}
                       comment_count={recipe?._count?.comments}
-                      col="col-4"
+                      col="col-4 col-6-sm"
                     />
                   ))}
               </div>

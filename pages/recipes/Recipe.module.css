@@ -1,5 +1,5 @@
 .margin {
-  margin-top: 20px;
+  padding: 1rem;
 }
 
 .mainImage {
@@ -120,23 +120,21 @@
   color: #324376;
 }
 
+.input {
+  width: 50%;
+  height: 24px;
+  left: 10px;
+  top: 150px;
 
-  .input {
-    width: 50%;
-    height: 24px;
-    left: 10px;
-    top: 150px;
+  /* White */
 
-    /* White */
+  background: #ffffff;
+  /* Black */
 
-    background: #ffffff;
-    /* Black */
-
-    border: 1px solid #000000;
-    box-sizing: border-box;
-    border-radius: 2px;
-  }
-
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
 
 .button {
   margin-top: 20px;
