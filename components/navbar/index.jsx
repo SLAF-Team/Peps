@@ -10,6 +10,7 @@ import { Menu, Burger, Divider, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
 import profile from "../../assets/images/profile.svg";
+import peps from "../../assets/images/peps.svg";
 import { useEffect } from "react";
 
 const NavBar = () => {
@@ -26,15 +27,25 @@ const NavBar = () => {
     }
   };
 
+  console.log(peps);
+
   return (
     <>
       <div className={styles.navbar}>
         <div className={styles.displayResponsive}>
-          <div>
-            <Link href="/" exact>
-              <span className={styles.brand}>Peps</span>
-            </Link>
-          </div>
+          <Link href="/" exact>
+            <div className={styles.logo}>
+              <div
+                className={styles.img}
+                style={{
+                  backgroundImage: `url(${peps.src})`,
+                }}
+              ></div>
+              <div>
+                <span className={styles.brand}>Peps</span>
+              </div>
+            </div>
+          </Link>
           {user && (
             <div className={styles.burgerResponsive}>
               <Menu
