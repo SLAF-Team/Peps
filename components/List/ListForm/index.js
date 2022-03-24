@@ -52,6 +52,7 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
       color: "green",
     });
     setOpened(false);
+    setSubmitted(false);
   }
 
   // edit list
@@ -71,6 +72,7 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
       message: "Votre liste a bien été mise à jour",
       color: "green",
     });
+    setSubmitted(false);
   }
 
   const handleEditClick = () => {
