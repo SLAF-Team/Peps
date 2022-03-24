@@ -42,6 +42,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       addDish,
       addType,
       addImageUrl,
+      addPersons,
     } = formRef.current;
     const name = addName.value;
     const description = addDescription.value;
@@ -50,7 +51,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     const dish = addDish.value;
     const type = addType.value;
     const cook = user;
-    if (!name || !description) {
+    const persons = addPersons.value;
+    if (!name || !description ||!persons) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
         message: "Un ou plusieurs éléments sont manquants",
@@ -68,6 +70,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           dishId: parseInt(dish),
           typeId: parseInt(type),
           published: JSON.parse(checked),
+            persons: parseInt(persons),
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -119,7 +122,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.step}>
-              <label className={classes.label}>Nom de la recette</label>
+              <label className={classes.label}>Nom de la recette *</label>
               <input
                 className={classes.input}
                 name="addName"
@@ -136,6 +139,17 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 placeholder="Ex: https://masuperimagedetarte.com"
               />
             </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Nombre de convives *</label>
+              <input
+                className={classes.input}
+                type="number"
+                name="addPersons"
+                min="1"
+                max="15"
+              />
+            </div>
+
             {countries ? (
               <div className={classes.step}>
                 <label className={classes.label}>Pays</label>
@@ -167,7 +181,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.step}>
-              <label className={classes.label}>Description</label>
+              <label className={classes.label}>Description *</label>
               <input
                 className={classes.input}
                 name="addDescription"

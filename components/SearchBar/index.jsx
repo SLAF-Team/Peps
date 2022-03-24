@@ -72,29 +72,10 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
       <div className={styles.searchbox}>
         {recipeSearch && (
           <div>
-            {opened && (
+            {opened && dataSearch.length > 0 && (
               <Box
                 ref={ref}
-                sx={(theme) => ({
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[0],
-                  paddingTop: "15px",
-                  paddingBottom: "15px",
-                  zIndex: "504344343",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                  borderRadius: theme.radius.s,
-                  cursor: "pointer",
-                  width: "100%",
-                  "&:hover": {
-                    backgroundColor:
-                      theme.colorScheme === "dark"
-                        ? theme.colors.dark[5]
-                        : theme.colors.gray[1],
-                  },
-                })}
+                className={styles.box}
               >
                 {dataSearch?.map((element) => {
                   return (
