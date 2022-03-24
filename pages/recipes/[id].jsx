@@ -243,8 +243,8 @@ const SelectedRecipe = () => {
                 <p className={classes.selectorText}>LISTES</p>
               </div>
             </div>
-            <div className={classes.detailscontainer}>
-              <ListForm lists={recipe.lists} recipe={recipe} />
+          <div className={classes.detailscontainer}>
+            <ListForm lists={recipe.lists} recipe={recipe} setSubmitted={setSubmitted}/>
             </div>
           </div>
         </Skeleton>

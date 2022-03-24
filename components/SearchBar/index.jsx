@@ -61,7 +61,6 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
   useEffect(() => {
     getSearchedRecipe(recipeSearch);
   }, [recipeSearch]);
-  console.log(dataSearch)
 
   
   return (
