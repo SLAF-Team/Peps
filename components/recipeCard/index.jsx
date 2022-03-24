@@ -35,7 +35,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   }
 
   async function removeLike() {
-    await axios.delete(`/api/like/${recipe.id}`, {
+    await axios.delete(`/api/like/delete/${recipe.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }

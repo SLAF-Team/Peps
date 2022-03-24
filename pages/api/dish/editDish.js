@@ -1,15 +1,9 @@
-import { checkAuth, checkIfAdmin } from "../../../lib/auth";
+import { checkAuth } from "../../../lib/auth";
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
   const isAuth = await checkAuth(req);
   if (!isAuth) {
-    res.status(403).json({ err: "Forbidden" });
-    return;
-  }
-
-  const isAdmin = await checkIfAdmin(req);
-  if (!isAdmin) {
     res.status(403).json({ err: "Forbidden" });
     return;
   }
