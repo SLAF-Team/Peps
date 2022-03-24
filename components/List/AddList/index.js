@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
 import Cookies from "js-cookie";
-import classes from "./AddList.module.css";
+import styles from "./AddList.module.css";
 import { useNotifications } from "@mantine/notifications";
 
 const AddList = ({ user, setSubmitted }) => {
@@ -42,6 +42,7 @@ const AddList = ({ user, setSubmitted }) => {
   }
 
   return (
+
     <form ref={formRef}>
       <input
         className={classes.input}
