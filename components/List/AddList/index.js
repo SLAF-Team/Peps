@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
 import Cookies from "js-cookie";
-import classes from "./AddList.module.css";
+import styles from "./AddList.module.css";
 import { useNotifications } from "@mantine/notifications";
 
 const AddList = ({ user, setSubmitted }) => {
@@ -43,20 +43,23 @@ const AddList = ({ user, setSubmitted }) => {
 
   return (
     <>
-      <form ref={formRef}>
-        <input
-          type="text"
-          name="addName"
-          size="40"
-          placeholder="nouvelle liste"
-        />
-        <div className={classes.button}>
+      <form ref={formRef} className={styles.size}>
+        <div className={styles.form}>
+          <input
+            type="text"
+            name="addName"
+            size="40"
+            className={styles.field}
+            placeholder="nouvelle liste"
+          />
+          <div className={styles.button}>
             <Button
               label="Créer une liste"
               type="success"
               handleClick={() => addNewList()}
               href="#"
             />
+          </div>
         </div>
       </form>
     </>
