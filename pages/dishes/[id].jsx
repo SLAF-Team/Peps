@@ -1,27 +1,16 @@
 import axios from "axios";
-import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
-import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Dishes.module.css";
-import Button from "../../components/Button";
-import CommentForm from "../../components/Comment/CommentForm";
-import ListForm from "../../components/List/ListForm";
-import Layout from "../../components/layout";
-import heart from "../../assets/images/heart.svg";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import {
   Modal,
-  LoadingOverlay,
-  Tabs,
-  Anchor,
   Skeleton,
-  Accordion,
 } from "@mantine/core";
 
-const SelectedDish = ({ currentDish }) => {
+const SelectedDish = () => {
   const token = Cookies.get("token");
   const router = useRouter();
   const { id } = router.query;
@@ -126,7 +115,7 @@ const SelectedDish = ({ currentDish }) => {
           </Skeleton>
         </div>
         <div className="col-3">
-          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          {/* <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
@@ -141,18 +130,18 @@ const SelectedDish = ({ currentDish }) => {
                 </ul>
               </div>
             </div>
-          </Skeleton>
+          </Skeleton> */}
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>TAGS</p>
+                  <p className={classes.selectorText}>Région</p>
                 </div>
               </div>
               <div>
                 <ul>
                   <li className={classes.li}>
-                    <a href="#">#Prout</a>
+                    <a href="#">{dish?.region.name}</a>
                   </li>
                 </ul>
               </div>
@@ -162,7 +151,7 @@ const SelectedDish = ({ currentDish }) => {
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>LISTES</p>
+                  <p className={classes.selectorText}>Wiki</p>
                 </div>
               </div>
               <div className={classes.detailscontainer}></div>
