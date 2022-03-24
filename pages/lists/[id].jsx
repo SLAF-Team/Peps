@@ -29,6 +29,12 @@ const Profile = () => {
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
 
+  if(user){
+    console.log('')
+  } else {
+    router.push('/login')
+  }
+
   // initial checkbox value
 
   // const initialValue = []

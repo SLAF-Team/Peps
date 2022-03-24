@@ -21,6 +21,7 @@ import {
   NumberInput,
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
+import { checkLogAuth } from "../../lib/authfront";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -51,6 +52,14 @@ const SelectedRecipe = () => {
       console.log("error");
     }
   };
+
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [getRecipe])
 
   useEffect(() => {
     setPersonsValue(recipe?.persons);

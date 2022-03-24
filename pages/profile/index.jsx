@@ -19,6 +19,15 @@ const Profile = ({ recipes, lists }) => {
   const [style, setStyle] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
+  const router = useRouter();
+
+  // set up data for multiselect
+  if(user){
+    console.log('')
+  } else {
+    router.push('/login')
+  }
+
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
