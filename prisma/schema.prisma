@@ -67,6 +67,7 @@ model Recipe {
   name            String
   description     String
   steps           String?
+  persons         Int
   imageUrl        String?
   ingredientsUnit IngredientsandRecipes[]
   createdAt       DateTime                @default(now()) @map(name: "created_at")
