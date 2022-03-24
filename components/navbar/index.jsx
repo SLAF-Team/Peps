@@ -32,7 +32,7 @@ const NavBar = () => {
         <div className={styles.displayResponsive}>
           <div>
             <Link href="/" exact>
-              <span className={styles.brand}>Cookogs</span>
+              <span className={styles.brand}>Peps</span>
             </Link>
           </div>
           {user && (
