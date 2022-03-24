@@ -46,6 +46,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   }
 
   return (
+    <>
     <div className={classes.block}>
       <form ref={formRef} className="row">
         <div className="col-3">
@@ -86,6 +87,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

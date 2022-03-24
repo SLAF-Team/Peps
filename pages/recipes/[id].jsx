@@ -11,7 +11,8 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
 import heart from "../../assets/images/heart.svg";
-import { Select } from '@mantine/core';
+import { Select } from "@mantine/core";
+import prisma from "../../lib/prisma.ts";
 
 import {
   Modal,
@@ -24,8 +25,9 @@ import {
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
 import { checkLogAuth } from "../../lib/authfront";
+import EditRecipesIngredients from "../../components/editRecipe/editRecipesIngredients";
 
-const SelectedRecipe = () => {
+const SelectedRecipe = ({ingredients, units}) => {
   const router = useRouter();
   const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
@@ -39,8 +41,7 @@ const SelectedRecipe = () => {
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
-  const personsRatio = (personsValue / recipe?.persons)
-  const [ingredients, setIngredients] = useState();
+  const personsRatio = personsValue / recipe?.persons;
 
   const getRecipe = async () => {
     if (!id) {
@@ -61,7 +62,7 @@ const SelectedRecipe = () => {
       return;
     }
     try {
-      const result = await axios.get('/api/ingredient/getIngredients', {
+      const result = await axios.get("/api/ingredient/getIngredients", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIngredients(result.data);
@@ -78,7 +79,7 @@ const SelectedRecipe = () => {
   //   console.log(ingredients);
   //   console.log(recipe);
   // }, [getIngredients])
-  
+
   useEffect(() => {
     getRecipe();
     getIngredients();
@@ -91,11 +92,6 @@ const SelectedRecipe = () => {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
-
-
-
-
-
 
   const editRecipe = async (event) => {
     event.preventDefault();
@@ -124,6 +120,10 @@ const SelectedRecipe = () => {
   const handleDescription = (e) => {
     setDescriptionChange(e.target.value);
   };
+
+  // fonction handleChange : value input + index + clé
+  // set lodash
+  // if index = index, element[key] =
 
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
@@ -293,13 +293,13 @@ const SelectedRecipe = () => {
             </div>
           </div>
         </Skeleton>
-          </div>
-          <Button
-                label="Editer"
-                type="success"
-                handleClick={() => setOpened(true)}
-                href="#"
-          />
+      </div>
+      <Button
+        label="Editer"
+        type="success"
+        handleClick={() => setOpened(true)}
+        href="#"
+      />
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -319,15 +319,50 @@ const SelectedRecipe = () => {
             onChange={handleDescription}
           />
           <br />
-          <br />
-          <ButtonForm
-            label="J'édite"
-            theme="success"
+          {/* <label>Convives</label>
+          <textarea
+            name="recipePerson"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.persons}
+            onChange={handlePersons}
           />
+          <br />
+          <label>Etapes</label>
+          <textarea
+            name="recipeSteps"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.step}
+            onChange={handleSteps}
+          />
+          <label>Etapes</label>
+          <textarea
+            name="recipeSteps"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.step}
+            onChange={handleSteps}
+          /> */}
+          <EditRecipesIngredients recipe={recipe} units={units} ingredients={ingredients} />
+          <br />
+          <br />
+          <ButtonForm label="J'édite" theme="success" />
         </form>
       </Modal>
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const allIngredients = await prisma.ingredient.findMany();
+  const allUnits = await prisma.unit.findMany();
+  return {
+    props: {
+      ingredients: allIngredients,
+      units: allUnits,
+    },
+  };
+}
 
 export default SelectedRecipe;
