@@ -9,8 +9,10 @@ import prisma from "../../../lib/prisma.ts";
 import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
+import { useNotifications } from "@mantine/notifications";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
+  const notifications = useNotifications();
   const formRef = useRef();
   const { user } = useUserContext();
   const token = Cookies.get("token");
@@ -50,25 +52,32 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     const type = addType.value;
     const cook = user;
     const persons = addPersons.value;
-    const result = await axios.post(
-      "/api/recipe/addRecipe",
-      {
-        name,
-        description,
-        imageUrl,
-        countryId: parseInt(country),
-        cookId: parseInt(cook.id),
-        dishId: parseInt(dish),
-        typeId: parseInt(type),
-        persons: parseInt(persons),
-        published: JSON.parse(checked),
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    console.log(result.data)
-    setSubmitted(true);
-    setRecipe(result.data);
-    setStep(step + 1);
+    if (!name || !description ||!persons) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire !",
+        message: "Un ou plusieurs éléments sont manquants",
+        color: "red",
+      });
+    } else {
+      const result = await axios.post(
+        "/api/recipe/addRecipe",
+        {
+          name,
+          description,
+          imageUrl,
+          countryId: parseInt(country),
+          cookId: parseInt(cook.id),
+          dishId: parseInt(dish),
+          typeId: parseInt(type),
+          published: JSON.parse(checked),
+            persons: parseInt(persons),
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSubmitted(true);
+      setRecipe(result.data);
+      setStep(step + 1);
+    }
   }
 
   const handleClick = () => {
@@ -77,7 +86,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   const handleStepClick = () => {
     setStep(step + 1);
-  }
+  };
 
   return (
     <div className={classes.main}>
@@ -113,7 +122,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.step}>
-              <label className={classes.label}>Nom de la recette</label>
+              <label className={classes.label}>Nom de la recette *</label>
               <input
                 className={classes.input}
                 name="addName"
@@ -131,7 +140,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               />
             </div>
             <div className={classes.step}>
-              <label className={classes.label}>Nombre de convives</label>
+              <label className={classes.label}>Nombre de convives *</label>
               <input
                 className={classes.input}
                 type="number"
@@ -172,7 +181,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.step}>
-              <label className={classes.label}>Description</label>
+              <label className={classes.label}>Description *</label>
               <input
                 className={classes.input}
                 name="addDescription"
