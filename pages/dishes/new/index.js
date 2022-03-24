@@ -21,7 +21,16 @@ const newDish = ({ regions }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (checkLogAuth(user)) setAuth(true);
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
+
+
+  useEffect(() => {
+    if (checkAdminAuth(user) && checkLogAuth(user)) setAuth(true);
   }, [user]);
 
   async function addNewDish(params) {

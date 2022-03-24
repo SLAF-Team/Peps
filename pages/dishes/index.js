@@ -5,6 +5,8 @@ import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect, Switch } from "@mantine/core";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useUserContext } from "../../context/UserContext.js";
 
 const Dishes = ({ dishes, regions  }) => {
   // set up state for multiselect
@@ -13,8 +15,17 @@ const Dishes = ({ dishes, regions  }) => {
   const [filterRegion, setFilterRegion] = useState(idRegions);
   const [filteredDishes, setFilterDishes] = useState(dishes);
   const [filter, setFilter] = useState(true);
+  const router = useRouter();
+  const { user } = useUserContext();
 
-  // set up data for multiselect
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
+
 
   const dataRegions = [];
   regions?.map((region) =>
