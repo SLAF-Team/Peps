@@ -64,6 +64,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log(result)
     setSubmitted(true);
     setRecipe(result.data);
     setStep(step + 1);
@@ -72,6 +73,10 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const handleClick = () => {
     setCount(count + 1);
   };
+
+  const handleStepClick = () => {
+    setStep(step + 1);
+  }
 
   return (
     <div className={classes.main}>
@@ -207,16 +212,32 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           <div className={classes.stepsform}>
             {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
           </div>
+          <Button
+            label="Je passe à l'étape suivante ! "
+            type="primary"
+            href="#"
+            handleClick={() =>handleStepClick()}
+          />
         </>
       )}
-      <div className={classes.selector}>
-        <div className="selectorBlock">
-          <p className={classes.selectorText}>AJOUTER DES TAGS</p>
-        </div>
-      </div>
-      <div className={classes.stepsform}>
-        <AddRecipesTags recipe={recipe} tags={tags} />
-      </div>
+
+      {step === 2 && (
+        <>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>AJOUTER DES TAGS</p>
+            </div>
+          </div>
+          <div className={classes.stepsform}>
+            <AddRecipesTags recipe={recipe} tags={tags} />
+          </div>
+          <Button
+            label="J'ai fini ! "
+            type="success"
+            href={`/recipes/${recipe?.id}`}
+          />
+        </>
+      )}
     </div>
   );
 };
