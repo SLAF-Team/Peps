@@ -67,13 +67,13 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
   };
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
-    }
-  }, [getRecipes])
+  // useEffect(() => {
+  //   if(user){
+  //     console.log('')
+  //   } else {
+  //     router.push('/login')
+  //   }
+  // }, [getRecipes])
 
 
   // change filter state
