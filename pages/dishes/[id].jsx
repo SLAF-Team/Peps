@@ -2,23 +2,22 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../context/UserContext";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
-import {
-  Modal,
-  Skeleton,
-} from "@mantine/core";
+import { Modal, Skeleton } from "@mantine/core";
+import ButtonSettings from "../../components/ButtonSettings";
+import { useUserContext } from "../../context/UserContext";
 
 const SelectedDish = () => {
+  const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const { id } = router.query;
   const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const { user } = useUserContext();
   const [loading, setLoading] = useState(true);
+  const [opened, setOpened] = useState(false);
 
   const getDish = async () => {
     try {
@@ -55,6 +54,7 @@ const SelectedDish = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     getDish();
+    setOpened(false);
   }
 
   async function deleteDish() {
@@ -85,7 +85,6 @@ const SelectedDish = () => {
             <div className={classes.titlecontainer}>
               <h1 className={classes.h1}>{dish?.title}</h1>
               <p className={classes.selectorName}>{dish?.region.name}</p>
-              {/*<Image src={heart} width={40} height={40} />*/}
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
@@ -115,22 +114,17 @@ const SelectedDish = () => {
           </Skeleton>
         </div>
         <div className="col-3">
-          {/* <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>INGRÉDIENTS</p>
-                </div>
-              </div>
-              <div>
-                <ul>
-                  <li className={classes.li}>
-                    <a href="#">Prout</a>
-                  </li>
-                </ul>
-              </div>
+              <ButtonSettings
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+                className={classes.button}
+              />
             </div>
-          </Skeleton> */}
+          </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
               <div className={classes.selector}>
@@ -159,32 +153,29 @@ const SelectedDish = () => {
           </Skeleton>
         </div>
       </div>
-      {user?.isadmin && (
-        <>
-          <h2>Admin </h2>
-          <form onSubmit={editDish}>
-            <label>Title</label> <br />
-            <input
-              name="dishTitle"
-              type="text"
-              defaultValue={dish?.title}
-              onChange={handleTitle}
-            />
-            <br />
-            <label>Description</label>
-            <textarea
-              name="recipekDescription"
-              type="text"
-              style={{ width: "100%", height: "100px" }}
-              defaultValue={dish?.description}
-              onChange={handleDescription}
-            />
-            <button type="submit">J'édite</button>
-          </form>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form onSubmit={editDish}>
+          <label>Title</label> <br />
+          <input
+            name="dishTitle"
+            type="text"
+            defaultValue={dish?.title}
+            onChange={handleTitle}
+          />
           <br />
-          <button onClick={deleteDish}>Supprimer</button>
-        </>
-      )}
+          <label>Description</label>
+          <textarea
+            name="recipekDescription"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={dish?.description}
+            onChange={handleDescription}
+          />
+          <button type="submit">J'édite</button>
+        </form>
+        <br />
+        {user?.isadmin ? <button onClick={deleteDish}>Supprimer</button> : null}
+      </Modal>
     </>
   );
 };
