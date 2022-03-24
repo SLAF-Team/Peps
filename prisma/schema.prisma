@@ -22,6 +22,7 @@ model User {
   comments  Comment[]
   lists     List[]
   likes     LikesOnRecipes[]
+  updates   UpdatesOnDish[]
 
   @@map(name: "users")
 }
@@ -91,10 +92,11 @@ model Dish {
   title       String
   description String
   imageUrl    String?
-  createdAt DateTime         @default(now()) @map(name: "created_at")
+  createdAt   DateTime         @default(now()) @map(name: "created_at")
   recipes     Recipe[]
   region      Region   @relation(fields: [regionId], references: [id], onDelete: SetNull)
   regionId    Int
+  updates   UpdatesOnDish[]
 }
 
 model IngredientsandRecipes {
@@ -116,6 +118,16 @@ model LikesOnRecipes {
   recipeId Int
 
   @@id([userId, recipeId])
+}
+
+model UpdatesOnDish {
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  dish   Dish @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  dishId Int
+  createdAt DateTime         @default(now()) @map(name: "created_at")
+
+  @@id([dishId, userId])
 }
 
 model List {

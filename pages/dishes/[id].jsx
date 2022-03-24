@@ -8,7 +8,7 @@ import { Modal, Skeleton } from "@mantine/core";
 import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
 import ButtonForm from "../../components/ButtonForm";
-import Button from "../../components/Button";
+import moment from "moment";
 
 const SelectedDish = () => {
   const { user } = useUserContext();
@@ -32,6 +32,8 @@ const SelectedDish = () => {
     }
   };
 
+  console.log(dish);
+
   useEffect(() => {
     getDish();
   }, [id]);
@@ -46,7 +48,7 @@ const SelectedDish = () => {
 
   async function editDish(event) {
     event.preventDefault();
-    await axios.put(
+    const result = await axios.put(
       "/api/dish/editDish",
       {
         id: dish.id,
@@ -55,12 +57,23 @@ const SelectedDish = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log(result);
+    if (result.status === 200) {
+      const lol = await axios.put(
+        "/api/update/addUpdate",
+        {
+          userId: user.id,
+          dishId: dish.id,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(lol);
+    }
     getDish();
     setOpened(false);
   }
 
   async function deleteDish() {
-    console.log("coucou");
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/dish/delete/${dish?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -145,6 +158,7 @@ const SelectedDish = () => {
               </div>
             </div>
           </Skeleton>
+
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
               <div className={classes.selector}>
@@ -152,14 +166,23 @@ const SelectedDish = () => {
                   <p className={classes.selectorText}>Wiki</p>
                 </div>
               </div>
-              <div className={classes.detailscontainer}></div>
+              <div>
+                <ul>
+                  {dish?.updates.map((update, index) => (
+                    <p key={index}>
+                      Modifié par {update.user.name}{" "}
+                      {moment(update.createdAt).fromNow()}
+                    </p>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Skeleton>
         </div>
       </div>
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editDish}>
-          <label>Title</label> <br />
+          <label>Nom</label> <br />
           <input
             name="dishTitle"
             type="text"

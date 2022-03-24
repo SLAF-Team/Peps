@@ -8,12 +8,6 @@ export default async (req, res) => {
     return;
   }
 
-  const isAdmin = await checkIfAdmin(req);
-  if (!isAdmin) {
-    res.status(403).json({ err: "Forbidden" });
-    return;
-  }
-
   const data = req.body;
 
   try {
