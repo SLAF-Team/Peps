@@ -42,24 +42,22 @@ const AddList = ({ user, setSubmitted }) => {
   }
 
   return (
-    <>
-      <form ref={formRef}>
-        <input
-          type="text"
-          name="addName"
-          size="40"
-          placeholder="nouvelle liste"
-        />
-        <div className={classes.button}>
-            <Button
-              label="Créer une liste"
-              type="success"
-              handleClick={() => addNewList()}
-              href="#"
-            />
-        </div>
-      </form>
-    </>
+    <form ref={formRef}>
+      <input
+        className={classes.input}
+        type="text"
+        name="addName"
+        size="40"
+        placeholder="Nom de la nouvelle liste"
+      />
+
+      <Button
+        label="Créer une liste"
+        type="success"
+        handleClick={() => addNewList()}
+        href="#"
+      />
+    </form>
   );
 };
 
