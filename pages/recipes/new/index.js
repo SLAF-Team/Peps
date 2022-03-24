@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
@@ -9,8 +9,6 @@ import prisma from "../../../lib/prisma.ts";
 import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
-import { SegmentedControl } from "@mantine/core";
-import { Select } from "@mantine/core";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const formRef = useRef();
@@ -64,7 +62,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result)
     setSubmitted(true);
     setRecipe(result.data);
     setStep(step + 1);
@@ -104,6 +101,11 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                     </option>
                   ))}
                 </select>
+                <Button
+                  label="Créer un plat"
+                  type="primary"
+                  href="/dishes/new"
+                />
               </div>
             ) : null}
             <div className={classes.step}>
@@ -197,7 +199,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Ajouter un ingrédient"
+                label="Nouvel ingrédient"
                 type="primary"
                 handleClick={handleClick}
                 href="#"
@@ -216,7 +218,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             label="Je passe à l'étape suivante ! "
             type="primary"
             href="#"
-            handleClick={() =>handleStepClick()}
+            handleClick={() => handleStepClick()}
           />
         </>
       )}

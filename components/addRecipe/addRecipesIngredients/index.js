@@ -39,7 +39,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
     <div className={classes.block}>
       <form ref={formRef} className="row">
         <div className="col-3">
-          <label className={classes.label}>Quantité</label>
+          <label className={classes.label}>Quantité (chiffre)</label>
           <input className={classes.input} name="addQuantity" type="text" />
         </div>
         <div className="col-3">
