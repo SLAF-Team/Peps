@@ -46,7 +46,7 @@
 
 .h1 {
   font-size: 28px;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -92,7 +92,8 @@
 }
 
 .multiselect {
-  font-size: 10px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 @media only screen and (min-width: 33.75em) {
@@ -100,5 +101,14 @@
     display: flex;
     justify-content: center;
     padding-top: 0.75rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .filters {
+    width: 80%;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
