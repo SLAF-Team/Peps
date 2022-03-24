@@ -2,17 +2,13 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
 import Cookies from "js-cookie";
-import styles from "./AddList.module.css";
+import classes from "./AddList.module.css";
 import { useNotifications } from "@mantine/notifications";
 
-const AddList = ({ user, setSubmitted }) => {
+const AddList = ({ user, setListChange }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const notifications = useNotifications();
-
-  useEffect(() => {
-    setSubmitted(false);
-  }, []);
 
   // Add new
   async function addNewList(params) {
@@ -25,7 +21,7 @@ const AddList = ({ user, setSubmitted }) => {
         color: "red",
       });
     } else {
-      await axios.post(
+      const result = await axios.post(
         "/api/list/addList",
         {
           userId: user.id,
@@ -33,32 +29,36 @@ const AddList = ({ user, setSubmitted }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSubmitted(true);
       notifications.showNotification({
         message: "Votre liste a bien été créée",
         color: "green",
       });
+      setListChange(result.data);
     }
   }
 
   return (
-
-    <form ref={formRef}>
-      <input
-        className={classes.input}
-        type="text"
-        name="addName"
-        size="40"
-        placeholder="Nom de la nouvelle liste"
-      />
-
-      <Button
-        label="Créer une liste"
-        type="success"
-        handleClick={() => addNewList()}
-        href="#"
-      />
-    </form>
+    <>
+      <form ref={formRef} className={classes.size}>
+        <div className={classes.form}>
+          <input
+            type="text"
+            name="addName"
+            size="40"
+            className={classes.field}
+            placeholder="nouvelle liste"
+          />
+          <div className={classes.button}>
+            <Button
+              label="Créer une liste"
+              type="success"
+              handleClick={() => addNewList()}
+              href="#"
+            />
+          </div>
+        </div>
+      </form>
+    </>
   );
 };
 
