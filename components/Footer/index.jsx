@@ -3,14 +3,18 @@ import styles from "./Footer.module.css";
 import { useUserContext } from "../../context/UserContext";
 
 const Footer = () => {
-  const {user} = useUserContext();
+  const { user } = useUserContext();
 
   return (
     <div className={styles.footer}>
       <div className="container row">
         <div className="col-6">
-          <span className={styles.brand}>Cookogs</span>
-          <p className={styles.description}>Le wiki de la cuisine.</p>
+          <span className={styles.brand}>Peps</span>
+          <p className={styles.description}>
+            Peps est une base de donnée culinaire qui a pour vision de façonner
+            l'espace alimentaire numérique avec une technologie et un contenu de
+            pointe.
+          </p>
           <a href="https://github.com/SLAF-Team/Cookogs">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -26,13 +30,16 @@ const Footer = () => {
         {user && (
           <div className="col-3">
             <div className={styles.title}>
-              <span>Votre espace</span>
+              <span>Mon espace</span>
             </div>
             <Link href="/">
-              <p className={styles.link}>Page OM</p>
+              <p className={styles.link}>Home</p>
             </Link>
             <Link href="/profile">
-              <p className={styles.link}>Profil</p>
+              <p className={styles.link}>Mon Profil</p>
+            </Link>
+            <Link href="/profile?list=true" as="/profile">
+              <p className={styles.link}>Mes listes</p>
             </Link>
           </div>
         )}
@@ -40,6 +47,9 @@ const Footer = () => {
           <div className={styles.title}>
             <span>Découvrez</span>
           </div>
+          <Link href="/recipes/new">
+            <p className={styles.link}>Ajouter une recette</p>
+          </Link>
           <Link href="/dishes">
             <p className={styles.link}>Plats</p>
           </Link>

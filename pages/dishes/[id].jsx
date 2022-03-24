@@ -1,12 +1,27 @@
-import React from "react";
+import axios from "axios";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import Button from "../../components/Button";
 import { useUserContext } from "../../context/UserContext";
+import CommentsList from "./../../components/Comment/CommentsList";
+import classes from "./Dishes.module.css";
+import Button from "../../components/Button";
+import CommentForm from "../../components/Comment/CommentForm";
+import ListForm from "../../components/List/ListForm";
+import Layout from "../../components/layout";
+import heart from "../../assets/images/heart.svg";
+import RecipeCard from "../../components/recipeCard/index.jsx";
+import {
+  Modal,
+  LoadingOverlay,
+  Tabs,
+  Anchor,
+  Skeleton,
+  Accordion,
+} from "@mantine/core";
 
-const SelectedDish = () => {
+const SelectedDish = ({ currentDish }) => {
   const token = Cookies.get("token");
   const router = useRouter();
   const { id } = router.query;
@@ -14,6 +29,7 @@ const SelectedDish = () => {
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
   const { user } = useUserContext();
+  const [loading, setLoading] = useState(true);
 
   const getDish = async () => {
     try {
@@ -29,6 +45,14 @@ const SelectedDish = () => {
   useEffect(() => {
     getDish();
   }, [id]);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   async function editDish(event) {
     event.preventDefault();
@@ -63,27 +87,89 @@ const SelectedDish = () => {
 
   return (
     <>
-      <h2>Titre : </h2>
-      {dish?.title} <br />
-      <h2>Description : </h2>
-      {dish?.description}
-      <br />
-      <h3>Ce plat nous vient de {dish?.region.name}</h3>
-      <div>
-        <h2>Recettes :</h2>
-        {dish?.recipes.map((recipe) => (
-          <div>
-            <br />
-            <h3>{recipe.name}</h3>
-            <Button
-              label="En savoir plus !"
-              className="primary"
-              href={`/recipes/${recipe.id}`}
-            />
-          </div>
-        ))}
+      <div className="row">
+        <div className="col-9">
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <img src={dish?.imageUrl} className={classes.mainImage} />
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.titlecontainer}>
+              <h1 className={classes.h1}>{dish?.title}</h1>
+              <p className={classes.selectorName}>{dish?.region.name}</p>
+              {/*<Image src={heart} width={40} height={40} />*/}
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.stepscontainer}>
+              <p className={classes.description}>{dish?.description}</p>
+            </div>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>
+                  Recettes associées ({dish?.recipes.length})
+                </p>
+              </div>
+            </div>
+            <div className="row">
+              <div className={classes.cards}>
+                {dish?.recipes &&
+                  dish?.recipes.map((recipe) => (
+                    <RecipeCard
+                      recipe={recipe}
+                      like_count={recipe?._count?.likes}
+                      comment_count={recipe?._count?.comments}
+                      col="col-4"
+                    />
+                  ))}
+              </div>
+            </div>
+          </Skeleton>
+        </div>
+        <div className="col-3">
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>INGRÉDIENTS</p>
+                </div>
+              </div>
+              <div>
+                <ul>
+                  <li className={classes.li}>
+                    <a href="#">Prout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>TAGS</p>
+                </div>
+              </div>
+              <div>
+                <ul>
+                  <li className={classes.li}>
+                    <a href="#">#Prout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>LISTES</p>
+                </div>
+              </div>
+              <div className={classes.detailscontainer}></div>
+            </div>
+          </Skeleton>
+        </div>
       </div>
-      <br />
       {user?.isadmin && (
         <>
           <h2>Admin </h2>
