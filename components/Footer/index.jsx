@@ -29,24 +29,22 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        {user && (
-          <div className="col-3">
-            <div className={styles.border}>
-              <div className={styles.title}>
-                <span>Mon espace</span>
-              </div>
-              <Link href="/">
-                <p className={styles.link}>Home</p>
-              </Link>
-              <Link href="/profile">
-                <p className={styles.link}>Mon Profil</p>
-              </Link>
-              <Link href="/profile?list=true" as="/profile">
-                <p className={styles.link}>Mes listes</p>
-              </Link>
+        <div className="col-3">
+          <div className={styles.border}>
+            <div className={styles.title}>
+              <span>Mon espace</span>
             </div>
+            <Link href="/">
+              <p className={styles.link}>Home</p>
+            </Link>
+            <Link href="/profile">
+              <p className={styles.link}>Mon Profil</p>
+            </Link>
+            <Link href="/profile?list=true" as="/profile">
+              <p className={styles.link}>Mes listes</p>
+            </Link>
           </div>
-        )}
+        </div>
         <div className="col-3">
           <div className={styles.title}>
             <span>Découvrez</span>

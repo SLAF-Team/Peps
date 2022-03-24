@@ -62,23 +62,23 @@
 }
 
 .avatar {
-	height: 2.5rem;
-	width: 2.5rem;
-	border-radius: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-ms-border-radius: 10px;
-	-o-border-radius: 10px;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
 .avatarcontainer {
   width: 20%;
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .textcontainer {
@@ -89,19 +89,31 @@
 }
 
 .letter {
-	font-family: Merriweather, sans-serif;
-	font-weight: 700;
-	font-size: 1.5rem;
-	color: white;
+  font-family: Merriweather, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: white;
 }
 
 .editcontainer {
   margin-top: 20px;
 }
 
+.commentauthor {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.commentCorpus {
+  margin-top: 0;
+  font-weight: 400;
+  font-size: 16px;
+  background-color: #faf5f0;
+  padding: 15px;
+  border-radius: 10px;
+}
 
 @media (max-width: 500px) {
-
   .avatar {
     height: 2rem;
     width: 2rem;
@@ -116,7 +128,6 @@
     justify-content: center;
     margin-top: 10px;
   }
-
 
   .letter {
     font-family: Merriweather, sans-serif;
@@ -138,12 +149,16 @@
 
   .commentauthor {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 12px;
+  }
+
+  .commentCorpus {
+    font-weight: 400;
+    font-size: 12px;
   }
 
   .editcontainer {
     margin-top: 20px;
     margin-right: 2px;
   }
-
-  }
+}
