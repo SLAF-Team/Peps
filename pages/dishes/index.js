@@ -18,14 +18,13 @@ const Dishes = ({ dishes, regions  }) => {
   const router = useRouter();
   const { user } = useUserContext();
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
-    }
-  }, [])
-
+  // useEffect(() => {
+  //   if(user){
+  //     console.log('')
+  //   } else {
+  //     router.push('/login')
+  //   }
+  // }, [])
 
   const dataRegions = [];
   regions?.map((region) =>

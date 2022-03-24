@@ -20,7 +20,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   const hasComments = comments ? true : false;
 
   useEffect(() => {
-    setIsLiked(user?.likes.some((like) => like.recipeId === recipe.id));
+    setIsLiked(user?.likes?.some((like) => like.recipeId === recipe.id));
   }, [user]);
 
   async function addLike() {
