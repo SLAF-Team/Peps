@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
@@ -9,8 +9,6 @@ import prisma from "../../../lib/prisma.ts";
 import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
-import { SegmentedControl } from "@mantine/core";
-import { Select } from "@mantine/core";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const formRef = useRef();
@@ -73,6 +71,10 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     setCount(count + 1);
   };
 
+  const handleStepClick = () => {
+    setStep(step + 1);
+  }
+
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
@@ -99,6 +101,11 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                     </option>
                   ))}
                 </select>
+                <Button
+                  label="Créer un plat"
+                  type="primary"
+                  href="/dishes/new"
+                />
               </div>
             ) : null}
             <div className={classes.step}>
@@ -155,6 +162,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 className={classes.input}
                 name="addDescription"
                 type="text"
+                placeholder="Ex: Ma recette familiale de tarte aux abricots et amandes et sa pâte sablée"
               />
             </div>
             <div className={classes.button}>
@@ -192,7 +200,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Ajouter un ingrédient"
+                label="Nouvel ingrédient"
                 type="primary"
                 handleClick={handleClick}
                 href="#"
@@ -207,16 +215,32 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           <div className={classes.stepsform}>
             {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
           </div>
+          <Button
+            label="Je passe à l'étape suivante ! "
+            type="primary"
+            href="#"
+            handleClick={() => handleStepClick()}
+          />
         </>
       )}
-      <div className={classes.selector}>
-        <div className="selectorBlock">
-          <p className={classes.selectorText}>AJOUTER DES TAGS</p>
-        </div>
-      </div>
-      <div className={classes.stepsform}>
-        <AddRecipesTags recipe={recipe} tags={tags} />
-      </div>
+
+      {step === 2 && (
+        <>
+          <div className={classes.selector}>
+            <div className="selectorBlock">
+              <p className={classes.selectorText}>AJOUTER DES TAGS</p>
+            </div>
+          </div>
+          <div className={classes.stepsform}>
+            <AddRecipesTags recipe={recipe} tags={tags} />
+          </div>
+          <Button
+            label="J'ai fini ! "
+            type="success"
+            href={`/recipes/${recipe?.id}`}
+          />
+        </>
+      )}
     </div>
   );
 };
