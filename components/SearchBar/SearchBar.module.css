@@ -11,13 +11,13 @@
 
 .search:hover,
 .search:focus {
-  background-color: #faf5f0;
+	background-color: #faf5f0;
 }
 
 .searchbox {
 	margin-top: 10px;
-  position: fixed;
-  z-index: 1;
+	position: fixed;
+	z-index: 1;
 }
 
 .img {
@@ -28,22 +28,21 @@
 }
 
 .size {
-  position: relative;
+	position: relative;
 }
 
 .iconImg {
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  object-fit: cover;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	object-fit: cover;
 }
 
 .a {
 	font-size: 14px;
 	margin-left: 15px;
-
 }
 
 .linkbox {
@@ -54,7 +53,8 @@
 }
 
 .linkbox:hover {
-background-color: #FAF5F0;}
+	background-color: #faf5f0;
+}
 
 @media only screen and (min-width: 33.75em) {
 	.search {
