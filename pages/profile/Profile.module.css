@@ -45,4 +45,10 @@
 
 .center {
   text-align: center;
+  width: 80%;
+}
+
+.listText {
+  font-size: 16px;
+  letter-spacing: 0;
 }

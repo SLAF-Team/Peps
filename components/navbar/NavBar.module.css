@@ -9,10 +9,9 @@
 }
 
 .brand {
-  cursor: pointer;
   font-family: Merriweather, sans-serif;
   font-size: 32px;
-  margin-left: 2vw;
+  margin-left: 1rem;
 }
 
 .displayResponsive {
@@ -54,6 +53,20 @@
   cursor: pointer;
   padding: 5px 5px;
   background: #ffd12f;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 2vw;
+}
+
+.img {
+  height: 40px;
+  width: 40px;
+  background-position: center;
+  background-size: cover;
 }
 
 @media only screen and (min-width: 33.75em) {
