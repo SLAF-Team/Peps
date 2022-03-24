@@ -8,7 +8,7 @@ return (
     <p>Description : {dish.description}</p>
     <Button
     type={"primary"}
-    label={"Plus de détail"}
+    label={"Plus de détails"}
     href={`/dishes/${dish.id}`}
     />
 </div>

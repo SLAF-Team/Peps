@@ -162,6 +162,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 className={classes.input}
                 name="addDescription"
                 type="text"
+                placeholder="Ex: Ma recette familiale de tarte aux abricots et amandes et sa pâte sablée"
               />
             </div>
             <div className={classes.button}>
