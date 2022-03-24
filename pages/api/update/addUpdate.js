@@ -2,7 +2,7 @@ import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
   const data = req.body
-
+  
   try {
     const updatesOnDish = await prisma.updatesOnDish.create({
       data: {

@@ -121,13 +121,12 @@ model LikesOnRecipes {
 }
 
 model UpdatesOnDish {
+  id       Int      @id @default(autoincrement())
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
   dish   Dish @relation(fields: [dishId], references: [id], onDelete: Cascade)
   dishId Int
   createdAt DateTime         @default(now()) @map(name: "created_at")
-
-  @@id([dishId, userId])
 }
 
 model List {
