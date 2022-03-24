@@ -101,7 +101,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
                     <div className={styles.linkbox}>
                       <Link
                         className={styles.link}
-                        href={`recipes/${element.id}`}
+                        href={`/recipes/${element.id}`}
                       >
                         <img
                           src={element.imageUrl}
@@ -112,7 +112,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
                       </Link>
                       <Link
                         className={styles.link}
-                        href={`recipes/${element.id}`}
+                        href={`/recipes/${element.id}`}
                       >
                         <div className={styles.a}>{element.name}</div>
                       </Link>
