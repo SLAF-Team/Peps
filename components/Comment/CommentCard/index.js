@@ -42,7 +42,7 @@ const CommentCard = ({ comment }) => {
         <p className={classes.commentauthor}>
           {comment.user?.name} - {moment(comment?.createdAt).fromNow()}
         </p>
-        <p className={classes.commentauthor}>{comment.text}</p>
+        <p className={classes.commentCorpus}>{comment.text}</p>
       </div>
       {isAuthor && (
         <div className={classes.editcontainer}>

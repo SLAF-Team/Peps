@@ -46,7 +46,7 @@ const NavBar = () => {
               </div>
             </div>
           </Link>
-          {user && (
+          {user ? (
             <div className={styles.burgerResponsive}>
               <Menu
                 size="xl"
@@ -84,6 +84,12 @@ const NavBar = () => {
                   <Text size="xl">Déconnexion</Text>
                 </Menu.Item>
               </Menu>
+            </div>
+          ) : (
+            <div className={styles.burgerResponsive}>
+              <a href="/login">
+                <Burger opened={opened} />
+              </a>
             </div>
           )}
         </div>

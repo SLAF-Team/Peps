@@ -17,7 +17,8 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     setSubmitted(false);
   }, []);
 
-  async function addComment(params) {
+  async function addComment(e) {
+    e.preventDefault();
     const { addText } = formRef.current;
     const text = addText.value;
     if (!text) {
@@ -37,7 +38,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
-      addText.value = '';
+      addText.value = "";
       notifications.showNotification({
         title: "Bravo!",
         message: "Votre commentaire a été publié avec succès",
@@ -48,7 +49,11 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
 
   if (token != null) {
     return (
-      <form className={classes.form} ref={formRef}>
+      <form
+        className={classes.form}
+        ref={formRef}
+        onSubmit={() => addComment()}
+      >
         <div className={classes.setups_small}>
           <div className={classes.profilepic}>
             <div
@@ -63,12 +68,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
           <div className={classes.setup_small}>
             <input className={classes.input_small} name="addText" type="text" />
             <div className={classes.button}>
-              <Button
-                label="Publier"
-                type="alert"
-                handleClick={() => addComment()}
-                href="#"
-              />
+              <Button label="Publier" type="alert" href="#" />
             </div>
           </div>
         </div>
