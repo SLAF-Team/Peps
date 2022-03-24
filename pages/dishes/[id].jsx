@@ -1,35 +1,25 @@
 import axios from "axios";
-import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../context/UserContext";
-import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Dishes.module.css";
-import Button from "../../components/Button";
-import CommentForm from "../../components/Comment/CommentForm";
-import ListForm from "../../components/List/ListForm";
-import Layout from "../../components/layout";
-import heart from "../../assets/images/heart.svg";
 import RecipeCard from "../../components/recipeCard/index.jsx";
-import {
-  Modal,
-  LoadingOverlay,
-  Tabs,
-  Anchor,
-  Skeleton,
-  Accordion,
-} from "@mantine/core";
+import { Modal, Skeleton } from "@mantine/core";
+import ButtonSettings from "../../components/ButtonSettings";
+import { useUserContext } from "../../context/UserContext";
+import ButtonForm from "../../components/ButtonForm";
+import Button from "../../components/Button";
 
-const SelectedDish = ({ currentDish }) => {
+const SelectedDish = () => {
+  const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const { id } = router.query;
   const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
-  const { user } = useUserContext();
   const [loading, setLoading] = useState(true);
+  const [opened, setOpened] = useState(false);
 
   const getDish = async () => {
     try {
@@ -66,9 +56,11 @@ const SelectedDish = ({ currentDish }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
     getDish();
+    setOpened(false);
   }
 
   async function deleteDish() {
+    console.log("coucou");
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/dish/delete/${dish?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +88,6 @@ const SelectedDish = ({ currentDish }) => {
             <div className={classes.titlecontainer}>
               <h1 className={classes.h1}>{dish?.title}</h1>
               <p className={classes.selectorName}>{dish?.region.name}</p>
-              {/*<Image src={heart} width={40} height={40} />*/}
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
@@ -115,6 +106,7 @@ const SelectedDish = ({ currentDish }) => {
                 {dish?.recipes &&
                   dish?.recipes.map((recipe) => (
                     <RecipeCard
+                      key={recipe.id}
                       recipe={recipe}
                       like_count={recipe?._count?.likes}
                       comment_count={recipe?._count?.comments}
@@ -128,15 +120,26 @@ const SelectedDish = ({ currentDish }) => {
         <div className="col-3">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
+              <ButtonSettings
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+                className={classes.button}
+              />
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>INGRÉDIENTS</p>
+                  <p className={classes.selectorText}>Région</p>
                 </div>
               </div>
               <div>
                 <ul>
                   <li className={classes.li}>
-                    <a href="#">Prout</a>
+                    <a href="#">{dish?.region.name}</a>
                   </li>
                 </ul>
               </div>
@@ -146,23 +149,7 @@ const SelectedDish = ({ currentDish }) => {
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>TAGS</p>
-                </div>
-              </div>
-              <div>
-                <ul>
-                  <li className={classes.li}>
-                    <a href="#">#Prout</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Skeleton>
-          <Skeleton visible={loading} style={{ marginTop: 6 }}>
-            <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>LISTES</p>
+                  <p className={classes.selectorText}>Wiki</p>
                 </div>
               </div>
               <div className={classes.detailscontainer}></div>
@@ -170,32 +157,31 @@ const SelectedDish = ({ currentDish }) => {
           </Skeleton>
         </div>
       </div>
-      {user?.isadmin && (
-        <>
-          <h2>Admin </h2>
-          <form onSubmit={editDish}>
-            <label>Title</label> <br />
-            <input
-              name="dishTitle"
-              type="text"
-              defaultValue={dish?.title}
-              onChange={handleTitle}
-            />
-            <br />
-            <label>Description</label>
-            <textarea
-              name="recipekDescription"
-              type="text"
-              style={{ width: "100%", height: "100px" }}
-              defaultValue={dish?.description}
-              onChange={handleDescription}
-            />
-            <button type="submit">J'édite</button>
-          </form>
+      <Modal opened={opened} onClose={() => setOpened(false)}>
+        <form onSubmit={editDish}>
+          <label>Title</label> <br />
+          <input
+            name="dishTitle"
+            type="text"
+            defaultValue={dish?.title}
+            onChange={handleTitle}
+          />
           <br />
-          <button onClick={deleteDish}>Supprimer</button>
-        </>
-      )}
+          <label>Description</label>
+          <textarea
+            name="dishDescription"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={dish?.description}
+            onChange={handleDescription}
+          />
+          <ButtonForm label={"j'édite"} theme="success" />
+        </form>
+        <br />
+        {user?.isadmin ? (
+          <button onClick={() => deleteDish()}>Supprimer</button>
+        ) : null}
+      </Modal>
     </>
   );
 };

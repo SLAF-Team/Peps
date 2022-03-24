@@ -74,7 +74,7 @@ const SignIn = () => {
         />
       </div>
       <div className={styles.button}>
-        <ButtonForm label="Connexion" type="warning" />
+        <ButtonForm label="Connexion" theme="warning" />
       </div>
     </form>
   );
