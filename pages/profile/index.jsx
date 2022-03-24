@@ -17,7 +17,7 @@ const Profile = ({ recipes, lists }) => {
   const { user, setUser } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [listChange, setListChange] = useState(0);
   const token = Cookies.get("token");
   const router = useRouter();
 
@@ -38,7 +38,7 @@ const Profile = ({ recipes, lists }) => {
 
   useEffect(() => {
     getUser();
-  }, [submitted]);
+  }, [listChange]);
 
   useEffect(() => {
     if (query.list) {
@@ -64,6 +64,10 @@ const Profile = ({ recipes, lists }) => {
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
     : null;
+
+        console.log("submitted from parents");
+
+    console.log(listChange);
 
   return (
     <>
@@ -136,7 +140,7 @@ const Profile = ({ recipes, lists }) => {
             </div>
           ))}
           <div className={styles.center}>
-            <AddList user={user} setSubmitted={setSubmitted} />
+            <AddList user={user} setListChange={setListChange} />
           </div>
         </>
       )}

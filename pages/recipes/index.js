@@ -15,7 +15,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
   const router = useRouter();
 
-
   // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));

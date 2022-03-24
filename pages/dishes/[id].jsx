@@ -8,6 +8,7 @@ import { Modal, Skeleton } from "@mantine/core";
 import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
 import ButtonForm from "../../components/ButtonForm";
+import Button from "../../components/Button";
 import moment from "moment";
 
 const SelectedDish = () => {
@@ -21,14 +22,13 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
-    }
-  }, [])
-
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("");
+  //   } else {
+  //     router.push("/login");
+  //   }
+  // }, []);
 
   const getDish = async () => {
     try {
@@ -40,8 +40,6 @@ const SelectedDish = () => {
       console.log(err);
     }
   };
-
-  console.log(dish);
 
   useEffect(() => {
     getDish();
@@ -190,29 +188,42 @@ const SelectedDish = () => {
         </div>
       </div>
       <Modal opened={opened} onClose={() => setOpened(false)}>
-        <form onSubmit={editDish}>
-          <label>Nom</label> <br />
-          <input
-            name="dishTitle"
-            type="text"
-            defaultValue={dish?.title}
-            onChange={handleTitle}
-          />
+        <div className={classes.form}>
+          <form onSubmit={editDish} className={classes.size}>
+            <div>
+              <label>Nom</label>
+            </div>
+            <input
+              name="dishTitle"
+              type="text"
+              defaultValue={dish?.title}
+              onChange={handleTitle}
+              className={classes.field}
+            />
+            <div>
+              {" "}
+              <label>Description</label>
+            </div>
+            <textarea
+              name="dishDescription"
+              type="text"
+              style={{ width: "100%", height: "100px" }}
+              defaultValue={dish?.description}
+              onChange={handleDescription}
+              className={classes.field}
+            />
+            <ButtonForm label={"j'édite"} theme="success" />
+          </form>
           <br />
-          <label>Description</label>
-          <textarea
-            name="dishDescription"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={dish?.description}
-            onChange={handleDescription}
-          />
-          <ButtonForm label={"j'édite"} theme="success" />
-        </form>
-        <br />
-        {user?.isadmin ? (
-          <button onClick={() => deleteDish()}>Supprimer</button>
-        ) : null}
+          {user?.isadmin ? (
+            <Button
+              handleClick={() => deleteDish()}
+              label="Supprimer"
+              href="#"
+              type="danger"
+            />
+          ) : null}
+        </div>
       </Modal>
     </>
   );
