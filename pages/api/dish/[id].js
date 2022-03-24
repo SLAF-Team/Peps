@@ -6,8 +6,12 @@ export default async (req, res) => {
     const result = await prisma.dish.findUnique({
       where: { id: parseInt(id, 10) },
       include: {
-        recipes: true,
         region: true,
+        recipes: {
+          include: {
+            _count: { select: { likes: true, comments: true } },
+          },
+        },
       },
     });
     res.status(200).json(result);

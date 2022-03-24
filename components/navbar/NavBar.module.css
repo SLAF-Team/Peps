@@ -6,7 +6,6 @@
   justify-content: space-between;
   padding: 1rem 1rem;
   border-bottom: 0.5px solid black;
-  /* height: 80px; */
 }
 
 .brand {
@@ -16,10 +15,18 @@
   margin-left: 2vw;
 }
 
+.displayResponsive {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .right {
   display: flex;
   margin-top: 2vh;
+  margin-bottom: 1vh;
   align-items: center;
+  width: 100vw;
 }
 
 .burger {
@@ -52,6 +59,15 @@
 @media only screen and (min-width: 33.75em) {
   /* 540px */
 
+  .right {
+    width: initial;
+  }
+
+  .displayResponsive {
+    width: 100%;
+    display: contents;
+  }
+
   .navbar {
     padding: 0.75rem 3rem;
   }
@@ -62,32 +78,10 @@
 
   .right {
     margin-top: 0;
+    margin-bottom: initial;
   }
 
   .burgerResponsive {
     display: none;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .brand {
-    font-size: 18px;
-  }
-
-  .btnResponsive {
-    display: contents;
-    margin-top: 5px;
-  }
-
-  .right {
-    margin-top: 0;
-  }
-
-  .burgerResponsive {
-    display: none;
-  }
-
-  .search {
-    width: 100%;
   }
 }

@@ -150,7 +150,7 @@ async function main() {
 
   const list = await prisma.list.create({
     data: {
-      name: "A essayer",
+      name: "À essayer",
       userId: john.id,
       recipes: {
         connect: [{ id: recipe.id }],
