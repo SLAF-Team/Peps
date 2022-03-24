@@ -3,9 +3,10 @@
 	border: 0.7px solid #000000;
 	box-sizing: border-box;
 	border-radius: 4px;
-	padding: 1.5vh 20vw 1.5vh 10vw;
+	padding: 1.5vh 30vw 1.5vh 10vw;
 	font-family: Lato, sans-serif;
 	margin-left: 1.5vw;
+	font-size: 19px;
 }
 
 .search:hover,
@@ -15,17 +16,16 @@
 
 .img {
 	position: relative;
-	margin-top: -32px;
+	margin-top: -36px;
 	margin-left: 5vw;
 	pointer-events: none;
 }
 
 .size {
 	position: relative;
-	margin-right: 2.5rem;
 }
 
-.iconImg{
+.iconImg {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -38,6 +38,7 @@
 	.search {
 		padding: 10px 34px;
 		margin-left: 0;
+		font-size: 12px;
 	}
 	.img {
 		margin-top: -28px;
@@ -46,23 +47,6 @@
 
 	.size {
 		top: -2px;
-	}
-}
-
-@media only screen and (max-width: 500px) {
-	.search {
-		padding: 10px 34px;
-		margin-left: 0;
-		background-color: #00000000;
-		display: flex;
-		align-items: flex-end;
-	}
-	.img {
-		margin-top: -28px;
-		margin-left: 8px;
-	}
-
-	.size {
-		width: 200px;
+		margin-right: 2.5rem;
 	}
 }

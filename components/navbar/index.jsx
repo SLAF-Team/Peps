@@ -6,7 +6,7 @@ import Button from "../Button";
 import SearchBar from "../SearchBar";
 import Image from "next/image";
 import { useUserContext } from "../../context/UserContext";
-import { Menu, Burger } from "@mantine/core";
+import { Menu, Burger, Divider, Text } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
 import profile from "../../assets/images/profile.svg";
@@ -26,65 +26,103 @@ const NavBar = () => {
     }
   };
 
- 
-
   return (
     <>
       <div className={styles.navbar}>
-        <div>
-          <Link href="/" exact>
-            <span className={styles.brand}>Cookogs</span>
-          </Link>
+        <div className={styles.displayResponsive}>
+          <div>
+            <Link href="/" exact>
+              <span className={styles.brand}>Cookogs</span>
+            </Link>
+          </div>
+          {user && (
+            <div className={styles.burgerResponsive}>
+              <Menu
+                size="xl"
+                control={
+                  <div
+                    className={
+                      !pivot
+                        ? styles.animationEnd + styles.animation
+                        : styles.animation
+                    }
+                    onClick={() => setPivot((o) => !o)}
+                  >
+                    <Burger
+                      opened={opened}
+                      onClick={() => setOpened((o) => !o)}
+                    />
+                  </div>
+                }
+              >
+                <Menu.Label>
+                  <Text size="xl">Profil</Text>
+                </Menu.Label>
+                <Menu.Item component={NextLink} href="/profile">
+                  <Text size="xl">Mon Profil</Text>
+                </Menu.Item>
+                <Menu.Item
+                  component={NextLink}
+                  href="/profile?list=true"
+                  as="/profile"
+                >
+                  <Text size="xl">Mes Listes</Text>
+                </Menu.Item>
+                <Divider />
+                <Menu.Item color="red" onClick={() => handleClick()}>
+                  <Text size="xl">Déconnexion</Text>
+                </Menu.Item>
+              </Menu>
+            </div>
+          )}
         </div>
         <div className={styles.right}>
           <SearchBar placeholder="Chercher une recette" />
           {!user ? (
-            <>
-              <div className={styles.btnResponsive}>
-                <Button label="Connexion" href="/login" type="warning" />
-              </div>
-              <div className={styles.burgerResponsive}>
-                <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
-              </div>
-            </>
+            <div className={styles.btnResponsive}>
+              <Button label="Connexion" href="/login" type="warning" />
+            </div>
           ) : (
-            <Menu
-              control={
-                <div
-                  className={
-                    !pivot
-                      ? styles.animationEnd + styles.animation
-                      : styles.animation
-                  }
-                  onClick={() => setPivot((o) => !o)}
-                >
-                  <Image src={profile} width={26} height={26} />
-                </div>
-              }
-              className={styles.burger}
-              sx={(theme) => ({
-                backgroundColor: "#FFD12F",
-                borderRadius: "4px",
-                "&:hover": {
-                  backgroundColor: theme.fn.darken("#FFD12F", 0.05),
-                },
-              })}
-            >
-              <Menu.Label>Profil</Menu.Label>
-              <Menu.Item component={NextLink} href="/profile">
-                Mon Profil
-              </Menu.Item>
-              <Menu.Item
-                component={NextLink}
-                href="/profile?list=true"
-                as="/profile"
+            <div className={styles.btnResponsive}>
+              <Menu
+                control={
+                  <div
+                    className={
+                      !pivot
+                        ? styles.animationEnd + styles.animation
+                        : styles.animation
+                    }
+                    onClick={() => setPivot((o) => !o)}
+                  >
+                    <Image src={profile} width={26} height={26} />
+                  </div>
+                }
+                className={styles.burger}
+                sx={(theme) => ({
+                  backgroundColor: "#FFD12F",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: theme.fn.darken("#FFD12F", 0.05),
+                  },
+                })}
               >
-                Mes Listes
-              </Menu.Item>
-              <Menu.Item color="red" onClick={() => handleClick()}>
-                Déconnexion
-              </Menu.Item>
-            </Menu>
+                <Menu.Label>Profil</Menu.Label>
+                <Menu.Item component={NextLink} href="/profile">
+                  Mon Profil
+                </Menu.Item>
+                <Menu.Item
+                  component={NextLink}
+                  href="/profile?list=true"
+                  as="/profile"
+                >
+                  Mes Listes
+                </Menu.Item>
+                <Divider />
+                <Menu.Item color="red" onClick={() => handleClick()}>
+                  Déconnexion
+                </Menu.Item>
+              </Menu>
+            </div>
           )}
         </div>
       </div>
