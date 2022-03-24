@@ -21,11 +21,13 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
-  if(user){
-    console.log('')
-  } else {
-    router.push('/login')
-  }
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
 
 
   const getDish = async () => {

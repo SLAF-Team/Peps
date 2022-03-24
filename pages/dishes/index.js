@@ -18,12 +18,13 @@ const Dishes = ({ dishes, regions  }) => {
   const router = useRouter();
   const { user } = useUserContext();
 
-  // set up data for multiselect
-  if(user){
-    console.log('')
-  } else {
-    router.push('/login')
-  }
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
 
 
   const dataRegions = [];

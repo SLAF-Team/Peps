@@ -11,6 +11,7 @@ import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
@@ -25,12 +26,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
 
-  if(user){
-    console.log('')
-  } else {
-    router.push('/login')
-  }
-
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
 
 
   const handleClickRight = () => {

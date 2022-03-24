@@ -18,11 +18,13 @@ const newDish = ({ regions }) => {
   const [auth, setAuth] = useState(false);
   const notifications = useNotifications();
 
-  if(user){
-    console.log('')
-  } else {
-    router.push('/login')
-  }
+  useEffect(() => {
+    if(user){
+      console.log('')
+    } else {
+      router.push('/login')
+    }
+  }, [])
 
 
   useEffect(() => {
