@@ -9,6 +9,7 @@ import Button from "../../Button";
 const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
+  const [submitted, setSubmitted] = useState(false);
 
   async function addRecipeIngredients(params) {
     const { addIngredient, addUnit, addQuantity } = formRef.current;
@@ -31,13 +32,14 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    setSubmitted(true);
   }
 
   return (
     <div className={classes.block}>
       <form ref={formRef} className="row">
         <div className="col-3">
-          <label className={classes.label}>Quantité</label>
+          <label className={classes.label}>Quantité (chiffre)</label>
           <input className={classes.input} name="addQuantity" type="text" />
         </div>
         <div className="col-3">
@@ -62,12 +64,16 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
         </div>
       </form>
       <div className={classes.button}>
-        <Button
-          label="Valider mon ingrédient"
-          type="success"
-          handleClick={() => addRecipeIngredients()}
-          href=""
-        />
+        {submitted ? (
+          <p>Ajouté!</p>
+        ) : (
+          <Button
+            label="Ajouter cet ingrédient"
+            type="success"
+            handleClick={() => addRecipeIngredients()}
+            href="#"
+          />
+        )}
       </div>
     </div>
   );
