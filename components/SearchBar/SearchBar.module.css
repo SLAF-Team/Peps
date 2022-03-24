@@ -3,9 +3,14 @@
 	border: 0.7px solid #000000;
 	box-sizing: border-box;
 	border-radius: 4px;
-	padding: 1.5vh 20vw 1.5vh 10vw;
+	padding: 1.5vh 30vw 1.5vh 10vw;
 	font-family: Lato, sans-serif;
 	margin-left: 1.5vw;
+	font-size: 40px;
+	-webkit-border-radius:;
+	-moz-border-radius:;
+	-ms-border-radius:;
+	-o-border-radius:;
 }
 
 .search:hover,
@@ -13,19 +18,25 @@
 	background-color: #faf5f0;
 }
 
+.searchbox {
+	margin-top: 10px;
+	position: absolute;
+	z-index: 1;
+	width: 140%;
+}
+
 .img {
 	position: relative;
-	margin-top: -32px;
+	margin-top: -36px;
 	margin-left: 5vw;
 	pointer-events: none;
 }
 
 .size {
 	position: relative;
-	margin-right: 2.5rem;
 }
 
-.iconImg{
+.iconImg {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -34,10 +45,49 @@
 	object-fit: cover;
 }
 
+.a {
+	font-size: 14px;
+	margin-left: 15px;
+}
+
+.linkbox {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.linkbox:hover {
+	background-color: #faf5f0;
+}
+
+
+.box {
+	padding-top: 20px;
+	padding-bottom: 15px;
+	z-index: 3333;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 140%;
+	background-color: #f8f9fa;
+	max-height: 40px;
+	overflow-y: scroll;
+	max-height: 500px;
+	overflow-y: scroll;
+
+}
+
+.box:hover {
+background-color: #f1f3f5;
+}
+
 @media only screen and (min-width: 33.75em) {
 	.search {
 		padding: 10px 34px;
 		margin-left: 0;
+		font-size: 14px;
 	}
 	.img {
 		margin-top: -28px;
@@ -46,23 +96,44 @@
 
 	.size {
 		top: -2px;
+		margin-right: 2.5rem;
 	}
+
+	.searchbox {
+		margin-top: 10px;
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+	}
+
 }
 
-@media only screen and (max-width: 500px) {
-	.search {
-		padding: 10px 34px;
-		margin-left: 0;
-		background-color: #00000000;
-		display: flex;
-		align-items: flex-end;
+@media only screen and (max-width: 600px) {
+
+	.searchbox {
+		margin-top: 25px;
+		padding-left: 8px;
+		position: absolute;
+		z-index: 1;
+		width: 80%;
 	}
-	.img {
-		margin-top: -28px;
-		margin-left: 8px;
+
+	.search {
+		width: 100%;
+		font-size: 18px;
+		padding: 1.5vh 5vw 1.5vh 10vw;
 	}
 
 	.size {
-		width: 200px;
+		width: 98%;
+	}
+
+	.a {
+		font-size: 18px;
+	}
+
+	.box {
+		width: 40vh;
+		max-height: 200px;
 	}
 }

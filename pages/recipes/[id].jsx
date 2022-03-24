@@ -18,6 +18,7 @@ import {
   Anchor,
   Skeleton,
   Accordion,
+  NumberInput,
 } from "@mantine/core";
 
 const SelectedRecipe = () => {
@@ -33,6 +34,8 @@ const SelectedRecipe = () => {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
+  const [personsValue, setPersonsValue] = useState(0);
+  const personsRatio = (personsValue / recipe?.persons)
 
   const getRecipe = async () => {
     if (!id) {
@@ -47,6 +50,10 @@ const SelectedRecipe = () => {
       console.log("error");
     }
   };
+
+  useEffect(() => {
+    setPersonsValue(recipe?.persons);
+  }, [recipe]);
 
   useEffect(() => {
     getRecipe();
@@ -199,7 +206,15 @@ const SelectedRecipe = () => {
           <div className={classes.padding}>
             <div className={classes.selector}>
               <div className="selectorBlock">
-                <p className={classes.selectorText}>INGRÉDIENTS</p>
+                <p className={classes.selectorText}>INGRÉDIENTS pour </p>
+                <NumberInput
+                  value={personsValue}
+                  onChange={(val) => setPersonsValue(val)}
+                  required
+                  min={1}
+                  max={15}
+                />
+                <label className={classes.label}> convives</label>
               </div>
             </div>
             <div>
@@ -208,8 +223,8 @@ const SelectedRecipe = () => {
                   recipe?.ingredientsUnit.map((element) => (
                     <li className={classes.li}>
                       <a href="#">
-                        {element.quantity} {element.unit.name} de{" "}
-                        {element.ingredient.name}
+                        {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
+                        {element.unit.name} de {element.ingredient.name}
                       </a>
                     </li>
                   ))}
@@ -243,12 +258,22 @@ const SelectedRecipe = () => {
                 <p className={classes.selectorText}>LISTES</p>
               </div>
             </div>
-          <div className={classes.detailscontainer}>
-            <ListForm lists={recipe.lists} recipe={recipe} setSubmitted={setSubmitted}/>
+            <div className={classes.detailscontainer}>
+              <ListForm
+                lists={recipe.lists}
+                recipe={recipe}
+                setSubmitted={setSubmitted}
+              />
             </div>
           </div>
         </Skeleton>
-      </div>
+          </div>
+          <Button
+                label="Editer"
+                type="success"
+                handleClick={() => setOpened(true)}
+                href="#"
+          />
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -267,7 +292,13 @@ const SelectedRecipe = () => {
             defaultValue={recipe.description}
             onChange={handleDescription}
           />
-          <button type="submit">J'édite</button>
+          <br />
+          <br />
+          <Button
+            label="J'édite"
+            type='submit'
+            href="#"
+          />
         </form>
       </Modal>
     </div>

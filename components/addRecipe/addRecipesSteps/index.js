@@ -4,8 +4,10 @@ import Cookies from "js-cookie";
 import classes from "./AddRecipesSteps.module.css";
 import Button from "../../Button";
 import { Textarea } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
 
 const AddRecipesSteps = ({ recipe }) => {
+  const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
@@ -15,17 +17,24 @@ const AddRecipesSteps = ({ recipe }) => {
     setDisable(true);
     const { addSteps } = formRef.current;
     const steps = addSteps.value;
-    console.log(steps)
-    await axios.put(
-      "/api/recipe/editRecipe",
-      {
-        id: recipe.id,
-        steps,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setDisable(false);
-        setSubmitted(true);
+    if (!steps) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire !",
+        message: "Un ou plusieurs éléments sont manquants",
+        color: "red",
+      });
+    } else {
+      await axios.put(
+        "/api/recipe/editRecipe",
+        {
+          id: recipe.id,
+          steps,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setDisable(false);
+      setSubmitted(true);
+    }
   }
 
   return (
