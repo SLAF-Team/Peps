@@ -115,6 +115,24 @@
   color: #324376;
 }
 
+
+  .input {
+    width: 50%;
+    height: 24px;
+    left: 10px;
+    top: 150px;
+
+    /* White */
+
+    background: #ffffff;
+    /* Black */
+
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 2px;
+  }
+
+
 .button {
   margin-top: 20px;
   margin-bottom: 10px;

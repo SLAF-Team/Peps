@@ -18,6 +18,7 @@ import {
   Anchor,
   Skeleton,
   Accordion,
+  NumberInput,
 } from "@mantine/core";
 
 const SelectedRecipe = () => {
@@ -33,6 +34,7 @@ const SelectedRecipe = () => {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
+  const [personsValue, setPersonsValue] = useState(0);
 
   const getRecipe = async () => {
     if (!id) {
@@ -47,6 +49,10 @@ const SelectedRecipe = () => {
       console.log("error");
     }
   };
+
+  useEffect(() => {
+    setPersonsValue(recipe?.persons);
+  }, [recipe]);
 
   useEffect(() => {
     getRecipe();
@@ -199,7 +205,15 @@ const SelectedRecipe = () => {
           <div className={classes.padding}>
             <div className={classes.selector}>
               <div className="selectorBlock">
-                <p className={classes.selectorText}>INGRÉDIENTS</p>
+                <p className={classes.selectorText}>INGRÉDIENTS pour </p>
+                <NumberInput
+                  value={personsValue}
+                  onChange={(val) => setPersonsValue(val)}
+                  required
+                  min={1}
+                  max={15}
+                />
+                <label className={classes.label}> convives</label>
               </div>
             </div>
             <div>
@@ -243,8 +257,12 @@ const SelectedRecipe = () => {
                 <p className={classes.selectorText}>LISTES</p>
               </div>
             </div>
-          <div className={classes.detailscontainer}>
-            <ListForm lists={recipe.lists} recipe={recipe} setSubmitted={setSubmitted}/>
+            <div className={classes.detailscontainer}>
+              <ListForm
+                lists={recipe.lists}
+                recipe={recipe}
+                setSubmitted={setSubmitted}
+              />
             </div>
           </div>
         </Skeleton>

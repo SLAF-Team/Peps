@@ -40,6 +40,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       addDish,
       addType,
       addImageUrl,
+      addPersons,
     } = formRef.current;
     const name = addName.value;
     const description = addDescription.value;
@@ -48,6 +49,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     const dish = addDish.value;
     const type = addType.value;
     const cook = user;
+    const persons = addPersons.value;
     const result = await axios.post(
       "/api/recipe/addRecipe",
       {
@@ -58,10 +60,12 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
         cookId: parseInt(cook.id),
         dishId: parseInt(dish),
         typeId: parseInt(type),
+        persons: parseInt(persons),
         published: JSON.parse(checked),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    console.log(result.data)
     setSubmitted(true);
     setRecipe(result.data);
     setStep(step + 1);
@@ -126,6 +130,17 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 placeholder="Ex: https://masuperimagedetarte.com"
               />
             </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Nombre de convives</label>
+              <input
+                className={classes.input}
+                type="number"
+                name="addPersons"
+                min="1"
+                max="15"
+              />
+            </div>
+
             {countries ? (
               <div className={classes.step}>
                 <label className={classes.label}>Pays</label>

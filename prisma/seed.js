@@ -145,6 +145,7 @@ async function main() {
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 4,
     },
   });
 
@@ -169,6 +170,7 @@ async function main() {
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 10,
     },
     {
       name: "Un autre couscous incroyable",
@@ -180,6 +182,7 @@ async function main() {
       dishId: couscous.id,
       typeId: entree.id,
       countryId: maroc.id,
+      persons: 2,
     },
   ];
 
