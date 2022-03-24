@@ -15,7 +15,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
   const [recipeSearch, setRecipeSearch] = useState("");
   
 
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false); 
   const ref = useClickOutside(() => setOpened(false));
 
 
