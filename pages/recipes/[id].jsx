@@ -35,6 +35,7 @@ const SelectedRecipe = () => {
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
+  const personsRatio = (personsValue / recipe?.persons)
 
   const getRecipe = async () => {
     if (!id) {
@@ -222,8 +223,8 @@ const SelectedRecipe = () => {
                   recipe?.ingredientsUnit.map((element) => (
                     <li className={classes.li}>
                       <a href="#">
-                        {element.quantity} {element.unit.name} de{" "}
-                        {element.ingredient.name}
+                        {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
+                        {element.unit.name} de {element.ingredient.name}
                       </a>
                     </li>
                   ))}
