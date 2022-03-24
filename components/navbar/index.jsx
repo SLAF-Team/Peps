@@ -10,6 +10,7 @@ import { Menu, Burger } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import Cookies from "js-cookie";
 import profile from "../../assets/images/profile.svg";
+import { useEffect } from "react";
 
 const NavBar = () => {
   const { user, setUser } = useUserContext();
@@ -24,6 +25,8 @@ const NavBar = () => {
       router.push("/");
     }
   };
+
+ 
 
   return (
     <>
