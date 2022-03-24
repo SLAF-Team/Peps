@@ -20,6 +20,7 @@ import {
   Accordion,
   NumberInput,
 } from "@mantine/core";
+import ButtonForm from "../../components/ButtonForm";
 
 const SelectedRecipe = () => {
   const router = useRouter();
@@ -79,11 +80,11 @@ const SelectedRecipe = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    notifications.showNotification({
-      title: "Bravo!",
-      message: "Votre recette a été publié avec succès",
-      color: "green",
-    });
+    // notifications.showNotification({
+    //   title: "Bravo!",
+    //   message: "Votre recette a été publié avec succès",
+    //   color: "green",
+    // });
     getRecipe();
   };
 
@@ -95,9 +96,9 @@ const SelectedRecipe = () => {
     setDescriptionChange(e.target.value);
   };
 
-  const handleClick = () => {
-    setOpened(true);
-  };
+  // const handleClick = () => {
+  //   setOpened(true);
+  // };
 
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
@@ -294,10 +295,9 @@ const SelectedRecipe = () => {
           />
           <br />
           <br />
-          <Button
+          <ButtonForm
             label="J'édite"
-            type='submit'
-            href="#"
+            theme="success"
           />
         </form>
       </Modal>
