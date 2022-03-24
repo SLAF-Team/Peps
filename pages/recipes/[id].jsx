@@ -267,7 +267,13 @@ const SelectedRecipe = () => {
             </div>
           </div>
         </Skeleton>
-      </div>
+          </div>
+          <Button
+                label="Editer"
+                type="success"
+                handleClick={() => setOpened(true)}
+                href="#"
+          />
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -286,7 +292,13 @@ const SelectedRecipe = () => {
             defaultValue={recipe.description}
             onChange={handleDescription}
           />
-          <button type="submit">J'édite</button>
+          <br />
+          <br />
+          <Button
+            label="J'édite"
+            type='submit'
+            href="#"
+          />
         </form>
       </Modal>
     </div>
