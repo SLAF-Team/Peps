@@ -155,11 +155,18 @@
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
+
 }
 
 .multiselect {
   font-size: 10px;
+  max-width: 100%;
 }
+
+.drawer {
+  overflow-y: scroll;
+}
+
 
 @media (max-width: 500px) {
   .cards {
