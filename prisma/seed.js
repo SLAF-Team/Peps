@@ -1365,8 +1365,6 @@ async function main() {
       name: "Couscous en mode blanquette",
       imageUrl:
         "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
-      description:
-        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,
@@ -1390,8 +1388,6 @@ async function main() {
       name: "Couscous de chez ma grand mère",
       imageUrl:
         "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
-      description:
-        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,
@@ -1402,8 +1398,6 @@ async function main() {
       name: "Un autre couscous incroyable",
       imageUrl:
         "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1033&q=80",
-      description:
-        "pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL, the most advanced Open Source  in the world.",
       cookId: john.id,
       dishId: couscous.id,
       typeId: entree.id,

@@ -10,8 +10,6 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
@@ -25,7 +23,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
-
   
   useEffect(() => {
     if(token){
@@ -53,24 +50,16 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   // add Recipe
   async function addNewRecipe(params) {
-    const {
-      addName,
-      addDescription,
-      addCountry,
-      addDish,
-      addType,
-      addImageUrl,
-      addPersons,
-    } = formRef.current;
+    const { addName, addCountry, addDish, addType, addImageUrl, addPersons } =
+      formRef.current;
     const name = addName.value;
-    const description = addDescription.value;
     const imageUrl = addImageUrl.value;
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
     const cook = user;
     const persons = addPersons.value;
-    if (!name || !description ||!persons) {
+    if (!name || !persons) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
         message: "Un ou plusieurs éléments sont manquants",
@@ -81,14 +70,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
         "/api/recipe/addRecipe",
         {
           name,
-          description,
           imageUrl,
           countryId: parseInt(country),
           cookId: parseInt(cook.id),
           dishId: parseInt(dish),
           typeId: parseInt(type),
           published: JSON.parse(checked),
-            persons: parseInt(persons),
+          persons: parseInt(persons),
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -104,11 +92,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   const handleStepClick = () => {
     setStep(step + 1);
+    setCount(1);
   };
 
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
+      <h2>Etape {step + 1}/4</h2>
       {step === 0 && (
         <>
           <Selector
@@ -198,15 +188,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 </select>
               </div>
             ) : null}
-            <div className={classes.step}>
-              <label className={classes.label}>Description *</label>
-              <input
-                className={classes.input}
-                name="addDescription"
-                type="text"
-                placeholder="Ex: Ma recette familiale de tarte aux abricots et amandes et sa pâte sablée"
-              />
-            </div>
             <div className={classes.button}>
               <Button
                 label="Créer ma recette"
@@ -249,13 +230,37 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               />
             </div>
           </div>
+          <Button
+            label="Je passe à l'étape suivante ! "
+            type="primary"
+            href="#"
+            handleClick={() => handleStepClick()}
+          />
+        </>
+      )}
+      {step === 2 && (
+        <>
           <div className={classes.selector}>
             <div className="selectorBlock">
-              <p className={classes.selectorText}>ÉTAPES DE LA RECETTE</p>
+              <p className={classes.selectorText}>AJOUTER DES ETAPES</p>
             </div>
           </div>
-          <div className={classes.stepsform}>
-            {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
+          <div className={classes.ingredientform}>
+            {recipe ? (
+              <>
+                {[...Array(count)].map((e, i) => {
+                  return <AddRecipesSteps recipe={recipe} key={i} />;
+                })}
+              </>
+            ) : null}
+            <div className={classes.button}>
+              <Button
+                label="Nouvel ingrédient"
+                type="primary"
+                handleClick={handleClick}
+                href="#"
+              />
+            </div>
           </div>
           <Button
             label="Je passe à l'étape suivante ! "
@@ -265,8 +270,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           />
         </>
       )}
-
-      {step === 2 && (
+      {step === 3 && (
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">

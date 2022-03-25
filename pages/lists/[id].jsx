@@ -31,13 +31,6 @@ const Profile = () => {
 
 
 
-  // initial checkbox value
-
-  // const initialValue = []
-  // list? list[0].recipes.map((recipe) => initialValue.push(recipe.id.toString())) : null;
-  // console.log("initialValue");
-  // console.log(initialValue)
-
   // search list + call axios
   async function searchList(data) {
     try {
@@ -123,8 +116,6 @@ const Profile = () => {
   const handleSelect = (event) => {
     setFilter(event);
   };
-
-  console.log(list);
 
   async function deleteList() {
     if (window.confirm("Souhaitez vous supprimer cette liste?")) {

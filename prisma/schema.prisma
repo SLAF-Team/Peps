@@ -66,8 +66,6 @@ model Type {
 model Recipe {
   id              Int                     @id @default(autoincrement())
   name            String
-  description     String
-  steps           String?
   persons         Int
   imageUrl        String?
   ingredientsUnit IngredientsandRecipes[]
@@ -85,6 +83,7 @@ model Recipe {
   likes           LikesOnRecipes[]
   lists           List[]                   @relation("_ListAndRecipes")
   comments        Comment[]
+  steps           Step[]
 }
 
 model Dish {
@@ -145,6 +144,14 @@ model Comment {
   createdAt DateTime         @default(now()) @map(name: "created_at")
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
+  recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId   Int
+}
+
+
+model Step {
+  id       Int      @id @default(autoincrement())
+  text     String
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId   Int
 }
