@@ -7,6 +7,7 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
+import ButtonSettings from "../../components/ButtonSettings";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
@@ -152,11 +153,13 @@ const SelectedRecipe = ({ingredients, units}) => {
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.stepscontainer}>
             <ul>
-            {recipe?.steps && recipe?.steps.map((element, index) => (                
-            <li className={classes.li} key={element.id}>
-                        <b>Etape {index + 1}</b>  <p>{element.text} </p>
-                      </li>))}
-                </ul>
+              {recipe?.steps &&
+                recipe?.steps.map((element, index) => (
+                  <li className={classes.li} key={element.id}>
+                    <b>Etape {index + 1}</b> <p>{element.text} </p>
+                  </li>
+                ))}
+            </ul>
           </div>
         </Skeleton>
 
@@ -219,6 +222,14 @@ const SelectedRecipe = ({ingredients, units}) => {
         </Skeleton>
       </div>
       <div className="col-3">
+        <div className={classes.button}>
+          <ButtonSettings
+            label="Editer"
+            type="warning"
+            handleClick={() => setOpened(true)}
+            href="#"
+          />
+        </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.padding}>
             <div className={classes.selector}>
@@ -285,12 +296,6 @@ const SelectedRecipe = ({ingredients, units}) => {
           </div>
         </Skeleton>
       </div>
-      <Button
-        label="Editer"
-        type="success"
-        handleClick={() => setOpened(true)}
-        href="#"
-      />
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />

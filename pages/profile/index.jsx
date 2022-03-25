@@ -1,5 +1,4 @@
 import { useUserContext } from "../../context/UserContext";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import UserList from "../../components/UserList";
@@ -10,7 +9,6 @@ import Selector from "../../components/Selector";
 import AddList from "../../components/List/AddList";
 import axios from "axios";
 import Cookies from "js-cookie";
-import moment from "moment";
 import { useNotifications } from "@mantine/notifications";
 import List from "../../components/List/List";
 
@@ -25,7 +23,7 @@ const Profile = ({ recipes, lists }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (token) {
+    if (token !== undefined) {
       return;
     } else {
       notifications.showNotification({
@@ -113,7 +111,7 @@ const Profile = ({ recipes, lists }) => {
           {listsFromUser?.map((list, index) => (
             <div className="row">
               <div className={styles.listCards}>
-                <List list={list} key={index}/>
+                <List list={list} key={index} />
               </div>
             </div>
           ))}
