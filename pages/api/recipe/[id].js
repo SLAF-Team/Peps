@@ -9,6 +9,7 @@ export default async (req, res) => {
         dish: { select: { title: true, id: true } },
         cook: { select: { name: true } },
         likes: true,
+        steps: true,
         comments: {
           include: {
             user: true,

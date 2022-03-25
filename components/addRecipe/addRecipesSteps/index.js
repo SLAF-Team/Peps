@@ -24,10 +24,6 @@ const AddRecipesStep = ({ recipe }) => {
     } else {
       await axios.put(
         "/api/recipe/editRecipe",
-        // {
-        //   id: recipe.id,
-        //   steps,
-        // },
         {
           id: recipe.id,
           steps: {

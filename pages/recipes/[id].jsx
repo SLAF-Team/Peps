@@ -49,6 +49,7 @@ const SelectedRecipe = ({ingredients, units}) => {
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(result.data)
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -114,10 +115,6 @@ const SelectedRecipe = ({ingredients, units}) => {
     setNameChange(e.target.value);
   };
 
-  // fonction handleChange : value input + index + clé
-  // set lodash
-  // if index = index, element[key] =
-
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
@@ -130,6 +127,8 @@ const SelectedRecipe = ({ingredients, units}) => {
   if (!recipe) {
     return null;
   }
+
+  console.log(recipe)
 
   return (
     <div className="row">
@@ -158,7 +157,12 @@ const SelectedRecipe = ({ingredients, units}) => {
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.stepscontainer}>
-            <p>Etapes: {recipe.steps}</p>
+            <ul>
+            {recipe?.steps && recipe?.steps.map((element, index) => (                
+            <li className={classes.li} key={element.id}>
+                        <b>Etape {index + 1}</b>  <p>{element.text} </p>
+                      </li>))}
+                </ul>
           </div>
         </Skeleton>
 
