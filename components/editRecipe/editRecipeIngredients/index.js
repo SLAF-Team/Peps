@@ -9,7 +9,7 @@ import { useNotifications } from "@mantine/notifications";
 import AddRecipesIngredients from "../../addRecipe/addRecipesIngredients";
 
 // set basic value + s'assurer que c'est le bon state (on a besoin de l'ID)
-// delete 
+// delete
 // create
 // test global
 
@@ -31,30 +31,29 @@ const EditRecipeIngredients = ({ recipe, ingredients, units }) => {
     //     color: "red",
     //   });
     // } else {
-    console.log("form")
+    console.log("form");
     console.log(ingredient);
 
-
-      //delete
-      //create
-      // await axios.put(
-      //   "/api/recipe/editRecipe",
-      //   {
-      //     id: recipe.id,
-      //     ingredientsUnit: {
-      //       create: [
-      //         {
-      //           ingredientId: parseInt(ingredient),
-      //           unitId: parseInt(unit),
-      //           quantity: parseInt(quantity),
-      //         },
-      //       ],
-      //     },
-      //   },
-      //   { headers: { Authorization: `Bearer ${token}` } }
-      // );
-      setSubmitted(true);
-    }
+    //delete
+    //create
+    // await axios.put(
+    //   "/api/recipe/editRecipe",
+    //   {
+    //     id: recipe.id,
+    //     ingredientsUnit: {
+    //       create: [
+    //         {
+    //           ingredientId: parseInt(ingredient),
+    //           unitId: parseInt(unit),
+    //           quantity: parseInt(quantity),
+    //         },
+    //       ],
+    //     },
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    setSubmitted(true);
+  }
   // }
 
   console.log(recipe.ingredientsUnit[0].ingredient.name);
@@ -86,7 +85,6 @@ const EditRecipeIngredients = ({ recipe, ingredients, units }) => {
               name="addIngredient"
               selected={recipe.ingredientsUnit[0].ingredient.name}
               // Warning: Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>.
-
             >
               {ingredients?.map((ingredient) => (
                 <option value={ingredient.id} key={ingredient.id}>

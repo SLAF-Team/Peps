@@ -268,10 +268,12 @@ const SelectedRecipe = ({ ingredients, units }) => {
                     <li className={classes.li}>
                       <Link
                         href={"/recipes?ingredient=" + element.ingredient.id}
-                        as="/recipes"
                       >
-                        {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
-                        {element.unit.name} de {element.ingredient.name}
+                        {Math.round(10 * personsRatio * element.quantity) / 10 +
+                          " " +
+                          element.unit.name +
+                          " de " +
+                          element.ingredient.name}
                       </Link>
                     </li>
                   ))}
@@ -291,7 +293,9 @@ const SelectedRecipe = ({ ingredients, units }) => {
                 {recipe?.tags &&
                   recipe?.tags.map((tag) => (
                     <li className={classes.li}>
-                      <a href="#">#{tag.name}</a>
+                      <Link href={"/recipes?tag=" + tag.id}>
+                        {"#" + tag.name}
+                      </Link>
                     </li>
                   ))}
               </ul>
