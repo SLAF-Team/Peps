@@ -10,10 +10,15 @@ import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 import { useUserContext } from "../../context/UserContext.js";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
   const router = useRouter();
+  const token = Cookies.get('token');
+
+  
+  
 
   // set up state for multiselect
   const idTags = [];
@@ -65,15 +70,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       console.log("error");
     }
   };
-
-  // useEffect(() => {
-  //   if(user){
-  //     console.log('')
-  //   } else {
-  //     router.push('/login')
-  //   }
-  // }, [getRecipes])
-
 
   // change filter state
   const handleChange = () => {

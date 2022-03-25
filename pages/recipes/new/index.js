@@ -26,13 +26,19 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
 
+  
   useEffect(() => {
-    if(user){
-      console.log('')
+    if(token){
+      return;
     } else {
+      notifications.showNotification({
+        title: "Connexion !",
+        message: "Merci de vous connecter pour accéder à cette page",
+        color: "red",
+      });
       router.push('/login')
     }
-  }, [])
+  }, [token])
 
 
   const handleClickRight = () => {
