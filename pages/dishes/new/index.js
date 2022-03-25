@@ -25,6 +25,11 @@ const newDish = ({ regions }) => {
     if(token){
       return;
     } else {
+      notifications.showNotification({
+        title: "Connexion !",
+        message: "Merci de vous connecter pour accéder à cette page",
+        color: "red",
+      });
       router.push('/login')
     }
   }, [token])
