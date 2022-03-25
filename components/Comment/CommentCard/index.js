@@ -38,7 +38,9 @@ const CommentCard = ({ comment }) => {
     <div className={classes.modulecontainer}>
       <div className={classes.avatarcontainer}>
         <div className={classes.avatar} style={{ backgroundColor: "#ffd12f" }}>
-          <span className={classes.letter}>{user?.name[0].toUpperCase()}</span>
+          <span className={classes.letter}>
+            {comment?.user.name[0].toUpperCase()}
+          </span>
         </div>
       </div>
       <div className={classes.textcontainer}>

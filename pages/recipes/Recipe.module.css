@@ -27,6 +27,24 @@
   cursor: pointer;
 }
 
+.steps {
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.btn {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #324376;
+  background-color: transparent;
+  border: 1px solid #324376;
+}
+
 .selectorText {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
