@@ -21,13 +21,14 @@ const Profile = ({ recipes, lists }) => {
   const token = Cookies.get("token");
   const router = useRouter();
 
+
   useEffect(() => {
-    if(user){
-      console.log('')
+    if(token){
+      return;
     } else {
       router.push('/login')
     }
-  }, [])
+  }, [token]);
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -35,6 +36,7 @@ const Profile = ({ recipes, lists }) => {
     });
     setUser(result.data.user);
   }
+
 
   useEffect(() => {
     getUser();

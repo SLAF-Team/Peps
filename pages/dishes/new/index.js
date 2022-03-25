@@ -10,6 +10,7 @@ import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";
 import Button from "../../../components/Button";
+import { checkAdminAuth } from "../../../lib/authfront";
 
 const newDish = ({ regions }) => {
   const router = useRouter();
@@ -21,12 +22,12 @@ const newDish = ({ regions }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(user){
-      console.log('')
+    if(token){
+      return;
     } else {
       router.push('/login')
     }
-  }, [])
+  }, [token])
 
 
   useEffect(() => {

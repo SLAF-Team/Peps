@@ -22,14 +22,7 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log("");
-  //   } else {
-  //     router.push("/login");
-  //   }
-  // }, []);
-
+  
   const getDish = async () => {
     try {
       const result = await axios.get(`/api/dish/${id}`, {
