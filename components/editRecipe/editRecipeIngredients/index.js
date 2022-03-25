@@ -88,6 +88,8 @@ const EditRecipeIngredients = ({ recipe, ingredients, units }) => {
               className={classes.select}
               name="addIngredient"
               selected={recipe.ingredientsUnit[0].ingredient.name}
+              // Warning: Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>.
+
             >
               {ingredients?.map((ingredient) => (
                 <option value={ingredient.id} key={ingredient.id}>

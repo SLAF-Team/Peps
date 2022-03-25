@@ -48,16 +48,19 @@ const AddRecipesStep = ({ recipe }) => {
           name="addStep"
           placeholder="Indiquez la description de votre étape"
           autosize
-          minRows={2}
+          minRows={1}
         />
         {submitted ? (
           <p>Ajoutée !</p>
         ) : (
-          <Button
-            label="Valider mon étape"
-            handleClick={() => addRecipeStep()}
-            href=""
-          />
+          <div className={classes.button}>
+            <Button
+              label="Valider mon étape"
+              handleClick={() => addRecipeStep()}
+              href=""
+              type="success"
+            />
+          </div>
         )}
       </form>
     </div>

@@ -7,6 +7,7 @@ import classes from "./AddRecipesIngredients.module.css";
 import Button from "../../Button";
 import { useNotifications } from "@mantine/notifications";
 import { Select } from "@mantine/core";
+import { NumberInput } from "@mantine/core";
 
 const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const notifications = useNotifications();
@@ -15,6 +16,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const [submitted, setSubmitted] = useState(false);
   const [unitValue, setUnitValue] = useState("");
   const [ingredientValue, setIngredientValue] = useState("");
+  const [quantityValue, setQuantityValue] = useState("");
 
   const unitsData = [];
   units.map((element) =>
@@ -27,9 +29,8 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   );
 
   async function addRecipeIngredients(params) {
-    const { addQuantity } = formRef.current;
     const ingredient = ingredientValue;
-    const quantity = addQuantity.value;
+    const quantity = quantityValue;
     const unit = unitValue;
     if (!quantity || !unit || !ingredient) {
       notifications.showNotification({
@@ -63,8 +64,25 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
       <div className={classes.block}>
         <form ref={formRef} className="row">
           <div className="col-3">
-            <label className={classes.label}>Quantité (chiffre)</label>
-            <input className={classes.input} name="addQuantity" type="text" />
+            <label className={classes.label}>Quantité</label>
+            {submitted ? (
+              <NumberInput
+                value={quantityValue}
+                onChange={(val) => setQuantityValue(val)}
+                required
+                min={0}
+                max={1000}
+                disabled
+              />
+            ) : (
+              <NumberInput
+                value={quantityValue}
+                onChange={(val) => setQuantityValue(val)}
+                required
+                min={0}
+                max={1000}
+              />
+            )}
           </div>
           <div className="col-3">
             <label className={classes.label}>Unité</label>
@@ -115,7 +133,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
         </form>
         <div className={classes.button}>
           {submitted ? (
-            <p>Ajouté!</p>
+            null
           ) : (
             <Button
               label="Ajouter cet ingrédient"
