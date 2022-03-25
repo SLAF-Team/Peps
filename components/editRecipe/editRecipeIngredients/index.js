@@ -19,9 +19,6 @@ const EditRecipeIngredients = ({ recipe, ingredients, units }) => {
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
 
-  console.log("data entrantes")
-  console.log(recipe)
-
   async function editRecipeIngredient(params) {
     const { addIngredient, addUnit, addQuantity } = formRef.current;
     const ingredient = addIngredient.value;
