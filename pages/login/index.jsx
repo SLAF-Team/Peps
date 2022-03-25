@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useNotifications } from "@mantine/notifications";
 
-
 const Login = () => {
   const [signUp, setSignUp] = useState(false);
   const [style, setStyle] = useState(false);
@@ -17,11 +16,11 @@ const Login = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(!token){
+    if(token === undefined){
       return;
     } else {
       notifications.showNotification({
-        title: "Déjà connecter !",
+        title: "Connexion",
         message: "Vous êtes déjà connecté",
         color: "green",
       });

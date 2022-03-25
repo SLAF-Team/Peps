@@ -16,6 +16,7 @@ const CommentCard = ({ comment }) => {
   const notifications = useNotifications();
   const isAuthor = comment.userId == user?.id ? true : false;
   const recipeId = comment.recipeId;
+  console.log("isAuthor");
 
   console.log(isAuthor);
 

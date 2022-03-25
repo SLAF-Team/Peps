@@ -28,7 +28,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   }, [user]);
 
   async function addLike() {
-    if(token == null){
+    if(token == undefined){
       notifications.showNotification({
         title: "Connexion !",
         message: "Merci de vous connecter pour liker",
