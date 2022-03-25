@@ -25,8 +25,6 @@ const NavBar = () => {
       router.push("/");
   };
 
-  console.log(peps);
-
   return (
     <>
       <div className={styles.navbar}>

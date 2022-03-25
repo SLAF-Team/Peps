@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
 import Cookies from "js-cookie";
 import classes from "./AddList.module.css";
 import { useNotifications } from "@mantine/notifications";
 
-const AddList = ({ user, setListChange }) => {
+const AddList = ({ user, onCreate }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const notifications = useNotifications();
@@ -33,7 +33,7 @@ const AddList = ({ user, setListChange }) => {
         message: "Votre liste a bien été créée",
         color: "green",
       });
-      setListChange(result.data);
+      onCreate();
     }
   }
 

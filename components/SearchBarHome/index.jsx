@@ -18,7 +18,6 @@ const SearchBarHome = ({ placeholder, handleSubmit }) => {
   const handleChange = (e) => {
     e.preventDefault();
     setRecipeSearch(e.target.value);
-    console.log(opened);
   };
 
   async function getSearchedRecipe(recipeSearch, e) {

@@ -4,21 +4,18 @@ import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
 import moment from "moment";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
 
-const CommentCard = ({ comment, setDeleted }) => {
-  const router = useRouter();
+const CommentCard = ({ comment, onDelete }) => {
   const token = Cookies.get("token");
   const { user } = useUserContext();
   const notifications = useNotifications();
   const isAuthor = comment.userId == user?.id ? true : false;
-  const recipeId = comment.recipeId;
 
   async function deleteComment() {
     await axios.delete(`/api/comment/delete/${comment?.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setDeleted(true);
+    onDelete();
     notifications.showNotification({
       title: "Bravo",
       message: "Votre commentaire a bien été supprimé.",
