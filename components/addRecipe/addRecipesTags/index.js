@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { CheckboxGroup, Checkbox, MultiSelect } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import Cookies from "js-cookie";
 import classes from "./AddRecipesTags.module.css";
 import Button from "../../Button";

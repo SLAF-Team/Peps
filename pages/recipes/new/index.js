@@ -121,13 +121,11 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                   searchable
                   clearable
                 />
-                <Button
-                  label="Créer un plat"
-                  type="primary"
-                  href="/dishes/new"
-                />
               </div>
             ) : null}
+            <div className={classes.button}>
+              <Button label="Nouveau plat" type="primary" href="/dishes/new" />
+            </div>
             <div className={classes.step}>
               <label className={classes.label}>Nom de la recette *</label>
               <input
