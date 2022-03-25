@@ -22,7 +22,6 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
-  
   const getDish = async () => {
     try {
       const result = await axios.get(`/api/dish/${id}`, {
@@ -133,33 +132,24 @@ const SelectedDish = () => {
         <div className="col-3">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              {token != null ?
-                <ButtonSettings
-                  label="Editer"
-                  type="warning"
-                  handleClick={() => setOpened(true)}
-                  href="#"
-                  className={classes.button}
-                />
-               :
-               <>
-               <p>
-                 Veuillez vous{" "}
-                 <b>
-                   <a href="/login/">connecter</a>
-                 </b>{" "}
-                 pour éditer
-               </p>
-             </>
-       
-              }
+              {token != null && (
+                <div className={classes.editBtn}>
+                  <a
+                    href="#"
+                    onClick={() => setOpened(true)}
+                    className={classes.btn}
+                  >
+                    Editer
+                  </a>
+                </div>
+              )}
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>Région</p>
+                  <p className={classes.selectorText}>RÉGION</p>
                 </div>
               </div>
               <div>
@@ -176,7 +166,7 @@ const SelectedDish = () => {
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>Wiki</p>
+                  <p className={classes.selectorText}>WIKI</p>
                 </div>
               </div>
               <div>
