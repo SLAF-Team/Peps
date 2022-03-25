@@ -22,7 +22,7 @@ const newDish = ({ regions }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (token !== undefined) {
+    if (token) {
       return;
     } else {
       notifications.showNotification({
@@ -32,8 +32,7 @@ const newDish = ({ regions }) => {
       });
       router.push("/login");
     }
-  }, [token])
-
+  }, [token]);
 
   useEffect(() => {
     if (checkAdminAuth(user) && checkLogAuth(user)) setAuth(true);
@@ -123,12 +122,12 @@ const newDish = ({ regions }) => {
               </>
             ) : null}
             <div>
-            <Button
-              label="Créer un plat"
-              handleClick={() => addNewDish()}
-              href="#"
-              className="button"
-            />
+              <Button
+                label="Créer un plat"
+                handleClick={() => addNewDish()}
+                href="#"
+                className="button"
+              />
             </div>
           </div>
         </form>
