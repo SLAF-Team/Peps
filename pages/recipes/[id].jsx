@@ -24,7 +24,6 @@ import {
   NumberInput,
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
-import { checkLogAuth } from "../../lib/authfront";
 import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
 
 const SelectedRecipe = ({ingredients, units}) => {
@@ -34,7 +33,6 @@ const SelectedRecipe = ({ingredients, units}) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
-  const [descriptionChange, setDescriptionChange] = useState();
   const [opened, setOpened] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -101,7 +99,6 @@ const SelectedRecipe = ({ingredients, units}) => {
       {
         id: recipe.id,
         name: nameChange,
-        description: descriptionChange,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -115,10 +112,6 @@ const SelectedRecipe = ({ingredients, units}) => {
 
   const handleName = (e) => {
     setNameChange(e.target.value);
-  };
-
-  const handleDescription = (e) => {
-    setDescriptionChange(e.target.value);
   };
 
   // fonction handleChange : value input + index + clé
@@ -308,15 +301,6 @@ const SelectedRecipe = ({ingredients, units}) => {
             type="text"
             defaultValue={recipe.name}
             onChange={handleName}
-          />
-          <br />
-          <label>Description</label>
-          <textarea
-            name="recipeDescription"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.description}
-            onChange={handleDescription}
           />
           <br />
           {/* <label>Convives</label>

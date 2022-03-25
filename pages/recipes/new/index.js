@@ -39,7 +39,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   async function addNewRecipe(params) {
     const {
       addName,
-      addDescription,
       addCountry,
       addDish,
       addType,
@@ -47,14 +46,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       addPersons,
     } = formRef.current;
     const name = addName.value;
-    const description = addDescription.value;
     const imageUrl = addImageUrl.value;
     const country = addCountry.value;
     const dish = addDish.value;
     const type = addType.value;
     const cook = user;
     const persons = addPersons.value;
-    if (!name || !description ||!persons) {
+    if (!name ||!persons) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
         message: "Un ou plusieurs éléments sont manquants",
@@ -65,14 +63,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
         "/api/recipe/addRecipe",
         {
           name,
-          description,
           imageUrl,
           countryId: parseInt(country),
           cookId: parseInt(cook.id),
           dishId: parseInt(dish),
           typeId: parseInt(type),
           published: JSON.parse(checked),
-            persons: parseInt(persons),
+          persons: parseInt(persons),
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -182,15 +179,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 </select>
               </div>
             ) : null}
-            <div className={classes.step}>
-              <label className={classes.label}>Description *</label>
-              <input
-                className={classes.input}
-                name="addDescription"
-                type="text"
-                placeholder="Ex: Ma recette familiale de tarte aux abricots et amandes et sa pâte sablée"
-              />
-            </div>
             <div className={classes.button}>
               <Button
                 label="Créer ma recette"
