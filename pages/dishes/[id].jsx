@@ -22,14 +22,7 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     console.log("");
-  //   } else {
-  //     router.push("/login");
-  //   }
-  // }, []);
-
+  
   const getDish = async () => {
     try {
       const result = await axios.get(`/api/dish/${id}`, {
@@ -140,13 +133,26 @@ const SelectedDish = () => {
         <div className="col-3">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              <ButtonSettings
-                label="Editer"
-                type="warning"
-                handleClick={() => setOpened(true)}
-                href="#"
-                className={classes.button}
-              />
+              {token != null ?
+                <ButtonSettings
+                  label="Editer"
+                  type="warning"
+                  handleClick={() => setOpened(true)}
+                  href="#"
+                  className={classes.button}
+                />
+               :
+               <>
+               <p>
+                 Veuillez vous{" "}
+                 <b>
+                   <a href="/login/">connecter</a>
+                 </b>{" "}
+                 pour éditer
+               </p>
+             </>
+       
+              }
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>

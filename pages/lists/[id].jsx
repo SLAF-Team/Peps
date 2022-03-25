@@ -29,13 +29,7 @@ const Profile = () => {
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
-    }
-  }, [])
+
 
   // search list + call axios
   async function searchList(data) {

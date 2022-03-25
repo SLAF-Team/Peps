@@ -22,6 +22,21 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [count, setCount] = useState(1);
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
+  
+  useEffect(() => {
+    if(token){
+      return;
+    } else {
+      notifications.showNotification({
+        title: "Connexion !",
+        message: "Merci de vous connecter pour accéder à cette page",
+        color: "red",
+      });
+      router.push('/login')
+    }
+  }, [token])
+
 
   const handleClickRight = () => {
     setChecked(true);
