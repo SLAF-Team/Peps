@@ -22,7 +22,7 @@ const Login = () => {
     } else {
       notifications.showNotification({
         title: "Déjà connecter !",
-        message: "Vous êtes déjà connecter",
+        message: "Vous êtes déjà connecté",
         color: "green",
       });
       router.push('/')

@@ -34,9 +34,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
         message: "Merci de vous connecter pour liker",
         color: "red",
       });
-  
       router.push('/login')
-
     } else {
       await axios.put(
         "/api/like/addLike",
