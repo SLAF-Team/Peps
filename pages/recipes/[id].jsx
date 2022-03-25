@@ -7,6 +7,7 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import Button from "../../components/Button";
+import ButtonSettings from "../../components/ButtonSettings";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
@@ -26,7 +27,7 @@ import {
 import ButtonForm from "../../components/ButtonForm";
 import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
 
-const SelectedRecipe = ({ingredients, units}) => {
+const SelectedRecipe = ({ ingredients, units }) => {
   const router = useRouter();
   const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
@@ -49,7 +50,7 @@ const SelectedRecipe = ({ingredients, units}) => {
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(result.data)
+      console.log(result.data);
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -83,7 +84,7 @@ const SelectedRecipe = ({ingredients, units}) => {
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -123,7 +124,7 @@ const SelectedRecipe = ({ingredients, units}) => {
     return null;
   }
 
-  console.log(recipe)
+  console.log(recipe);
 
   return (
     <div className="row">
@@ -151,12 +152,13 @@ const SelectedRecipe = ({ingredients, units}) => {
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.stepscontainer}>
-            <ul>
-            {recipe?.steps && recipe?.steps.map((element, index) => (                
-            <li className={classes.li} key={element.id}>
-                        <b>Etape {index + 1}</b>  <p>{element.text} </p>
-                      </li>))}
-                </ul>
+            {recipe?.steps &&
+              recipe?.steps.map((element, index) => (
+                <div>
+                  <p className={classes.steps}>Étape {index + 1}</p>
+                  <p>{element.text} </p>
+                </div>
+              ))}
           </div>
         </Skeleton>
 
@@ -219,19 +221,33 @@ const SelectedRecipe = ({ingredients, units}) => {
         </Skeleton>
       </div>
       <div className="col-3">
+        <div className={classes.button}>
+          <ButtonSettings
+            label="Editer"
+            type="warning"
+            handleClick={() => setOpened(true)}
+            href="#"
+          />
+        </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.padding}>
             <div className={classes.selector}>
               <div className="selectorBlock">
-                <p className={classes.selectorText}>INGRÉDIENTS pour </p>
-                <NumberInput
-                  value={personsValue}
-                  onChange={(val) => setPersonsValue(val)}
-                  required
-                  min={1}
-                  max={15}
-                />
-                <label className={classes.label}> convives</label>
+                <p className={classes.selectorText}>PERSONNES</p>
+              </div>
+            </div>
+            <NumberInput
+              style={{ marginTop: 10 }}
+              value={personsValue}
+              onChange={(val) => setPersonsValue(val)}
+              required
+              min={1}
+              max={15}
+              size="xs"
+            />
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}>INGRÉDIENTS</p>
               </div>
             </div>
             <div>
@@ -283,14 +299,12 @@ const SelectedRecipe = ({ingredients, units}) => {
               />
             </div>
           </div>
+          <a href="" onClick={() => setOpened(true)} className={classes.btn}>
+            Editer
+          </a>
         </Skeleton>
       </div>
-      <Button
-        label="Editer"
-        type="success"
-        handleClick={() => setOpened(true)}
-        href="#"
-      />
+
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -331,8 +345,6 @@ const SelectedRecipe = ({ingredients, units}) => {
             units={units}
             ingredients={ingredients}
           />
-          <br />
-          <br />
           <ButtonForm label="J'édite" theme="success" />
         </form>
       </Modal>

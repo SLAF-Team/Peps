@@ -1,5 +1,4 @@
 import { useUserContext } from "../../context/UserContext";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import UserList from "../../components/UserList";
@@ -10,8 +9,8 @@ import Selector from "../../components/Selector";
 import AddList from "../../components/List/AddList";
 import axios from "axios";
 import Cookies from "js-cookie";
-import moment from "moment";
 import { useNotifications } from "@mantine/notifications";
+import List from "../../components/List/List";
 
 const Profile = ({ recipes, lists }) => {
   const { query } = useRouter();
@@ -24,7 +23,7 @@ const Profile = ({ recipes, lists }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (token) {
+    if (token !== undefined) {
       return;
     } else {
       notifications.showNotification({
@@ -109,36 +108,10 @@ const Profile = ({ recipes, lists }) => {
               </div>
             </div>
           </div>
-          {listsFromUser?.map((list) => (
+          {listsFromUser?.map((list, index) => (
             <div className="row">
               <div className={styles.listCards}>
-                <Link href={"/lists/" + list.id} exact>
-                  <div className="col-2 col-4-sm">
-                    <div className={styles.avatar}>
-                      <span className={styles.letter}>
-                        {list?.name[0].toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-                <Link href={"/lists/" + list.id} exact>
-                  <div
-                    className="col-6 col-4-sm"
-                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                  >
-                    <p className={styles.listText}>{list.name}</p>
-                  </div>
-                </Link>
-                <Link href={"/lists/" + list.id} exact>
-                  <div
-                    className="col-4 col-4-sm"
-                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                  >
-                    <p className={styles.listText}>
-                      {moment(list.updatedAt).fromNow()}
-                    </p>
-                  </div>
-                </Link>
+                <List list={list} key={index} />
               </div>
             </div>
           ))}

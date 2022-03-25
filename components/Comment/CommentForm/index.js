@@ -45,7 +45,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     }
   }
 
-  if (token) {
+  if (token !== undefined) {
     return (
       <form className={classes.form} ref={formRef}>
         <div className={classes.setups_small}>

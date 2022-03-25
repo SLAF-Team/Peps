@@ -10,7 +10,7 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
-import { Select } from "@mantine/core";
+import { Select, Stepper } from "@mantine/core";
 import { useRouter } from "next/router";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
@@ -22,7 +22,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [checked, setChecked] = useState(false);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
@@ -43,7 +43,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   );
 
   useEffect(() => {
-    if (token) {
+    if (token !== undefined) {
       return;
     } else {
       notifications.showNotification({
@@ -114,7 +114,18 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
-      <h2>Etape {step}/4</h2>
+      <Stepper
+        active={step}
+        breakpoint="sm"
+        size="xs"
+        color="yellow"
+        iconSize={32}
+      >
+        <Stepper.Step label="Associer une recette"></Stepper.Step>
+        <Stepper.Step label="Les ingrédients"></Stepper.Step>
+        <Stepper.Step label="Les étapes"></Stepper.Step>
+        <Stepper.Step label="Ajouter des tags"></Stepper.Step>
+      </Stepper>
       {step === 1 && (
         <>
           <Selector
@@ -235,15 +246,15 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 handleClick={handleClick}
                 href="#"
               />
+            </div>{" "}
+            <div className={classes.button}>
+              <Button
+                label="Suivant"
+                type="primary"
+                href="#"
+                handleClick={() => handleStepClick()}
+              />
             </div>
-          </div>
-          <div className={classes.button}>
-            <Button
-              label="Suivant"
-              type="primary"
-              href="#"
-              handleClick={() => handleStepClick()}
-            />
           </div>
         </>
       )}
@@ -272,14 +283,14 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 href="#"
               />
             </div>
-          </div>
-          <div className={classes.button}>
-            <Button
-              label="Suivant"
-              type="primary"
-              href="#"
-              handleClick={() => handleStepClick()}
-            />
+            <div className={classes.button}>
+              <Button
+                label="Suivant"
+                type="primary"
+                href="#"
+                handleClick={() => handleStepClick()}
+              />
+            </div>
           </div>
         </>
       )}
@@ -290,15 +301,15 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               <p className={classes.selectorText}>AJOUTER DES TAGS</p>
             </div>
           </div>
-          <div className={classes.stepsform}>
+          <div className={classes.ingredientform}>
             <AddRecipesTags recipe={recipe} tags={tags} />
-          </div>
-          <div className={classes.button}>
-            <Button
-              label="J'ai fini !"
-              type="success"
-              href={`/recipes/${recipe?.id}`}
-            />
+            <div className={classes.button}>
+              <Button
+                label="J'ai fini !"
+                type="success"
+                href={`/recipes/${recipe?.id}`}
+              />
+            </div>
           </div>
         </>
       )}

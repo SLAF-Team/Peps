@@ -15,33 +15,31 @@ import Cookies from "js-cookie";
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
   const router = useRouter();
-  const token = Cookies.get('token');
-
-  
-  
+  const token = Cookies.get("token");
 
   // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
-  const [filterTag, setFilterTag] = useState(idTags);
+
   const idCountries = [];
   countries?.map((element) => idCountries.push(element.id));
-  const [filterCountry, setFilterCountry] = useState(idCountries);
+
   const idTypes = [];
   types?.map((element) => idTypes.push(element.id));
-  const [filterType, setFilterType] = useState(idTypes);
 
   const idIngredients = [];
   ingredients?.map((element) => idIngredients.push(element.id));
-  const [filterIngredient, setFilterIngredient] = useState(idIngredients);
 
+  const [filterTag, setFilterTag] = useState([]);
+  const [filterType, setFilterType] = useState([]);
+  const [filterCountry, setFilterCountry] = useState([]);
+  const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
-
   const [filter, setFilter] = useState(false);
 
   // set up data for multiselect
   const dataTags = [];
-  tags?.sort().map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
+  tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
   const dataCountries = [];
   countries?.map((country) =>
@@ -76,36 +74,36 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     setFilter(!filter);
   };
 
-  //useEffect for filter with exception if filter not used (ternaire <3)
+  //useEffect for filter with exceptions
   useEffect(() => {
-    const data = filter
-      ? {
-          where: {
-            countryId: {
-              in: filterCountry.length > 0 ? filterCountry : idCountries,
-            },
-            typeId: {
-              in: filterType.length > 0 ? filterType : idTypes,
-            },
-            tags: {
-              some: { id: { in: filterTag.length > 0 ? filterTag : idTags } },
-            },
-            ingredientsUnit: {
-              some: {
-                ingredientId: {
-                  in:
-                    filterIngredient.length > 0
-                      ? filterIngredient
-                      : idIngredients,
-                },
-              },
-            },
+    const filterCall = {
+      include: {
+        _count: { select: { likes: true, comments: true } },
+      },
+    };
+    const wheres = {};
+    if (filterCountry.length > 0) {
+      wheres.countryId = { in: filterCountry };
+    }
+    if (filterType.length > 0) {
+      wheres.typeId = { in: filterType };
+    }
+    if (filterTag.length > 0) {
+      wheres.tags = {
+        some: { id: { in: filterTag } },
+      };
+    }
+    if (filterIngredient.length > 0) {
+      wheres.ingredientsUnit = {
+        some: {
+          ingredientId: {
+            in: filterIngredient,
           },
-          include: {
-            _count: { select: { likes: true, comments: true } },
-          },
-        }
-      : null;
+        },
+      };
+    }
+    filterCall.where = wheres;
+    const data = filter ? filterCall : null;
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
@@ -120,6 +118,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
               title="Utiliser les filtres"
               padding="xl"
               size="xl"
+              className={classes.drawer}
+              style={{ overflowY: "scroll" }}
             >
               <Switch
                 label="Activer/Désactiver"
