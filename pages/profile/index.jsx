@@ -67,9 +67,16 @@ const Profile = ({ recipes }) => {
     setStyle(true);
   };
 
-  const recipesFromUser = user
-    ? recipes.filter((element) => element.cookId === user.id)
+  const privateRecipesFromUser = user
+    ? recipes.filter((element) => element.cookId === user.id && element.published === false)
     : null;
+
+      const publishedRrecipesFromUser = user
+        ? recipes.filter(
+            (element) =>
+              element.cookId === user.id && element.published === true
+          )
+        : null;
 
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
@@ -86,19 +93,36 @@ const Profile = ({ recipes }) => {
         style={style}
       />
       {!contribution ? (
-        <div className={styles.cards}>
-          <div className="row">
-            {recipesFromUser?.map((recipe, index) => (
-              <RecipeCard
-                recipe={recipe}
-                key={index}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
-                col="col-3 col-6-sm"
-              />
-            ))}
+        <>
+          <div className={styles.cards}>
+            <h3>Publiées</h3>
+            <div className="row">
+              {publishedRrecipesFromUser?.map((recipe, index) => (
+                <RecipeCard
+                  recipe={recipe}
+                  key={index}
+                  like_count={recipe?._count?.likes}
+                  comment_count={recipe?._count?.comments}
+                  col="col-3 col-6-sm"
+                />
+              ))}
+            </div>
           </div>
-        </div>
+          <div className={styles.cards}>
+            <h3>Privées</h3>
+            <div className="row">
+              {privateRecipesFromUser?.map((recipe, index) => (
+                <RecipeCard
+                  recipe={recipe}
+                  key={index}
+                  like_count={recipe?._count?.likes}
+                  comment_count={recipe?._count?.comments}
+                  col="col-3 col-6-sm"
+                />
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <>
           <div className="row">
