@@ -149,6 +149,10 @@
   display: none;
 }
 
+.btn:hover {
+  background-color: #faf5f0;
+}
+
 .filters {
   display: flex;
   flex-direction: column;
