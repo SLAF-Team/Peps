@@ -178,6 +178,11 @@
   height: 80vh;
 }
 
+.a:hover {
+    color: #FFD12F;
+    text-decoration: underline;
+}
+
 
 @media (max-width: 600px) {
   .grid {

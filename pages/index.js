@@ -5,6 +5,8 @@ import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
 import SearchBar from "../components/SearchBar/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
+import Link from "next/link";
+
 
 export default function Home({ recipes }) {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
@@ -35,7 +37,9 @@ export default function Home({ recipes }) {
         <div className={styles.heroright}>
           <div className={styles.herotextblock}>
             <p className={styles.p}>RECETTE</p>
+            <a className={styles.a} href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}>
             <h1 className={styles.h1}>{filteredRecipes.slice(-1)[0].name}</h1>
+            </a>
             <h4 className={styles.h4}>Damn, that's good</h4>
           </div>
         </div>
