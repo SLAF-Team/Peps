@@ -25,7 +25,7 @@ import {
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
 import { checkLogAuth } from "../../lib/authfront";
-import EditRecipesIngredients from "../../components/editRecipe/editRecipesIngredients";
+import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
 
 const SelectedRecipe = ({ingredients, units}) => {
   const router = useRouter();
@@ -344,7 +344,11 @@ const SelectedRecipe = ({ingredients, units}) => {
             defaultValue={recipe.step}
             onChange={handleSteps}
           /> */}
-          <EditRecipesIngredients recipe={recipe} units={units} ingredients={ingredients} />
+          <EditRecipeIngredients
+            recipe={recipe}
+            units={units}
+            ingredients={ingredients}
+          />
           <br />
           <br />
           <ButtonForm label="J'édite" theme="success" />

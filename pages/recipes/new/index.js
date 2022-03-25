@@ -26,13 +26,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if(user){
-      console.log('')
-    } else {
-      router.push('/login')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(user){
+  //     console.log('')
+  //   } else {
+  //     router.push('/login')
+  //   }
+  // }, [])
 
 
   const handleClickRight = () => {
