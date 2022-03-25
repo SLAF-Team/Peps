@@ -37,14 +37,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   // add Recipe
   async function addNewRecipe(params) {
-    const {
-      addName,
-      addCountry,
-      addDish,
-      addType,
-      addImageUrl,
-      addPersons,
-    } = formRef.current;
+    const { addName, addCountry, addDish, addType, addImageUrl, addPersons } =
+      formRef.current;
     const name = addName.value;
     const imageUrl = addImageUrl.value;
     const country = addCountry.value;
@@ -52,7 +46,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     const type = addType.value;
     const cook = user;
     const persons = addPersons.value;
-    if (!name ||!persons) {
+    if (!name || !persons) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
         message: "Un ou plusieurs éléments sont manquants",
@@ -85,11 +79,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   const handleStepClick = () => {
     setStep(step + 1);
+    setCount(1);
   };
 
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
+      <h2>Etape {step + 1}/4</h2>
       {step === 0 && (
         <>
           <Selector
@@ -221,13 +217,37 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               />
             </div>
           </div>
+          <Button
+            label="Je passe à l'étape suivante ! "
+            type="primary"
+            href="#"
+            handleClick={() => handleStepClick()}
+          />
+        </>
+      )}
+      {step === 2 && (
+        <>
           <div className={classes.selector}>
             <div className="selectorBlock">
-              <p className={classes.selectorText}>ÉTAPES DE LA RECETTE</p>
+              <p className={classes.selectorText}>AJOUTER DES ETAPES</p>
             </div>
           </div>
-          <div className={classes.stepsform}>
-            {recipe ? <AddRecipesSteps recipe={recipe} /> : null}
+          <div className={classes.ingredientform}>
+            {recipe ? (
+              <>
+                {[...Array(count)].map((e, i) => {
+                  return <AddRecipesSteps recipe={recipe} key={i} />;
+                })}
+              </>
+            ) : null}
+            <div className={classes.button}>
+              <Button
+                label="Nouvel ingrédient"
+                type="primary"
+                handleClick={handleClick}
+                href="#"
+              />
+            </div>
           </div>
           <Button
             label="Je passe à l'étape suivante ! "
@@ -237,8 +257,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           />
         </>
       )}
-
-      {step === 2 && (
+      {step === 3 && (
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
