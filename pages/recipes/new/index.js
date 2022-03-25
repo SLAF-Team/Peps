@@ -26,6 +26,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
+  const router = useRouter();
 
   const countriesData = [];
   countries.map((element) =>
@@ -39,6 +40,19 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   dishes.map((element) =>
     dishesData.push({ value: element.id.toString(), label: element.title })
   );
+
+  useEffect(() => {
+    if (token) {
+      return;
+    } else {
+      notifications.showNotification({
+        title: "Connexion",
+        message: "Merci de vous connecter pour accéder à cette page",
+        color: "red",
+      });
+      router.push("/login");
+    }
+  }, [token]);
 
   const handleClickRight = () => {
     setChecked(true);
