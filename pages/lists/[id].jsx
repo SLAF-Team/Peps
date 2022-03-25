@@ -29,8 +29,6 @@ const Profile = () => {
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
 
-
-
   // search list + call axios
   async function searchList(data) {
     try {
@@ -45,7 +43,6 @@ const Profile = () => {
   }
 
   // getlist
-
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {

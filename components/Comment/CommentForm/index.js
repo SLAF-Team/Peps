@@ -17,7 +17,6 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
   }, []);
 
   async function addComment() {
-    console.log("coucou");
     const { addText } = formRef.current;
     const text = addText.value;
     if (!text) {

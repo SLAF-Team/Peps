@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useNotifications } from "@mantine/notifications";
 
-
 const Login = () => {
   const [signUp, setSignUp] = useState(false);
   const [style, setStyle] = useState(false);
