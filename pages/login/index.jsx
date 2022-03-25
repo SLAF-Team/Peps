@@ -3,7 +3,7 @@ import Selector from "../../components/Selector";
 import styles from "./Login.module.css";
 import SignIn from "../../components/Login/SignIn";
 import SignUp from "../../components/Login/SignUp";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useNotifications } from "@mantine/notifications";
@@ -11,20 +11,18 @@ import { useNotifications } from "@mantine/notifications";
 const Login = () => {
   const [signUp, setSignUp] = useState(false);
   const [style, setStyle] = useState(false);
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
   const router = useRouter();
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(token === undefined){
-      return;
-    } else {
+    if (token !== undefined) {
       notifications.showNotification({
         title: "Connexion",
         message: "Vous êtes déjà connecté",
         color: "green",
       });
-      router.push('/')
+      router.push("/");
     }
   }, [])
 
