@@ -35,8 +35,6 @@ const Dishes = ({ dishes, regions  }) => {
     }
   };
 
-  console.log(filteredDishes)
-
   //useEffect for filter with exception if filter not used (ternary <3)
   useEffect(() => {
     const data = filter

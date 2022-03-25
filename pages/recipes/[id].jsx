@@ -35,15 +35,12 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [addList, setAddList] = useState(false);
-  const [deleted, setDeleted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = personsValue / recipe?.persons;
-  
+
   const getRecipe = async () => {
     if (!id) {
       return;
@@ -79,24 +76,19 @@ const SelectedRecipe = ({ ingredients, units }) => {
   useEffect(() => {
     getRecipe();
     getIngredients();
-    if (deleted === true) {
-      setDeleted(false);
-    }
-    if (submitted === true) {
-      setSubmitted(false);
-    }
-    if (addList === true) {
-      setAddList(false);
-    }
-  }, [id, submitted, deleted]);
+  }, [id]);
 
-  const handleCommentCreate=()=>{
+  const handleCommentCreate = () => {
     getRecipe();
-  } 
+  };
 
-    const handleCommentDelete = () => {
-      getRecipe();
-    }; 
+  const handleCommentDelete = () => {
+    getRecipe();
+  };
+
+  const handleListCreate = () => {
+    getRecipe();
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -323,7 +315,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
               <ListForm
                 lists={recipe.lists}
                 recipe={recipe}
-                setAddList={setAddList}
+                onCreate={handleListCreate}
               />
             </div>
           </div>

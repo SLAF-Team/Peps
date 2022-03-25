@@ -104,7 +104,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
     filterCall.where = wheres;
     const data = filter ? filterCall : null;
-    console.log(data);
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
