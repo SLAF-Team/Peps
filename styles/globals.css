@@ -244,3 +244,17 @@ a {
 .selectorSelect {
   border-bottom: 2px solid #324376;
 }
+
+.mantine-eeg505,
+.mantine-ltdc3g,
+.mantine-13iuo4h,
+.mantine-h3dm42 {
+  width: 100%;
+  height: 48px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 16px;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+}

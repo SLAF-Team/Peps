@@ -5,7 +5,7 @@
 }
 
 .title {
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .select {
@@ -159,9 +159,9 @@
   }
 
   .button {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
-    text-align: right;
+    text-align: center;
   }
 
   .field {
