@@ -6,18 +6,24 @@ import Cookies from "js-cookie";
 import classes from "./AddRecipesIngredients.module.css";
 import Button from "../../Button";
 import { useNotifications } from "@mantine/notifications";
+import { Select } from "@mantine/core";
 
 const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
+  const [unitValue, setUnitValue] = useState("");
+
+  const unitsData = []
+  units.map((unit) => unitsData.push({ value: unit.id, label: unit.name }));
+console.log(unitsData)
 
   async function addRecipeIngredients(params) {
-    const { addIngredient, addUnit, addQuantity } = formRef.current;
+    const { addIngredient, addQuantity } = formRef.current;
     const ingredient = addIngredient.value;
     const quantity = addQuantity.value;
-    const unit = addUnit.value;
+    const unit = unitValue;
     if (!quantity || !unit || !ingredient) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
@@ -47,46 +53,55 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
 
   return (
     <>
-    <div className={classes.block}>
-      <form ref={formRef} className="row">
-        <div className="col-3">
-          <label className={classes.label}>Quantité (chiffre)</label>
-          <input className={classes.input} name="addQuantity" type="text" />
+      <div className={classes.block}>
+        <form ref={formRef} className="row">
+          <div className="col-3">
+            <label className={classes.label}>Quantité (chiffre)</label>
+            <input className={classes.input} name="addQuantity" type="text" />
+          </div>
+          <div className="col-3">
+            <label className={classes.label}>Unité</label>
+            {/* <select className={classes.select} name="addUnit">
+              {units.map((unit) => (
+                <option value={unit.id} key={unit.id}>
+                  {unit.name}
+                </option>
+              ))}
+            </select> */}
+            <Select
+              value={unitValue}
+              onChange={setUnitValue}
+              name="addUnit"
+              placeholder="Choisis une unité"
+              data={unitsData}
+              searchable
+              nothingFound="Pas d'option"
+            />
+          </div>
+          <div className="col-6">
+            <label className={classes.label}>Ingrédient</label>
+            <select className={classes.select} name="addIngredient">
+              {ingredients.map((ingredient) => (
+                <option value={ingredient.id} key={ingredient.id}>
+                  {ingredient.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </form>
+        <div className={classes.button}>
+          {submitted ? (
+            <p>Ajouté!</p>
+          ) : (
+            <Button
+              label="Ajouter cet ingrédient"
+              type="success"
+              handleClick={() => addRecipeIngredients()}
+              href="#"
+            />
+          )}
         </div>
-        <div className="col-3">
-          <label className={classes.label}>Unité</label>
-          <select className={classes.select} name="addUnit">
-            {units.map((unit) => (
-              <option value={unit.id} key={unit.id}>
-                {unit.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-6">
-          <label className={classes.label}>Ingrédient</label>
-          <select className={classes.select} name="addIngredient">
-            {ingredients.map((ingredient) => (
-              <option value={ingredient.id} key={ingredient.id}>
-                {ingredient.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </form>
-      <div className={classes.button}>
-        {submitted ? (
-          <p>Ajouté!</p>
-        ) : (
-          <Button
-            label="Ajouter cet ingrédient"
-            type="success"
-            handleClick={() => addRecipeIngredients()}
-            href="#"
-          />
-        )}
       </div>
-    </div>
     </>
   );
 };

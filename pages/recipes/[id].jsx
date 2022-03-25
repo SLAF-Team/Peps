@@ -140,7 +140,6 @@ const SelectedRecipe = ({ingredients, units}) => {
           <div className={classes.titlecontainer}>
             <h1 className={classes.h1}>{recipe.name}</h1>
             <p className={classes.selectorName}>Par {recipe.cook.name}</p>
-            {/*<Image src={heart} width={40} height={40} />*/}
           </div>
           <div className={classes.selector}>
             <div className="selectorBlock">
