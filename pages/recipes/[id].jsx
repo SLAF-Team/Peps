@@ -36,6 +36,8 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [addList, setAddList] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
@@ -50,7 +52,6 @@ const SelectedRecipe = ({ ingredients, units }) => {
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(result.data);
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -78,7 +79,16 @@ const SelectedRecipe = ({ ingredients, units }) => {
   useEffect(() => {
     getRecipe();
     getIngredients();
-  }, [id, submitted]);
+    if (deleted === true) {
+      setDeleted(false);
+    }
+    if (submitted === true) {
+      setSubmitted(false);
+    }
+    if (addList === true) {
+      setAddList(false);
+    }
+  }, [id, submitted, deleted]);
 
   useEffect(() => {
     setLoading(true);
@@ -212,7 +222,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
                   {recipe?.comments && (
                     <CommentsList
                       comments={recipe.comments}
-                      setSubmitted={setSubmitted}
+                      setDeleted={setDeleted}
                     />
                   )}
                 </Accordion.Item>
@@ -296,7 +306,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
               <ListForm
                 lists={recipe.lists}
                 recipe={recipe}
-                setSubmitted={setSubmitted}
+                setAddList={setAddList}
               />
             </div>
           </div>

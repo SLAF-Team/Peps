@@ -1,10 +1,10 @@
 import CommentCard from "../CommentCard";
 
-const CommentsList = ({ comments, setSubmitted }) => {
+const CommentsList = ({ comments, setDeleted }) => {
   return (
     <>
       {comments.map((comment, index) => (
-        <CommentCard comment={comment} key={index} setSubmitted={setSubmitted}/>
+        <CommentCard comment={comment} key={index} setDeleted={setDeleted} />
       ))}
     </>
   );

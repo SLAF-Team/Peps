@@ -6,7 +6,7 @@ import moment from "moment";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 
-const CommentCard = ({ comment, setSubmitted }) => {
+const CommentCard = ({ comment, setDeleted }) => {
   const router = useRouter();
   const token = Cookies.get("token");
   const { user } = useUserContext();
@@ -15,15 +15,15 @@ const CommentCard = ({ comment, setSubmitted }) => {
   const recipeId = comment.recipeId;
 
   async function deleteComment() {
-      await axios.delete(`/api/comment/delete/${comment?.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSubmitted(true)
-      notifications.showNotification({
-        title: "Bravo",
-        message: "Votre commentaire a bien été supprimé.",
-        color: "red",
-      });
+    await axios.delete(`/api/comment/delete/${comment?.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setDeleted(true);
+    notifications.showNotification({
+      title: "Bravo",
+      message: "Votre commentaire a bien été supprimé.",
+      color: "red",
+    });
   }
 
   return (
