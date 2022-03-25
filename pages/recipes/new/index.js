@@ -22,7 +22,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [checked, setChecked] = useState(false);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");

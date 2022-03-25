@@ -4,21 +4,18 @@ import { Modal } from "@mantine/core";
 import { useState, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
-import ButtonForm from "../../ButtonForm";
 import Cookies from "js-cookie";
 import styles from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
 
-const ListForm = ({ lists, recipe, setSubmitted }) => {
+const ListForm = ({ lists, recipe, onCreate }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [value, setValue] = useState([]);
   const notifications = useNotifications();
-  const router = useRouter();
 
   const handleClick = () => {
     setOpened(true);
@@ -46,19 +43,17 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    router.push(`/recipes/${recipe.id}`);
-    setSubmitted(true);
+    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été créée",
       color: "green",
     });
     setOpened(false);
-    setSubmitted(false);
   }
 
   // edit list
   async function editList(data) {
-    const result = await axios.put(
+    await axios.put(
       "/api/recipe/editRecipe",
       {
         id: recipe.id,
@@ -68,12 +63,11 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setSubmitted(true);
+    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été mise à jour",
       color: "green",
     });
-    setSubmitted(false);
   }
 
   const handleEditClick = () => {
@@ -86,7 +80,7 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
     <>
       <ListsList lists={lists} />
       <div className={styles.form}>
-        <a href="" className={styles.btn} onClick={handleClick}>
+        <a href="#" className={styles.btn} onClick={() => handleClick()}>
           Ajouter
         </a>
       </div>

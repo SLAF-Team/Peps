@@ -26,8 +26,8 @@ export default async (req, res) => {
             unit: { select: { name: true } },
           },
         },
-        type: { select: { name: true } },
-        tags: { select: { name: true } },
+        type: { select: { name: true, id: true } },
+        tags: { select: { name: true, id: true } },
       },
     });
 

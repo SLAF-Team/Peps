@@ -111,7 +111,7 @@
   display: flex;
   flex-direction: row;
   width: 100vw;
-  height: 80vh;
+  height: 35rem;
 }
 
 .heroleft {
@@ -122,10 +122,9 @@
 .heroright {
   height: 100%;
   width: 50vw;
-  padding-left: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly
+  justify-content: space-evenly;
 }
 
 .herotextblock {
@@ -160,29 +159,24 @@
   font-weight: 600;
 }
 
-
 .h4 {
   font-style: italic;
+  margin-top: 0.5rem;
 }
 
 .search {
-  height: 33.3vh;
+  height: 15rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #FAF5F0;
+  background-color: #faf5f0;
   width: 100vw;
 }
 
-.recipes {
-  height: 80vh;
-}
-
 .a:hover {
-    color: #FFD12F;
-    text-decoration: underline;
+  text-decoration: underline;
+  text-decoration-color: #ffd12f;
 }
-
 
 @media (max-width: 600px) {
   .grid {
@@ -193,7 +187,7 @@
   .hero {
     display: flex;
     flex-direction: column;
-    height: 100%
+    height: 100%;
   }
 
   .heroleft {
@@ -226,6 +220,6 @@
   }
 
   .search {
-    height: 40vh;
+    height: 50vh;
   }
 }

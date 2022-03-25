@@ -8,14 +8,10 @@ import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
-import { useUserContext } from "../../context/UserContext.js";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
-  const { user } = useUserContext();
-  const router = useRouter();
-  const token = Cookies.get("token");
+  const { query } = useRouter();
 
   // set up state for multiselect
   const idTags = [];
@@ -35,7 +31,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterCountry, setFilterCountry] = useState([]);
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
-  const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(true);
 
   // set up data for multiselect
   const dataTags = [];
@@ -74,6 +70,11 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     setFilter(!filter);
   };
 
+  console.log("recipes");
+  console.log(recipes);
+  console.log("recettes filtrées");
+  console.log(filteredRecipes);
+
   //useEffect for filter with exceptions
   useEffect(() => {
     const filterCall = {
@@ -81,7 +82,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         _count: { select: { likes: true, comments: true } },
       },
     };
-    const wheres = {};
+    const wheres = { published: true };
     if (filterCountry.length > 0) {
       wheres.countryId = { in: filterCountry };
     }
@@ -106,6 +107,27 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     const data = filter ? filterCall : null;
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    if (query.tag || query.country || query.type || query.ingredient) {
+      switch (Object.keys(query)[0]) {
+        case "tag":
+          setFilterTag([parseInt(query.tag)]);
+          break;
+        case "country":
+          setFilterCountry([parseInt(query.country)]);
+          break;
+        case "type":
+          setFilterType([parseInt(query.type)]);
+          break;
+        case "ingredient":
+          setFilterIngredient([parseInt(query.ingredient)]);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [query.tag, query.country, query.type, query.ingredient]);
 
   return (
     <div className={classes.margin}>
@@ -134,48 +156,36 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
                   data={dataTags}
                   value={filterTag}
                   onChange={setFilterTag}
-                  placeholder="tags"
+                  placeholder="Choisir des tags"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Pays</h2>
                 <MultiSelect
                   data={dataCountries}
                   value={filterCountry}
                   onChange={setFilterCountry}
-                  placeholder="pays"
+                  placeholder="Choisir des pays"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Type de recette</h2>
                 <MultiSelect
                   data={dataTypes}
                   value={filterType}
                   onChange={setFilterType}
-                  placeholder="types"
+                  placeholder="Choisir des types"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Ingrédient</h2>
                 <MultiSelect
                   data={dataIngredients}
                   value={filterIngredient}
                   onChange={setFilterIngredient}
-                  placeholder="ingrédients"
+                  placeholder="Choisir des ingrédients"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
               </div>
             </Drawer>
@@ -220,6 +230,7 @@ export async function getServerSideProps() {
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
     },
+    where: { published: true },
   });
   const allTags = await prisma.tag.findMany({});
   const allTypes = await prisma.type.findMany({});

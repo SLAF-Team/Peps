@@ -29,6 +29,11 @@
   border: 1px solid #324376;
 }
 
+.button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .size {
   width: 100%;
 }
