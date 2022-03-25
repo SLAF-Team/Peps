@@ -44,6 +44,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = personsValue / recipe?.persons;
 
+  console.log(isAuthor)
   const getRecipe = async () => {
     if (!id) {
       return;
@@ -232,14 +233,16 @@ const SelectedRecipe = ({ ingredients, units }) => {
         </Skeleton>
       </div>
       <div className="col-3">
-        <div className={classes.button}>
-          <ButtonSettings
-            label="Editer"
-            type="warning"
-            handleClick={() => setOpened(true)}
-            href="#"
-          />
-        </div>
+        {isAuthor ? (
+          <div className={classes.button}>
+            <ButtonSettings
+              label="Editer"
+              type="warning"
+              handleClick={() => setOpened(true)}
+              href="#"
+            />
+          </div>
+        ) : null}
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.padding}>
             <div className={classes.selector}>
@@ -317,9 +320,6 @@ const SelectedRecipe = ({ ingredients, units }) => {
               />
             </div>
           </div>
-          <a href="" onClick={() => setOpened(true)} className={classes.btn}>
-            Editer
-          </a>
         </Skeleton>
       </div>
 
