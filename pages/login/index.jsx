@@ -16,9 +16,7 @@ const Login = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(token === undefined){
-      return;
-    } else {
+    if(token){
       notifications.showNotification({
         title: "Connexion",
         message: "Vous êtes déjà connecté",
