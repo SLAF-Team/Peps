@@ -43,8 +43,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = personsValue / recipe?.persons;
-
-  console.log(isAuthor)
+  
   const getRecipe = async () => {
     if (!id) {
       return;
@@ -90,6 +89,14 @@ const SelectedRecipe = ({ ingredients, units }) => {
       setAddList(false);
     }
   }, [id, submitted, deleted]);
+
+  const handleCommentCreate=()=>{
+    getRecipe();
+  } 
+
+    const handleCommentDelete = () => {
+      getRecipe();
+    }; 
 
   useEffect(() => {
     setLoading(true);
@@ -210,7 +217,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
             <CommentForm
               user={user}
               recipe={recipe}
-              setSubmitted={setSubmitted}
+              onCreate={handleCommentCreate}
             />
             <br></br>
             {recipe?.comments.length != 0 && (
@@ -223,7 +230,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
                   {recipe?.comments && (
                     <CommentsList
                       comments={recipe.comments}
-                      setDeleted={setDeleted}
+                      onDelete={handleCommentDelete}
                     />
                   )}
                 </Accordion.Item>
