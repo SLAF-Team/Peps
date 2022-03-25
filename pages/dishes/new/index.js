@@ -26,7 +26,7 @@ const newDish = ({ regions }) => {
       return;
     } else {
       notifications.showNotification({
-        title: "Connexion !",
+        title: "Connexion",
         message: "Merci de vous connecter pour accéder à cette page",
         color: "red",
       });

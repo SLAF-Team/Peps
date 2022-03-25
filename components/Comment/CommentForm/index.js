@@ -16,8 +16,8 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     setSubmitted(false);
   }, []);
 
-  async function addComment(e) {
-    e.preventDefault();
+  async function addComment() {
+    console.log("coucou");
     const { addText } = formRef.current;
     const text = addText.value;
     if (!text) {
@@ -27,7 +27,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
         color: "red",
       });
     } else {
-      await axios.post(
+      const result = await axios.post(
         "/api/comment/addComment",
         {
           recipeId: recipe.id,
@@ -46,13 +46,9 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
     }
   }
 
-  if (token != null) {
+  if (token) {
     return (
-      <form
-        className={classes.form}
-        ref={formRef}
-        onSubmit={() => addComment()}
-      >
+      <form className={classes.form} ref={formRef}>
         <div className={classes.setups_small}>
           <div className={classes.profilepic}>
             <div
@@ -67,7 +63,12 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
           <div className={classes.setup_small}>
             <input className={classes.input_small} name="addText" type="text" />
             <div className={classes.button}>
-              <Button label="Publier" type="alert" href="#" />
+              <Button
+                label="Publier"
+                type="success"
+                handleClick={() => addComment()}
+                href="#"
+              />
             </div>
           </div>
         </div>
@@ -81,7 +82,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
           <b>
             <a href="/login/">connecter</a>
           </b>{" "}
-          pour écrire un commentaire
+          pour commenter.
         </p>
       </>
     );

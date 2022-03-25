@@ -21,19 +21,18 @@ const Profile = ({ recipes, lists }) => {
   const [listChange, setListChange] = useState(0);
   const token = Cookies.get("token");
   const router = useRouter();
-  const notifications = useNotifications()
-
+  const notifications = useNotifications();
 
   useEffect(() => {
-    if(token){
+    if (token) {
       return;
     } else {
       notifications.showNotification({
-        title: "Connexion !",
+        title: "Connexion",
         message: "Merci de vous connecter pour accéder à cette page",
         color: "red",
       });
-      router.push('/login')
+      router.push("/login");
     }
   }, [token]);
 
@@ -43,7 +42,6 @@ const Profile = ({ recipes, lists }) => {
     });
     setUser(result.data.user);
   }
-
 
   useEffect(() => {
     getUser();
@@ -73,10 +71,6 @@ const Profile = ({ recipes, lists }) => {
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
     : null;
-
-        console.log("submitted from parents");
-
-    console.log(listChange);
 
   return (
     <>

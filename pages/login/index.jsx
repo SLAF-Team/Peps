@@ -21,7 +21,7 @@ const Login = () => {
       return;
     } else {
       notifications.showNotification({
-        title: "Déjà connecter !",
+        title: "Connexion",
         message: "Vous êtes déjà connecté",
         color: "green",
       });

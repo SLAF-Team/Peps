@@ -20,11 +20,9 @@ const NavBar = () => {
   const [pivot, setPivot] = useState(false);
 
   const handleClick = () => {
-    if (window.confirm("Es tu sûr de vouloir te déconnecter?")) {
       Cookies.remove("token");
       setUser(null);
       router.push("/");
-    }
   };
 
   console.log(peps);
