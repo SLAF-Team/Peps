@@ -124,8 +124,6 @@ const SelectedRecipe = ({ ingredients, units }) => {
     return null;
   }
 
-  console.log(recipe);
-
   return (
     <div className="row">
       <div className="col-9">
@@ -212,7 +210,10 @@ const SelectedRecipe = ({ ingredients, units }) => {
                   }
                 >
                   {recipe?.comments && (
-                    <CommentsList comments={recipe.comments} />
+                    <CommentsList
+                      comments={recipe.comments}
+                      setSubmitted={setSubmitted}
+                    />
                   )}
                 </Accordion.Item>
               </Accordion>
