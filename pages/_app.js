@@ -24,10 +24,6 @@ function MyApp({ Component, pageProps }) {
     setUser(result.data.user);
   }
 
-  console.log("********")
-  console.log(user)
-  console.log("********");
-
   
   useEffect(() => {
     getUser();
