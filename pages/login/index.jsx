@@ -15,16 +15,16 @@ const Login = () => {
   const router = useRouter();
   const notifications = useNotifications();
 
-  // useEffect(() => {
-  //   if(token){
-  //     notifications.showNotification({
-  //       title: "Connexion",
-  //       message: "Vous êtes déjà connecté",
-  //       color: "green",
-  //     });
-  //     router.push('/')
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (token !== undefined) {
+      notifications.showNotification({
+        title: "Connexion",
+        message: "Vous êtes déjà connecté",
+        color: "green",
+      });
+      router.push("/");
+    }
+  }, [])
 
   const handleClickLeft = () => {
     setSignUp(false);

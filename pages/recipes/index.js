@@ -17,8 +17,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const router = useRouter();
   const token = Cookies.get('token');
 
-  
-  
+
+
 
   // set up state for multiselect
   const idTags = [];
@@ -41,7 +41,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
   // set up data for multiselect
   const dataTags = [];
-  tags?.sort().map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
+  tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
   const dataCountries = [];
   countries?.map((country) =>
@@ -71,7 +71,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
   };
 
-  // change filter state
+    // change filter state
   const handleChange = () => {
     setFilter(!filter);
   };
@@ -120,64 +120,66 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
               title="Utiliser les filtres"
               padding="xl"
               size="xl"
+              className={classes.drawer}
+              style={{overflowY:'scroll'}}
             >
-              <Switch
-                label="Activer/Désactiver"
-                checked={filter}
-                onChange={handleChange}
-                color="cookogsyellow"
-                size="md"
-              />
-              <div className={classes.filters}>
-                <h2 className={classes.h2}>Par Tag</h2>
-                <MultiSelect
-                  data={dataTags}
-                  value={filterTag}
-                  onChange={setFilterTag}
-                  placeholder="tags"
-                  searchable
-                  clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
+                <Switch
+                  label="Activer/Désactiver"
+                  checked={filter}
+                  onChange={handleChange}
+                  color="cookogsyellow"
+                  size="md"
                 />
-                <h2 className={classes.h2}>Par Pays</h2>
-                <MultiSelect
-                  data={dataCountries}
-                  value={filterCountry}
-                  onChange={setFilterCountry}
-                  placeholder="pays"
-                  searchable
-                  clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
-                />
-                <h2 className={classes.h2}>Par Type de recette</h2>
-                <MultiSelect
-                  data={dataTypes}
-                  value={filterType}
-                  onChange={setFilterType}
-                  placeholder="types"
-                  searchable
-                  clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
-                />
-                <h2 className={classes.h2}>Par Ingrédient</h2>
-                <MultiSelect
-                  data={dataIngredients}
-                  value={filterIngredient}
-                  onChange={setFilterIngredient}
-                  placeholder="ingrédients"
-                  searchable
-                  clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
-                />
-              </div>
+                <div className={classes.filters}>
+                  <h2 className={classes.h2}>Par Tag</h2>
+                  <MultiSelect
+                    data={dataTags}
+                    value={filterTag}
+                    onChange={setFilterTag}
+                    placeholder="tags"
+                    searchable
+                    clearable
+                    className={classes.multiselect}
+                    size="xs"
+                    styles={{ label: { fontSize: 14 } }}
+                  />
+                  <h2 className={classes.h2}>Par Pays</h2>
+                  <MultiSelect
+                    data={dataCountries}
+                    value={filterCountry}
+                    onChange={setFilterCountry}
+                    placeholder="pays"
+                    searchable
+                    clearable
+                    className={classes.multiselect}
+                    size="xs"
+                    styles={{ label: { fontSize: 14 } }}
+                  />
+                  <h2 className={classes.h2}>Par Type de recette</h2>
+                  <MultiSelect
+                    data={dataTypes}
+                    value={filterType}
+                    onChange={setFilterType}
+                    placeholder="types"
+                    searchable
+                    clearable
+                    className={classes.multiselect}
+                    size="xs"
+                    styles={{ label: { fontSize: 14 } }}
+                  />
+                  <h2 className={classes.h2}>Par Ingrédient</h2>
+                  <MultiSelect
+                    data={dataIngredients}
+                    value={filterIngredient}
+                    onChange={setFilterIngredient}
+                    placeholder="ingrédients"
+                    searchable
+                    clearable
+                    className={classes.multiselect}
+                    size="xs"
+                    styles={{ label: { fontSize: 14 } }}
+                  />
+                </div>
             </Drawer>
 
             <Group position="right"></Group>

@@ -43,7 +43,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   );
 
   useEffect(() => {
-    if (token) {
+    if (token !== undefined) {
       return;
     } else {
       notifications.showNotification({
