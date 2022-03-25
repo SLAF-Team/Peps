@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
-  const router = useRouter();
+  const { query } = useRouter();
   const token = Cookies.get("token");
 
   // set up state for multiselect
@@ -35,7 +35,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterCountry, setFilterCountry] = useState([]);
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
-  const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(true);
 
   // set up data for multiselect
   const dataTags = [];
@@ -104,8 +104,30 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
     filterCall.where = wheres;
     const data = filter ? filterCall : null;
+    console.log(data);
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    if (query.tag || query.country || query.type || query.ingredient) {
+      switch (Object.keys(query)[0]) {
+        case "tag":
+          setFilterTag([parseInt(query.tag)]);
+          break;
+        case "country":
+          setFilterCountry([parseInt(query.country)]);
+          break;
+        case "type":
+          setFilterType([parseInt(query.type)]);
+          break;
+        case "ingredient":
+          setFilterIngredient([parseInt(query.ingredient)]);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [query.tag, query.country, query.type, query.ingredient]);
 
   return (
     <div className={classes.margin}>
@@ -134,48 +156,36 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
                   data={dataTags}
                   value={filterTag}
                   onChange={setFilterTag}
-                  placeholder="tags"
+                  placeholder="Choisir des tags"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Pays</h2>
                 <MultiSelect
                   data={dataCountries}
                   value={filterCountry}
                   onChange={setFilterCountry}
-                  placeholder="pays"
+                  placeholder="Choisir des pays"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Type de recette</h2>
                 <MultiSelect
                   data={dataTypes}
                   value={filterType}
                   onChange={setFilterType}
-                  placeholder="types"
+                  placeholder="Choisir des types"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Ingrédient</h2>
                 <MultiSelect
                   data={dataIngredients}
                   value={filterIngredient}
                   onChange={setFilterIngredient}
-                  placeholder="ingrédients"
+                  placeholder="Choisir des ingrédients"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
               </div>
             </Drawer>
