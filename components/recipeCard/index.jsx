@@ -10,6 +10,7 @@ import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useNotifications } from "@mantine/notifications";
 
 const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   const { user } = useUserContext();
@@ -20,6 +21,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
   const router = useRouter();
+  const notifications = useNotifications();
 
   useEffect(() => {
     setIsLiked(user?.likes?.some((like) => like.recipeId === recipe.id));
@@ -27,7 +29,14 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
 
   async function addLike() {
     if(token == null){
+      notifications.showNotification({
+        title: "Connexion !",
+        message: "Merci de vous connecter pour liker",
+        color: "red",
+      });
+  
       router.push('/login')
+
     } else {
       await axios.put(
         "/api/like/addLike",
