@@ -70,11 +70,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     setFilter(!filter);
   };
 
-  console.log("recipes");
-  console.log(recipes);
-  console.log("recettes filtrées");
-  console.log(filteredRecipes);
-
   //useEffect for filter with exceptions
   useEffect(() => {
     const filterCall = {
