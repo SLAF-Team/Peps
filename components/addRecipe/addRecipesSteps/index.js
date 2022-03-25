@@ -6,7 +6,7 @@ import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
-const AddRecipesStep = ({ recipe }) => {
+const AddRecipesStep = ({ recipe, count }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
@@ -43,16 +43,25 @@ const AddRecipesStep = ({ recipe }) => {
   return (
     <div className={classes.block}>
       <form ref={formRef}>
-        <Textarea
-          type="text"
-          name="addStep"
-          placeholder="Indiquez la description de votre étape"
-          autosize
-          minRows={1}
-        />
         {submitted ? (
-          <p>Ajoutée !</p>
+          <Textarea
+            type="text"
+            name="addStep"
+            placeholder={`Etape ${count}`}
+            autosize
+            minRows={1}
+            disabled
+          />
         ) : (
+          <Textarea
+            type="text"
+            name="addStep"
+            placeholder={`Etape ${count}`}
+            autosize
+            minRows={1}
+          />
+        )}
+        {submitted ? null : (
           <div className={classes.button}>
             <Button
               label="Valider mon étape"

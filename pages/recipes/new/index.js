@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
@@ -10,8 +10,13 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
+<<<<<<< HEAD
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+=======
+import { Select } from "@mantine/core";
+import { useRouter } from "next/router";
+>>>>>>> 9f3705a1f2774dbc81a6711551a8f4b347d034d6
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
@@ -22,23 +27,38 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [checked, setChecked] = useState(false);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [countryValue, setCountryValue] = useState("");
+  const [typeValue, setTypeValue] = useState("");
+  const [dishValue, setDishValue] = useState("");
   const router = useRouter();
-  
+
+  const countriesData = [];
+  countries.map((element) =>
+    countriesData.push({ value: element.id.toString(), label: element.name })
+  );
+  const typesData = [];
+  types.map((element) =>
+    typesData.push({ value: element.id.toString(), label: element.name })
+  );
+  const dishesData = [];
+  dishes.map((element) =>
+    dishesData.push({ value: element.id.toString(), label: element.title })
+  );
+
   useEffect(() => {
-    if(token){
+    if (token) {
       return;
     } else {
       notifications.showNotification({
-        title: "Connexion !",
+        title: "Connexion",
         message: "Merci de vous connecter pour accéder à cette page",
         color: "red",
       });
-      router.push('/login')
+      router.push("/login");
     }
-  }, [token])
-
+  }, [token]);
 
   const handleClickRight = () => {
     setChecked(true);
@@ -52,13 +72,12 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   // add Recipe
   async function addNewRecipe(params) {
-    const { addName, addCountry, addDish, addType, addImageUrl, addPersons } =
-      formRef.current;
+    const { addName, addImageUrl, addPersons } = formRef.current;
     const name = addName.value;
     const imageUrl = addImageUrl.value;
-    const country = addCountry.value;
-    const dish = addDish.value;
-    const type = addType.value;
+    const country = countryValue;
+    const dish = dishValue;
+    const type = typeValue;
     const cook = user;
     const persons = addPersons.value;
     if (!name || !persons) {
@@ -100,8 +119,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
-      <h2>Etape {step + 1}/4</h2>
-      {step === 0 && (
+      <h2>Etape {step}/4</h2>
+      {step === 1 && (
         <>
           <Selector
             left="PRIVÉE"
@@ -114,23 +133,19 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             {dishes ? (
               <div className={classes.step}>
                 <label className={classes.label}>Plat associé</label>
-                <select className={classes.select} name="addDish">
-                  <option value="" selected disabled>
-                    Choisissez le plat associé
-                  </option>
-                  {dishes.map((dish) => (
-                    <option value={dish.id} key={dish.id}>
-                      {dish.title}
-                    </option>
-                  ))}
-                </select>
-                <Button
-                  label="Créer un plat"
-                  type="primary"
-                  href="/dishes/new"
+                <Select
+                  value={dishValue}
+                  onChange={setDishValue}
+                  placeholder="Choisissez un plat"
+                  data={dishesData}
+                  searchable
+                  clearable
                 />
               </div>
             ) : null}
+            <div className={classes.button}>
+              <Button label="Nouveau plat" type="primary" href="/dishes/new" />
+            </div>
             <div className={classes.step}>
               <label className={classes.label}>Nom de la recette *</label>
               <input
@@ -159,40 +174,35 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 max="15"
               />
             </div>
-
             {countries ? (
               <div className={classes.step}>
                 <label className={classes.label}>Pays</label>
-                <select className={classes.select} name="addCountry">
-                  <option value="" selected disabled>
-                    Choisissez un pays
-                  </option>
-                  {countries.map((country) => (
-                    <option value={country.id} key={country.id}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  value={countryValue}
+                  onChange={setCountryValue}
+                  placeholder="Choisissez un pays"
+                  data={countriesData}
+                  searchable
+                  clearable
+                />
               </div>
             ) : null}
             {types ? (
               <div className={classes.step}>
                 <label className={classes.label}>Type de plat</label>
-                <select className={classes.select} name="addType">
-                  <option value="" selected disabled>
-                    Choisissez le type de plat
-                  </option>
-                  {types.map((type) => (
-                    <option value={type.id} key={type.id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  value={typeValue}
+                  onChange={setTypeValue}
+                  placeholder="Choisissez un type"
+                  data={typesData}
+                  searchable
+                  clearable
+                />
               </div>
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Créer ma recette"
+                label="Suivant"
                 type="primary"
                 handleClick={() => addNewRecipe()}
                 href="#"
@@ -201,7 +211,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           </form>
         </>
       )}
-      {step === 1 && (
+      {step === 2 && (
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
@@ -232,15 +242,17 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               />
             </div>
           </div>
-          <Button
-            label="Je passe à l'étape suivante ! "
-            type="primary"
-            href="#"
-            handleClick={() => handleStepClick()}
-          />
+          <div className={classes.button}>
+            <Button
+              label="Suivant"
+              type="primary"
+              href="#"
+              handleClick={() => handleStepClick()}
+            />
+          </div>
         </>
       )}
-      {step === 2 && (
+      {step === 3 && (
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
@@ -251,28 +263,32 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             {recipe ? (
               <>
                 {[...Array(count)].map((e, i) => {
-                  return <AddRecipesSteps recipe={recipe} key={i} />;
+                  return (
+                    <AddRecipesSteps recipe={recipe} count={count} key={i} />
+                  );
                 })}
               </>
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Nouvel ingrédient"
+                label="Nouvelle étape"
                 type="primary"
                 handleClick={handleClick}
                 href="#"
               />
             </div>
           </div>
-          <Button
-            label="Je passe à l'étape suivante ! "
-            type="primary"
-            href="#"
-            handleClick={() => handleStepClick()}
-          />
+          <div className={classes.button}>
+            <Button
+              label="Suivant"
+              type="primary"
+              href="#"
+              handleClick={() => handleStepClick()}
+            />
+          </div>
         </>
       )}
-      {step === 3 && (
+      {step === 4 && (
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
@@ -282,11 +298,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
           <div className={classes.stepsform}>
             <AddRecipesTags recipe={recipe} tags={tags} />
           </div>
-          <Button
-            label="J'ai fini ! "
-            type="success"
-            href={`/recipes/${recipe?.id}`}
-          />
+          <div className={classes.button}>
+            <Button
+              label="J'ai fini !"
+              type="success"
+              href={`/recipes/${recipe?.id}`}
+            />
+          </div>
         </>
       )}
     </div>

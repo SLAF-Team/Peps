@@ -22,15 +22,15 @@ const newDish = ({ regions }) => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(token){
+    if (token !== undefined) {
       return;
     } else {
       notifications.showNotification({
-        title: "Connexion !",
+        title: "Connexion",
         message: "Merci de vous connecter pour accéder à cette page",
         color: "red",
       });
-      router.push('/login')
+      router.push("/login");
     }
   }, [token])
 

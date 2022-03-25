@@ -74,11 +74,6 @@ const SelectedRecipe = ({ingredients, units}) => {
     setPersonsValue(recipe?.persons);
   }, [recipe]);
 
-  // useEffect(() => {
-  //   console.log(ingredients);
-  //   console.log(recipe);
-  // }, [getIngredients])
-
   useEffect(() => {
     getRecipe();
     getIngredients();
