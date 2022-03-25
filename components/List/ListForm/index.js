@@ -4,21 +4,18 @@ import { Modal } from "@mantine/core";
 import { useState, useRef } from "react";
 import axios from "axios";
 import Button from "../../Button";
-import ButtonForm from "../../ButtonForm";
 import Cookies from "js-cookie";
 import styles from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
 
-const ListForm = ({ lists, recipe, setAddList }) => {
+const ListForm = ({ lists, recipe, onCreate }) => {
   const formRef = useRef();
   const { user } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [value, setValue] = useState([]);
   const notifications = useNotifications();
-  const router = useRouter();
 
   const handleClick = () => {
     setOpened(true);
@@ -46,7 +43,7 @@ const ListForm = ({ lists, recipe, setAddList }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setAddList(true);
+    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été créée",
       color: "green",
@@ -66,7 +63,7 @@ const ListForm = ({ lists, recipe, setAddList }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setAddList(true);
+    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été mise à jour",
       color: "green",
@@ -83,7 +80,7 @@ const ListForm = ({ lists, recipe, setAddList }) => {
     <>
       <ListsList lists={lists} />
       <div className={styles.form}>
-        <a href="" className={styles.btn} onClick={()=>handleClick()}>
+        <a href="#" className={styles.btn} onClick={() => handleClick()}>
           Ajouter
         </a>
       </div>
