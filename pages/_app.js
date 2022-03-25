@@ -10,13 +10,12 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Button } from '@mantine/core';
 import moment from "moment";
 import "moment/locale/fr";
-
 moment.locale("fr");
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const token = Cookies.get("token");
-
+console.log(token)
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
       headers: { Authorization: `Bearer ${token}` },
@@ -24,11 +23,6 @@ function MyApp({ Component, pageProps }) {
     setUser(result.data.user);
   }
 
-  console.log("********")
-  console.log(user)
-  console.log("********");
-
-  
   useEffect(() => {
     getUser();
   }, [token]);

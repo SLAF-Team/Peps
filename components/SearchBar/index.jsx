@@ -26,12 +26,6 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
       where: {
         OR: [
           {
-            description: {
-              contains: recipeSearch,
-              mode: "insensitive",
-            },
-          },
-          {
             imageUrl: {
               contains: recipeSearch,
               mode: "insensitive",

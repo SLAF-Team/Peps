@@ -11,6 +11,7 @@ import AddList from "../../components/List/AddList";
 import axios from "axios";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { useNotifications } from "@mantine/notifications";
 
 const Profile = ({ recipes, lists }) => {
   const { query } = useRouter();
@@ -20,14 +21,20 @@ const Profile = ({ recipes, lists }) => {
   const [listChange, setListChange] = useState(0);
   const token = Cookies.get("token");
   const router = useRouter();
+  const notifications = useNotifications();
 
   useEffect(() => {
-    if(user){
-      console.log('')
+    if (token) {
+      return;
     } else {
-      router.push('/login')
+      notifications.showNotification({
+        title: "Connexion",
+        message: "Merci de vous connecter pour accéder à cette page",
+        color: "red",
+      });
+      router.push("/login");
     }
-  }, [])
+  }, [token]);
 
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
@@ -64,10 +71,6 @@ const Profile = ({ recipes, lists }) => {
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
     : null;
-
-        console.log("submitted from parents");
-
-    console.log(listChange);
 
   return (
     <>

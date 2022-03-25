@@ -11,7 +11,8 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import Layout from "../../components/layout";
 import heart from "../../assets/images/heart.svg";
-import { Select } from '@mantine/core';
+import { Select } from "@mantine/core";
+import prisma from "../../lib/prisma.ts";
 
 import {
   Modal,
@@ -23,24 +24,22 @@ import {
   NumberInput,
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
-import { checkLogAuth } from "../../lib/authfront";
+import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
 
-const SelectedRecipe = () => {
+const SelectedRecipe = ({ingredients, units}) => {
   const router = useRouter();
   const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [nameChange, setNameChange] = useState();
-  const [descriptionChange, setDescriptionChange] = useState();
   const [opened, setOpened] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
-  const personsRatio = (personsValue / recipe?.persons)
-  const [ingredients, setIngredients] = useState();
+  const personsRatio = personsValue / recipe?.persons;
 
   const getRecipe = async () => {
     if (!id) {
@@ -50,6 +49,7 @@ const SelectedRecipe = () => {
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(result.data)
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -61,7 +61,7 @@ const SelectedRecipe = () => {
       return;
     }
     try {
-      const result = await axios.get('/api/ingredient/getIngredients', {
+      const result = await axios.get("/api/ingredient/getIngredients", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIngredients(result.data);
@@ -74,11 +74,6 @@ const SelectedRecipe = () => {
     setPersonsValue(recipe?.persons);
   }, [recipe]);
 
-  // useEffect(() => {
-  //   console.log(ingredients);
-  //   console.log(recipe);
-  // }, [getIngredients])
-  
   useEffect(() => {
     getRecipe();
     getIngredients();
@@ -92,11 +87,6 @@ const SelectedRecipe = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
-
-
-
-
   const editRecipe = async (event) => {
     event.preventDefault();
 
@@ -105,7 +95,6 @@ const SelectedRecipe = () => {
       {
         id: recipe.id,
         name: nameChange,
-        description: descriptionChange,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -121,10 +110,6 @@ const SelectedRecipe = () => {
     setNameChange(e.target.value);
   };
 
-  const handleDescription = (e) => {
-    setDescriptionChange(e.target.value);
-  };
-
   async function deleteRecipe() {
     if (window.confirm("Souhaitez vous supprimer ce plat?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
@@ -138,6 +123,8 @@ const SelectedRecipe = () => {
     return null;
   }
 
+  console.log(recipe)
+
   return (
     <div className="row">
       <div className="col-9">
@@ -148,7 +135,6 @@ const SelectedRecipe = () => {
           <div className={classes.titlecontainer}>
             <h1 className={classes.h1}>{recipe.name}</h1>
             <p className={classes.selectorName}>Par {recipe.cook.name}</p>
-            {/*<Image src={heart} width={40} height={40} />*/}
           </div>
           <div className={classes.selector}>
             <div className="selectorBlock">
@@ -165,7 +151,12 @@ const SelectedRecipe = () => {
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.stepscontainer}>
-            <p>Etapes: {recipe.steps}</p>
+            <ul>
+            {recipe?.steps && recipe?.steps.map((element, index) => (                
+            <li className={classes.li} key={element.id}>
+                        <b>Etape {index + 1}</b>  <p>{element.text} </p>
+                      </li>))}
+                </ul>
           </div>
         </Skeleton>
 
@@ -293,13 +284,13 @@ const SelectedRecipe = () => {
             </div>
           </div>
         </Skeleton>
-          </div>
-          <Button
-                label="Editer"
-                type="success"
-                handleClick={() => setOpened(true)}
-                href="#"
-          />
+      </div>
+      <Button
+        label="Editer"
+        type="success"
+        handleClick={() => setOpened(true)}
+        href="#"
+      />
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <form onSubmit={editRecipe}>
           <label>Name</label> <br />
@@ -310,24 +301,54 @@ const SelectedRecipe = () => {
             onChange={handleName}
           />
           <br />
-          <label>Description</label>
+          {/* <label>Convives</label>
           <textarea
-            name="recipeDescription"
+            name="recipePerson"
             type="text"
             style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.description}
-            onChange={handleDescription}
+            defaultValue={recipe.persons}
+            onChange={handlePersons}
+          />
+          <br />
+          <label>Etapes</label>
+          <textarea
+            name="recipeSteps"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.step}
+            onChange={handleSteps}
+          />
+          <label>Etapes</label>
+          <textarea
+            name="recipeSteps"
+            type="text"
+            style={{ width: "100%", height: "100px" }}
+            defaultValue={recipe.step}
+            onChange={handleSteps}
+          /> */}
+          <EditRecipeIngredients
+            recipe={recipe}
+            units={units}
+            ingredients={ingredients}
           />
           <br />
           <br />
-          <ButtonForm
-            label="J'édite"
-            theme="success"
-          />
+          <ButtonForm label="J'édite" theme="success" />
         </form>
       </Modal>
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const allIngredients = await prisma.ingredient.findMany();
+  const allUnits = await prisma.unit.findMany();
+  return {
+    props: {
+      ingredients: allIngredients,
+      units: allUnits,
+    },
+  };
+}
 
 export default SelectedRecipe;

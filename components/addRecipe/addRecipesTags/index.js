@@ -1,14 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
-import { CheckboxGroup, Checkbox } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import Cookies from "js-cookie";
 import classes from "./AddRecipesTags.module.css";
 import Button from "../../Button";
 
 const AddRecipesTags = ({ recipe, tags }) => {
-  const [value, setValue] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const token = Cookies.get("token");
+  const [tagValue, setTagValue] = useState("");
+
+  const tagsData = [];
+  tags.map((element) =>
+    tagsData.push({ value: element.id.toString(), label: element.name })
+  );
 
   async function addTagsToRecipe(data) {
     await axios.put(
@@ -26,43 +31,32 @@ const AddRecipesTags = ({ recipe, tags }) => {
 
   const handleClick = () => {
     const newValue = [];
-    value.map((element) => newValue.push({ id: parseInt(element) }));
+    tagValue.map((element) => newValue.push({ id: parseInt(element) }));
     addTagsToRecipe(newValue);
   };
 
-  const items = tags
-    ? tags.map((tag, index) => (
-        <Checkbox
-          label={tag.name}
-          key={tag.id}
-          checked={tag.checked}
-          onChange={(event) =>
-            handlers.setItemProp(index, "checked", event.currentTarget.checked)
-          }
-        />
-      ))
-    : null;
-
   return (
     <div className={classes.form}>
-      <CheckboxGroup
-        value={value}
-        onChange={setValue}
-        color="cyan"
-        label="Tags"
-        description="Choisis un ou plusieurs Tags pour identifier ta recette"
-        required
-      >
-        {tags
-          ? tags.map((tag) => (
-              <Checkbox value={tag.id.toString()} label={tag.name} />
-            ))
-          : null}
-      </CheckboxGroup>
+      {submitted ? (
+        <MultiSelect
+          value={tagValue}
+          onChange={setTagValue}
+          data={tagsData}
+          searchable
+          clearable
+          disabled
+        />
+      ) : (
+        <MultiSelect
+          value={tagValue}
+          onChange={setTagValue}
+          data={tagsData}
+          searchable
+          clearable
+        />
+      )}
       <div className={classes.button}>
-        {submitted ? (
-          <p>Ajouté!</p>
-        ) : (
+        {submitted ? null : (
           <Button
             label="Valider mes tags"
             type="success"

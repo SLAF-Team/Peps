@@ -37,7 +37,7 @@ const UserList = ({ user, color }) => {
           <p className={styles.name}>{user?.name}</p>
           <p className={styles.email}>{user?.email}</p>
         </div>
-        {!user?.email && <span>Créée par {user?.name}</span>}
+        {!user?.email && <span>Créée par {user?.user.name}</span>}
       </div>
     </div>
   );

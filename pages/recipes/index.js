@@ -10,10 +10,15 @@ import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 import { useUserContext } from "../../context/UserContext.js";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { user } = useUserContext();
   const router = useRouter();
+  const token = Cookies.get('token');
+
+
+
 
   // set up state for multiselect
   const idTags = [];
@@ -21,14 +26,14 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterTag, setFilterTag] = useState(idTags);
   const idCountries = [];
   countries?.map((element) => idCountries.push(element.id));
-  const [filterCountry, setFilterCountry] = useState(null);
+  const [filterCountry, setFilterCountry] = useState(idCountries);
   const idTypes = [];
   types?.map((element) => idTypes.push(element.id));
   const [filterType, setFilterType] = useState(idTypes);
 
   const idIngredients = [];
   ingredients?.map((element) => idIngredients.push(element.id));
-  const [filterIngredient, setFilterIngredient] = useState(null);
+  const [filterIngredient, setFilterIngredient] = useState(idIngredients);
 
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
 
@@ -36,7 +41,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
   // set up data for multiselect
   const dataTags = [];
-  tags?.sort().map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
+  tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
   const dataCountries = [];
   countries?.map((country) =>
@@ -66,15 +71,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if(user){
-  //     console.log('')
-  //   } else {
-  //     router.push('/login')
-  //   }
-  // }, [getRecipes])
-
-  // change filter state
+    // change filter state
   const handleChange = () => {
     setFilter(!filter);
   };

@@ -6,18 +6,16 @@ import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
-const AddRecipesSteps = ({ recipe }) => {
+const AddRecipesStep = ({ recipe, count }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [disable, setDisable] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  async function addRecipeSteps(params) {
-    setDisable(true);
-    const { addSteps } = formRef.current;
-    const steps = addSteps.value;
-    if (!steps) {
+  async function addRecipeStep(params) {
+    const { addStep } = formRef.current;
+    const step = addStep.value;
+    if (!step) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
         message: "Un ou plusieurs éléments sont manquants",
@@ -28,11 +26,16 @@ const AddRecipesSteps = ({ recipe }) => {
         "/api/recipe/editRecipe",
         {
           id: recipe.id,
-          steps,
+          steps: {
+            create: [
+              {
+                text: step,
+              },
+            ],
+          },
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setDisable(false);
       setSubmitted(true);
     }
   }
@@ -40,25 +43,37 @@ const AddRecipesSteps = ({ recipe }) => {
   return (
     <div className={classes.block}>
       <form ref={formRef}>
-        <Textarea
-          type="text"
-          name="addSteps"
-          placeholder="Indiquez ici les étapes"
-          autosize
-          minRows={2}
-        />
         {submitted ? (
-          <p>Ajoutées !</p>
-        ) : (
-          <Button
-            label="Valider mes étapes"
-            handleClick={() => addRecipeSteps()}
-            href=""
+          <Textarea
+            type="text"
+            name="addStep"
+            placeholder={`Etape ${count}`}
+            autosize
+            minRows={1}
+            disabled
           />
+        ) : (
+          <Textarea
+            type="text"
+            name="addStep"
+            placeholder={`Etape ${count}`}
+            autosize
+            minRows={1}
+          />
+        )}
+        {submitted ? null : (
+          <div className={classes.button}>
+            <Button
+              label="Valider mon étape"
+              handleClick={() => addRecipeStep()}
+              href=""
+              type="success"
+            />
+          </div>
         )}
       </form>
     </div>
   );
 };
 
-export default AddRecipesSteps;
+export default AddRecipesStep;
