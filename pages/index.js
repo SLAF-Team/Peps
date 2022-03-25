@@ -3,13 +3,7 @@ import prisma from "../lib/prisma.ts";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
-<<<<<<< HEAD
-import Cookies from 'js-cookie'
 
-export default function Home() {
-  const token = Cookies.get('token')
-  console.log(token)
-=======
 import SearchBar from "../components/SearchBar/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 import Link from "next/link";
@@ -32,7 +26,6 @@ export default function Home({ recipes }) {
 
   console.log(filteredRecipes.slice(-1)[0])
 
->>>>>>> facc7fddb962a206f144cb6b1f885a4c2fe87801
   return (
     <main className={styles.main}>
       <div className={styles.hero}>

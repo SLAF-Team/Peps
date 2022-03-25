@@ -37,6 +37,8 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [addList, setAddList] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
   const isAuthor = recipe?.cookId == user?.id ? true : false;
@@ -52,7 +54,6 @@ const SelectedRecipe = ({ ingredients, units }) => {
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(result.data);
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -80,7 +81,16 @@ const SelectedRecipe = ({ ingredients, units }) => {
   useEffect(() => {
     getRecipe();
     getIngredients();
-  }, [id, submitted]);
+    if (deleted === true) {
+      setDeleted(false);
+    }
+    if (submitted === true) {
+      setSubmitted(false);
+    }
+    if (addList === true) {
+      setAddList(false);
+    }
+  }, [id, submitted, deleted]);
 
   useEffect(() => {
     setLoading(true);
@@ -120,8 +130,6 @@ const SelectedRecipe = ({ ingredients, units }) => {
   if (!recipe) {
     return null;
   }
-
-  console.log(recipe);
 
   return (
     <div className="row">
@@ -169,7 +177,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
                       <li className={classes.li} key={element.id}>
                         {element.quantity} {element.unit.name} de{" "}
                         <Anchor
-                          href={"/ingredient/" + element.ingredient.id}
+                          href={"/recipes?ingredient=" + element.ingredient.id}
                           target="_blank"
                           color="cookogsyellow"
                           size="xs"
@@ -209,7 +217,10 @@ const SelectedRecipe = ({ ingredients, units }) => {
                   }
                 >
                   {recipe?.comments && (
-                    <CommentsList comments={recipe.comments} />
+                    <CommentsList
+                      comments={recipe.comments}
+                      setDeleted={setDeleted}
+                    />
                   )}
                 </Accordion.Item>
               </Accordion>
@@ -252,10 +263,13 @@ const SelectedRecipe = ({ ingredients, units }) => {
                 {recipe?.ingredientsUnit &&
                   recipe?.ingredientsUnit.map((element) => (
                     <li className={classes.li}>
-                      <a href="#">
+                      <Link
+                        href={"/recipes?ingredient=" + element.ingredient.id}
+                        as="/recipes"
+                      >
                         {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
                         {element.unit.name} de {element.ingredient.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
               </ul>
@@ -292,7 +306,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
               <ListForm
                 lists={recipe.lists}
                 recipe={recipe}
-                setSubmitted={setSubmitted}
+                setAddList={setAddList}
               />
             </div>
           </div>
