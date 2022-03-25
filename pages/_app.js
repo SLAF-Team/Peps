@@ -15,7 +15,7 @@ moment.locale("fr");
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const token = Cookies.get("token");
-
+console.log(token)
   async function getUser() {
     const result = await axios.get("/api/user/getCurrentUser", {
       headers: { Authorization: `Bearer ${token}` },

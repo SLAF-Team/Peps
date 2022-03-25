@@ -16,7 +16,7 @@ const Login = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(!token){
+    if(token === undefined){
       return;
     } else {
       notifications.showNotification({
