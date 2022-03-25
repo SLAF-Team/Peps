@@ -37,6 +37,7 @@ const SelectedRecipe = ({ ingredients, units }) => {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
+  const isPublic = recipe?.published;
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = personsValue / recipe?.persons;
@@ -132,6 +133,9 @@ const SelectedRecipe = ({ ingredients, units }) => {
 
   if (!recipe) {
     return null;
+  }
+  if (!isPublic && !isAuthor) {
+    return <p>Cette recette est privée !</p>;
   }
 
   return (
