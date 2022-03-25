@@ -1,11 +1,10 @@
 import Image from "next/image";
 import prisma from "../lib/prisma.ts";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
-import Link from "next/link";
 
 export default function Home({ recipes }) {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
@@ -21,8 +20,6 @@ export default function Home({ recipes }) {
       console.log("error");
     }
   };
-
-  console.log(filteredRecipes.slice(-1)[0]);
 
   return (
     <main className={styles.main}>
@@ -88,6 +85,7 @@ export async function getServerSideProps() {
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
     },
+    where: { published: true },
   });
   return {
     props: {
