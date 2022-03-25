@@ -11,6 +11,7 @@ import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
 import { Select } from "@mantine/core";
+import { useRouter } from "next/router";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
