@@ -86,7 +86,9 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
     <>
       <ListsList lists={lists} />
       <div className={styles.form}>
-        <Button label="Ajouter" className={styles.button} handleClick={handleClick} href="#"/>
+        <a href="" className={styles.btn} onClick={handleClick}>
+          Ajouter
+        </a>
       </div>
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <p>Ajouter à une nouvelle liste</p>
