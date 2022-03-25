@@ -72,6 +72,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 required
                 min={0}
                 max={1000}
+                clearable
                 disabled
               />
             ) : (
@@ -79,6 +80,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 value={quantityValue}
                 onChange={(val) => setQuantityValue(val)}
                 required
+                clearable
                 min={0}
                 max={1000}
               />
@@ -93,6 +95,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 placeholder="Choisissez une unité"
                 data={unitsData}
                 searchable
+                clearable
                 nothingFound="Pas d'option"
                 disabled
               />
@@ -103,6 +106,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 placeholder="Choisissez une unité"
                 data={unitsData}
                 searchable
+                clearable
                 nothingFound="Pas d'option"
               />
             )}
@@ -116,6 +120,7 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 placeholder="Choisissez un ingrédient"
                 data={ingredientsData}
                 searchable
+                clearable
                 disabled
                 nothingFound="Pas d'option"
               />
@@ -126,15 +131,14 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
                 placeholder="Choisissez un ingrédient"
                 data={ingredientsData}
                 searchable
+                clearable
                 nothingFound="Pas d'option"
               />
             )}
           </div>
         </form>
         <div className={classes.button}>
-          {submitted ? (
-            null
-          ) : (
+          {submitted ? null : (
             <Button
               label="Ajouter cet ingrédient"
               type="success"

@@ -25,7 +25,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
-const [dishValue, setDishValue] = useState("");
+  const [dishValue, setDishValue] = useState("");
 
   const countriesData = [];
   countries.map((element) =>
@@ -35,10 +35,10 @@ const [dishValue, setDishValue] = useState("");
   types.map((element) =>
     typesData.push({ value: element.id.toString(), label: element.name })
   );
-    const dishesData = [];
-    dishes.map((element) =>
-      dishesData.push({ value: element.id.toString(), label: element.title })
-    );
+  const dishesData = [];
+  dishes.map((element) =>
+    dishesData.push({ value: element.id.toString(), label: element.title })
+  );
 
   const handleClickRight = () => {
     setChecked(true);
@@ -184,7 +184,7 @@ const [dishValue, setDishValue] = useState("");
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Créer ma recette"
+                label="Suivant"
                 type="primary"
                 handleClick={() => addNewRecipe()}
                 href="#"
@@ -224,12 +224,14 @@ const [dishValue, setDishValue] = useState("");
               />
             </div>
           </div>
-          <Button
-            label="Je passe à l'étape suivante ! "
-            type="primary"
-            href="#"
-            handleClick={() => handleStepClick()}
-          />
+          <div className={classes.button}>
+            <Button
+              label="Suivant"
+              type="primary"
+              href="#"
+              handleClick={() => handleStepClick()}
+            />
+          </div>
         </>
       )}
       {step === 3 && (
@@ -243,25 +245,29 @@ const [dishValue, setDishValue] = useState("");
             {recipe ? (
               <>
                 {[...Array(count)].map((e, i) => {
-                  return <AddRecipesSteps recipe={recipe} key={i} />;
+                  return (
+                    <AddRecipesSteps recipe={recipe} count={count} key={i} />
+                  );
                 })}
               </>
             ) : null}
             <div className={classes.button}>
               <Button
-                label="Nouvel ingrédient"
+                label="Nouvelle étape"
                 type="primary"
                 handleClick={handleClick}
                 href="#"
               />
             </div>
           </div>
-          <Button
-            label="Je passe à l'étape suivante ! "
-            type="primary"
-            href="#"
-            handleClick={() => handleStepClick()}
-          />
+          <div className={classes.button}>
+            <Button
+              label="Suivant"
+              type="primary"
+              href="#"
+              handleClick={() => handleStepClick()}
+            />
+          </div>
         </>
       )}
       {step === 4 && (
@@ -274,11 +280,13 @@ const [dishValue, setDishValue] = useState("");
           <div className={classes.stepsform}>
             <AddRecipesTags recipe={recipe} tags={tags} />
           </div>
-          <Button
-            label="J'ai fini ! "
-            type="success"
-            href={`/recipes/${recipe?.id}`}
-          />
+          <div className={classes.button}>
+            <Button
+              label="J'ai fini !"
+              type="success"
+              href={`/recipes/${recipe?.id}`}
+            />
+          </div>
         </>
       )}
     </div>
