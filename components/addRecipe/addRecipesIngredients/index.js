@@ -14,14 +14,21 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
   const [unitValue, setUnitValue] = useState("");
+  const [ingredientValue, setIngredientValue] = useState("");
 
-  const unitsData = []
-  units.map((unit) => unitsData.push({ value: unit.id, label: unit.name }));
-console.log(unitsData)
+  const unitsData = [];
+  units.map((element) =>
+    unitsData.push({ value: element.id, label: element.name })
+  );
+
+  const ingredientsData = [];
+  ingredients.map((element) =>
+    ingredientsData.push({ value: element.id, label: element.name })
+  );
 
   async function addRecipeIngredients(params) {
-    const { addIngredient, addQuantity } = formRef.current;
-    const ingredient = addIngredient.value;
+    const { addQuantity } = formRef.current;
+    const ingredient = ingredientValue;
     const quantity = addQuantity.value;
     const unit = unitValue;
     if (!quantity || !unit || !ingredient) {
@@ -61,32 +68,49 @@ console.log(unitsData)
           </div>
           <div className="col-3">
             <label className={classes.label}>Unité</label>
-            {/* <select className={classes.select} name="addUnit">
-              {units.map((unit) => (
-                <option value={unit.id} key={unit.id}>
-                  {unit.name}
-                </option>
-              ))}
-            </select> */}
-            <Select
-              value={unitValue}
-              onChange={setUnitValue}
-              name="addUnit"
-              placeholder="Choisis une unité"
-              data={unitsData}
-              searchable
-              nothingFound="Pas d'option"
-            />
+            {submitted ? (
+              <Select
+                value={unitValue}
+                onChange={setUnitValue}
+                placeholder="Choisissez une unité"
+                data={unitsData}
+                searchable
+                nothingFound="Pas d'option"
+                disabled
+              />
+            ) : (
+              <Select
+                value={unitValue}
+                onChange={setUnitValue}
+                placeholder="Choisissez une unité"
+                data={unitsData}
+                searchable
+                nothingFound="Pas d'option"
+              />
+            )}
           </div>
           <div className="col-6">
             <label className={classes.label}>Ingrédient</label>
-            <select className={classes.select} name="addIngredient">
-              {ingredients.map((ingredient) => (
-                <option value={ingredient.id} key={ingredient.id}>
-                  {ingredient.name}
-                </option>
-              ))}
-            </select>
+            {submitted ? (
+              <Select
+                value={ingredientValue}
+                onChange={setIngredientValue}
+                placeholder="Choisissez un ingrédient"
+                data={ingredientsData}
+                searchable
+                disabled
+                nothingFound="Pas d'option"
+              />
+            ) : (
+              <Select
+                value={ingredientValue}
+                onChange={setIngredientValue}
+                placeholder="Choisissez un ingrédient"
+                data={ingredientsData}
+                searchable
+                nothingFound="Pas d'option"
+              />
+            )}
           </div>
         </form>
         <div className={classes.button}>
