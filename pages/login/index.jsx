@@ -16,13 +16,13 @@ const Login = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if(token){
+    if (token !== undefined) {
       notifications.showNotification({
         title: "Connexion",
         message: "Vous êtes déjà connecté",
         color: "green",
       });
-      router.push('/')
+      router.push("/");
     }
   }, [])
 
