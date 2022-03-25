@@ -1,11 +1,13 @@
-import Navbar from "./../navbar";
-import styles from "./Layout.module.css";
+import Navbar from "../navbar";
+import Footer from "../Footer";
+import classes from "./Layout.module.css";
 
 export default function Layout({ children }) {
   return (
-    <div className={styles.layoutContainer}>
+    <div>
       <Navbar />
-      <div>{children}</div>
+      {children}
+      <Footer />
     </div>
   );
 }

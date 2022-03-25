@@ -1,0 +1,79 @@
+.avatar {
+	height: 7.5rem;
+	width: 7.5rem;
+	border-radius: 14px;
+	text-align: center;
+	display: table;
+}
+
+.avatarDiv {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.top {
+	width: 100%;
+	margin-top: 2rem;
+	text-align: center;
+}
+
+.letter {
+	font-family: Merriweather, sans-serif;
+	font-weight: 700;
+	font-size: 64px;
+	color: white;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.col-3 {
+	display: flex;
+}
+
+.name {
+	font-family: "Merriweather", serif;
+	font-weight: 700;
+	font-size: 36px;
+	margin: 0;
+}
+
+.float {
+	margin-top: 0.5rem;
+	margin-right: 1rem;
+	position: absolute;
+	right: 0;
+	text-align: right;
+	display: none;
+}
+
+.email {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+@media only screen and (min-width: 33.75em) {
+	/* 540px */
+	.avatar {
+		height: 10rem;
+		width: 10rem;
+	}
+
+	.avatarDiv {
+		justify-content: flex-start;
+	}
+
+	.letter {
+		font-size: 80px;
+	}
+
+	.float {
+		display: block;
+	}
+
+	.top {
+		position: relative;
+		text-align: initial;
+		margin-top: 3rem;
+	}
+}

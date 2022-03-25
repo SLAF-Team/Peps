@@ -1,0 +1,44 @@
+.field {
+	background: #ffffff;
+	border: 0.7px solid #000000;
+	box-sizing: border-box;
+	border-radius: 4px;
+	padding: 10px;
+	font-family: Lato, sans-serif;
+	width: 13rem;
+	margin-bottom: 0.25rem;
+	margin-top: 0.25rem;
+}
+
+.btnPrimary {
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 10px 25px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	color: white;
+	border: none;
+	background: #324376;
+	margin-bottom: 0.25rem;
+	margin-top: 0.25rem;
+}
+
+.btnDanger {
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 10px 25px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+	color: white;
+	border: none;
+	background: #fc440f;
+	margin-left: 0.5rem;
+	margin-bottom: 0.25rem;
+	margin-top: 0.25rem;
+}
+
+.form {
+	text-align: center;
+}

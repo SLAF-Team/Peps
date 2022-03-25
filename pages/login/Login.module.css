@@ -1,0 +1,21 @@
+.formControl {
+	width: 450px;
+}
+
+.loginForm {
+	width: 100%;
+	height: 55vh;
+	display: flex;
+	justify-content: center;
+}
+
+@media only screen and (min-width: 33.75em) {
+	.loginForm {
+		margin-top: 12vh;
+	}
+
+	.loginForm {
+		height: 60vh;
+		margin-top: 5vh;
+	}
+}

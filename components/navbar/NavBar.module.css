@@ -1,0 +1,100 @@
+.navbar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 0.5px solid black;
+}
+
+.brand {
+  font-family: Merriweather, sans-serif;
+  font-size: 32px;
+  margin-left: 1rem;
+}
+
+.displayResponsive {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.right {
+  display: flex;
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  align-items: center;
+  width: 100vw;
+}
+
+.burger {
+  padding: 5px;
+  margin-left: -10px;
+  display: grid;
+  place-items: center;
+}
+
+.btnResponsive {
+  display: none;
+}
+
+.animation {
+  transform: rotate(0deg);
+  transition: transform 0.5s;
+}
+
+.animationEnd {
+  transform: rotate(90deg);
+}
+
+.burgerResponsive {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 5px;
+  background: #ffd12f;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 2vw;
+}
+
+.img {
+  height: 40px;
+  width: 40px;
+  background-position: center;
+  background-size: cover;
+}
+
+@media only screen and (min-width: 33.75em) {
+  /* 540px */
+
+  .right {
+    width: initial;
+  }
+
+  .displayResponsive {
+    width: 100%;
+    display: contents;
+  }
+
+  .navbar {
+    padding: 0.75rem 3rem;
+  }
+
+  .btnResponsive {
+    display: contents;
+  }
+
+  .right {
+    margin-top: 0;
+    margin-bottom: initial;
+  }
+
+  .burgerResponsive {
+    display: none;
+  }
+}
