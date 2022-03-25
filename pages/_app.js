@@ -10,7 +10,6 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider, Button } from '@mantine/core';
 import moment from "moment";
 import "moment/locale/fr";
-
 moment.locale("fr");
 
 function MyApp({ Component, pageProps }) {
@@ -24,11 +23,6 @@ function MyApp({ Component, pageProps }) {
     setUser(result.data.user);
   }
 
-  console.log("********")
-  console.log(user)
-  console.log("********");
-
-  
   useEffect(() => {
     getUser();
   }, [token]);

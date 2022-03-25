@@ -20,12 +20,12 @@ const AddRecipesIngredients = ({ recipe, ingredients, units }) => {
 
   const unitsData = [];
   units.map((element) =>
-    unitsData.push({ value: element.id, label: element.name })
+    unitsData.push({ value: element.id.toString(), label: element.name })
   );
 
   const ingredientsData = [];
   ingredients.map((element) =>
-    ingredientsData.push({ value: element.id, label: element.name })
+    ingredientsData.push({ value: element.id.toString(), label: element.name })
   );
 
   async function addRecipeIngredients(params) {
