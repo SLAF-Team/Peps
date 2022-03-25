@@ -25,6 +25,7 @@ import {
 } from "@mantine/core";
 import ButtonForm from "../../components/ButtonForm";
 import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
+import { useNotifications } from "@mantine/notifications";
 
 const SelectedRecipe = ({ingredients, units}) => {
   const router = useRouter();
@@ -40,6 +41,7 @@ const SelectedRecipe = ({ingredients, units}) => {
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
   const personsRatio = personsValue / recipe?.persons;
+  const notifications = useNotifications();
 
   const getRecipe = async () => {
     if (!id) {
@@ -98,11 +100,6 @@ const SelectedRecipe = ({ingredients, units}) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    notifications.showNotification({
-      title: "Bravo!",
-      message: "Votre recette a été publié avec succès",
-      color: "green",
-    });
     getRecipe();
   };
 

@@ -23,10 +23,6 @@ console.log(token)
     setUser(result.data.user);
   }
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> 9f3705a1f2774dbc81a6711551a8f4b347d034d6
   useEffect(() => {
     getUser();
   }, [token]);

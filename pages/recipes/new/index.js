@@ -10,13 +10,8 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
-<<<<<<< HEAD
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-=======
 import { Select } from "@mantine/core";
 import { useRouter } from "next/router";
->>>>>>> 9f3705a1f2774dbc81a6711551a8f4b347d034d6
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
