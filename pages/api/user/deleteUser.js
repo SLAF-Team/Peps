@@ -13,8 +13,8 @@ export default async (req, res) => {
   const token = authorization.replace(/^Bearer\s/, "");
   const { id } = jwt.verify(token, process.env.JWT_KEY);
 
-  const isAuthor = await checkIfUser(req, id);
-  if (!isAuthor) {
+  const isUser = await checkIfUser(req, id);
+  if (!isUser) {
     res.status(403).json({ err: "Forbidden !!" });
     return;
   }
