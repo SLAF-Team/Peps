@@ -7,31 +7,35 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import ButtonSettings from "../../components/ButtonSettings";
+import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
-import { Select } from "@mantine/core";
 import prisma from "../../lib/prisma.ts";
+import EditRecipe from "../../components/EditRecipe";
 
 import {
   Modal,
-  LoadingOverlay,
   Tabs,
   Anchor,
   Skeleton,
   Accordion,
   NumberInput,
 } from "@mantine/core";
-import ButtonForm from "../../components/ButtonForm";
-import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
 import { useNotifications } from "@mantine/notifications";
 
-const SelectedRecipe = ({ ingredients, units }) => {
+const SelectedRecipe = ({
+  ingredients,
+  units,
+  countries,
+  types,
+  dishes,
+  tags,
+}) => {
   const router = useRouter();
   const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
@@ -90,6 +94,11 @@ const SelectedRecipe = ({ ingredients, units }) => {
     getRecipe();
   };
 
+  const handleEditRecipe = () => {
+    getRecipe();
+    setOpened(false);
+  };
+
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
@@ -98,28 +107,15 @@ const SelectedRecipe = ({ ingredients, units }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const editRecipe = async (event) => {
-    event.preventDefault();
-
-    await axios.put(
-      "/api/recipe/editRecipe",
-      {
-        id: recipe.id,
-        name: nameChange,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    getRecipe();
-  };
-
-  const handleName = (e) => {
-    setNameChange(e.target.value);
-  };
-
   async function deleteRecipe() {
-    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+    if (window.confirm("Souhaitez vous supprimer cette recette?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
+      });
+      notifications.showNotification({
+        title: "C'est la fin des haricots",
+        message: "Votre recette a bien été supprimée",
+        color: "green",
       });
       router.push("/recipes/");
     }
@@ -231,14 +227,25 @@ const SelectedRecipe = ({ ingredients, units }) => {
       </div>
       <div className="col-3">
         {isAuthor ? (
-          <div className={classes.button}>
-            <ButtonSettings
-              label="Editer"
-              type="warning"
-              handleClick={() => setOpened(true)}
-              href="#"
-            />
-          </div>
+          <>
+            <div className={classes.button}>
+              <ButtonSettings
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+              />
+            </div>
+
+            <div className={classes.button}>
+              <Button
+                label="Supprimer"
+                type="danger"
+                handleClick={() => deleteRecipe()}
+                href="#"
+              />
+            </div>
+          </>
         ) : null}
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.padding}>
@@ -327,8 +334,11 @@ const SelectedRecipe = ({ ingredients, units }) => {
             </div>
             <div>
               <ul>
-                <li className={classes.li} style={{display:"flex", alignItems:"center" }}>
-                  <a href={"/recipes"} style={{fontSize:"12px" }}>
+                <li
+                  className={classes.li}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <a href={"/recipes"} style={{ fontSize: "12px" }}>
                     Voir toutes les recettes
                   </a>
                 </li>
@@ -338,48 +348,18 @@ const SelectedRecipe = ({ ingredients, units }) => {
         </Skeleton>
       </div>
 
-      <Modal opened={opened} onClose={() => setOpened(false)}>
-        <form onSubmit={editRecipe}>
-          <label>Name</label> <br />
-          <input
-            name="recipeName"
-            type="text"
-            defaultValue={recipe.name}
-            onChange={handleName}
-          />
-          <br />
-          {/* <label>Convives</label>
-          <textarea
-            name="recipePerson"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.persons}
-            onChange={handlePersons}
-          />
-          <br />
-          <label>Etapes</label>
-          <textarea
-            name="recipeSteps"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.step}
-            onChange={handleSteps}
-          />
-          <label>Etapes</label>
-          <textarea
-            name="recipeSteps"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.step}
-            onChange={handleSteps}
-          /> */}
-          <EditRecipeIngredients
-            recipe={recipe}
-            units={units}
-            ingredients={ingredients}
-          />
-          <ButtonForm label="J'édite" theme="success" />
-        </form>
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
+        <EditRecipe
+          recipe={recipe}
+          user={user}
+          ingredients={ingredients}
+          units={units}
+          countries={countries}
+          types={types}
+          dishes={dishes}
+          tags={tags}
+          onSubmit={handleEditRecipe}
+        />
       </Modal>
     </div>
   );
@@ -388,10 +368,18 @@ const SelectedRecipe = ({ ingredients, units }) => {
 export async function getServerSideProps() {
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
+  const allTypes = await prisma.type.findMany();
+  const allCountries = await prisma.country.findMany();
+  const allDishes = await prisma.dish.findMany();
+  const allTags = await prisma.tag.findMany();
   return {
     props: {
       ingredients: allIngredients,
       units: allUnits,
+      dishes: allDishes,
+      types: allTypes,
+      countries: allCountries,
+      tags: allTags,
     },
   };
 }

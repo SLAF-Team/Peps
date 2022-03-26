@@ -6,15 +6,17 @@ import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
-const AddRecipesStep = ({ recipe, count }) => {
+const EditRecipesStep = ({ recipe, index }) => {
+  const inputStep = recipe.steps[index].text;
+  const inputStepId = recipe.steps[index].id;
+  const [stepValue, setStepValue] = useState(inputStep);
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
 
-  async function addRecipeStep(params) {
-    const { addStep } = formRef.current;
-    const step = addStep.value;
+  async function editRecipeStep() {
+    const step = stepValue;
     if (!step) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
@@ -27,11 +29,14 @@ const AddRecipesStep = ({ recipe, count }) => {
         {
           id: recipe.id,
           steps: {
-            create: [
-              {
-                text: step,
+            update: {
+              where: {
+                id: inputStepId,
               },
-            ],
+              data: {
+                text: stepValue,
+              },
+            },
           },
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -40,40 +45,68 @@ const AddRecipesStep = ({ recipe, count }) => {
     }
   }
 
+  async function deleteRecipeStep() {
+    await axios.put(
+      "/api/recipe/editRecipe",
+      {
+        id: recipe.id,
+        steps: {
+          deleteMany: [
+            {
+              id: inputStepId,
+            },
+          ],
+        },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setSubmitted(true);
+  }
+
   return (
     <div className={classes.block}>
       <form ref={formRef}>
         {submitted ? (
           <Textarea
             type="text"
-            name="addStep"
-            placeholder={`Etape ${count}`}
             autosize
             minRows={1}
+            value={stepValue}
+            onChange={(event) => setStepValue(event.currentTarget.value)}
             disabled
           />
         ) : (
           <Textarea
             type="text"
-            name="addStep"
-            placeholder={`Etape ${count}`}
             autosize
             minRows={1}
+            value={stepValue}
+            onChange={(event) => setStepValue(event.currentTarget.value)}
           />
         )}
         {submitted ? null : (
           <div className={classes.button}>
             <Button
-              label="Valider mon étape"
-              handleClick={() => addRecipeStep()}
+              label="Modifier"
+              handleClick={() => editRecipeStep()}
               href="#"
               type="success"
             />
           </div>
         )}
+        <div className={classes.button}>
+          {submitted ? null : (
+            <Button
+              label="Supprimer"
+              type="danger"
+              handleClick={() => deleteRecipeStep()}
+              href="#"
+            />
+          )}
+        </div>
       </form>
     </div>
   );
 };
 
-export default AddRecipesStep;
+export default EditRecipesStep;
