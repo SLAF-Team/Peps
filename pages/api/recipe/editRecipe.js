@@ -12,7 +12,7 @@ export default async (req, res) => {
 
     const isAuthor = await checkIfAuthor(req, "recipe", data.id);
     if (!isAuthor) {
-      res.status(403).json({ err: "Forbidden" });
+      res.status(403).json({ err: "Forbidden !!" });
       return;
     }
 
