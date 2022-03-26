@@ -27,7 +27,7 @@ const EditRecipe = ({
   const formRef = useRef();
   const token = Cookies.get("token");
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState(recipe.countryId.toString());
   const [typeValue, setTypeValue] = useState(recipe.typeId.toString());
@@ -106,7 +106,6 @@ const EditRecipe = ({
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setEditedRecipe(result.data)
       setSubmitted(true);
       setStep(step + 1);
     }
@@ -139,15 +138,7 @@ const EditRecipe = ({
       {step === 1 && (
         <>
           <form ref={formRef} className={classes.recipeform}>
-            <div className={classes.step}>
-              <Switch
-                onLabel="Publiée"
-                offLabel="Privée"
-                checked={checked}
-                onChange={(event) => setChecked(event.currentTarget.checked)}
-                size="lg"
-              />
-            </div>
+            <div className={classes.step}></div>
             <div className={classes.step}>
               <label className={classes.label}>Plat associé</label>
               <Select
@@ -211,6 +202,17 @@ const EditRecipe = ({
                 data={typesData}
                 searchable
                 clearable
+              />
+            </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Publication</label>
+
+              <Switch
+                onLabel="Oui"
+                offLabel="Non"
+                size="lg"
+                checked={checked}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
               />
             </div>
             <div className={classes.button}>

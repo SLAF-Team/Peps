@@ -14,7 +14,6 @@ const EditRecipesIngredients = ({
   recipe,
   ingredients,
   units,
-  onSubmit,
 }) => {
   const inputIngredient = recipe.ingredientsUnit[index].ingredientId.toString();
   const inputQuantity = recipe.ingredientsUnit[index].quantity;
@@ -75,7 +74,6 @@ const EditRecipesIngredients = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
-      onSubmit();
     }
   }
 
@@ -97,7 +95,6 @@ const EditRecipesIngredients = ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setSubmitted(true);
-    onSubmit();
   }
 
   return (
