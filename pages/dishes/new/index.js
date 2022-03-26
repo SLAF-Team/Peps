@@ -10,7 +10,6 @@ import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";
 import Button from "../../../components/Button";
-import { checkAdminAuth } from "../../../lib/authfront";
 
 const newDish = ({ regions }) => {
   const router = useRouter();
@@ -20,23 +19,6 @@ const newDish = ({ regions }) => {
   const [disable, setDisable] = useState(false);
   const [auth, setAuth] = useState(false);
   const notifications = useNotifications();
-
-  useEffect(() => {
-    if (token !== undefined) {
-      return;
-    } else {
-      notifications.showNotification({
-        title: "Connexion",
-        message: "Merci de vous connecter pour accéder à cette page",
-        color: "red",
-      });
-      router.push("/login");
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (checkAdminAuth(user) && checkLogAuth(user)) setAuth(true);
-  }, [user]);
 
   async function addNewDish(params) {
     setDisable(true);
@@ -73,77 +55,65 @@ const newDish = ({ regions }) => {
     }
   }
 
-  if (auth) {
-    return (
-      <>
-        <form ref={formRef} className={classes.size}>
-          <div className={classes.form}>
-            <h1>Formulaire de création de plat</h1>
-            <div>
-              <label>Titre</label>
-            </div>
-            <input
-              name="addTitle"
-              type="text"
-              placeholder="Le Bortsch"
-              className={classes.field}
-            />
-            <div>
-              <label>Description</label>
-            </div>
-            <input
-              name="addDescription"
-              type="text"
-              placeholder="Le Bortsch est un potage d'origine ukrainienne consommé dans de nombreux pays slaves ainsi qu'en d'Asie du Nord."
-              className={classes.field}
-            />
-            <div>
-              <label>Image (URL)</label>
-            </div>
-            <input
-              name="addImageUrl"
-              type="text"
-              placeholder="'leplusjolidesbortschs.com'"
-              className={classes.field}
-            />
-            {regions ? (
-              <>
-                <div>
-                  <label>Region</label>
-                </div>
-
-                <select name="addRegion" className={classes.field}>
-                  {regions.map((region) => (
-                    <option value={region.id} key={region.id}>
-                      {region.name}
-                    </option>
-                  ))}
-                </select>
-              </>
-            ) : null}
-            <div>
-              <Button
-                label="Créer un plat"
-                handleClick={() => addNewDish()}
-                href="#"
-                className="button"
-              />
-            </div>
+  return (
+    <>
+      <form ref={formRef} className={classes.size}>
+        <div className={classes.form}>
+          <h1>Formulaire de création de plat</h1>
+          <div>
+            <label>Titre</label>
           </div>
-        </form>
-      </>
-    );
-  } else {
-    return (
-      <p>
-        Veuillez vous{" "}
-        <b>
-          <a href="/login/">connecter</a>
-        </b>{" "}
-        pour créer un plat
-      </p>
-    );
-  }
+          <input
+            name="addTitle"
+            type="text"
+            placeholder="Le Bortsch"
+            className={classes.field}
+          />
+          <div>
+            <label>Description</label>
+          </div>
+          <input
+            name="addDescription"
+            type="text"
+            placeholder="Le Bortsch est un potage d'origine ukrainienne consommé dans de nombreux pays slaves ainsi qu'en d'Asie du Nord."
+            className={classes.field}
+          />
+          <div>
+            <label>Image (URL)</label>
+          </div>
+          <input
+            name="addImageUrl"
+            type="text"
+            placeholder="'leplusjolidesbortschs.com'"
+            className={classes.field}
+          />
+          {regions ? (
+            <>
+              <div>
+                <label>Region</label>
+              </div>
+
+              <select name="addRegion" className={classes.field}>
+                {regions.map((region) => (
+                  <option value={region.id} key={region.id}>
+                    {region.name}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : null}
+          <div>
+            <Button
+              label="Créer un plat"
+              handleClick={() => addNewDish()}
+              href="#"
+              className="button"
+            />
+          </div>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export async function getServerSideProps() {

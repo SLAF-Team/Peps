@@ -3,7 +3,6 @@ import UserList from "../../components/UserList";
 import classes from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
 import FilterSelector from "../../components/FilterSelector";
-import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
 import Button from "../../components/Button";
 import Cookies from "js-cookie";
@@ -24,10 +23,20 @@ const Profile = () => {
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(
+    user && list ? (user.id == list.userId ? true : false) : false
+  );
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
+
+  // check if is author
+
+  useEffect(() => {
+    user && list
+      ? setAuth(user.id == list.userId ? true : false)
+      : setAuth(false);
+  }, [user, list]);
 
   // search list + call axios
   async function searchList(data) {
@@ -93,12 +102,6 @@ const Profile = () => {
     setOpened(false);
     getList(filter);
   };
-
-  useEffect(() => {
-    if (!user && !list) {
-      setAuth(checkAuthorAuth(user, list));
-    }
-  }, [list, user]);
 
   useEffect(() => {
     getList("like");
@@ -180,7 +183,6 @@ const Profile = () => {
                 onChange={handleName}
               />
               <CheckboxGroup
-                // defaultValue={initialValue}
                 value={value}
                 onChange={setValue}
                 label="Retirer des recettes"
