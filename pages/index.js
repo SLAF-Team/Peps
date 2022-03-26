@@ -1,13 +1,15 @@
 import Image from "next/image";
 import prisma from "../lib/prisma.ts";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
+<<<<<<< HEAD
 
 import SearchBar from "../components/SearchBar/index";
+=======
+import SearchBarHome from "../components/SearchBarHome/index";
+>>>>>>> a653a5f6d192f1883d661e12582d38027b33b229
 import RecipeCard from "../components/recipeCard/index.jsx";
-import Link from "next/link";
-
 
 export default function Home({ recipes }) {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
@@ -24,31 +26,36 @@ export default function Home({ recipes }) {
     }
   };
 
-  console.log(filteredRecipes.slice(-1)[0])
-
   return (
     <main className={styles.main}>
-      <div className={styles.hero}>
-        <div className={styles.heroleft}>
-          <img
-            className={styles.heroimg}
-            src={filteredRecipes.slice(-1)[0].imageUrl}
-          ></img>
-        </div>
-        <div className={styles.heroright}>
-          <div className={styles.herotextblock}>
-            <p className={styles.p}>RECETTE</p>
-            <a className={styles.a} href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}>
-            <h1 className={styles.h1}>{filteredRecipes.slice(-1)[0].name}</h1>
-            </a>
-            <h4 className={styles.h4}>Damn, that's good</h4>
+      {filteredRecipes.length > 0 ? (
+        <div className={styles.hero}>
+          <div className={styles.heroleft}>
+            <img
+              className={styles.heroimg}
+              src={filteredRecipes.slice(-1)[0].imageUrl}
+            ></img>
+          </div>
+          <div className={styles.heroright}>
+            <div className={styles.herotextblock}>
+              <p className={styles.p}>RECETTE</p>
+              <a
+                className={styles.a}
+                href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
+              >
+                <h1 className={styles.h1}>
+                  {filteredRecipes.slice(-1)[0].name}
+                </h1>
+              </a>
+              <h4 className={styles.h4}>Damn, that's good</h4>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
       <div className={styles.search}>
         <h2 className={styles.h2}>Trouver une recette</h2>
         <div>
-          <SearchBar
+          <SearchBarHome
             placeholder="Chercher une recette"
             className={styles.search}
           />
@@ -56,20 +63,20 @@ export default function Home({ recipes }) {
       </div>
       <div className={styles.recipes}>
         <h3 className={styles.h3}>Nos dernières recettes</h3>
-        <div className="row">
-          {filteredRecipes &&
-            filteredRecipes
-              .slice(-4)
-              .map((recipe, i) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={i}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
-                  col="col-3 col-6-sm"
-                />
-              ))}
-        </div>
+      </div>
+      <div className="row">
+        {filteredRecipes &&
+          filteredRecipes
+            .slice(-4)
+            .map((recipe, i) => (
+              <RecipeCard
+                recipe={recipe}
+                key={i}
+                like_count={recipe?._count?.likes}
+                comment_count={recipe?._count?.comments}
+                col="col-3 col-6-sm"
+              />
+            ))}
       </div>
       <div></div>
       <Button href="/recipes" label="Voir toutes recettes" type="warning" />
@@ -87,6 +94,7 @@ export async function getServerSideProps() {
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
     },
+    where: { published: true },
   });
   return {
     props: {

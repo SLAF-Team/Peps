@@ -132,7 +132,7 @@ const SelectedDish = () => {
         <div className="col-3">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              {token != null && (
+              {token && (
                 <div className={classes.editBtn}>
                   <a
                     href="#"

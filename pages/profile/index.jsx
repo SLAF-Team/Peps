@@ -12,12 +12,16 @@ import Cookies from "js-cookie";
 import { useNotifications } from "@mantine/notifications";
 import List from "../../components/List/List";
 
-const Profile = ({ recipes, lists }) => {
+const Profile = ({ recipes }) => {
   const { query } = useRouter();
-  const { user, setUser } = useUserContext();
+  const { user } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
+<<<<<<< HEAD
   const [listChange, setListChange] = useState();
+=======
+  const [lists, setLists] = useState([]);
+>>>>>>> a653a5f6d192f1883d661e12582d38027b33b229
   const token = Cookies.get("token");
   const router = useRouter();
   const notifications = useNotifications();
@@ -35,16 +39,20 @@ const Profile = ({ recipes, lists }) => {
     }
   }, [token]);
 
-  async function getUser() {
-    const result = await axios.get("/api/user/getCurrentUser", {
+  useEffect(() => {
+    getLists();
+  }, []);
+
+  async function getLists() {
+    const result = await axios.get("/api/list/getLists", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setUser(result.data.user);
+    setLists(result.data);
   }
 
-  useEffect(() => {
-    getUser();
-  }, [listChange]);
+  const handleCreateList = () => {
+    getLists();
+  };
 
   useEffect(() => {
     if (query.list) {
@@ -63,9 +71,16 @@ const Profile = ({ recipes, lists }) => {
     setStyle(true);
   };
 
-  const recipesFromUser = user
-    ? recipes.filter((element) => element.cookId === user.id)
+  const privateRecipesFromUser = user
+    ? recipes.filter((element) => element.cookId === user.id && element.published === false)
     : null;
+
+      const publishedRrecipesFromUser = user
+        ? recipes.filter(
+            (element) =>
+              element.cookId === user.id && element.published === true
+          )
+        : null;
 
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
@@ -82,19 +97,36 @@ const Profile = ({ recipes, lists }) => {
         style={style}
       />
       {!contribution ? (
-        <div className={styles.cards}>
-          <div className="row">
-            {recipesFromUser?.map((recipe, index) => (
-              <RecipeCard
-                recipe={recipe}
-                key={index}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
-                col="col-3 col-6-sm"
-              />
-            ))}
+        <>
+          <div className={styles.cards}>
+            <h3>Publiées</h3>
+            <div className="row">
+              {publishedRrecipesFromUser?.map((recipe, index) => (
+                <RecipeCard
+                  recipe={recipe}
+                  key={index}
+                  like_count={recipe?._count?.likes}
+                  comment_count={recipe?._count?.comments}
+                  col="col-3 col-6-sm"
+                />
+              ))}
+            </div>
           </div>
-        </div>
+          <div className={styles.cards}>
+            <h3>Privées</h3>
+            <div className="row">
+              {privateRecipesFromUser?.map((recipe, index) => (
+                <RecipeCard
+                  recipe={recipe}
+                  key={index}
+                  like_count={recipe?._count?.likes}
+                  comment_count={recipe?._count?.comments}
+                  col="col-3 col-6-sm"
+                />
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <>
           <div className="row">
@@ -108,7 +140,7 @@ const Profile = ({ recipes, lists }) => {
               </div>
             </div>
           </div>
-          {listsFromUser?.map((list, index) => (
+          {listsFromUser.map((list, index) => (
             <div className="row">
               <div className={styles.listCards}>
                 <List list={list} key={index} />
@@ -116,7 +148,7 @@ const Profile = ({ recipes, lists }) => {
             </div>
           ))}
           <div className={styles.center}>
-            <AddList user={user} setListChange={setListChange} />
+            <AddList user={user} onCreate={handleCreateList} />
           </div>
         </>
       )}
@@ -130,16 +162,9 @@ export async function getServerSideProps(context) {
       _count: { select: { likes: true, comments: true } },
     },
   });
-  const allLists = await prisma.list.findMany({
-    include: {
-      recipes: true,
-      user: { select: { name: true } },
-    },
-  });
   return {
     props: {
       recipes: allRecipes,
-      lists: allLists,
     },
   };
 }

@@ -8,14 +8,10 @@ import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
-import { useUserContext } from "../../context/UserContext.js";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
-  const { user } = useUserContext();
   const { query } = useRouter();
-  const token = Cookies.get("token");
 
   // set up state for multiselect
   const idTags = [];
@@ -81,7 +77,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         _count: { select: { likes: true, comments: true } },
       },
     };
-    const wheres = {};
+    const wheres = { published: true };
     if (filterCountry.length > 0) {
       wheres.countryId = { in: filterCountry };
     }
@@ -104,7 +100,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
     filterCall.where = wheres;
     const data = filter ? filterCall : null;
-    console.log(data);
     getRecipes(data);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
@@ -230,6 +225,7 @@ export async function getServerSideProps() {
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
     },
+    where: { published: true },
   });
   const allTags = await prisma.tag.findMany({});
   const allTypes = await prisma.type.findMany({});
