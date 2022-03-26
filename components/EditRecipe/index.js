@@ -1,24 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useUserContext } from "../../../context/UserContext";
-import AddRecipesIngredients from "../../../components/addRecipe/addRecipesIngredients";
-import AddRecipesTags from "../../../components/addRecipe/addRecipesTags";
-import AddRecipesSteps from "../../../components/addRecipe/addRecipesSteps";
-import prisma from "../../../lib/prisma.ts";
-import Button from "../../../components/Button";
+import AddRecipesIngredients from "../addRecipe/addRecipesIngredients";
+import AddRecipesTags from "../addRecipe/addRecipesTags";
+import AddRecipesSteps from "../addRecipe/addRecipesSteps";
+import Button from "../Button";
 import classes from "./Recipe.module.css";
-import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
 import { Select, Stepper } from "@mantine/core";
 import { useRouter } from "next/router";
 
-const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients, units }) => {
+const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
   const formRef = useRef();
-  const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [recipe, setRecipe] = useState(null);
   const [checked, setChecked] = useState(true);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
@@ -26,8 +21,39 @@ const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
-  const [dishValue, setDishValue] = useState("");
+  const [dishValue, setDishValue] = useState(recipe.dishId);
   const router = useRouter();
+  console.log(recipe)
+
+    // const editRecipe = async (event) => {
+    //   event.preventDefault();
+  //     await axios.put(
+  //       "/api/recipe/editRecipe",
+  //       {
+  //         id: recipe.id,
+  //         name: nameChange,
+  //       },
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     getRecipe();
+  //   };
+
+  // const handleName = (e) => {
+  //   setNameChange(e.target.value);
+  // };
+
+  // async function deleteRecipe() {
+  //   if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+  //     await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     router.push("/recipes/");
+  //   }
+  // }
+
+
+  // ajouter une switch
+  // ajouter les valeurs de base
 
   // bloquer la route si pas l'utilisateur
     useEffect(() => {
@@ -89,7 +115,6 @@ const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
-      setRecipe(result.data);
       setStep(step + 1);
     }
   }
@@ -105,7 +130,7 @@ const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
 
   return (
     <div className={classes.main}>
-      <h1 className={classes.title}>Ajouter une recette</h1>
+      <h1 className={classes.title}>Modifier ma recette</h1>
       <Stepper
         active={step}
         breakpoint="sm"
@@ -113,10 +138,10 @@ const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         color="yellow"
         iconSize={32}
       >
-        <Stepper.Step label="Associer une recette"></Stepper.Step>
+        <Stepper.Step label="Ma recette"></Stepper.Step>
         <Stepper.Step label="Les ingrédients"></Stepper.Step>
         <Stepper.Step label="Les étapes"></Stepper.Step>
-        <Stepper.Step label="Ajouter des tags"></Stepper.Step>
+        <Stepper.Step label="Les tags"></Stepper.Step>
       </Stepper>
       {step === 1 && (
         <>
@@ -302,23 +327,4 @@ const editRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
   );
 };
 
-export async function getServerSideProps() {
-  const allTypes = await prisma.type.findMany();
-  const allCountries = await prisma.country.findMany();
-  const allDishes = await prisma.dish.findMany();
-  const allIngredients = await prisma.ingredient.findMany();
-  const allUnits = await prisma.unit.findMany();
-  const allTags = await prisma.tag.findMany();
-  return {
-    props: {
-      dishes: allDishes,
-      types: allTypes,
-      countries: allCountries,
-      tags: allTags,
-      ingredients: allIngredients,
-      units: allUnits,
-    },
-  };
-}
-
-export default editRecipe;
+export default EditRecipe;
