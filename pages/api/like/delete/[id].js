@@ -1,5 +1,6 @@
 import prisma from "../../../../lib/prisma.ts";
 import jwt from "jsonwebtoken";
+import {checkAut}
 
 export default async (req, res) => {
 
