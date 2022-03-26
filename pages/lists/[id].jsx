@@ -11,7 +11,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Modal } from "@mantine/core";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -25,7 +24,7 @@ const Profile = () => {
   const notifications = useNotifications();
   const [auth, setAuth] = useState();
   const [opened, setOpened] = useState(false);
-  const [nameChange, setNameChange] = useState();
+  const [nameChange, setNameChange] = useState("");
   const [value, setValue] = useState([]);
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
@@ -93,11 +92,17 @@ const Profile = () => {
     getList(filter);
   };
 
+  //editlist
+  useEffect(() => {
+    if (list?.length > 0) {
+      setNameChange(list[0].name);
+    }
+  }, [list]);
+
+  // filter
   useEffect(() => {
     getList("like");
   }, [id]);
-
-  // Filter
 
   useEffect(() => {
     getList(filter);
@@ -126,7 +131,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    user && user.id ? setIdOfUserConnected(user.id) : console.log("");
+    user && user.id ? setIdOfUserConnected(user.id) : null;
   }, [searchList]);
 
   useEffect(() => {
@@ -178,10 +183,10 @@ const Profile = () => {
             <form onSubmit={editList}>
               <label>Nom</label> <br />
               <input
-                name="listName"
-                type="text"
-                ref={list.name}
                 onChange={handleName}
+                className={classes.field}
+                value={nameChange}
+                type="text"
               />
               <CheckboxGroup
                 value={value}
@@ -201,14 +206,17 @@ const Profile = () => {
                   <p>Tu n'as pas encore de liste</p>
                 )}
               </CheckboxGroup>
-              <button type="submit">J'édite</button>
+              <button className={classes.btnPrimary} type="submit">
+                J'édite
+              </button>
             </form>
+            <div className={classes.button}>
             <Button
               label="Ajouter à d'autres recettes"
               type="success"
               href="/recipes"
-              className={classes.button}
             />
+            </div>
           </Modal>
         </>
       )}

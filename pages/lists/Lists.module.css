@@ -36,3 +36,15 @@
 	margin-top: 0.25rem;
   margin-right: 0.25rem;
 }
+
+.field {
+	background: #ffffff;
+	border: 0.7px solid #000000;
+	box-sizing: border-box;
+	border-radius: 4px;
+	padding: 10px;
+	font-family: Lato, sans-serif;
+	width: 13rem;
+	margin-bottom: 0.25rem;
+	margin-top: 0.25rem;
+}
