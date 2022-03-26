@@ -9,14 +9,17 @@ import { useNotifications } from "@mantine/notifications";
 import { Select } from "@mantine/core";
 import { NumberInput } from "@mantine/core";
 
-const EditRecipesIngredients = ({ recipe, ingredients, units }) => {
+const EditRecipesIngredients = ({ index, recipe, ingredients, units, onSubmit }) => {
+  const inputIngredient = recipe.ingredientsUnit[index].ingredientId.toString();
+  const inputQuantity = recipe.ingredientsUnit[index].quantity;
+  const inputUnit = recipe.ingredientsUnit[index].unitId.toString();
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [submitted, setSubmitted] = useState(false);
-  const [unitValue, setUnitValue] = useState("");
-  const [ingredientValue, setIngredientValue] = useState("");
-  const [quantityValue, setQuantityValue] = useState("");
+  const [unitValue, setUnitValue] = useState(inputUnit);
+  const [ingredientValue, setIngredientValue] = useState(inputIngredient);
+  const [quantityValue, setQuantityValue] = useState(inputQuantity);
 
   const unitsData = [];
   units.map((element) =>
@@ -28,7 +31,7 @@ const EditRecipesIngredients = ({ recipe, ingredients, units }) => {
     ingredientsData.push({ value: element.id.toString(), label: element.name })
   );
 
-  async function addRecipeIngredients(params) {
+  async function editRecipeIngredients() {
     const ingredient = ingredientValue;
     const quantity = quantityValue;
     const unit = unitValue;
@@ -44,6 +47,13 @@ const EditRecipesIngredients = ({ recipe, ingredients, units }) => {
         {
           id: recipe.id,
           ingredientsUnit: {
+            deleteMany: [
+              {
+                ingredientId: parseInt(inputIngredient),
+                unitId: parseInt(inputUnit),
+                quantity: parseInt(inputQuantity),
+              },
+            ],
             create: [
               {
                 ingredientId: parseInt(ingredient),
@@ -56,7 +66,29 @@ const EditRecipesIngredients = ({ recipe, ingredients, units }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
+      onSubmit()
     }
+  }
+
+  async function editRecipeIngredients() {
+    await axios.put(
+      "/api/recipe/editRecipe",
+      {
+        id: recipe.id,
+        ingredientsUnit: {
+          deleteMany: [
+            {
+              ingredientId: parseInt(inputIngredient),
+              unitId: parseInt(inputUnit),
+              quantity: parseInt(inputQuantity),
+            },
+          ],
+        },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setSubmitted(true);
+    onSubmit();
   }
 
   return (
@@ -140,9 +172,19 @@ const EditRecipesIngredients = ({ recipe, ingredients, units }) => {
         <div className={classes.button}>
           {submitted ? null : (
             <Button
-              label="Ajouter cet ingrédient"
+              label="Modifier"
               type="success"
-              handleClick={() => addRecipeIngredients()}
+              handleClick={() => editRecipeIngredients()}
+              href="#"
+            />
+          )}
+        </div>
+        <div className={classes.button}>
+          {submitted ? null : (
+            <Button
+              label="Supprimer"
+              type="danger"
+              handleClick={() => deleteRecipeIngredients()}
               href="#"
             />
           )}

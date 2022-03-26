@@ -16,6 +16,8 @@ export default async (req, res) => {
       return;
     }
 
+    console.log(data)
+
   try {
     const result = await prisma.recipe.update({
       where: {

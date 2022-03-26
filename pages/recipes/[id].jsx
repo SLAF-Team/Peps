@@ -7,6 +7,7 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import ButtonSettings from "../../components/ButtonSettings";
+import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
@@ -101,6 +102,15 @@ const SelectedRecipe = ({
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  async function deleteRecipe() {
+    if (window.confirm("Souhaitez vous supprimer cette recette?")) {
+      await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/recipes/");
+    }
+  }
 
   if (!recipe) {
     return null;
@@ -208,14 +218,25 @@ const SelectedRecipe = ({
       </div>
       <div className="col-3">
         {isAuthor ? (
-          <div className={classes.button}>
-            <ButtonSettings
-              label="Editer"
-              type="warning"
-              handleClick={() => setOpened(true)}
-              href="#"
-            />
-          </div>
+          <>
+            <div className={classes.button}>
+              <ButtonSettings
+                label="Editer"
+                type="warning"
+                handleClick={() => setOpened(true)}
+                href="#"
+              />
+            </div>
+
+            <div className={classes.button}>
+              <Button
+                label="Supprimer"
+                type="danger"
+                handleClick={() => deleteRecipe()}
+                href="#"
+              />
+            </div>
+          </>
         ) : null}
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.padding}>
@@ -318,11 +339,11 @@ const SelectedRecipe = ({
         </Skeleton>
       </div>
 
-      <Modal opened={opened} onClose={() => setOpened(false)}>
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
         <EditRecipe
           recipe={recipe}
           user={user}
-          ingredient={ingredients}
+          ingredients={ingredients}
           units={units}
           countries={countries}
           types={types}

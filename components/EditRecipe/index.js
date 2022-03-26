@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import EditRecipesIngredients from "./editRecipesIngredients";
-import EditRecipesStep from "./editRecipesSteps";
+import AddRecipesIngredients from "./../addRecipe/addRecipesIngredients";
+import AddRecipesSteps from "./../addRecipe/addRecipesSteps";import EditRecipesStep from "./editRecipesSteps";
 import EditRecipesTags from "./editRecipesTags";
 import Button from "../Button";
 import classes from "./Recipe.module.css";
@@ -25,7 +26,7 @@ const EditRecipe = ({
   const formRef = useRef();
   const token = Cookies.get("token");
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState(recipe.countryId.toString());
   const [typeValue, setTypeValue] = useState(recipe.typeId.toString());
@@ -49,17 +50,6 @@ const EditRecipe = ({
       router.push(`/recipes/${recipe.id}`);
     }
   }, [user, recipe]);
-
-  // async function deleteRecipe() {
-  //   if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-  //     await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     router.push("/recipes/");
-  //   }
-  // }
-
-  console.log(ingredients)
   
   const countriesData = [];
   countries.map((element) =>
@@ -243,9 +233,21 @@ const EditRecipe = ({
           <div className={classes.ingredientform}>
             {recipe ? (
               <>
-                {[...Array(count)].map((e, i) => {
+                {recipe.ingredientsUnit.map((e, i) => {
                   return (
                     <EditRecipesIngredients
+                      recipe={editedRecipe}
+                      index={i}
+                      onSubmit={setEditedRecipe}
+                      key={i}
+                      ingredients={ingredients}
+                      units={units}
+                    />
+                  );
+                })}
+                {[...Array(count)].map((e, i) => {
+                  return (
+                    <AddRecipesIngredients
                       recipe={editedRecipe}
                       onSubmit={setEditedRecipe}
                       key={i}
@@ -344,3 +346,4 @@ const EditRecipe = ({
 };
 
 export default EditRecipe;
+
