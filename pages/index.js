@@ -3,6 +3,7 @@ import prisma from "../lib/prisma.ts";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
+import SearchBar from "../components/SearchBar/index";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 
@@ -23,26 +24,30 @@ export default function Home({ recipes }) {
 
   return (
     <main className={styles.main}>
-      <div className={styles.hero}>
-        <div className={styles.heroleft}>
-          <img
-            className={styles.heroimg}
-            src={filteredRecipes.slice(-1)[0].imageUrl}
-          ></img>
-        </div>
-        <div className={styles.heroright}>
-          <div className={styles.herotextblock}>
-            <p className={styles.p}>RECETTE</p>
-            <a
-              className={styles.a}
-              href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
-            >
-              <h1 className={styles.h1}>{filteredRecipes.slice(-1)[0].name}</h1>
-            </a>
-            <h4 className={styles.h4}>Damn, that's good</h4>
+      {filteredRecipes.length > 0 ? (
+        <div className={styles.hero}>
+          <div className={styles.heroleft}>
+            <img
+              className={styles.heroimg}
+              src={filteredRecipes.slice(-1)[0].imageUrl}
+            ></img>
+          </div>
+          <div className={styles.heroright}>
+            <div className={styles.herotextblock}>
+              <p className={styles.p}>RECETTE</p>
+              <a
+                className={styles.a}
+                href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
+              >
+                <h1 className={styles.h1}>
+                  {filteredRecipes.slice(-1)[0].name}
+                </h1>
+              </a>
+              <h4 className={styles.h4}>Damn, that's good</h4>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
       <div className={styles.search}>
         <h2 className={styles.h2}>Trouver une recette</h2>
         <div>

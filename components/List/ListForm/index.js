@@ -79,11 +79,13 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   return (
     <>
       <ListsList lists={lists} />
-      <div className={styles.form}>
-        <a href="#" className={styles.btn} onClick={() => handleClick()}>
-          Ajouter
-        </a>
-      </div>
+      {user ? (
+        <div className={styles.form}>
+          <a href="#" className={styles.btn} onClick={() => handleClick()}>
+            Ajouter
+          </a>
+        </div>
+      ) : null}
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <p>Ajouter à une nouvelle liste</p>
         <form ref={formRef}>

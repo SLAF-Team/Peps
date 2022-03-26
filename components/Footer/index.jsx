@@ -34,15 +34,28 @@ const Footer = () => {
             <div className={styles.title}>
               <span>Mon espace</span>
             </div>
-            <Link href="/">
-              <p className={styles.link}>Home</p>
-            </Link>
-            <Link href="/profile">
-              <p className={styles.link}>Mon Profil</p>
-            </Link>
-            <Link href="/profile?list=true" as="/profile">
-              <p className={styles.link}>Mes listes</p>
-            </Link>
+            {user ? (
+              <>
+                <Link href="/">
+                  <p className={styles.link}>Accueil</p>
+                </Link>
+                <Link href="/profile">
+                  <p className={styles.link}>Mon Profil</p>
+                </Link>
+                <Link href="/profile?list=true" as="/profile">
+                  <p className={styles.link}>Mes Listes</p>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/login">
+                  <p className={styles.link}>Connexion</p>
+                </Link>
+                <Link href="/login">
+                  <p className={styles.link}>Inscription</p>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="col-3">
