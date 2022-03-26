@@ -55,10 +55,14 @@ const EditUser = ({ user, handleUpdateUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     editUser();
+    handleUpdateUser();
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
+      <button onClick={() => handleUpdateUser()} className={styles.btnDanger}>
+        FERMER
+      </button>
       <div>
         <input
           onChange={handleName}
