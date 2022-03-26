@@ -119,6 +119,10 @@ const NavBar = () => {
                   },
                 })}
               >
+                <Menu.Label>Recettes</Menu.Label>
+                <Menu.Item component={NextLink} href="/recipes">
+                  Toutes les recettes
+                </Menu.Item>
                 <Menu.Label>Profil</Menu.Label>
                 <Menu.Item component={NextLink} href="/profile">
                   Mon Profil

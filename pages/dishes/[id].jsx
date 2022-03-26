@@ -170,15 +170,34 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul>
+                <ul style={{paddingInlineStart:"0px"}}>
                   {dish?.updates.map((update, index) => (
-                    <p key={index}>
+                    <li key={index} style={{fontSize:"9px", listStyle:'none',}}>
                       Modifié par {update.user.name}{" "}
                       {moment(update.createdAt).fromNow()}
-                    </p>
+                    </li>
                   ))}
                 </ul>
               </div>
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}></p>
+              </div>
+            </div>
+            <div>
+              <ul>
+                <li
+                  className={classes.li}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <a href={"/dishes"} style={{ fontSize: "12px", textAlign: "center" }}>
+                    Voir tous les plats
+                  </a>
+                </li>
+              </ul>
             </div>
           </Skeleton>
         </div>
