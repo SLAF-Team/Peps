@@ -321,6 +321,24 @@ const SelectedRecipe = ({ ingredients, units }) => {
             </div>
           </div>
         </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.padding}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}></p>
+              </div>
+            </div>
+            <div>
+              <ul>
+                <li className={classes.li} style={{display:"flex", alignItems:"center" }}>
+                  <a href={"/recipes"} style={{fontSize:"12px" }}>
+                    Voir toutes les recettes
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Skeleton>
       </div>
 
       <Modal opened={opened} onClose={() => setOpened(false)}>
