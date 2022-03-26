@@ -3,12 +3,8 @@ import prisma from "../lib/prisma.ts";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
-<<<<<<< HEAD
-
 import SearchBar from "../components/SearchBar/index";
-=======
 import SearchBarHome from "../components/SearchBarHome/index";
->>>>>>> a653a5f6d192f1883d661e12582d38027b33b229
 import RecipeCard from "../components/recipeCard/index.jsx";
 
 export default function Home({ recipes }) {
