@@ -43,6 +43,8 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      setLikes(likes + 1);
+      setIsLiked(!isLiked);
     }
   }
 
@@ -50,18 +52,16 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
     await axios.delete(`/api/like/delete/${recipe.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    setLikes(likes - 1);
+    setIsLiked(!isLiked);
   }
 
   const handleDeleteLike = () => {
     removeLike();
-    setLikes(likes - 1);
-    setIsLiked(!isLiked);
   };
 
   const handleCreateLike = () => {
     addLike();
-    setLikes(likes + 1);
-    setIsLiked(!isLiked);
   };
 
   return (
