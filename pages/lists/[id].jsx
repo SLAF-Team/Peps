@@ -11,7 +11,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Modal } from "@mantine/core";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 
 const Profile = () => {
   const { user } = useUserContext();
@@ -23,25 +22,13 @@ const Profile = () => {
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-  // const [auth, setAuth] = useState(
-    //   user && list ? (user.id == list.userId ? true : false) : false
-    // );
   const [auth, setAuth] = useState();
   const [opened, setOpened] = useState(false);
-  const [nameChange, setNameChange] = useState();
+  const [nameChange, setNameChange] = useState("");
   const [value, setValue] = useState([]);
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
-  
-  // check if is author
 
-  
-  
-  
-  
-  
-  // update list bloc
-  
   // search list + call axios
   async function searchList(data) {
     try {
@@ -54,7 +41,7 @@ const Profile = () => {
       console.log(err);
     }
   }
-  
+
   // getlist
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
@@ -76,12 +63,11 @@ const Profile = () => {
     };
     searchList(data);
   }
-  
-  
+
   const handleName = (e) => {
     setNameChange(e.target.value);
   };
-  
+
   const editList = async (event) => {
     event.preventDefault();
     const data = [];
@@ -96,7 +82,7 @@ const Profile = () => {
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
-      );
+    );
     notifications.showNotification({
       title: "Bravo !",
       message: "Votre liste a bien été mise à jour",
@@ -105,17 +91,23 @@ const Profile = () => {
     setOpened(false);
     getList(filter);
   };
-  
+
+  //editlist
+  useEffect(() => {
+    if (list?.length > 0) {
+      setNameChange(list[0].name);
+    }
+  }, [list]);
+
+  // filter
   useEffect(() => {
     getList("like");
   }, [id]);
-  
-  // Filter
 
   useEffect(() => {
     getList(filter);
   }, [filter]);
-  
+
   const handleSelect = (event) => {
     setFilter(event);
   };
@@ -128,7 +120,7 @@ const Profile = () => {
       router.push("/profile?list=true");
     }
   }
-  
+
   const handleDeleteList = () => {
     deleteList();
     notifications.showNotification({
@@ -139,31 +131,18 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    user && user.id
-    ?
-    setIdOfUserConnected(user.id)
-    :
-    console.log('')
-  }, [searchList])
-  
+    user && user.id ? setIdOfUserConnected(user.id) : null;
+  }, [searchList]);
+
   useEffect(() => {
-    list && (
-      setIdOfOwnerList(list[0].userId)
-      )
-    }, [searchList, getList])
-    
-    useEffect(() => {
-      console.log(idOfUserConnected)
-      console.log(idOfOwnerList)
+    list && setIdOfOwnerList(list[0].userId);
+  }, [searchList, getList]);
 
-    }, [idOfUserConnected, idOfOwnerList])
-    
-
-    useEffect(() => {
-      idOfUserConnected && idOfOwnerList
-        ? setAuth(idOfUserConnected == idOfOwnerList ? true : false)
-        : setAuth(false);
-    }, [idOfUserConnected, idOfOwnerList]);
+  useEffect(() => {
+    idOfUserConnected && idOfOwnerList
+      ? setAuth(idOfUserConnected == idOfOwnerList ? true : false)
+      : setAuth(false);
+  }, [idOfUserConnected, idOfOwnerList]);
 
   return (
     <>
@@ -172,21 +151,18 @@ const Profile = () => {
           <UserList user={list[0]} color="#26c485" />
           {auth && (
             <>
-              <Button
-                label="Supprimer"
-                type="danger"
-                handleClick={() => handleDeleteList()}
-                href="#"
-                className={classes.button}
-              />
-              <br></br>
-              <ButtonSettings
-                label="Editer"
-                type="warning"
-                handleClick={() => setOpened(true)}
-                href="#"
-                className={classes.button}
-              />
+              <button
+                onClick={() => handleDeleteList()}
+                className={classes.btnDanger}
+              >
+                Supprimer
+              </button>
+              <button
+                onClick={() => setOpened(true)}
+                className={classes.btnPrimary}
+              >
+                Editer
+              </button>
             </>
           )}
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
@@ -207,10 +183,10 @@ const Profile = () => {
             <form onSubmit={editList}>
               <label>Nom</label> <br />
               <input
-                name="listName"
-                type="text"
-                ref={list.name}
                 onChange={handleName}
+                className={classes.field}
+                value={nameChange}
+                type="text"
               />
               <CheckboxGroup
                 value={value}
@@ -230,14 +206,17 @@ const Profile = () => {
                   <p>Tu n'as pas encore de liste</p>
                 )}
               </CheckboxGroup>
-              <button type="submit">J'édite</button>
+              <button className={classes.btnPrimary} type="submit">
+                J'édite
+              </button>
             </form>
+            <div className={classes.button}>
             <Button
               label="Ajouter à d'autres recettes"
               type="success"
               href="/recipes"
-              className={classes.button}
             />
+            </div>
           </Modal>
         </>
       )}

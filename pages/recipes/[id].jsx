@@ -6,12 +6,9 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
-import Button from "../../components/Button";
 import ButtonSettings from "../../components/ButtonSettings";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
-import Layout from "../../components/layout";
-import heart from "../../assets/images/heart.svg";
 import { Select } from "@mantine/core";
 import prisma from "../../lib/prisma.ts";
 
