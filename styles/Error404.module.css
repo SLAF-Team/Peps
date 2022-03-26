@@ -1,0 +1,24 @@
+.container {
+  margin-top: 20px;
+  background-image: url("/bg404.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-height:80vh;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+.textbox {
+  background: rgba(255,255,255,0.5); 
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  color: white;
+}
+
