@@ -68,6 +68,7 @@ const ListForm = ({ lists, recipe, onCreate }) => {
       message: "Votre liste a bien été mise à jour",
       color: "green",
     });
+    setOpened(false);
   }
 
   const handleEditClick = () => {
