@@ -1,46 +1,54 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AddRecipesIngredients from "../addRecipe/addRecipesIngredients";
-import AddRecipesTags from "../addRecipe/addRecipesTags";
-import AddRecipesSteps from "../addRecipe/addRecipesSteps";
+import EditRecipesIngredients from "./editRecipesIngredients";
+import EditRecipesStep from "./editRecipesSteps";
+import EditRecipesTags from "./editRecipesTags";
 import Button from "../Button";
 import classes from "./Recipe.module.css";
 import { useNotifications } from "@mantine/notifications";
 import { Select, Stepper } from "@mantine/core";
 import { useRouter } from "next/router";
+import { Switch } from "@mantine/core";
 
-const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients, units }) => {
+const EditRecipe = ({
+  user,
+  recipe,
+  countries,
+  types,
+  dishes,
+  tags,
+  ingredients,
+  units,
+}) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [checked, setChecked] = useState(true);
-  const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
-  const [countryValue, setCountryValue] = useState("");
-  const [typeValue, setTypeValue] = useState("");
-  const [dishValue, setDishValue] = useState(recipe.dishId);
+  const [countryValue, setCountryValue] = useState(recipe.countryId.toString());
+  const [typeValue, setTypeValue] = useState(recipe.typeId.toString());
+  const [dishValue, setDishValue] = useState(recipe.dishId.toString());
+  const [personsValue, setPersonsValue] = useState(recipe.persons);
+  const [nameValue, setNameValue] = useState(recipe.name);
+  const [imageUrlValue, setImageUrlValue] = useState(recipe.imageUrl);
+  const [checked, setChecked] = useState(recipe.published);
   const router = useRouter();
-  console.log(recipe)
+  const [editedRecipe, setEditedRecipe] = useState(recipe)
 
-    // const editRecipe = async (event) => {
-    //   event.preventDefault();
-  //     await axios.put(
-  //       "/api/recipe/editRecipe",
-  //       {
-  //         id: recipe.id,
-  //         name: nameChange,
-  //       },
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     getRecipe();
-  //   };
-
-  // const handleName = (e) => {
-  //   setNameChange(e.target.value);
-  // };
+  useEffect(() => {
+    if (recipe.cookId === user.id) {
+      return;
+    } else {
+      notifications.showNotification({
+        title: "Edition",
+        message: "Vous n'avez pas les droit pour éditer cette recette",
+        color: "red",
+      });
+      router.push(`/recipes/${recipe.id}`);
+    }
+  }, [user, recipe]);
 
   // async function deleteRecipe() {
   //   if (window.confirm("Souhaitez vous supprimer ce plat?")) {
@@ -51,25 +59,8 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
   //   }
   // }
 
-
-  // ajouter une switch
-  // ajouter les valeurs de base
-
-  // bloquer la route si pas l'utilisateur
-    useEffect(() => {
-      if (recipe.userId === user.id) {
-        return;
-      } else {
-        notifications.showNotification({
-          title: "Edition",
-          message: "Vous n'avez pas les droit pour éditer cette recette",
-          color: "red",
-        });
-        router.push(`/recipes/${recipe.id}`);
-      }
-    }, [user, recipe]);
-
-
+  console.log(ingredients)
+  
   const countriesData = [];
   countries.map((element) =>
     countriesData.push({ value: element.id.toString(), label: element.name })
@@ -83,16 +74,26 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
     dishesData.push({ value: element.id.toString(), label: element.title })
   );
 
-  // add Recipe
-  async function addNewRecipe(params) {
-    const { addName, addImageUrl, addPersons } = formRef.current;
-    const name = addName.value;
-    const imageUrl = addImageUrl.value;
+  const handleName = (e) => {
+    setNameValue(e.target.value);
+  };
+
+  const handleImageUrl = (e) => {
+    setImageUrlValue(e.target.value);
+  };
+
+  const handlePersons = (e) => {
+    setPersonsValue(e.target.value);
+  };
+
+  // edit Recipe
+  async function editRecipe() {
+    const name = nameValue;
+    const imageUrl = imageUrlValue;
     const country = countryValue;
     const dish = dishValue;
     const type = typeValue;
-    const cook = user;
-    const persons = addPersons.value;
+    const persons = personsValue;
     if (!name || !persons) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire !",
@@ -100,13 +101,13 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         color: "red",
       });
     } else {
-      const result = await axios.post(
-        "/api/recipe/addRecipe",
+      const result = await axios.put(
+        "/api/recipe/editRecipe",
         {
+          id: recipe.id,
           name,
           imageUrl,
           countryId: parseInt(country),
-          cookId: parseInt(cook.id),
           dishId: parseInt(dish),
           typeId: parseInt(type),
           published: JSON.parse(checked),
@@ -114,6 +115,7 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      setEditedRecipe(result.data)
       setSubmitted(true);
       setStep(step + 1);
     }
@@ -146,19 +148,26 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
       {step === 1 && (
         <>
           <form ref={formRef} className={classes.recipeform}>
-            {dishes ? (
-              <div className={classes.step}>
-                <label className={classes.label}>Plat associé</label>
-                <Select
-                  value={dishValue}
-                  onChange={setDishValue}
-                  placeholder="Choisissez un plat"
-                  data={dishesData}
-                  searchable
-                  clearable
-                />
-              </div>
-            ) : null}
+            <div className={classes.step}>
+              <Switch
+                onLabel="Publiée"
+                offLabel="Privée"
+                checked={checked}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
+                size="lg"
+              />
+            </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Plat associé</label>
+              <Select
+                value={dishValue}
+                onChange={setDishValue}
+                placeholder="Choisissez un plat"
+                data={dishesData}
+                searchable
+                clearable
+              />
+            </div>
             <div className={classes.button}>
               <Button label="Nouveau plat" type="primary" href="/dishes/new" />
             </div>
@@ -166,61 +175,58 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
               <label className={classes.label}>Nom de la recette *</label>
               <input
                 className={classes.input}
-                name="addName"
+                onChange={handleName}
+                value={nameValue}
                 type="text"
-                placeholder="Ex: Tarte aux pommes de ma grand mère"
               />
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Ajouter une photo</label>
               <input
                 className={classes.input}
-                name="addImageUrl"
+                onChange={handleImageUrl}
+                value={imageUrlValue}
                 type="text"
-                placeholder="Ex: https://masuperimagedetarte.com"
               />
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nombre de convives *</label>
               <input
                 className={classes.input}
+                onChange={handlePersons}
+                value={personsValue}
                 type="number"
-                name="addPersons"
                 min="1"
                 max="15"
               />
             </div>
-            {countries ? (
-              <div className={classes.step}>
-                <label className={classes.label}>Pays</label>
-                <Select
-                  value={countryValue}
-                  onChange={setCountryValue}
-                  placeholder="Choisissez un pays"
-                  data={countriesData}
-                  searchable
-                  clearable
-                />
-              </div>
-            ) : null}
-            {types ? (
-              <div className={classes.step}>
-                <label className={classes.label}>Type de plat</label>
-                <Select
-                  value={typeValue}
-                  onChange={setTypeValue}
-                  placeholder="Choisissez un type"
-                  data={typesData}
-                  searchable
-                  clearable
-                />
-              </div>
-            ) : null}
+            <div className={classes.step}>
+              <label className={classes.label}>Pays</label>
+              <Select
+                value={countryValue}
+                onChange={setCountryValue}
+                placeholder="Choisissez un pays"
+                data={countriesData}
+                searchable
+                clearable
+              />
+            </div>
+            <div className={classes.step}>
+              <label className={classes.label}>Type de plat</label>
+              <Select
+                value={typeValue}
+                onChange={setTypeValue}
+                placeholder="Choisissez un type"
+                data={typesData}
+                searchable
+                clearable
+              />
+            </div>
             <div className={classes.button}>
               <Button
                 label="Suivant"
                 type="primary"
-                handleClick={() => addNewRecipe()}
+                handleClick={() => editRecipe()}
                 href="#"
               />
             </div>
@@ -231,7 +237,7 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
-              <p className={classes.selectorText}>AJOUTER DES INGRÉDIENTS</p>
+              <p className={classes.selectorText}>EDITER LES INGRÉDIENTS</p>
             </div>
           </div>
           <div className={classes.ingredientform}>
@@ -239,8 +245,9 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
               <>
                 {[...Array(count)].map((e, i) => {
                   return (
-                    <AddRecipesIngredients
-                      recipe={recipe}
+                    <EditRecipesIngredients
+                      recipe={editedRecipe}
+                      onSubmit={setEditedRecipe}
                       key={i}
                       ingredients={ingredients}
                       units={units}
@@ -272,7 +279,7 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
-              <p className={classes.selectorText}>AJOUTER DES ETAPES</p>
+              <p className={classes.selectorText}>EDITER LES ETAPES</p>
             </div>
           </div>
           <div className={classes.ingredientform}>
@@ -280,7 +287,12 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
               <>
                 {[...Array(count)].map((e, i) => {
                   return (
-                    <AddRecipesSteps recipe={recipe} count={count} key={i} />
+                    <EditRecipesStep
+                      recipe={editedRecipe}
+                      onSubmit={setEditedRecipe}
+                      count={count}
+                      key={i}
+                    />
                   );
                 })}
               </>
@@ -308,11 +320,15 @@ const EditRecipe = ({ user, recipe, countries, types, dishes, tags, ingredients,
         <>
           <div className={classes.selector}>
             <div className="selectorBlock">
-              <p className={classes.selectorText}>AJOUTER DES TAGS</p>
+              <p className={classes.selectorText}>EDITER LES TAGS</p>
             </div>
           </div>
           <div className={classes.ingredientform}>
-            <AddRecipesTags recipe={recipe} tags={tags} />
+            <EditRecipesTags
+              recipe={editedRecipe}
+              onSubmit={setEditedRecipe}
+              tags={tags}
+            />
             <div className={classes.button}>
               <Button
                 label="J'ai fini !"
