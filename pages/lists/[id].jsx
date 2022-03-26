@@ -23,7 +23,9 @@ const Profile = () => {
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(
+    user && list ? (user.id == list.userId ? true : false) : false
+  );
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
@@ -31,22 +33,10 @@ const Profile = () => {
   // check if is author
 
   useEffect(() => {
-    if (user && list) {
-      console.log("coucou");
-      console.log(user.id);
-      console.log(list.userId);
-      setAuth(user.id === list.user.id ? true : false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user && list) {
-      console.log("coucou");
-      setAuth(user.id === list.userId ? true : false);
-    }
+    user && list
+      ? setAuth(user.id == list.userId ? true : false)
+      : setAuth(false);
   }, [user, list]);
-  console.log("auth");
-  console.log(auth);
 
   // search list + call axios
   async function searchList(data) {
@@ -193,7 +183,6 @@ const Profile = () => {
                 onChange={handleName}
               />
               <CheckboxGroup
-                // defaultValue={initialValue}
                 value={value}
                 onChange={setValue}
                 label="Retirer des recettes"
