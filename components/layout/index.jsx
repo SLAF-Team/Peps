@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   return (
     <div>
       <Navbar />
-      <div class={classes.content}>{children}</div>
+      <div className={classes.minHeight}>{children}</div>
       <Footer />
     </div>
   );
