@@ -4,6 +4,8 @@ import Cookies from "js-cookie";
 import { useUserContext } from "../../context/UserContext";
 import styles from "./EditUser.module.css";
 import { useRouter } from "next/router";
+import { emailValidation } from "../../lib/authfront";
+import { useNotifications } from "@mantine/notifications";
 
 const EditUser = ({ user, handleUpdateUser }) => {
   const token = Cookies.get("token");
@@ -11,6 +13,7 @@ const EditUser = ({ user, handleUpdateUser }) => {
   const router = useRouter();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
+  const notifications = useNotifications();
 
   // Handling the name change
   const handleName = (e) => {
@@ -39,16 +42,33 @@ const EditUser = ({ user, handleUpdateUser }) => {
   }
 
   async function editUser() {
-    const result = await axios.put(
-      "/api/user/editUser",
-      {
-        id: user.id,
-        name: name,
-        email: email,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setUser(result.data);
+    if (!name || !email) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "nom ou email manquant",
+        color: "red",
+      });
+    }
+    if (!emailValidation(email)) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Email invalide",
+        color: "red",
+      });
+    }
+    if (emailValidation(email) && name && email) {
+      const result = await axios.put(
+        "/api/user/editUser",
+        {
+          id: user.id,
+          name: name,
+          email: email,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUser(result.data);
+      handleUpdateUser();
+    }
   }
 
   // Handling the form submission + fetch data + update state
@@ -59,6 +79,9 @@ const EditUser = ({ user, handleUpdateUser }) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
+      <button onClick={() => handleUpdateUser()} className={styles.btnDanger}>
+        FERMER
+      </button>
       <div>
         <input
           onChange={handleName}
@@ -72,7 +95,7 @@ const EditUser = ({ user, handleUpdateUser }) => {
           onChange={handleEmail}
           className={styles.field}
           value={email}
-          type="email"
+          type="text"
         />
       </div>
       <button type="submit" className={styles.btnPrimary}>
