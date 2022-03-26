@@ -19,7 +19,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [recipe, setRecipe] = useState(null);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
   const [step, setStep] = useState(1);
@@ -56,13 +56,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   }, [token]);
 
   const handleClickRight = () => {
-    setChecked(true);
-    setStyle(true);
+    setChecked(!checked);
+    setStyle(!style);
   };
 
   const handleClickLeft = () => {
-    setChecked(false);
-    setStyle(false);
+    setChecked(!checked);
+    setStyle(!style);
   };
 
   // add Recipe
@@ -129,8 +129,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
       {step === 1 && (
         <>
           <Selector
-            left="PRIVÉE"
-            right="PUBLIQUE"
+            left="PUBLIQUE"
+            right="PRIVÉE"
             handleClickRight={handleClickRight}
             handleClickLeft={handleClickLeft}
             style={style}
