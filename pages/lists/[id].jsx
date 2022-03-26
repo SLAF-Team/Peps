@@ -3,7 +3,6 @@ import UserList from "../../components/UserList";
 import classes from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
 import FilterSelector from "../../components/FilterSelector";
-import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
 import Button from "../../components/Button";
 import Cookies from "js-cookie";
@@ -28,6 +27,26 @@ const Profile = () => {
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
+
+  // check if is author
+
+  useEffect(() => {
+    if (user && list) {
+      console.log("coucou");
+      console.log(user.id);
+      console.log(list.userId);
+      setAuth(user.id === list.user.id ? true : false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user && list) {
+      console.log("coucou");
+      setAuth(user.id === list.userId ? true : false);
+    }
+  }, [user, list]);
+  console.log("auth");
+  console.log(auth);
 
   // search list + call axios
   async function searchList(data) {
@@ -93,12 +112,6 @@ const Profile = () => {
     setOpened(false);
     getList(filter);
   };
-
-  useEffect(() => {
-    if (!user && !list) {
-      setAuth(checkAuthorAuth(user, list));
-    }
-  }, [list, user]);
 
   useEffect(() => {
     getList("like");
