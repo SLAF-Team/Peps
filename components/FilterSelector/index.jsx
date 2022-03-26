@@ -11,7 +11,7 @@ const FilterSelector = ({ left, handleSelect }) => {
 		<div className={styles.selector}>
 			<div>
 				<p className={styles.selectorText}>
-					<span className={styles.bold}>{left}</span> Résultats
+					<span className={styles.bold}>{left}</span> Recettes
 				</p>
 			</div>
 			<div>
