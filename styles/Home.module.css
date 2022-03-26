@@ -178,6 +178,12 @@
   text-decoration-color: #ffd12f;
 }
 
+@media (min-width: 1000px){
+  .search {
+    width: 99.2vw;
+  }
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
