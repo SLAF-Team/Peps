@@ -40,7 +40,7 @@ export default function Home({ recipes }) {
                   })`,
                 }}
               >
-              </div>
+              </div><div></div>
             </Link>
           </div>
           <div className={styles.heroright}>
