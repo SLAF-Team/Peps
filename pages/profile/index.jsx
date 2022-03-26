@@ -17,11 +17,8 @@ const Profile = ({ recipes }) => {
   const { user } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
-<<<<<<< HEAD
   const [listChange, setListChange] = useState();
-=======
   const [lists, setLists] = useState([]);
->>>>>>> a653a5f6d192f1883d661e12582d38027b33b229
   const token = Cookies.get("token");
   const router = useRouter();
   const notifications = useNotifications();
