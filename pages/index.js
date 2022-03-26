@@ -3,6 +3,7 @@ import prisma from "../lib/prisma.ts";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
+import SearchBar from "../components/SearchBar/index";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 

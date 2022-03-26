@@ -23,21 +23,25 @@ const Profile = () => {
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-  const [auth, setAuth] = useState(
-    user && list ? (user.id == list.userId ? true : false) : false
-  );
+  // const [auth, setAuth] = useState(
+    //   user && list ? (user.id == list.userId ? true : false) : false
+    // );
+  const [auth, setAuth] = useState();
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState();
   const [value, setValue] = useState([]);
-
+  const [idOfUserConnected, setIdOfUserConnected] = useState();
+  const [idOfOwnerList, setIdOfOwnerList] = useState();
+  
   // check if is author
 
-  useEffect(() => {
-    user && list
-      ? setAuth(user.id == list.userId ? true : false)
-      : setAuth(false);
-  }, [user, list]);
-
+  
+  
+  
+  
+  
+  // update list bloc
+  
   // search list + call axios
   async function searchList(data) {
     try {
@@ -50,7 +54,7 @@ const Profile = () => {
       console.log(err);
     }
   }
-
+  
   // getlist
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
@@ -72,13 +76,12 @@ const Profile = () => {
     };
     searchList(data);
   }
-
-  // update list bloc
-
+  
+  
   const handleName = (e) => {
     setNameChange(e.target.value);
   };
-
+  
   const editList = async (event) => {
     event.preventDefault();
     const data = [];
@@ -93,7 +96,7 @@ const Profile = () => {
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
-    );
+      );
     notifications.showNotification({
       title: "Bravo !",
       message: "Votre liste a bien été mise à jour",
@@ -102,17 +105,17 @@ const Profile = () => {
     setOpened(false);
     getList(filter);
   };
-
+  
   useEffect(() => {
     getList("like");
   }, [id]);
-
+  
   // Filter
 
   useEffect(() => {
     getList(filter);
   }, [filter]);
-
+  
   const handleSelect = (event) => {
     setFilter(event);
   };
@@ -125,7 +128,7 @@ const Profile = () => {
       router.push("/profile?list=true");
     }
   }
-
+  
   const handleDeleteList = () => {
     deleteList();
     notifications.showNotification({
@@ -134,6 +137,33 @@ const Profile = () => {
       color: "green",
     });
   };
+
+  useEffect(() => {
+    user && user.id
+    ?
+    setIdOfUserConnected(user.id)
+    :
+    console.log('')
+  }, [searchList])
+  
+  useEffect(() => {
+    list && (
+      setIdOfOwnerList(list[0].userId)
+      )
+    }, [searchList, getList])
+    
+    useEffect(() => {
+      console.log(idOfUserConnected)
+      console.log(idOfOwnerList)
+
+    }, [idOfUserConnected, idOfOwnerList])
+    
+
+    useEffect(() => {
+      idOfUserConnected && idOfOwnerList
+        ? setAuth(idOfUserConnected == idOfOwnerList ? true : false)
+        : setAuth(false);
+    }, [idOfUserConnected, idOfOwnerList]);
 
   return (
     <>
