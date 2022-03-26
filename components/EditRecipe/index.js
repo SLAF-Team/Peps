@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import EditRecipesIngredients from "./editRecipesIngredients";
 import AddRecipesIngredients from "./../addRecipe/addRecipesIngredients";
-import AddRecipesSteps from "./../addRecipe/addRecipesSteps";import EditRecipesStep from "./editRecipesSteps";
+import AddRecipesSteps from "./../addRecipe/addRecipesSteps";import EditRecipesSteps from "./editRecipesSteps";
 import EditRecipesTags from "./editRecipesTags";
 import Button from "../Button";
 import classes from "./Recipe.module.css";
@@ -21,12 +21,13 @@ const EditRecipe = ({
   tags,
   ingredients,
   units,
+  onSubmit
 }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(3);
   const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState(recipe.countryId.toString());
   const [typeValue, setTypeValue] = useState(recipe.typeId.toString());
@@ -238,7 +239,6 @@ const EditRecipe = ({
                     <EditRecipesIngredients
                       recipe={editedRecipe}
                       index={i}
-                      onSubmit={setEditedRecipe}
                       key={i}
                       ingredients={ingredients}
                       units={units}
@@ -249,7 +249,6 @@ const EditRecipe = ({
                   return (
                     <AddRecipesIngredients
                       recipe={editedRecipe}
-                      onSubmit={setEditedRecipe}
                       key={i}
                       ingredients={ingredients}
                       units={units}
@@ -285,20 +284,21 @@ const EditRecipe = ({
             </div>
           </div>
           <div className={classes.ingredientform}>
-            {recipe ? (
-              <>
-                {[...Array(count)].map((e, i) => {
-                  return (
-                    <EditRecipesStep
-                      recipe={editedRecipe}
-                      onSubmit={setEditedRecipe}
-                      count={count}
-                      key={i}
-                    />
-                  );
-                })}
-              </>
-            ) : null}
+            {recipe.steps.map((e, i) => {
+              return (
+                <EditRecipesSteps recipe={editedRecipe} index={i} key={i} />
+              );
+            })}
+            {[...Array(count)].map((e, i) => {
+              return (
+                <AddRecipesSteps
+                  recipe={editedRecipe}
+                  key={i}
+                  count={count + recipe.steps.length}
+                />
+              );
+            })}
+            <></>
             <div className={classes.button}>
               <Button
                 label="Nouvelle étape"
@@ -326,16 +326,13 @@ const EditRecipe = ({
             </div>
           </div>
           <div className={classes.ingredientform}>
-            <EditRecipesTags
-              recipe={editedRecipe}
-              onSubmit={setEditedRecipe}
-              tags={tags}
-            />
+            <EditRecipesTags recipe={editedRecipe} tags={tags} />
             <div className={classes.button}>
               <Button
                 label="J'ai fini !"
                 type="success"
                 href={`/recipes/${recipe?.id}`}
+                handleClick={onSubmit}
               />
             </div>
           </div>

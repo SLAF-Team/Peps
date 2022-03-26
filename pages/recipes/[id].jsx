@@ -36,7 +36,6 @@ const SelectedRecipe = ({
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(true);
@@ -95,6 +94,11 @@ const SelectedRecipe = ({
     getRecipe();
   };
 
+  const handleEditRecipe = () => {
+    getRecipe();
+    setOpened(false);
+  };
+
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
@@ -107,6 +111,11 @@ const SelectedRecipe = ({
     if (window.confirm("Souhaitez vous supprimer cette recette?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
+      });
+      notifications.showNotification({
+        title: "C'est la fin des haricots",
+        message: "Votre recette a bien été supprimée",
+        color: "green",
       });
       router.push("/recipes/");
     }
@@ -349,6 +358,7 @@ const SelectedRecipe = ({
           types={types}
           dishes={dishes}
           tags={tags}
+          onSubmit={handleEditRecipe}
         />
       </Modal>
     </div>

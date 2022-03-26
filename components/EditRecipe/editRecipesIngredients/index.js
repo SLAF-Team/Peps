@@ -9,7 +9,13 @@ import { useNotifications } from "@mantine/notifications";
 import { Select } from "@mantine/core";
 import { NumberInput } from "@mantine/core";
 
-const EditRecipesIngredients = ({ index, recipe, ingredients, units, onSubmit }) => {
+const EditRecipesIngredients = ({
+  index,
+  recipe,
+  ingredients,
+  units,
+  onSubmit,
+}) => {
   const inputIngredient = recipe.ingredientsUnit[index].ingredientId.toString();
   const inputQuantity = recipe.ingredientsUnit[index].quantity;
   const inputUnit = recipe.ingredientsUnit[index].unitId.toString();
@@ -22,14 +28,17 @@ const EditRecipesIngredients = ({ index, recipe, ingredients, units, onSubmit })
   const [quantityValue, setQuantityValue] = useState(inputQuantity);
 
   const unitsData = [];
-  units.map((element) =>
-    unitsData.push({ value: element.id.toString(), label: element.name })
-  );
+    units.map((element) =>
+      unitsData.push({ value: element.id.toString(), label: element.name })
+    );
 
   const ingredientsData = [];
-  ingredients.map((element) =>
-    ingredientsData.push({ value: element.id.toString(), label: element.name })
-  );
+    ingredients.map((element) =>
+      ingredientsData.push({
+        value: element.id.toString(),
+        label: element.name,
+      })
+    );
 
   async function editRecipeIngredients() {
     const ingredient = ingredientValue;
@@ -66,11 +75,11 @@ const EditRecipesIngredients = ({ index, recipe, ingredients, units, onSubmit })
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSubmitted(true);
-      onSubmit()
+      onSubmit();
     }
   }
 
-  async function editRecipeIngredients() {
+  async function deleteRecipeIngredients() {
     await axios.put(
       "/api/recipe/editRecipe",
       {
