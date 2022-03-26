@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import SearchBar from "../components/SearchBar/index";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
+import Link from "next/link";
 
 export default function Home({ recipes }) {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
@@ -27,10 +28,20 @@ export default function Home({ recipes }) {
       {filteredRecipes.length > 0 ? (
         <div className={styles.hero}>
           <div className={styles.heroleft}>
-            <img
-              className={styles.heroimg}
-              src={filteredRecipes.slice(-1)[0].imageUrl}
-            ></img>
+            <Link
+              className={styles.a}
+              href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
+            >
+              <div
+                className={styles.heroimg}
+                style={{
+                  backgroundImage: `url(${
+                    filteredRecipes.slice(-1)[0].imageUrl
+                  })`,
+                }}
+              >
+              </div>
+            </Link>
           </div>
           <div className={styles.heroright}>
             <div className={styles.herotextblock}>
@@ -43,7 +54,7 @@ export default function Home({ recipes }) {
                   {filteredRecipes.slice(-1)[0].name}
                 </h1>
               </a>
-              <h4 className={styles.h4}>Damn, that's good</h4>
+              <h4 className={styles.h4}>Damn, that's good.</h4>
             </div>
           </div>
         </div>

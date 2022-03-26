@@ -24,7 +24,7 @@ const Login = () => {
       });
       router.push("/");
     }
-  }, [])
+  }, []);
 
   const handleClickLeft = () => {
     setSignUp(false);
