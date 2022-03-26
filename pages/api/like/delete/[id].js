@@ -1,11 +1,16 @@
 import prisma from "../../../../lib/prisma.ts";
 import jwt from "jsonwebtoken";
-import {checkAut}
+import { checkAuth } from "../../../../lib/auth";
 
 export default async (req, res) => {
-
   const { id } = req.query;
   const recipeId = parseInt(id);
+
+  const isAuth = await checkAuth(req);
+  if (!isAuth) {
+    res.status(403).json({ err: "Forbidden" });
+    return;
+  }
   
   const { authorization } = req.headers;
   const token = authorization.replace(/^Bearer\s/, "");
