@@ -47,7 +47,7 @@ const SelectedDish = () => {
 
   async function editDish(event) {
     event.preventDefault();
-    const result = await axios.put(
+    await axios.put(
       "/api/dish/editDish",
       {
         id: dish.id,
@@ -56,9 +56,8 @@ const SelectedDish = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
     if (result.status === 200) {
-      const lol = await axios.put(
+      await axios.put(
         "/api/update/addUpdate",
         {
           userId: user.id,
@@ -66,7 +65,6 @@ const SelectedDish = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(lol);
     }
     getDish();
     setOpened(false);
@@ -170,9 +168,12 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul style={{paddingInlineStart:"0px"}}>
+                <ul style={{ paddingInlineStart: "0px" }}>
                   {dish?.updates.map((update, index) => (
-                    <li key={index} style={{fontSize:"9px", listStyle:'none',}}>
+                    <li
+                      key={index}
+                      style={{ fontSize: "9px", listStyle: "none" }}
+                    >
                       Modifié par {update.user.name}{" "}
                       {moment(update.createdAt).fromNow()}
                     </li>
@@ -193,7 +194,10 @@ const SelectedDish = () => {
                   className={classes.li}
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  <a href={"/dishes"} style={{ fontSize: "12px", textAlign: "center" }}>
+                  <a
+                    href={"/dishes"}
+                    style={{ fontSize: "12px", textAlign: "center" }}
+                  >
                     Voir tous les plats
                   </a>
                 </li>
