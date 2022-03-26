@@ -1,22 +1,17 @@
-import React from "react";
-import DishCard from "../../components/DishCard/DishCard.jsx"
+import DishCard from "../../components/DishCard/DishCard.jsx";
 import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
-import { MultiSelect, Switch } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { useUserContext } from "../../context/UserContext.js";
 
-const Dishes = ({ dishes, regions  }) => {
+const Dishes = ({ dishes, regions }) => {
   // set up state for multiselect
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
-  const [filterRegion, setFilterRegion] = useState(idRegions);
+  const [filterRegion, setFilterRegion] = useState([]);
   const [filteredDishes, setFilterDishes] = useState(dishes);
   const [filter, setFilter] = useState(true);
-  const router = useRouter();
-  const { user } = useUserContext();
 
   const dataRegions = [];
   regions?.map((region) =>
@@ -35,17 +30,16 @@ const Dishes = ({ dishes, regions  }) => {
     }
   };
 
-  //useEffect for filter with exception if filter not used (ternary <3)
   useEffect(() => {
-    const data = filter
-      ? {
-          where: {
-            regionId: {
-              in: filterRegion.length > 0 ? filterRegion : idRegions,
-            },
-          },
-        }
-      : null;
+    const filterCall = {};
+    if (filterRegion.length > 0) {
+      filterCall.where = {
+        regionId: {
+          in: filterRegion.length > 0 ? filterRegion : idRegions,
+        },
+      };
+    }
+    const data = filter ? filterCall : null;
     getDishes(data);
   }, [filterRegion, filter]);
 
@@ -55,25 +49,24 @@ const Dishes = ({ dishes, regions  }) => {
         <div className={classes.titlecontainerindex}>
           <h1 className={classes.h1}>Toutes les plats </h1>
           <div className={classes.filters}>
-                <MultiSelect
-                  data={dataRegions}
-                  value={filterRegion}
-                  onChange={setFilterRegion}
-                  placeholder="Trier par région"
-                  searchable
-                  clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
-                />
-              </div>
-
+            <MultiSelect
+              data={dataRegions}
+              value={filterRegion}
+              onChange={setFilterRegion}
+              placeholder="Trier par région"
+              searchable
+              clearable
+              className={classes.multiselect}
+              size="xs"
+              styles={{ label: { fontSize: 14 } }}
+            />
+          </div>
         </div>
         <div className="row">
-
-          {filteredDishes && filteredDishes.map((dish) => (
-            <DishCard key={dish.id} dish={dish} col="col-3" />
-          ))}
+          {filteredDishes &&
+            filteredDishes.map((dish) => (
+              <DishCard key={dish.id} dish={dish} col="col-3" />
+            ))}
         </div>
       </div>
     </div>

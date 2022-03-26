@@ -6,6 +6,7 @@ import { useUserContext } from "../../../context/UserContext";
 import styles from "../Login.module.css";
 import ButtonForm from "../../ButtonForm";
 import { useNotifications } from "@mantine/notifications";
+import { emailValidation } from "../../../lib/authfront";
 
 const SignUp = () => {
   const router = useRouter();
@@ -50,13 +51,21 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!name || !email || !password) {
       notifications.showNotification({
         title: "Erreur dans votre formulaire",
-        message: "email ou mot de passe manquant",
+        message: "nom, email ou mot de passe manquant",
         color: "red",
       });
-    } else {
+    }
+    if (!emailValidation(email)) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire",
+        message: "Email invalide",
+        color: "red",
+      });
+    }
+    if (emailValidation(email) && name && email && password) {
       const data = {
         name: name,
         email: email,
