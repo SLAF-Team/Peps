@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./SearchImage.module.css";
 import { useClickOutside } from "@mantine/hooks";
 import axios from "axios";
 import search from "../../assets/images/search.svg";
 import Image from "next/image";
 import { Box } from "@mantine/core";
+import debounce from "lodash.debounce";
 
 const SearchImage = ({ placeholder, onSubmit }) => {
   const [imageSearch, setImageSearch] = useState("");
@@ -12,26 +13,8 @@ const SearchImage = ({ placeholder, onSubmit }) => {
   const [dataImage, setDataImage] = useState([]);
   const ref = useClickOutside(() => setOpened(false), ["mouseup", "touchend"]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setImageSearch(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    getSearchedImages();
-  };
-
-  const handleClick = (element) => {
-    setImageSearch(element.src.medium);
-    setOpened(false);
-  };
-
-  useEffect(() => {
-    onSubmit(imageSearch)
-  }, [imageSearch]);
-
-  async function getSearchedImages(imageSearch, e) {
-    const data = `?query=${imageSearch}&per_page=10&locale=fr-FR`;
+  async function getSearchedImages(value) {
+    const data = `?query=${value}&per_page=10&locale=fr-FR`;
     const response = await axios.get(
       `https://api.pexels.com/v1/search${data}`,
       {
@@ -44,11 +27,30 @@ const SearchImage = ({ placeholder, onSubmit }) => {
     );
     setDataImage(response.data.photos);
   }
+  
+  const debouncedFetchData = useCallback(debounce(getSearchedImages, 300), []);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setImageSearch(value);
+    if (value && !value.startsWith("https://")) {
+      debouncedFetchData(value);
+    } else {
+      setDataImage([])
+    }
+  };
+
+  const handleSubmit = () => {
+    getSearchedImages();
+  };
+
+  const handleClick = (element) => {
+    setImageSearch(element.src.medium);
+    setOpened(false);
+  };
 
   useEffect(() => {
-    if (imageSearch !== "" && imageSearch.startsWith("https://") !== true) {
-      getSearchedImages(imageSearch);
-    }
+    onSubmit(imageSearch);
   }, [imageSearch]);
 
   return (
