@@ -6,9 +6,9 @@ import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
-const EditRecipesStep = ({ recipe, index }) => {
-  const inputStep = recipe.steps[index].text;
-  const inputStepId = recipe.steps[index].id;
+const EditRecipesStep = ({ recipe, element }) => {
+  const inputStep = element.text;
+  const inputStepId = element.id;
   const [stepValue, setStepValue] = useState(inputStep);
   const notifications = useNotifications();
   const formRef = useRef();

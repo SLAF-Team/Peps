@@ -11,13 +11,14 @@ import { NumberInput } from "@mantine/core";
 
 const EditRecipesIngredients = ({
   index,
+  element,
   recipe,
   ingredients,
   units,
 }) => {
-  const inputIngredient = recipe.ingredientsUnit[index].ingredientId.toString();
-  const inputQuantity = recipe.ingredientsUnit[index].quantity;
-  const inputUnit = recipe.ingredientsUnit[index].unitId.toString();
+  const inputIngredient = element.ingredientId.toString();
+  const inputQuantity = element.quantity;
+  const inputUnit = element.unitId.toString();
   const notifications = useNotifications();
   const formRef = useRef();
   const token = Cookies.get("token");
