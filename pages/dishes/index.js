@@ -79,7 +79,6 @@ export async function getServerSideProps() {
       region: { select: { name: true, id: true } },
     },
   });
-
   const allRegions = await prisma.region.findMany({});
   return {
     props: {
