@@ -1,14 +1,14 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import classes from "./AddRecipesSteps.module.css";
+import classes from "./EditRecipesSteps.module.css";
 import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
-const EditRecipesStep = ({ recipe, index }) => {
-  const inputStep = recipe.steps[index].text;
-  const inputStepId = recipe.steps[index].id;
+const EditRecipesStep = ({ recipe, element }) => {
+  const inputStep = element.text;
+  const inputStepId = element.id;
   const [stepValue, setStepValue] = useState(inputStep);
   const notifications = useNotifications();
   const formRef = useRef();

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { MultiSelect } from "@mantine/core";
 import Cookies from "js-cookie";
-import classes from "./AddRecipesTags.module.css";
+import classes from "./EditRecipesTags.module.css";
 import Button from "../../Button";
 
 const EditRecipesTags = ({ recipe, tags }) => {
@@ -35,10 +35,8 @@ const EditRecipesTags = ({ recipe, tags }) => {
   const handleClick = () => {
     const inputValue = [];
     inputTags.map((element) => inputValue.push({ id: parseInt(element) }));
-    console.log(inputValue);
     const newValue = [];
     tagValue.map((element) => newValue.push({ id: parseInt(element) }));
-    console.log(newValue)
     addTagsToRecipe(inputValue, newValue);
   };
 

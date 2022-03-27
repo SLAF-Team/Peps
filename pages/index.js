@@ -1,46 +1,28 @@
-import Image from "next/image";
 import prisma from "../lib/prisma.ts";
-import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
-import SearchBar from "../components/SearchBar/index";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 import Link from "next/link";
+import DishCard from "../components/DishCard/DishCard";
 
-export default function Home({ recipes }) {
-  const [filteredRecipes, setFilterRecipes] = useState(recipes);
-
-  // async search fonction
-  const getRecipes = async (data) => {
-    try {
-      const result = await axios.post(`/api/recipe/searchRecipes`, {
-        ...data,
-      });
-      setFilterRecipes(result.data);
-    } catch (err) {
-      console.log("error");
-    }
-  };
+export default function Home({ recipes, dishes }) {
 
   return (
     <main className={styles.main}>
-      {filteredRecipes.length > 0 ? (
+      {recipes.length > 0 ? (
         <div className={styles.hero}>
           <div className={styles.heroleft}>
             <Link
               className={styles.a}
-              href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
+              href={`/recipes/${recipes.slice(-1)[0].id}`}
             >
               <div
                 className={styles.heroimg}
                 style={{
-                  backgroundImage: `url(${
-                    filteredRecipes.slice(-1)[0].imageUrl
-                  })`,
+                  backgroundImage: `url(${recipes.slice(-1)[0].imageUrl})`,
                 }}
-              >
-              </div>
+              ></div>
             </Link>
           </div>
           <div className={styles.heroright}>
@@ -48,11 +30,9 @@ export default function Home({ recipes }) {
               <p className={styles.p}>RECETTE</p>
               <a
                 className={styles.a}
-                href={`/recipes/${filteredRecipes.slice(-1)[0].id}`}
+                href={`/recipes/${recipes.slice(-1)[0].id}`}
               >
-                <h1 className={styles.h1}>
-                  {filteredRecipes.slice(-1)[0].name}
-                </h1>
+                <h1 className={styles.h1}>{recipes.slice(-1)[0].name}</h1>
               </a>
               <h4 className={styles.h4}>Damn, that's good.</h4>
             </div>
@@ -72,8 +52,8 @@ export default function Home({ recipes }) {
         <h3 className={styles.h3}>Nos dernières recettes</h3>
       </div>
       <div className="row">
-        {filteredRecipes &&
-          filteredRecipes
+        {recipes.length > 0 &&
+          recipes
             .slice(-4)
             .map((recipe, i) => (
               <RecipeCard
@@ -85,10 +65,24 @@ export default function Home({ recipes }) {
               />
             ))}
       </div>
-      <div></div>
-      <Button href="/recipes" label="Voir toutes recettes" type="warning" />
+      <Button href="/recipes" label="Voir toutes les recettes" type="warning" />
       <br />
       <Button href="/recipes/new" label="Ajouter une recette" />
+      <br />
+      <div className={styles.recipes}>
+        <h3 className={styles.h3}>Nos derniers plats</h3>
+      </div>
+      <div className="row">
+        {dishes.length > 0 &&
+          dishes
+            .slice(-4)
+            .map((dish, i) => (
+              <DishCard dish={dish} key={i} col="col-3 col-6-sm" />
+            ))}
+      </div>
+      <Button href="/dishes" label="Voir tous les plats" type="warning" />
+      <br />
+      <Button href="/dishes/new" label="Ajouter un plat" />
       <br />
     </main>
   );
@@ -103,9 +97,16 @@ export async function getServerSideProps() {
     },
     where: { published: true },
   });
+  const allDishes = await prisma.dish.findMany({
+    include: {
+      region: { select: { name: true, id: true } },
+      recipes: true,
+    },
+  });
   return {
     props: {
       recipes: allRecipes,
+      dishes: allDishes
     },
   };
 }
