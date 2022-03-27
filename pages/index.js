@@ -39,8 +39,7 @@ export default function Home({ recipes }) {
                     filteredRecipes.slice(-1)[0].imageUrl
                   })`,
                 }}
-              >
-              </div>
+              ></div>
             </Link>
           </div>
           <div className={styles.heroright}>
@@ -85,11 +84,11 @@ export default function Home({ recipes }) {
               />
             ))}
       </div>
-      <div></div>
-      <Button href="/recipes" label="Voir toutes recettes" type="warning" />
-      <br />
-      <Button href="/recipes/new" label="Ajouter une recette" />
-      <br />
+      <div className={styles.bottomBtn}>
+        <Button href="/recipes" label="Voir toutes recettes" type="warning" />
+        <br />
+        <Button href="/recipes/new" label="Ajouter une recette" />
+      </div>
     </main>
   );
 }

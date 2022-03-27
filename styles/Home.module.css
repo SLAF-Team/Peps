@@ -153,7 +153,6 @@
   transform: scale(1.1);
   -ms-transform: scale(1.1);
   -o-transform: scale(1.1);
-  
 }
 
 .heroimg {
@@ -204,10 +203,23 @@
   text-decoration-color: #ffd12f;
 }
 
-@media (min-width: 1000px) {
-  .search {
-    width: 99.2vw;
-  }
+.search {
+  height: 35vh;
+}
+
+.recipes {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  margin-bottom: 30px;
+}
+
+.bottomBtn {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
 }
 
 @media (max-width: 600px) {
@@ -219,7 +231,6 @@
   .hero {
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 
   .heroleft {
@@ -237,21 +248,18 @@
     font-size: 30px;
   }
 
-  .recipes {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    margin-bottom: 50px;
-  }
-
   .herotextblock {
     display: flex;
     flex-direction: column;
   }
 
   .search {
-    height: 50vh;
+    height: 30vh;
+  }
+
+  .bottomBtn {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
   }
 }

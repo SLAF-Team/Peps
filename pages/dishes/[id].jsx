@@ -21,12 +21,11 @@ const SelectedDish = () => {
   const [descriptionChange, setDescriptionChange] = useState();
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
+  const [page, setPage] = useState(1);
 
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const result = await axios.get(`/api/dish/${id}`);
       setDish(result.data);
     } catch (err) {
       console.log(err);
@@ -36,6 +35,10 @@ const SelectedDish = () => {
   useEffect(() => {
     getDish();
   }, [id]);
+
+  useEffect(() => {
+    getDish();
+  }, [page]);
 
   useEffect(() => {
     setLoading(true);
@@ -183,25 +186,19 @@ const SelectedDish = () => {
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}></p>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}></p>
+                </div>
               </div>
-            </div>
-            <div>
-              <ul>
-                <li
-                  className={classes.li}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <a
-                    href={"/dishes"}
-                    style={{ fontSize: "12px", textAlign: "center" }}
-                  >
-                    Voir tous les plats
-                  </a>
-                </li>
-              </ul>
+              <div>
+                <ul>
+                  <li className={classes.li}>
+                    <a href="#">VOIR TOUS LES PLATS</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </Skeleton>
         </div>
