@@ -10,9 +10,8 @@ export default function Custom404() {
           Chou blanc !
         </h1>
         <h2 className={styles.title}>
-          La page que vous cherchez n'existe pas
+          <span className={styles.adapt}>La page que vous cherchez n'existe pas</span>
         </h2>
-
         <Button label="Retour à l'accueil" type="primary" href="/" />
       </div>
     </div>
