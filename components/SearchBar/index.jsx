@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./SearchBar.module.css";
 import search from "../../assets/images/search.svg";
 import Image from "next/image";
@@ -18,7 +17,6 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
   const handleChange = (e) => {
     e.preventDefault();
     setRecipeSearch(e.target.value);
-    console.log(opened);
   };
 
   async function getSearchedRecipe(recipeSearch, e) {

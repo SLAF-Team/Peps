@@ -12,6 +12,7 @@ import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
 import { Select, Stepper } from "@mantine/core";
 import { useRouter } from "next/router";
+import SearchImage from "../../../components/SearchImage";
 
 const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
@@ -27,6 +28,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
+  const [newImage, setNewImage] = useState("")
   const router = useRouter();
 
   const countriesData = [];
@@ -67,9 +69,9 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   // add Recipe
   async function addNewRecipe(params) {
-    const { addName, addImageUrl, addPersons } = formRef.current;
+    const { addName, addPersons } = formRef.current;
     const name = addName.value;
-    const imageUrl = addImageUrl.value;
+    const imageUrl = newImage;
     const country = countryValue;
     const dish = dishValue;
     const type = typeValue;
@@ -110,6 +112,10 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     setStep(step + 1);
     setCount(1);
   };
+
+  const handleSubmitImage = () => {
+ setNewImage()
+  }
 
   return (
     <div className={classes.main}>
@@ -163,12 +169,19 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Ajouter une photo</label>
-              <input
+              {/* <input
                 className={classes.input}
                 name="addImageUrl"
                 type="text"
                 placeholder="Ex: https://masuperimagedetarte.com"
+              /> */}
+              <SearchImage
+                placeholder="rechercher ou copier l'URL de votre image"
+                onSubmit={setNewImage}
               />
+              <a href="https://www.pexels.com">
+                <p>Photos mises à disposition par Pexels</p>
+              </a>
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nombre de convives *</label>
