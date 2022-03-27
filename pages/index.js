@@ -40,7 +40,7 @@ export default function Home({ recipes, dishes }) {
         </div>
       ) : null}
       <div className={styles.search}>
-        <h2 className={styles.h2}>Trouver une recette</h2>
+        <h2 className={styles.h2}>A chaque plat, ses recettes. Elles sont toutes ici !</h2>
         <div>
           <SearchBarHome
             placeholder="Chercher une recette"

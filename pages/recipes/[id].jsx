@@ -163,40 +163,6 @@ const SelectedRecipe = ({
               ))}
           </div>
         </Skeleton>
-
-        <div className={classes.mobiletabcontainer}>
-          <Tabs grow tabPadding="xl" position="center" color="dark">
-            <Skeleton visible={loading} style={{ marginTop: 6 }}>
-              <Tabs.Tab label="INGREDIENTS">
-                <ul>
-                  {recipe?.ingredientsUnit &&
-                    recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li} key={element.id}>
-                        {element.quantity} {element.unit.name} de{" "}
-                        <Anchor
-                          href={"/recipes?ingredient=" + element.ingredient.id}
-                          target="_blank"
-                          color="cookogsyellow"
-                          size="xs"
-                        >
-                          {element.ingredient.name}
-                        </Anchor>
-                      </li>
-                    ))}
-                </ul>
-              </Tabs.Tab>
-            </Skeleton>
-            <Skeleton visible={loading} style={{ marginTop: 6 }}>
-              <Tabs.Tab label="ETAPES">
-                <div className={classes.stepsmobilecontainer}>
-                  <ul>
-                    <li className={classes.steps}>{recipe.steps}</li>
-                  </ul>
-                </div>
-              </Tabs.Tab>
-            </Skeleton>
-          </Tabs>
-        </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
             <p className={classes.h2}>Commenter</p>

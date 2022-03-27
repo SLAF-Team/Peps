@@ -153,7 +153,7 @@
   transform: scale(1.1);
   -ms-transform: scale(1.1);
   -o-transform: scale(1.1);
-  
+
 }
 
 .heroimg {
@@ -234,7 +234,9 @@
 
   .h2 {
     margin-top: 80px;
-    font-size: 30px;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .recipes {
@@ -252,6 +254,6 @@
   }
 
   .search {
-    height: 50vh;
+    height: 45vh;
   }
 }
