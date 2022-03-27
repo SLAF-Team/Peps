@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import classes from "./AddRecipesSteps.module.css";
+import classes from "./EditRecipesSteps.module.css";
 import Button from "../../Button";
 import { Textarea } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";

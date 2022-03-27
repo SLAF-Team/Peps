@@ -17,7 +17,6 @@ const Profile = ({ recipes }) => {
   const { user } = useUserContext();
   const [contribution, setContribution] = useState(false);
   const [style, setStyle] = useState(false);
-  const [listChange, setListChange] = useState();
   const [lists, setLists] = useState([]);
   const token = Cookies.get("token");
   const router = useRouter();
@@ -69,15 +68,16 @@ const Profile = ({ recipes }) => {
   };
 
   const privateRecipesFromUser = user
-    ? recipes.filter((element) => element.cookId === user.id && element.published === false)
+    ? recipes.filter(
+        (element) => element.cookId === user.id && element.published === false
+      )
     : null;
 
-      const publishedRrecipesFromUser = user
-        ? recipes.filter(
-            (element) =>
-              element.cookId === user.id && element.published === true
-          )
-        : null;
+  const publishedRrecipesFromUser = user
+    ? recipes.filter(
+        (element) => element.cookId === user.id && element.published === true
+      )
+    : null;
 
   const listsFromUser = user
     ? lists.filter((element) => element.userId === user.id)
