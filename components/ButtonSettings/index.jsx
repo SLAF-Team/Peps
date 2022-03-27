@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Button.module.css";
-import Link from "next/link";
 
 const ButtonSettings = ({ label, handleClick }) => {
 	return (

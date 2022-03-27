@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
 import ButtonForm from "../../components/ButtonForm";
 import Button from "../../components/Button";
@@ -47,7 +46,7 @@ const SelectedDish = () => {
 
   async function editDish(event) {
     event.preventDefault();
-    await axios.put(
+    const result = await axios.put(
       "/api/dish/editDish",
       {
         id: dish.id,

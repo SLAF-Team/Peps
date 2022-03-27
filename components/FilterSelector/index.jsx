@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./FilterSelector.module.css";
-import Image from "next/image";
 
 const FilterSelector = ({ left, handleSelect }) => {
 	const handleSelection = (e) => {

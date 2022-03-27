@@ -6,10 +6,16 @@ export default function Custom404() {
   return (
     <div className={styles.container}>
       <div className={styles.textbox}>
-        <h1 className={styles.title}>404 - Page introuvable</h1>
-        <Button label="retour à l'Accueil" type="primary" href="/" />
+        <h1 className={styles.title}>
+          Chou blanc !
+        </h1>
+        <h2 className={styles.title}>
+          La page que vous cherchez n'existe pas
+        </h2>
+
+        <Button label="Retour à l'accueil" type="primary" href="/" />
       </div>
     </div>
-  )
+  );
 }
 

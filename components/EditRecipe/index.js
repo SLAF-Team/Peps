@@ -240,7 +240,7 @@ const EditRecipe = ({
                   return (
                     <EditRecipesIngredients
                       recipe={editedRecipe}
-                      index={i}
+                      element = {e}
                       key={i}
                       ingredients={ingredients}
                       units={units}
@@ -288,7 +288,7 @@ const EditRecipe = ({
           <div className={classes.ingredientform}>
             {recipe.steps.map((e, i) => {
               return (
-                <EditRecipesSteps recipe={editedRecipe} index={i} key={i} />
+                <EditRecipesSteps recipe={editedRecipe} element={e} key={i} />
               );
             })}
             {[...Array(count)].map((e, i) => {
