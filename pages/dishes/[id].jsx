@@ -47,7 +47,7 @@ const SelectedDish = () => {
 
   async function editDish(event) {
     event.preventDefault();
-    await axios.put(
+    const result = await axios.put(
       "/api/dish/editDish",
       {
         id: dish.id,
