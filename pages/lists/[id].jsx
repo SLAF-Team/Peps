@@ -72,7 +72,7 @@ const Profile = () => {
     event.preventDefault();
     const data = [];
     value.map((element) => data.push({ id: parseInt(element) }));
-    const result = await axios.put(
+    await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
@@ -92,7 +92,6 @@ const Profile = () => {
     getList(filter);
   };
 
-  //editlist
   useEffect(() => {
     if (list?.length > 0) {
       setNameChange(list[0].name);
