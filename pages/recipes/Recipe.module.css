@@ -4,6 +4,7 @@
 
 .mainImage {
   width: 100%;
+  max-height: 55vh;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -30,6 +31,10 @@
 .steps {
   font-weight: 400;
   font-size: 20px;
+}
+
+.ul {
+  padding-left: 20px;
 }
 
 .btn {
@@ -89,6 +94,7 @@
 .h3 {
   font-size: 16px;
   font-weight: 600;
+
   font-family: "Lato", sans-serif;
   text-align: center;
 }
@@ -131,7 +137,7 @@
 
 .li {
   margin-left: -1rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 14px;
   line-height: 2;
   list-style: none;
@@ -193,6 +199,10 @@
     justify-content: center;
   }
 
+  .responsive {
+    display: none;
+  }
+
   .maincontainer {
     width: 375px;
     height: 100%;
@@ -229,6 +239,12 @@
   .stepsmobilecontainer {
     display: block;
     font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .stepscontainer {
+    display: none;
   }
 
   .leftmobilecontainer {
@@ -318,10 +334,6 @@
   .button {
     margin-top: 20px;
     margin-bottom: 10px;
-  }
-
-  .stepscontainer {
-    display: none;
   }
 
   .ingredientcontainer {

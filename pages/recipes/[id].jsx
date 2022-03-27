@@ -13,14 +13,7 @@ import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
 import EditRecipe from "../../components/EditRecipe";
 
-import {
-  Modal,
-  Tabs,
-  Anchor,
-  Skeleton,
-  Accordion,
-  NumberInput,
-} from "@mantine/core";
+import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
 const SelectedRecipe = ({
@@ -152,6 +145,104 @@ const SelectedRecipe = ({
             </div>
           </div>
         </Skeleton>
+        <div>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <Tabs grow>
+              <Tabs.Tab label="Ingrédients">
+                <div className={classes.padding}>
+                  <div className={classes.selector}>
+                    <div className="selectorBlock">
+                      <p className={classes.selectorText}>PERSONNES</p>
+                    </div>
+                  </div>
+                  <NumberInput
+                    style={{ marginTop: 10 }}
+                    value={personsValue}
+                    onChange={(val) => setPersonsValue(val)}
+                    required
+                    min={1}
+                    max={15}
+                    size="xs"
+                  />
+                  <div className={classes.selector}>
+                    <div className="selectorBlock">
+                      <p className={classes.selectorText}>INGRÉDIENTS</p>
+                    </div>
+                  </div>
+                  <div>
+                    <ul className={classes.ul}>
+                      {recipe?.ingredientsUnit &&
+                        recipe?.ingredientsUnit.map((element) => (
+                          <li className={classes.li}>
+                            <Link
+                              href={
+                                "/recipes?ingredient=" + element.ingredient.id
+                              }
+                            >
+                              {Math.round(
+                                10 * personsRatio * element.quantity
+                              ) /
+                                10 +
+                                " " +
+                                element.unit.name +
+                                " de " +
+                                element.ingredient.name}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
+              </Tabs.Tab>
+              <Tabs.Tab label="Étapes">
+                <div className={classes.stepsmobilecontainer}>
+                  {recipe?.steps &&
+                    recipe?.steps.map((element, index) => (
+                      <div>
+                        <p className={classes.steps}>Étape {index + 1}</p>
+                        <p>{element.text} </p>
+                      </div>
+                    ))}
+                </div>
+              </Tabs.Tab>
+              <Tabs.Tab label="Tags et Listes">
+                <div className={classes.padding}>
+                  <div className={classes.selector}>
+                    <div className="selectorBlock">
+                      <p className={classes.selectorText}>TAGS</p>
+                    </div>
+                  </div>
+                  <div>
+                    <ul className={classes.ul}>
+                      {recipe?.tags &&
+                        recipe?.tags.map((tag) => (
+                          <li className={classes.li}>
+                            <Link href={"/recipes?tag=" + tag.id}>
+                              {"#" + tag.name}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className={classes.padding}>
+                  <div className={classes.selector}>
+                    <div className="selectorBlock">
+                      <p className={classes.selectorText}>LISTES</p>
+                    </div>
+                  </div>
+                  <div className={classes.detailscontainer}>
+                    <ListForm
+                      lists={recipe.lists}
+                      recipe={recipe}
+                      onCreate={handleListCreate}
+                    />
+                  </div>
+                </div>
+              </Tabs.Tab>
+            </Tabs>
+          </Skeleton>
+        </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.stepscontainer}>
             {recipe?.steps &&
@@ -192,126 +283,126 @@ const SelectedRecipe = ({
         </Skeleton>
       </div>
       <div className="col-3">
-        {isAuthor ? (
-          <>
-            <div className={classes.button}>
-              <ButtonSettings
-                label="Editer"
-                type="warning"
-                handleClick={() => setOpened(true)}
-                href="#"
-              />
-            </div>
+        <div className={classes.responsive}>
+          {isAuthor ? (
+            <>
+              <div className={classes.button}>
+                <ButtonSettings
+                  label="Editer"
+                  type="warning"
+                  handleClick={() => setOpened(true)}
+                  href="#"
+                />
+              </div>
 
-            <div className={classes.button}>
-              <Button
-                label="Supprimer"
-                type="danger"
-                handleClick={() => deleteRecipe()}
-                href="#"
+              <div className={classes.button}>
+                <Button
+                  label="Supprimer"
+                  type="danger"
+                  handleClick={() => deleteRecipe()}
+                  href="#"
+                />
+              </div>
+            </>
+          ) : null}
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>PERSONNES</p>
+                </div>
+              </div>
+              <NumberInput
+                style={{ marginTop: 10 }}
+                value={personsValue}
+                onChange={(val) => setPersonsValue(val)}
+                required
+                min={1}
+                max={15}
+                size="xs"
               />
-            </div>
-          </>
-        ) : null}
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>PERSONNES</p>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>INGRÉDIENTS</p>
+                </div>
+              </div>
+              <div>
+                <ul className={classes.ul}>
+                  {recipe?.ingredientsUnit &&
+                    recipe?.ingredientsUnit.map((element) => (
+                      <li className={classes.li}>
+                        <Link
+                          href={"/recipes?ingredient=" + element.ingredient.id}
+                        >
+                          {Math.round(10 * personsRatio * element.quantity) /
+                            10 +
+                            " " +
+                            element.unit.name +
+                            " de " +
+                            element.ingredient.name}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
               </div>
             </div>
-            <NumberInput
-              style={{ marginTop: 10 }}
-              value={personsValue}
-              onChange={(val) => setPersonsValue(val)}
-              required
-              min={1}
-              max={15}
-              size="xs"
-            />
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>INGRÉDIENTS</p>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>TAGS</p>
+                </div>
+              </div>
+              <div>
+                <ul className={classes.ul}>
+                  {recipe?.tags &&
+                    recipe?.tags.map((tag) => (
+                      <li className={classes.li}>
+                        <Link href={"/recipes?tag=" + tag.id}>
+                          {"#" + tag.name}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
               </div>
             </div>
-            <div>
-              <ul>
-                {recipe?.ingredientsUnit &&
-                  recipe?.ingredientsUnit.map((element) => (
-                    <li className={classes.li}>
-                      <Link
-                        href={"/recipes?ingredient=" + element.ingredient.id}
-                      >
-                        {Math.round(10 * personsRatio * element.quantity) / 10 +
-                          " " +
-                          element.unit.name +
-                          " de " +
-                          element.ingredient.name}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>TAGS</p>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}>LISTES</p>
+                </div>
+              </div>
+              <div className={classes.detailscontainer}>
+                <ListForm
+                  lists={recipe.lists}
+                  recipe={recipe}
+                  onCreate={handleListCreate}
+                />
               </div>
             </div>
-            <div>
-              <ul>
-                {recipe?.tags &&
-                  recipe?.tags.map((tag) => (
-                    <li className={classes.li}>
-                      <Link href={"/recipes?tag=" + tag.id}>
-                        {"#" + tag.name}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>LISTES</p>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <div className={classes.selector}>
+                <div className="selectorBlock">
+                  <p className={classes.selectorText}></p>
+                </div>
+              </div>
+              <div>
+                <ul className={classes.ul}>
+                  <li className={classes.li} style={{ textAlign: "center" }}>
+                    <a href={"/recipes"} style={{ fontSize: "12px" }}>
+                      Voir toutes les recettes
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
-            <div className={classes.detailscontainer}>
-              <ListForm
-                lists={recipe.lists}
-                recipe={recipe}
-                onCreate={handleListCreate}
-              />
-            </div>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}></p>
-              </div>
-            </div>
-            <div>
-              <ul>
-                <li
-                  className={classes.li}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <a href={"/recipes"} style={{ fontSize: "12px" }}>
-                    Voir toutes les recettes
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </Skeleton>
+          </Skeleton>
+        </div>
       </div>
 
       <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>

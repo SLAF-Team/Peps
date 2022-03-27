@@ -150,7 +150,7 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul>
+                <ul className={classes.ul}>
                   <li className={classes.li}>
                     <a href="#">{dish?.region.name}</a>
                   </li>
@@ -188,11 +188,8 @@ const SelectedDish = () => {
               </div>
             </div>
             <div>
-              <ul>
-                <li
-                  className={classes.li}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
+              <ul className={classes.ul}>
+                <li className={classes.li} style={{ textAlign: "center" }}>
                   <a
                     href={"/dishes"}
                     style={{ fontSize: "12px", textAlign: "center" }}
