@@ -28,7 +28,7 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
-  const [newImage, setNewImage] = useState("")
+  const [newImage, setNewImage] = useState("");
   const router = useRouter();
 
   const countriesData = [];
@@ -114,24 +114,26 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   };
 
   const handleSubmitImage = () => {
- setNewImage()
-  }
+    setNewImage();
+  };
 
   return (
     <div className={classes.main}>
       <h1 className={classes.title}>Ajouter une recette</h1>
-      <Stepper
-        active={step}
-        breakpoint="sm"
-        size="xs"
-        color="yellow"
-        iconSize={32}
-      >
-        <Stepper.Step label="Associer une recette"></Stepper.Step>
-        <Stepper.Step label="Les ingrédients"></Stepper.Step>
-        <Stepper.Step label="Les étapes"></Stepper.Step>
-        <Stepper.Step label="Ajouter des tags"></Stepper.Step>
-      </Stepper>
+      <div className={classes.stepper}>
+        <Stepper
+          active={step}
+          breakpoint="sm"
+          size="xs"
+          color="yellow"
+          iconSize={32}
+        >
+          <Stepper.Step label="Associer une recette"></Stepper.Step>
+          <Stepper.Step label="Les ingrédients"></Stepper.Step>
+          <Stepper.Step label="Les étapes"></Stepper.Step>
+          <Stepper.Step label="Ajouter des tags"></Stepper.Step>
+        </Stepper>
+      </div>
       {step === 1 && (
         <>
           <Selector

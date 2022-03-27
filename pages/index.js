@@ -8,7 +8,6 @@ import SearchImage from "../components/SearchImage";
 import DishCard from "../components/DishCard/DishCard";
 
 export default function Home({ recipes, dishes }) {
-
   return (
     <main className={styles.main}>
       {recipes.length > 0 ? (
@@ -41,7 +40,9 @@ export default function Home({ recipes, dishes }) {
         </div>
       ) : null}
       <div className={styles.search}>
-        <h2 className={styles.h2}>A chaque plat, ses recettes. Elles sont toutes ici !</h2>
+        <h2 className={styles.h2}>
+          A chaque plat, ses recettes. Elles sont toutes ici !
+        </h2>
         <div>
           <SearchBarHome
             placeholder="Chercher une recette"
@@ -50,7 +51,12 @@ export default function Home({ recipes, dishes }) {
         </div>
       </div>
       <div className={styles.recipes}>
-        <h3 className={styles.h3}>Nos dernières recettes</h3>
+        <h3 className={styles.h3}>
+          Nos dernières recettes{" "}
+          <Link href="/recipes">
+            <span className={styles.seeAll}>Voir tout</span>
+          </Link>
+        </h3>
       </div>
       <div className="row">
         {recipes.length > 0 &&
@@ -66,12 +72,15 @@ export default function Home({ recipes, dishes }) {
               />
             ))}
       </div>
-      <Button href="/recipes" label="Voir toutes les recettes" type="warning" />
       <br />
       <Button href="/recipes/new" label="Ajouter une recette" />
-      <br />
       <div className={styles.recipes}>
-        <h3 className={styles.h3}>Nos derniers plats</h3>
+        <h3 className={styles.h3}>
+          Nos derniers plats{" "}
+          <Link href="/dishes">
+            <span className={styles.seeAll}>Voir tout</span>
+          </Link>
+        </h3>
       </div>
       <div className="row">
         {dishes.length > 0 &&
@@ -81,10 +90,8 @@ export default function Home({ recipes, dishes }) {
               <DishCard dish={dish} key={i} col="col-3 col-6-sm" />
             ))}
       </div>
-      <Button href="/dishes" label="Voir tous les plats" type="warning" />
       <br />
       <Button href="/dishes/new" label="Ajouter un plat" />
-      <br />
     </main>
   );
 }
@@ -107,7 +114,7 @@ export async function getServerSideProps() {
   return {
     props: {
       recipes: allRecipes,
-      dishes: allDishes
+      dishes: allDishes,
     },
   };
 }
