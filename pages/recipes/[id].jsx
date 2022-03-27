@@ -145,7 +145,7 @@ const SelectedRecipe = ({
             </div>
           </div>
         </Skeleton>
-        <div>
+        <div className={classes.resp}>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <Tabs grow>
               <Tabs.Tab label="Ingrédients">

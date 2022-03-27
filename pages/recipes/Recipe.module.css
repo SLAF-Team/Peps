@@ -57,6 +57,10 @@
   font-weight: 400;
 }
 
+.resp {
+  display: none;
+}
+
 .selectorName {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -322,6 +326,10 @@
     text-transform: none;
     line-height: 2;
     list-style: none;
+  }
+
+  .resp {
+    display: contents;
   }
 
   .steps {
