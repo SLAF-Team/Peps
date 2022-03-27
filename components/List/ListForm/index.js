@@ -54,7 +54,7 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   // edit list
   async function editList(data) {
     await axios.put(
-      "/api/recipe/editRecipe",
+      "/api/recipe/editRecipesList",
       {
         id: recipe.id,
         lists: {
