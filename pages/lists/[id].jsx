@@ -17,7 +17,7 @@ const Profile = () => {
   const token = Cookies.get("token");
   const router = useRouter();
   const { query } = useRouter();
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
   const { id } = query;
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
@@ -26,8 +26,18 @@ const Profile = () => {
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState("");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
+
+  useEffect(() => {
+    if (recipes) {
+      const oldRecipes = [];
+      recipes.map((recipe) => oldRecipes.push(recipe.id.toString()));
+      setValue(oldRecipes);
+      setOldValue(oldRecipes);
+    }
+  }, [user, recipes]);
 
   async function searchList(data) {
     try {
@@ -70,13 +80,16 @@ const Profile = () => {
     event.preventDefault();
     const data = [];
     value.map((element) => data.push({ id: parseInt(element) }));
+    const oldData = [];
+    oldValue.map((element) => oldData.push({ id: parseInt(element) }));
     await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
         name: nameChange,
         recipes: {
-          disconnect: data,
+          disconnect: oldData,
+          connect: data,
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -87,7 +100,6 @@ const Profile = () => {
       color: "green",
     });
     setOpened(false);
-    getList(filter);
   };
 
   useEffect(() => {
@@ -98,7 +110,7 @@ const Profile = () => {
 
   useEffect(() => {
     getList(filter);
-  }, [id, filter]);
+  }, [id, filter, opened]);
 
   const handleSelect = (event) => {
     setFilter(event);
@@ -204,7 +216,7 @@ const Profile = () => {
             </form>
             <div className={classes.button}>
               <Button
-                label="Ajouter à d'autres recettes"
+                label="Ajouter de nouvelles recettes"
                 type="success"
                 href="/recipes"
               />
