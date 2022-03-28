@@ -34,7 +34,6 @@ export default async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
     res.status(403).json({ err: "Error occured while adding a new user." });
   }
 };

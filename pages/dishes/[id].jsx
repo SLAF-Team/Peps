@@ -28,7 +28,7 @@ const SelectedDish = () => {
       });
       setDish(result.data);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of dishes.");
     }
   };
 

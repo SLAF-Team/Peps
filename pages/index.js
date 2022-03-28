@@ -4,7 +4,6 @@ import Button from "../components/Button";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 import Link from "next/link";
-import SearchImage from "../components/SearchImage";
 import DishCard from "../components/DishCard/DishCard";
 
 export default function Home({ recipes, dishes }) {

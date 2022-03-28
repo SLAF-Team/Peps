@@ -24,7 +24,7 @@ const Dishes = ({ dishes, regions }) => {
       });
       setFilterDishes(result.data);
     } catch (err) {
-      console.log("error");
+      console.log("Error regarding the loading of dishes.");
     }
   };
 

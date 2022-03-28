@@ -24,7 +24,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
   const [step, setStep] = useState(1);
-  const [submitted, setSubmitted] = useState(false);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
@@ -98,7 +97,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSubmitted(true);
       setRecipe(result.data);
       setStep(step + 1);
     }
@@ -111,10 +109,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const handleStepClick = () => {
     setStep(step + 1);
     setCount(1);
-  };
-
-  const handleSubmitImage = () => {
-    setNewImage();
   };
 
   return (
@@ -171,12 +165,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Ajouter une photo</label>
-              {/* <input
-                className={classes.input}
-                name="addImageUrl"
-                type="text"
-                placeholder="Ex: https://masuperimagedetarte.com"
-              /> */}
               <SearchImage
                 placeholder="rechercher ou copier l'URL de votre image"
                 onSubmit={setNewImage}

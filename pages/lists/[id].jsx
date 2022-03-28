@@ -37,7 +37,7 @@ const Profile = () => {
       setList(result.data);
       setRecipes(result.data[0].recipes);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of lists.");
     }
   }
 

@@ -31,7 +31,6 @@ const SelectedRecipe = ({
   const token = Cookies.get("token");
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(true);
   const isPublic = recipe?.published;
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);

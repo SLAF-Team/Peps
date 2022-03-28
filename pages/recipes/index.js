@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
+import { Switch, Drawer, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { query } = useRouter();
 
-  // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
 
@@ -33,7 +32,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
   const [filter, setFilter] = useState(true);
 
-  // set up data for multiselect
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -50,10 +48,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
-  // set up drawer
   const [opened, setOpened] = useState(false);
 
-  // async search fonction
   const getRecipes = async (data) => {
     try {
       const result = await axios.post(`/api/recipe/searchRecipes`, {
@@ -61,16 +57,14 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       });
       setFilterRecipes(result.data);
     } catch (err) {
-      console.log("error");
+      console.log("Error regarding the loading of recipes.");
     }
   };
 
-  // change filter state
   const handleChange = () => {
     setFilter(!filter);
   };
 
-  //useEffect for filter with exceptions
   useEffect(() => {
     const filterCall = {
       include: {
