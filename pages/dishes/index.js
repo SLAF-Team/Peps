@@ -47,7 +47,7 @@ const Dishes = ({ dishes, regions }) => {
     <div className={classes.margin}>
       <div className="column">
         <div className={classes.titlecontainerindex}>
-          <h1 className={classes.h1}>Toutes les plats </h1>
+          <h1 className={classes.h1}>Tous les plats </h1>
           <div className={classes.filters}>
             <MultiSelect
               data={dataRegions}
