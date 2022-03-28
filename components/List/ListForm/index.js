@@ -19,11 +19,6 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   const notifications = useNotifications();
   const filteredLists = recipe.lists.filter((list) => list.userId === user?.id);
 
-  console.log("filteredLists");
-  console.log(filteredLists);
-
-  console.log(value);
-  console.log(oldValue);
   const handleClick = () => {
     setOpened(true);
   };
