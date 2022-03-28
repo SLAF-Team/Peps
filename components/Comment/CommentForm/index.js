@@ -12,10 +12,6 @@ const CommentForm = ({ user, recipe, onCreate }) => {
   const token = Cookies.get("token");
   const notifications = useNotifications();
 
-  // useEffect(() => {
-  //   setSubmitted(false);
-  // }, []);
-
   async function addComment() {
     const { addText } = formRef.current;
     const text = addText.value;

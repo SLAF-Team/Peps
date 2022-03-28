@@ -1,14 +1,21 @@
 import prisma from "../../../lib/prisma.ts";
-import { checkAuth } from "../../../lib/auth";
+import { checkAuth, checkIfAuthor } from "../../../lib/auth";
 
 export default async (req, res) => {
+  const data = req.body;
+
   const isAuth = await checkAuth(req);
   if (!isAuth) {
     res.status(403).json({ err: "Forbidden" });
     return;
   }
 
-  const data = req.body;
+  const isAuthor = await checkIfAuthor(req, "recipe", data.id);
+  if (!isAuthor) {
+    res.status(403).json({ err: "Forbidden !!" });
+    return;
+  }
+
   try {
     const result = await prisma.recipe.update({
       where: {
@@ -20,7 +27,7 @@ export default async (req, res) => {
     });
     res.status(200).json(result);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400).json({ err: "Error while updating." });
   }
 };

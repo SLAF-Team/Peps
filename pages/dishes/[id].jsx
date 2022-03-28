@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
 import ButtonForm from "../../components/ButtonForm";
 import Button from "../../components/Button";
@@ -56,9 +55,8 @@ const SelectedDish = () => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(result);
     if (result.status === 200) {
-      const lol = await axios.put(
+      await axios.put(
         "/api/update/addUpdate",
         {
           userId: user.id,
@@ -66,7 +64,6 @@ const SelectedDish = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(lol);
     }
     getDish();
     setOpened(false);
@@ -153,7 +150,7 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul>
+                <ul className={classes.ul}>
                   <li className={classes.li}>
                     <a href="#">{dish?.region.name}</a>
                   </li>
@@ -170,9 +167,12 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul style={{paddingInlineStart:"0px"}}>
+                <ul style={{ paddingInlineStart: "0px" }}>
                   {dish?.updates.map((update, index) => (
-                    <li key={index} style={{fontSize:"9px", listStyle:'none',}}>
+                    <li
+                      key={index}
+                      style={{ fontSize: "9px", listStyle: "none" }}
+                    >
                       Modifié par {update.user.name}{" "}
                       {moment(update.createdAt).fromNow()}
                     </li>
@@ -188,12 +188,12 @@ const SelectedDish = () => {
               </div>
             </div>
             <div>
-              <ul>
-                <li
-                  className={classes.li}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <a href={"/dishes"} style={{ fontSize: "12px", textAlign: "center" }}>
+              <ul className={classes.ul}>
+                <li className={classes.li} style={{ textAlign: "center" }}>
+                  <a
+                    href={"/dishes"}
+                    style={{ fontSize: "12px", textAlign: "center" }}
+                  >
                     Voir tous les plats
                   </a>
                 </li>

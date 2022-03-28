@@ -22,7 +22,8 @@
 
 ## The Task
 
-After having spent about 2 months learning ReactJS at THP, we've been tasked with building a website that combines this library to our own back-end API.
+After having spent about 2 and a half months learning ReactJS at The Hacking Project Bootcamp, we've been tasked with building a website that combines this library to our own back-end API.
+We went for Next JS, a framework we found about a week before. 
 
 We decided to build a collaborative cooking webiste whose main asset lies within the handling of the database.
 
@@ -42,7 +43,7 @@ We've adapted this design to the cooking world by setting up main dishes that ca
 
 ## Try it out
 
-Discover it [here!](https://peps.life/)
+Discover it on line [here!](https://peps.life/)
 
 Connect, browse & contribute
 
@@ -50,7 +51,7 @@ Connect, browse & contribute
 
 ### User classics
 
-- Sign-up, sign-in, log-in, log-out, password resetting etc.
+- Sign-up, sign-in, log-in, log-out, editing etc.
 
 - User profile
 
@@ -58,9 +59,9 @@ Connect, browse & contribute
 
 - The main page displays the latest additions
 
-- The search bar lets you find a specific dish or recipe
+- The search bar lets you find a specific recipe
 
-- Numerous filters to select by type, region etc.
+- Numerous filters to select by type, country, comments, likes etc.
 
 - See all recipes steming from a dish you like
 

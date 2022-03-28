@@ -11,14 +11,17 @@ export default async (req, res) => {
   }
 
   try {
-    const comment = await prisma.comment.create({
+    const result = await prisma.recipe.update({
+      where: {
+        id: data.id,
+      },
       data: {
         ...data,
       },
     });
-    res.status(200).json(comment);
+    res.status(200).json(result);
   } catch (err) {
-    console.log(err);
-    res.status(403).json({ err: "Error occured while adding a new comment." });
+    console.log(err)
+    res.status(400).json({ err: "Error while updating." });
   }
 };

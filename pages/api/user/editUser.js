@@ -1,15 +1,21 @@
 import prisma from "../../../lib/prisma.ts";
-import { checkAuth } from "../../../lib/auth";
+import { checkAuth, checkIfUser } from "../../../lib/auth";
 
 export default async (req, res) => {
+
+    const data = req.body;
+
   const isAuth = await checkAuth(req);
   if (!isAuth) {
     res.status(403).json({ err: "Forbidden" });
     return;
   }
 
-  const data = req.body;
-
+  const isUser = await checkIfUser(req, data.id);
+  if (!isUser) {
+    res.status(403).json({ err: "Forbidden !!" });
+    return;
+  }
   try {
     const result = await prisma.user.update({
       where: {

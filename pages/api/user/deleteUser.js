@@ -1,5 +1,5 @@
 import prisma from "../../../lib/prisma.ts";
-import { checkAuth } from "../../../lib/auth";
+import { checkAuth, checkIfUser } from "../../../lib/auth";
 import jwt from "jsonwebtoken";
 
 export default async (req, res) => {
@@ -11,9 +11,15 @@ export default async (req, res) => {
 
   const { authorization } = req.headers;
   const token = authorization.replace(/^Bearer\s/, "");
+  const { id } = jwt.verify(token, process.env.JWT_KEY);
+
+  const isUser = await checkIfUser(req, id);
+  if (!isUser) {
+    res.status(403).json({ err: "Forbidden !!" });
+    return;
+  }
 
   try {
-    const { id } = jwt.verify(token, process.env.JWT_KEY);
     const deleteUser = await prisma.user.delete({
       where: {
         id: id,
