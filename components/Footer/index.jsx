@@ -12,9 +12,8 @@ const Footer = () => {
           <div className={styles.border}>
             <span className={styles.brand}>Peps</span>
             <p className={styles.description}>
-              Peps est une base de donnée culinaire qui a pour vision de
-              façonner l'espace alimentaire numérique avec une technologie et un
-              contenu de pointe.
+              Peps est une base de donnée culinaire, qui a pour vision de
+              façonner l'espace alimentaire numérique. Perdez-vous dans notre labyrinthe de saveurs ! 
             </p>
             <a href="https://github.com/SLAF-Team/Cookogs">
               <svg
@@ -40,10 +39,10 @@ const Footer = () => {
                   <p className={styles.link}>Accueil</p>
                 </Link>
                 <Link href="/profile">
-                  <p className={styles.link}>Mon Profil</p>
+                  <p className={styles.link}>Profil</p>
                 </Link>
                 <Link href="/profile?list=true" as="/profile">
-                  <p className={styles.link}>Mes Listes</p>
+                  <p className={styles.link}>Listes</p>
                 </Link>
               </>
             ) : (

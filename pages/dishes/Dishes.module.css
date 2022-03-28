@@ -28,6 +28,10 @@
   border: 1px solid #324376;
 }
 
+.ul {
+  padding-left: 20px;
+}
+
 .btn:hover {
   background-color: #faf5f0;
 }
@@ -90,7 +94,7 @@
 
 .li {
   margin-left: -1rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 14px;
   line-height: 2;
   list-style: none;
@@ -144,8 +148,6 @@
 
 @media only screen and (min-width: 33.75em) {
   .cards {
-    display: flex;
-    justify-content: center;
     padding-top: 0.75rem;
   }
 }

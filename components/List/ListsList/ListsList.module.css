@@ -1,8 +1,12 @@
 .li {
   margin-left: -1rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 14px;
   line-height: 2;
   list-style: none;
   color: #324376;
+}
+
+.ul {
+  padding-left: 20px;
 }

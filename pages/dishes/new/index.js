@@ -1,11 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react/cjs/react.development";
-import { useRef } from "react/cjs/react.development";
+import { useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
 import { useUserContext } from "../../../context/UserContext";
-import { checkLogAuth } from "../../../lib/authfront";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";

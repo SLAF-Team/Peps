@@ -63,6 +63,7 @@
 .recipe__reaction {
   display: flex;
   flex-direction: row;
+  height: 25px;
 }
 
 .recipe__likescount {

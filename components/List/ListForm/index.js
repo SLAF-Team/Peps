@@ -1,7 +1,7 @@
 import ListsList from "../ListsList";
 import { useUserContext } from "../../../context/UserContext";
 import { Modal } from "@mantine/core";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Button from "../../Button";
 import Cookies from "js-cookie";
@@ -11,15 +11,34 @@ import { useNotifications } from "@mantine/notifications";
 
 const ListForm = ({ lists, recipe, onCreate }) => {
   const formRef = useRef();
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
   const notifications = useNotifications();
+  const filteredLists = recipe.lists.filter((list) => list.userId === user?.id);
 
   const handleClick = () => {
     setOpened(true);
   };
+
+  // refreshcontext
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUser(result.data.user);
+  }
+
+  useEffect(() => {
+    if (filteredLists.length > 0) {
+      const oldLists = [];
+      filteredLists.map((list) => oldLists.push(list.id.toString()));
+      setValue(oldLists);
+      setOldValue(oldLists);
+    }
+  }, [user, recipe]);
 
   // Add new
   async function addNewList(params) {
@@ -49,31 +68,36 @@ const ListForm = ({ lists, recipe, onCreate }) => {
       color: "green",
     });
     setOpened(false);
+    getUser();
   }
 
   // edit list
-  async function editList(data) {
+  async function editList(oldData, data) {
     await axios.put(
-      "/api/recipe/editRecipe",
+      "/api/recipe/editRecipesList",
       {
         id: recipe.id,
         lists: {
+          disconnect: oldData,
           connect: data,
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été mise à jour",
       color: "green",
     });
+    onCreate();
+    setOpened(false);
   }
 
   const handleEditClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    editList(newValue);
+    const oldValueList = [];
+    oldValue.map((element) => oldValueList.push({ id: parseInt(element) }));
+    editList(oldValueList, newValue);
   };
 
   return (

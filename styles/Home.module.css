@@ -117,6 +117,10 @@
 .heroleft {
   height: 100%;
   width: 50vw;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .heroright {
@@ -133,10 +137,31 @@
   align-items: center;
 }
 
+.heroleft .heroimg {
+  height: 100%;
+  transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -ms-transition: all 0.4s;
+  -o-transition: all 0.4s;
+}
+
+.heroleft:hover .heroimg {
+  max-width: 100%;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+}
+
 .heroimg {
-  object-fit: cover;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  background-position: center;
+  background-size: cover;
 }
 
 .p {
@@ -150,7 +175,7 @@
 
 .h2 {
   margin-top: 50px;
-  font-size: 40px;
+  font-size: 34px;
 }
 
 .h3 {
@@ -178,6 +203,27 @@
   text-decoration-color: #ffd12f;
 }
 
+.seeAll {
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 1rem;
+  vertical-align: middle;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #ffd12f;
+  color: #324376;
+}
+
+.seeAll:hover {
+  color: #ffd12f;
+}
+
+@media (min-width: 1000px) {
+  .search {
+    width: 99.2vw;
+  }
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
@@ -187,7 +233,6 @@
   .hero {
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 
   .heroleft {
@@ -202,7 +247,9 @@
 
   .h2 {
     margin-top: 80px;
-    font-size: 30px;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .recipes {
@@ -220,6 +267,8 @@
   }
 
   .search {
-    height: 50vh;
+    height: 30vh;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
