@@ -15,9 +15,15 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
   const notifications = useNotifications();
   const filteredLists = recipe.lists.filter((list) => list.userId === user?.id);
 
+  console.log("filteredLists");
+  console.log(filteredLists);
+
+  console.log(value);
+  console.log(oldValue);
   const handleClick = () => {
     setOpened(true);
   };
@@ -35,6 +41,7 @@ const ListForm = ({ lists, recipe, onCreate }) => {
       const oldLists = [];
       filteredLists.map((list) => oldLists.push(list.id.toString()));
       setValue(oldLists);
+      setOldValue(oldLists);
     }
   }, [user, recipe]);
 
@@ -70,12 +77,13 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   }
 
   // edit list
-  async function editList(data) {
+  async function editList(oldData, data) {
     await axios.put(
       "/api/recipe/editRecipesList",
       {
         id: recipe.id,
         lists: {
+          disconnect: oldData,
           connect: data,
         },
       },
@@ -92,7 +100,9 @@ const ListForm = ({ lists, recipe, onCreate }) => {
   const handleEditClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    editList(newValue);
+    const oldValueList = [];
+    oldValue.map((element) => oldValueList.push({ id: parseInt(element) }));
+    editList(oldValueList, newValue);
   };
 
   return (
