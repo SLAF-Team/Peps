@@ -29,7 +29,6 @@ const Profile = () => {
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
 
-  // search list + call axios
   async function searchList(data) {
     try {
       const result = await axios.post(`/api/list/searchLists`, {
@@ -42,7 +41,6 @@ const Profile = () => {
     }
   }
 
-  // getlist
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {
@@ -54,7 +52,7 @@ const Profile = () => {
           },
           orderBy: {
             [dataFilter]: {
-              _count: "asc",
+              _count: "desc",
             },
           },
         },
@@ -98,14 +96,9 @@ const Profile = () => {
     }
   }, [list]);
 
-  // filter
-  useEffect(() => {
-    getList("like");
-  }, [id]);
-
   useEffect(() => {
     getList(filter);
-  }, [filter]);
+  }, [id, filter]);
 
   const handleSelect = (event) => {
     setFilter(event);
@@ -210,11 +203,11 @@ const Profile = () => {
               </button>
             </form>
             <div className={classes.button}>
-            <Button
-              label="Ajouter à d'autres recettes"
-              type="success"
-              href="/recipes"
-            />
+              <Button
+                label="Ajouter à d'autres recettes"
+                type="success"
+                href="/recipes"
+              />
             </div>
           </Modal>
         </>

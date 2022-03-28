@@ -6,7 +6,6 @@ import { MultiSelect } from "@mantine/core";
 import axios from "axios";
 
 const Dishes = ({ dishes, regions }) => {
-  // set up state for multiselect
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
   const [filterRegion, setFilterRegion] = useState([]);
@@ -18,7 +17,6 @@ const Dishes = ({ dishes, regions }) => {
     dataRegions.push({ value: region.id, label: region.name })
   );
 
-  // async search fonction
   const getDishes = async (data) => {
     try {
       const result = await axios.post(`/api/dish/searchDishes`, {

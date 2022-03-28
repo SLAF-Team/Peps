@@ -75,11 +75,7 @@ const SelectedRecipe = ({
     getIngredients();
   }, [id]);
 
-  const handleCommentCreate = () => {
-    getRecipe();
-  };
-
-  const handleCommentDelete = () => {
+  const handleCommentUpdate = () => {
     getRecipe();
   };
 
@@ -260,7 +256,7 @@ const SelectedRecipe = ({
             <CommentForm
               user={user}
               recipe={recipe}
-              onCreate={handleCommentCreate}
+              onCreate={handleCommentUpdate}
             />
             <br></br>
             {recipe?.comments.length != 0 && (
@@ -273,7 +269,7 @@ const SelectedRecipe = ({
                   {recipe?.comments && (
                     <CommentsList
                       comments={recipe.comments}
-                      onDelete={handleCommentDelete}
+                      onDelete={handleCommentUpdate}
                     />
                   )}
                 </Accordion.Item>
