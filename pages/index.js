@@ -54,7 +54,7 @@ export default function Home({ recipes, dishes }) {
         <h3 className={styles.h3}>
           Nos dernières recettes{" "}
           <Link href="/recipes">
-            <span className={styles.seeAll}>Voir tout</span>
+            <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
       </div>
@@ -78,7 +78,7 @@ export default function Home({ recipes, dishes }) {
         <h3 className={styles.h3}>
           Nos derniers plats{" "}
           <Link href="/dishes">
-            <span className={styles.seeAll}>Voir tout</span>
+            <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
       </div>
