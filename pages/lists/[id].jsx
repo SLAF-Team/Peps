@@ -173,11 +173,7 @@ const Profile = () => {
           <div className={classes.cards}>
             <div className="row">
               {recipes?.map((recipe, index) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={index}
-                  col="col-3 col-6-sm"
-                />
+                <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
           </div>
@@ -198,8 +194,9 @@ const Profile = () => {
                 required
               >
                 {list[0].recipes ? (
-                  list[0].recipes.map((recipe) => (
+                  list[0].recipes.map((recipe, index) => (
                     <Checkbox
+                      key={index}
                       value={recipe.id.toString()}
                       label={recipe.name}
                     />

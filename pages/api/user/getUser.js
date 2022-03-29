@@ -1,39 +1,17 @@
-import jwt from "jsonwebtoken";
 import prisma from "../../../lib/prisma.ts";
 
-const bcrypt = require("bcrypt");
-
 export default async (req, res) => {
-  const { email, password } = req.body;
+  const data = req.body;
   try {
-    if (!email || !password) {
-      return res.status(400).json({
-        status: "error",
-        error: "missing email or password",
-      });
+    const user = await prisma.user.findUnique({
+      ...data,
+    });
+    if (!user) {
+      res.status(400).json({ status: "error", error: "User Not Found" });
     } else {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-        include: {
-          recipes: true,
-          likes: true
-        },
-      });
-      if (!user) {
-        res.status(400).json({ status: "error", error: "User Not Found" });
-      } else {
-        bcrypt.compare(password, user.password).then((isMatch) => {
-          const token = jwt.sign(
-            { id: user.id, email: user.email },
-            process.env.JWT_KEY
-          );
-          res.status(200).json({ user, token });
-        });
-      }
+      res.status(200).json({ user });
     }
   } catch (err) {
-    res.status(403).json({ err: "Error occured while adding a new user." });
+    res.status(403).json({ err: "Error occured while get a user." });
   }
 };
