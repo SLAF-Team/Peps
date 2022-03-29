@@ -20,12 +20,11 @@ const SelectedDish = () => {
   const [descriptionChange, setDescriptionChange] = useState();
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
+  const [page, setPage] = useState(1);
 
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
     } catch (err) {
       console.log(err);
@@ -34,7 +33,7 @@ const SelectedDish = () => {
 
   useEffect(() => {
     getDish();
-  }, [id]);
+  }, [id, page]);
 
   useEffect(() => {
     setLoading(true);
@@ -124,6 +123,7 @@ const SelectedDish = () => {
                   ))}
               </div>
             </div>
+            <button onClick={() => setPage(page + 1)}>Voir plus</button>
           </Skeleton>
         </div>
         <div className="col-3">
