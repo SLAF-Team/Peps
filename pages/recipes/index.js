@@ -220,6 +220,9 @@ export async function getServerSideProps() {
       _count: { select: { likes: true, comments: true } },
     },
     where: { published: true },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   const allTags = await prisma.tag.findMany({});
   const allTypes = await prisma.type.findMany({});
