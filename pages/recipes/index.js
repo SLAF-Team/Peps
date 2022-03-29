@@ -68,7 +68,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   };
 
   useEffect(() => {
-    const filterCall = {
+    const filteredQuery = {
       include: {
         _count: { select: { likes: true, comments: true } },
       },
@@ -77,18 +77,18 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       },
     };
     const wheres = { published: true };
-    if (filterCountry.length > 0) {
+    if (filter && filterCountry.length > 0) {
       wheres.countryId = { in: filterCountry };
     }
-    if (filterType.length > 0) {
+    if (filter && filterType.length > 0) {
       wheres.typeId = { in: filterType };
     }
-    if (filterTag.length > 0) {
+    if (filter && filterTag.length > 0) {
       wheres.tags = {
         some: { id: { in: filterTag } },
       };
     }
-    if (filterIngredient.length > 0) {
+    if (filter && filterIngredient.length > 0) {
       wheres.ingredientsUnit = {
         some: {
           ingredientId: {
@@ -97,9 +97,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         },
       };
     }
-    filterCall.where = wheres;
-    const data = filter ? filterCall : null;
-    getRecipes(data);
+    filteredQuery.where = wheres;
+    getRecipes(filteredQuery);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
   useEffect(() => {
