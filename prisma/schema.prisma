@@ -22,6 +22,7 @@ model User {
   comments  Comment[]
   lists     List[]
   likes     LikesOnRecipes[]
+  ratings   RatingsOnRecipes[]
   updates   UpdatesOnDish[]
 
   @@map(name: "users")
@@ -81,6 +82,7 @@ model Recipe {
   type            Type                    @relation(fields: [typeId], references: [id], onDelete: SetNull)
   typeId          Int
   likes           LikesOnRecipes[]
+  ratings         RatingsOnRecipes[]
   lists           List[]                   @relation("_ListAndRecipes")
   comments        Comment[]
   steps           Step[]
@@ -155,3 +157,14 @@ model Step {
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId   Int
 }
+
+model RatingsOnRecipes {
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+  
+  @@id([userId, recipeId])
+  rating   Int
+}
+
