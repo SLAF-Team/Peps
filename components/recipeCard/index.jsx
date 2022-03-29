@@ -12,16 +12,35 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useNotifications } from "@mantine/notifications";
 
-const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
+const RecipeCard = ({ recipe, col }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [comments, setComments] = useState(comment_count);
+  const [currentRecipe, setCurrentRecipe] = useState(recipe);
+  const [comments, setComments] = useState(
+    recipe._count ? recipe._count.comments : []
+  );
+  const [likes, setLikes] = useState(recipe._count ? recipe._count.likes : []);
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(like_count);
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
-  const router = useRouter();
   const notifications = useNotifications();
+
+  // getrecipe when change
+  const getRecipe = async () => {
+    try {
+      const result = await axios.get(`/api/recipe/${currentRecipe.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(result.data)
+      setCurrentRecipe(result.data);
+      setComments(result.data._count ? result.data._count.comments : []);
+      setLikes(result.data._count ? result.data._count.likes : [])
+    } catch (err) {
+      console.log("Error regarding the loading of recipes on recipecard.");
+    }
+  };
+  console.log(currentRecipe.name);
+  console.log(currentRecipe)
 
   useEffect(() => {
     setIsLiked(user?.likes?.some((like) => like.recipeId === recipe.id));
@@ -43,7 +62,6 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setLikes(likes + 1);
       setIsLiked(!isLiked);
     }
   }
@@ -52,26 +70,27 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
     await axios.delete(`/api/like/delete/${recipe.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setLikes(likes - 1);
     setIsLiked(!isLiked);
   }
 
   const handleDeleteLike = () => {
     removeLike();
+    getRecipe()
   };
 
   const handleCreateLike = () => {
     addLike();
+    getRecipe()
   };
 
   return (
     <div className={col}>
-      <Link href={`/recipes/${recipe?.id}`}>
+      <Link href={`/recipes/${currentRecipe?.id}`}>
         <div className={styles.recipe__imgparent}>
           <div
             className={styles.recipe__img}
             style={{
-              backgroundImage: `url(${recipe.imageUrl})`,
+              backgroundImage: `url(${currentRecipe.imageUrl})`,
             }}
           ></div>
         </div>
@@ -104,7 +123,7 @@ const RecipeCard = ({ recipe, like_count, comment_count, col }) => {
           ) : null}
         </div>
       </div>
-      <Link href={`/recipes/${recipe?.id}`}>
+      <Link href={`/recipes/${currentRecipe?.id}`}>
         <div className={styles.title__container}>
           <h1 className={styles.recipe__title}>{recipe?.name}</h1>
         </div>

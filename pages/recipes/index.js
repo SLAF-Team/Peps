@@ -59,7 +59,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       });
       setFilterRecipes(result.data);
     } catch (err) {
-      console.log("Error regarding the loading of recipes.");
+      console.log("Error regarding the loading of recipes ICI.");
     }
   };
 
@@ -205,8 +205,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
               <RecipeCard
                 recipe={recipe}
                 key={i}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
                 col="col-3 col-6-sm"
               />
             ))}

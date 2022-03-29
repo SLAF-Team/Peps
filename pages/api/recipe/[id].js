@@ -28,6 +28,7 @@ export default async (req, res) => {
         },
         type: { select: { name: true, id: true } },
         tags: { select: { name: true, id: true } },
+        _count: { select: { likes: true, comments: true } },
       },
     });
 

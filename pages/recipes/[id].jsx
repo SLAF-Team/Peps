@@ -167,8 +167,8 @@ const SelectedRecipe = ({
                   <div>
                     <ul className={classes.ul}>
                       {recipe?.ingredientsUnit &&
-                        recipe?.ingredientsUnit.map((element) => (
-                          <li className={classes.li}>
+                        recipe?.ingredientsUnit.map((element, index) => (
+                          <li className={classes.li} key={index}>
                             <Link
                               href={
                                 "/recipes?ingredient=" + element.ingredient.id
@@ -193,7 +193,7 @@ const SelectedRecipe = ({
                 <div className={classes.stepsmobilecontainer}>
                   {recipe?.steps &&
                     recipe?.steps.map((element, index) => (
-                      <div>
+                      <div key={index}>
                         <p className={classes.steps}>Étape {index + 1}</p>
                         <p>{element.text} </p>
                       </div>
@@ -210,8 +210,8 @@ const SelectedRecipe = ({
                   <div>
                     <ul className={classes.ul}>
                       {recipe?.tags &&
-                        recipe?.tags.map((tag) => (
-                          <li className={classes.li}>
+                        recipe?.tags.map((tag, index) => (
+                          <li className={classes.li} key={index}>
                             <Link href={"/recipes?tag=" + tag.id}>
                               {"#" + tag.name}
                             </Link>
@@ -242,7 +242,7 @@ const SelectedRecipe = ({
           <div className={classes.stepscontainer}>
             {recipe?.steps &&
               recipe?.steps.map((element, index) => (
-                <div>
+                <div key={index}>
                   <p className={classes.steps}>Étape {index + 1}</p>
                   <p>{element.text} </p>
                 </div>
@@ -324,8 +324,8 @@ const SelectedRecipe = ({
               <div>
                 <ul className={classes.ul}>
                   {recipe?.ingredientsUnit &&
-                    recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li}>
+                    recipe?.ingredientsUnit.map((element, index) => (
+                      <li className={classes.li} key={index}>
                         <Link
                           href={"/recipes?ingredient=" + element.ingredient.id}
                         >
@@ -352,8 +352,8 @@ const SelectedRecipe = ({
               <div>
                 <ul className={classes.ul}>
                   {recipe?.tags &&
-                    recipe?.tags.map((tag) => (
-                      <li className={classes.li}>
+                    recipe?.tags.map((tag, index) => (
+                      <li className={classes.li} key={index}>
                         <Link href={"/recipes?tag=" + tag.id}>
                           {"#" + tag.name}
                         </Link>
