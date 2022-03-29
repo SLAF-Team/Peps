@@ -9,11 +9,10 @@ import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
 import comment from "../../assets/images/comment.svg";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { useNotifications } from "@mantine/notifications";
 
 const RecipeCard = ({ recipe, col }) => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const [currentRecipe, setCurrentRecipe] = useState(recipe);
   const [comments, setComments] = useState(
@@ -25,26 +24,35 @@ const RecipeCard = ({ recipe, col }) => {
   const hasComments = comments ? true : false;
   const notifications = useNotifications();
 
-  // getrecipe when change
   const getRecipe = async () => {
     try {
       const result = await axios.get(`/api/recipe/${currentRecipe.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(result.data)
       setCurrentRecipe(result.data);
       setComments(result.data._count ? result.data._count.comments : []);
-      setLikes(result.data._count ? result.data._count.likes : [])
+      setLikes(result.data._count ? result.data._count.likes : []);
     } catch (err) {
       console.log("Error regarding the loading of recipes on recipecard.");
     }
   };
-  console.log(currentRecipe.name);
-  console.log(currentRecipe)
+
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUser(result.data.user);
+  }
 
   useEffect(() => {
-    setIsLiked(user?.likes?.some((like) => like.recipeId === recipe.id));
-  }, [user]);
+    setIsLiked(
+      user
+        ? user.likes
+          ? user.likes.some((like) => like.recipeId === currentRecipe.id)
+          : false
+        : false
+    );
+  }, [user, currentRecipe]);
 
   async function addLike() {
     if (!user) {
@@ -57,30 +65,30 @@ const RecipeCard = ({ recipe, col }) => {
       await axios.put(
         "/api/like/addLike",
         {
-          recipeId: recipe.id,
+          recipeId: currentRecipe.id,
           userId: user.id,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setIsLiked(!isLiked);
+      getRecipe();
+      getUser();
     }
   }
 
   async function removeLike() {
-    await axios.delete(`/api/like/delete/${recipe.id}`, {
+    await axios.delete(`/api/like/delete/${currentRecipe.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setIsLiked(!isLiked);
+    getRecipe();
+    getUser();
   }
 
   const handleDeleteLike = () => {
     removeLike();
-    getRecipe()
   };
 
   const handleCreateLike = () => {
     addLike();
-    getRecipe()
   };
 
   return (
@@ -125,7 +133,7 @@ const RecipeCard = ({ recipe, col }) => {
       </div>
       <Link href={`/recipes/${currentRecipe?.id}`}>
         <div className={styles.title__container}>
-          <h1 className={styles.recipe__title}>{recipe?.name}</h1>
+          <h1 className={styles.recipe__title}>{currentRecipe?.name}</h1>
         </div>
       </Link>
     </div>

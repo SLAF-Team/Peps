@@ -172,12 +172,10 @@ const Profile = () => {
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
           <div className={classes.cards}>
             <div className="row">
-              {recipes?.map((recipe) => (
+              {recipes?.map((recipe, index) => (
                 <RecipeCard
                   recipe={recipe}
-                  key={recipe.id}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
+                  key={index}
                   col="col-3 col-6-sm"
                 />
               ))}

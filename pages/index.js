@@ -65,8 +65,6 @@ export default function Home({ recipes, dishes }) {
               <RecipeCard
                 recipe={recipe}
                 key={i}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
                 col="col-3 col-6-sm"
               />
             ))}
