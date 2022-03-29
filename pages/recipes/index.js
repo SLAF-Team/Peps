@@ -32,6 +32,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
   const [filter, setFilter] = useState(true);
 
+  console.log(filteredRecipes);
+  
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -69,6 +71,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     const filterCall = {
       include: {
         _count: { select: { likes: true, comments: true } },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     };
     const wheres = { published: true };
