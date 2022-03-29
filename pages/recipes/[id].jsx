@@ -7,7 +7,6 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import ButtonSettings from "../../components/ButtonSettings";
-import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
