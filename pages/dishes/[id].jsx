@@ -27,7 +27,7 @@ const SelectedDish = () => {
       const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of dishes.");
     }
   };
 
@@ -112,12 +112,10 @@ const SelectedDish = () => {
             <div className="row">
               <div className={classes.cards}>
                 {dish?.recipes &&
-                  dish?.recipes.map((recipe) => (
+                  dish?.recipes.map((recipe, index) => (
                     <RecipeCard
-                      key={recipe.id}
+                      key={index}
                       recipe={recipe}
-                      like_count={recipe?._count?.likes}
-                      comment_count={recipe?._count?.comments}
                       col="col-4 col-6-sm"
                     />
                   ))}

@@ -102,8 +102,6 @@ const Profile = ({ recipes }) => {
                 <RecipeCard
                   recipe={recipe}
                   key={index}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
                   col="col-3 col-6-sm"
                 />
               ))}
@@ -116,8 +114,6 @@ const Profile = ({ recipes }) => {
                 <RecipeCard
                   recipe={recipe}
                   key={index}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
                   col="col-3 col-6-sm"
                 />
               ))}
