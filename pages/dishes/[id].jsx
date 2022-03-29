@@ -26,19 +26,14 @@ const SelectedDish = () => {
     try {
       const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
-      setPage(page + 1);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleLoad = () => {
-    getDish();
-  };
-
   useEffect(() => {
     getDish();
-  }, [id]);
+  }, [id, page]);
 
   useEffect(() => {
     setLoading(true);
@@ -128,7 +123,7 @@ const SelectedDish = () => {
                   ))}
               </div>
             </div>
-            <button onClick={handleLoad}>Voir plus</button>
+            <button onClick={() => setPage(page + 1)}>Voir plus</button>
           </Skeleton>
         </div>
         <div className="col-3">
