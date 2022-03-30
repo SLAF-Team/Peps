@@ -187,7 +187,6 @@ const EditRecipe = ({
               <Select
                 value={countryValue}
                 onChange={setCountryValue}
-                placeholder="Choisissez un pays"
                 data={countriesData}
                 searchable
                 clearable
