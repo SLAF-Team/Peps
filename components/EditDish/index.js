@@ -5,8 +5,10 @@ import { useState, useEffect } from "react";
 import classes from "./Dish.module.css";
 import { Select } from "@mantine/core";
 import Cookies from "js-cookie";
+import { useNotifications } from "@mantine/notifications";
 
 const EditDish = ({ dish, onSubmit, user }) => {
+  const notifications = useNotifications();
   const token = Cookies.get("token");
   const [titleValue, setTitleValue] = useState(dish.title);
   const [descriptionValue, setDescriptionValue] = useState(dish.description);
@@ -41,28 +43,40 @@ const EditDish = ({ dish, onSubmit, user }) => {
 
   async function editDish(event) {
     event.preventDefault();
-    const result = await axios.put(
-      "/api/dish/editDish",
-      {
-        id: dish.id,
-        title: titleValue,
-        description: descriptionValue,
-        imageUrl: imageUrlValue,
-        regionId: parseInt(regionValue),
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    if (result.status === 200) {
-      await axios.put(
-        "/api/update/addUpdate",
+    const title = titleValue;
+    const description = descriptionValue;
+    const imageUrl = imageUrlValue;
+    const regionId = parseInt(regionValue);
+    if (!title || !description) {
+      notifications.showNotification({
+        title: "Erreur dans votre formulaire !",
+        message: "Un ou plusieurs éléments sont manquants",
+        color: "red",
+      });
+    } else {
+      const result = await axios.put(
+        "/api/dish/editDish",
         {
-          userId: user.id,
-          dishId: dish.id,
+          id: dish.id,
+          title,
+          description,
+          imageUrl,
+          regionId,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      if (result.status === 200) {
+        await axios.put(
+          "/api/update/addUpdate",
+          {
+            userId: user.id,
+            dishId: dish.id,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+      onSubmit();
     }
-    onSubmit();
   }
 
   async function deleteDish() {
