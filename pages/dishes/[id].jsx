@@ -30,7 +30,7 @@ const SelectedDish = ({ recipes, id }) => {
 
   useEffect(() => {
     getDish();
-  }, [token, page]);
+  }, [page]);
 
   useEffect(() => {
     setLoading(true);
