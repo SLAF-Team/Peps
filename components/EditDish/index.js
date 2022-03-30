@@ -7,7 +7,7 @@ import { Select } from "@mantine/core";
 import Cookies from "js-cookie";
 
 const EditDish = ({ dish, onSubmit, user }) => {
-  const token = Cookies.get("token")
+  const token = Cookies.get("token");
   const [titleValue, setTitleValue] = useState(dish.title);
   const [descriptionValue, setDescriptionValue] = useState(dish.description);
   const [imageUrlValue, setImageUrlValue] = useState(dish.imageUrl);
@@ -75,39 +75,35 @@ const EditDish = ({ dish, onSubmit, user }) => {
   }
 
   return (
-    <div className={classes.form}>
-      <form onSubmit={editDish} className={classes.size}>
-        <div>
-          <label>Nom</label>
+    <>
+      <form onSubmit={editDish} className={classes.dishform}>
+        <div className={classes.step}>
+          <label className={classes.label}>Nom</label>
+          <input
+            className={classes.input}
+            type="text"
+            onChange={handleTitle}
+            value={titleValue}
+          />
         </div>
-        <input
-          type="text"
-          onChange={handleTitle}
-          value={titleValue}
-          className={classes.field}
-        />
-        <div>
-          {" "}
-          <label>Description</label>
+        <div className={classes.step}>
+          <label className={classes.label}>Description</label>
+          <input
+            className={classes.input}
+            onChange={handleDescription}
+            value={descriptionValue}
+            type="text"
+          />
         </div>
-        <textarea
-          type="text"
-          style={{ width: "100%", height: "100px" }}
-          onChange={handleDescription}
-          value={descriptionValue}
-          className={classes.field}
-        />
-        <div>
-          {" "}
-          <label>Image</label>
+        <div className={classes.step}>
+          <label className={classes.label}>Image</label>
+          <input
+            type="text"
+            onChange={handleImageUrl}
+            value={imageUrlValue}
+            className={classes.input}
+          />
         </div>
-        <textarea
-          type="text"
-          style={{ width: "100%", height: "100px" }}
-          onChange={handleImageUrl}
-          value={imageUrlValue}
-          className={classes.field}
-        />
         <div className={classes.step}>
           <label className={classes.label}>Région</label>
           <Select
@@ -118,18 +114,21 @@ const EditDish = ({ dish, onSubmit, user }) => {
             clearable
           />
         </div>
-        <ButtonForm label={"j'édite"} theme="success" />
+        <div className={classes.button}>
+          <ButtonForm label={"j'édite"} theme="success" />
+        </div>
       </form>
-      <br />
       {user?.isadmin ? (
-        <Button
-          handleClick={() => deleteDish()}
-          label="Supprimer"
-          href="#"
-          type="danger"
-        />
+        <div className={classes.button}>
+          <Button
+            handleClick={() => deleteDish()}
+            label="Supprimer"
+            href="#"
+            type="danger"
+          />
+        </div>
       ) : null}
-    </div>
+    </>
   );
 };
 

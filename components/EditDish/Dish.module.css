@@ -55,7 +55,7 @@
   flex-direction: column;
 }
 
-.recipeform {
+.dishform {
   width: 100%;
   margin-bottom: 30px;
 }
@@ -81,22 +81,6 @@
 .input:focus-visible,
 .select:focus-visible {
   outline: #324376 auto 1px;
-}
-
-.field {
-}
-
-.photo {
-}
-
-.ingredientform {
-  width: 100%;
-  margin-bottom: 30px;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-}
-
-.stepsform {
 }
 
 @media only screen and (min-width: 33.75em) {
@@ -152,7 +136,7 @@
     flex-direction: column;
   }
 
-  .recipeform {
+  .dishform {
     width: 100%;
     padding: 0 4rem;
     margin-bottom: 30px;
@@ -162,17 +146,5 @@
     margin-top: 2rem;
     margin-bottom: 1rem;
     text-align: center;
-  }
-
-  .field {
-  }
-
-  .photo {
-  }
-
-  .ingredientform {
-  }
-
-  .stepsform {
   }
 }
