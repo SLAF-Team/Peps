@@ -14,7 +14,7 @@ const SearchImage = ({ placeholder, onSubmit }) => {
   const ref = useClickOutside(() => setOpened(false), ["mouseup", "touchend"]);
 
   async function getSearchedImages(value) {
-    const data = `?query=${value}&per_page=10&locale=fr-FR`;
+    const data = `?query=${value}&per_page=10`;
     const response = await axios.get(
       `https://api.pexels.com/v1/search${data}`,
       {

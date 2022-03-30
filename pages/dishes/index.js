@@ -63,7 +63,7 @@ const Dishes = ({ dishes, regions }) => {
         <div className="row">
           {filteredDishes &&
             filteredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} col="col-3" />
+              <DishCard key={dish.id} dish={dish} regions={regions} col="col-3" />
             ))}
         </div>
       </div>
