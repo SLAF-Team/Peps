@@ -7,6 +7,7 @@ import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import ButtonSettings from "../../components/ButtonSettings";
+import Button from "../../components/Button";
 import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
@@ -124,7 +125,10 @@ const SelectedRecipe = ({
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.titlecontainer}>
             <h1 className={classes.h1}>{recipe.name}</h1>
-            <p className={classes.selectorName}>Par {recipe.cook.name}</p>
+            <p className={classes.selectorName}>
+              Par{" "}
+              <Link href={"/users/" + recipe.cookId}>{recipe.cook.name}</Link>
+            </p>
           </div>
           <div className={classes.selector}>
             <div className="selectorBlock">
