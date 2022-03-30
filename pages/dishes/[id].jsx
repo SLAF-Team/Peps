@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
@@ -10,11 +11,9 @@ import ButtonForm from "../../components/ButtonForm";
 import Button from "../../components/Button";
 import moment from "moment";
 
-const SelectedDish = () => {
+const SelectedDish = ({ recipes, id }) => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const router = useRouter();
-  const { id } = router.query;
   const [dish, setDish] = useState(null);
   const [titleChange, setTitleChange] = useState();
   const [descriptionChange, setDescriptionChange] = useState();
@@ -33,7 +32,7 @@ const SelectedDish = () => {
 
   useEffect(() => {
     getDish();
-  }, [id, page]);
+  }, [token, page]);
 
   useEffect(() => {
     setLoading(true);
@@ -85,27 +84,32 @@ const SelectedDish = () => {
     setDescriptionChange(e.target.value);
   };
 
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
+
   return (
     <>
       <div className="row">
         <div className="col-9">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
-            <img src={dish?.imageUrl} className={classes.mainImage} />
+            <img src={recipes?.imageUrl} className={classes.mainImage} />
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.titlecontainer}>
-              <h1 className={classes.h1}>{dish?.title}</h1>
-              <p className={classes.selectorName}>{dish?.region.name}</p>
+              <h1 className={classes.h1}>{recipes?.title}</h1>
+              <p className={classes.selectorName}>{recipes?.region.name}</p>
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.stepscontainer}>
-              <p className={classes.description}>{dish?.description}</p>
+              <p className={classes.description}>{recipes?.description}</p>
             </div>
             <div className={classes.selector}>
               <div className="selectorBlock">
                 <p className={classes.selectorText}>
-                  Recettes associées ({dish?.recipes.length})
+                  Recettes associées ({recipes?.recipes.length})
                 </p>
               </div>
             </div>
@@ -121,7 +125,13 @@ const SelectedDish = () => {
                   ))}
               </div>
             </div>
-            <button onClick={() => setPage(page + 1)}>Voir plus</button>
+            {recipes?.recipes.length != dish?.recipes.length && (
+              <div className={classes.loadMore}>
+                <a onClick={loadMore} className={classes.btn}>
+                  Voir plus
+                </a>
+              </div>
+            )}
           </Skeleton>
         </div>
         <div className="col-3">
@@ -150,7 +160,7 @@ const SelectedDish = () => {
               <div>
                 <ul className={classes.ul}>
                   <li className={classes.li}>
-                    <a href="#">{dish?.region.name}</a>
+                    <a href="#">{recipes?.region.name}</a>
                   </li>
                 </ul>
               </div>
@@ -166,7 +176,7 @@ const SelectedDish = () => {
               </div>
               <div>
                 <ul style={{ paddingInlineStart: "0px" }}>
-                  {dish?.updates.map((update, index) => (
+                  {recipes?.updates.map((update, index) => (
                     <li
                       key={index}
                       style={{ fontSize: "9px", listStyle: "none" }}
@@ -209,7 +219,7 @@ const SelectedDish = () => {
             <input
               name="dishTitle"
               type="text"
-              defaultValue={dish?.title}
+              defaultValue={recipes?.title}
               onChange={handleTitle}
               className={classes.field}
             />
@@ -221,7 +231,7 @@ const SelectedDish = () => {
               name="dishDescription"
               type="text"
               style={{ width: "100%", height: "100px" }}
-              defaultValue={dish?.description}
+              defaultValue={recipes?.description}
               onChange={handleDescription}
               className={classes.field}
             />
@@ -241,5 +251,31 @@ const SelectedDish = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+  const allRecipes = await prisma.dish.findUnique({
+    where: { id: parseInt(id, 10) },
+    include: {
+      updates: {
+        include: {
+          user: { select: { name: true, id: true } },
+        },
+      },
+      region: true,
+      recipes: {
+        include: {
+          _count: { select: { likes: true, comments: true } },
+        },
+      },
+    },
+  });
+  return {
+    props: {
+      recipes: allRecipes,
+      id: id,
+    },
+  };
+}
 
 export default SelectedDish;
