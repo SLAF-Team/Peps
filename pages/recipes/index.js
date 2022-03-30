@@ -3,7 +3,6 @@ import RecipeCard from "../../components/recipeCard/index.jsx";
 import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
-import Button from "../../components/Button";
 import { MultiSelect } from "@mantine/core";
 import { Switch, Drawer, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
@@ -32,8 +31,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
   const [filter, setFilter] = useState(true);
-
-  console.log(filteredRecipes);
   
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
@@ -60,7 +57,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       });
       setFilterRecipes(result.data);
     } catch (err) {
-      console.log("Error regarding the loading of recipes ICI.");
+      console.log("Error regarding the loading of recipes.");
     }
   };
 
