@@ -1,21 +1,22 @@
 import Button from "../Button";
 import ButtonForm from "../ButtonForm";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./Dish.module.css";
 import { Select } from "@mantine/core";
-import prisma from "../../lib/prisma.ts";
+import Cookies from "js-cookie";
 
-const EditDish = ({ dish, onSubmit, user, regions }) => {
+const EditDish = ({ dish, onSubmit, user }) => {
+  const token = Cookies.get("token")
   const [titleValue, setTitleValue] = useState(dish.title);
   const [descriptionValue, setDescriptionValue] = useState(dish.description);
   const [imageUrlValue, setImageUrlValue] = useState(dish.imageUrl);
   const [regionValue, setRegionValue] = useState(dish.regionId.toString());
-  console.log(regions);
+  const [regions, setRegions] = useState([]);
   const regionsData = [];
-  // regions.map((element) =>
-  //   regionsData.push({ value: element.id.toString(), label: element.name })
-  // );
+  regions.map((element) =>
+    regionsData.push({ value: element.id.toString(), label: element.name })
+  );
 
   const handleTitle = (e) => {
     setTitleValue(e.target.value);
@@ -29,14 +30,25 @@ const EditDish = ({ dish, onSubmit, user, regions }) => {
     setImageUrlValue(e.target.value);
   };
 
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  async function getRegions() {
+    const result = await axios.get("/api/region/getRegions", {});
+    setRegions(result.data);
+  }
+
   async function editDish(event) {
     event.preventDefault();
     const result = await axios.put(
       "/api/dish/editDish",
       {
         id: dish.id,
-        title: titleChange,
-        description: descriptionChange,
+        title: titleValue,
+        description: descriptionValue,
+        imageUrl: imageUrlValue,
+        regionId: parseInt(regionValue),
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -120,14 +132,5 @@ const EditDish = ({ dish, onSubmit, user, regions }) => {
     </div>
   );
 };
-
-// export async function getServerSideProps() {
-//   const allRegions = await prisma.region.findMany({});
-//   return {
-//     props: {
-//       regions: allRegions,
-//     },
-//   };
-// }
 
 export default EditDish;
