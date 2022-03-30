@@ -16,6 +16,8 @@ import EditRecipe from "../../components/EditRecipe";
 import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
+import Rating from "../../components/Rating";
+
 const SelectedRecipe = ({
   ingredients,
   units,
@@ -416,6 +418,7 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
+      <Rating/>
     </div>
   );
 };
