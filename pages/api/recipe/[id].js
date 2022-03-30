@@ -1,6 +1,7 @@
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
+
   try {
     const { id } = req.query;
     const result = await prisma.recipe.findUnique({
@@ -28,6 +29,7 @@ export default async (req, res) => {
         },
         type: { select: { name: true, id: true } },
         tags: { select: { name: true, id: true } },
+        _count: { select: { likes: true, comments: true } },
       },
     });
 

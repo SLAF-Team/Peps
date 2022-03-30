@@ -19,8 +19,7 @@ const SearchImage = ({ placeholder, onSubmit }) => {
       `https://api.pexels.com/v1/search${data}`,
       {
         headers: {
-          Authorization:
-            "563492ad6f91700001000001fa3ba1c4f717433fa7f0c75b6bd09180",
+          Authorization: process.env.PEXEL_API_KEY,
           "Content-Type": "text/plain",
         },
       }

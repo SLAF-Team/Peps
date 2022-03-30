@@ -24,7 +24,7 @@ const SignIn = () => {
   };
 
   async function signUserIn(data) {
-    const result = await axios.post("/api/user/getUser", {
+    const result = await axios.post("/api/user/logUser", {
       ...data,
     });
     Cookies.set("token", result.data.token, { expires: 7 });

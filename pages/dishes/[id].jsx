@@ -20,21 +20,20 @@ const SelectedDish = () => {
   const [descriptionChange, setDescriptionChange] = useState();
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
+  const [page, setPage] = useState(1);
 
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of dishes.");
     }
   };
 
   useEffect(() => {
     getDish();
-  }, [id]);
+  }, [id, page]);
 
   useEffect(() => {
     setLoading(true);
@@ -113,17 +112,16 @@ const SelectedDish = () => {
             <div className="row">
               <div className={classes.cards}>
                 {dish?.recipes &&
-                  dish?.recipes.map((recipe) => (
+                  dish?.recipes.map((recipe, index) => (
                     <RecipeCard
-                      key={recipe.id}
+                      key={index}
                       recipe={recipe}
-                      like_count={recipe?._count?.likes}
-                      comment_count={recipe?._count?.comments}
                       col="col-4 col-6-sm"
                     />
                   ))}
               </div>
             </div>
+            <button onClick={() => setPage(page + 1)}>Voir plus</button>
           </Skeleton>
         </div>
         <div className="col-3">
