@@ -8,6 +8,7 @@ import { Modal, Skeleton } from "@mantine/core";
 import { useUserContext } from "../../context/UserContext";
 import moment from "moment";
 import EditDish from "../../components/EditDish";
+import Link from "next/link";
 
 const SelectedDish = () => {
   const { user } = useUserContext();
@@ -121,7 +122,7 @@ const SelectedDish = () => {
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>WIKI</p>
+                  <p className={classes.selectorText}>Historique</p>
                 </div>
               </div>
               <div>
@@ -131,7 +132,10 @@ const SelectedDish = () => {
                       key={index}
                       style={{ fontSize: "9px", listStyle: "none" }}
                     >
-                      Modifié par {update.user.name}{" "}
+                      Modifié par{" "}
+                      <Link href={"/users/" + update.user.id}>
+                        {update.user.name}
+                      </Link>{" "}
                       {moment(update.createdAt).fromNow()}
                     </li>
                   ))}
@@ -161,11 +165,7 @@ const SelectedDish = () => {
         </div>
       </div>
       <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
-        <EditDish
-          dish={dish}
-          onSubmit={handleEditDish}
-          user={user}
-        />
+        <EditDish dish={dish} onSubmit={handleEditDish} user={user} />
       </Modal>
     </>
   );
