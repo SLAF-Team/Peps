@@ -1,7 +1,6 @@
 import prisma from "../lib/prisma.ts";
 import styles from "../styles/Home.module.css";
 import Button from "../components/Button";
-<<<<<<< Updated upstream
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 import Link from "next/link";
@@ -88,23 +87,6 @@ export default function Home({ recipes, dishes }) {
               <DishCard dish={dish} key={i} col="col-3 col-6-sm" />
             ))}
       </div>
-=======
-import Cookies from 'js-cookie'
-
-export default function Home() {
-
-  const token = Cookies.get("token");
-
-
-  return (
-    <main className={styles.main}>
-      <h1>OM PAGE</h1>
-      {token != null ?
-      <Button href="/recipes/new" label="Ajouter une recette" />
-      :
-      <Button href="/login/" label="Ajouter une recette" />
-      }
->>>>>>> Stashed changes
       <br />
       <Button href="/dishes/new" label="Ajouter un plat" />
     </main>

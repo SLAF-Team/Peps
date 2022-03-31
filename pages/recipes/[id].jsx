@@ -418,7 +418,6 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-      <Rating/>
     </div>
   );
 };

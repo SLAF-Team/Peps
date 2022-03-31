@@ -168,12 +168,17 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             <div className={classes.step}>
               <label className={classes.label}>Ajouter une photo</label>
               <SearchImage
-                placeholder="rechercher ou copier l'URL de votre image"
+                placeholder="rechercher en anglais ou copier l'URL de votre image"
                 onSubmit={setNewImage}
               />
               <a href="https://www.pexels.com">
                 <p>Photos mises à disposition par Pexels</p>
               </a>
+              {newImage && (
+                <div>
+                  <img src={newImage} className={classes.mainImage} />
+                </div>
+              )}
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nombre de convives *</label>
