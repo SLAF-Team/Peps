@@ -9,6 +9,7 @@ import { useUserContext } from "../../context/UserContext";
 import ButtonForm from "../../components/ButtonForm";
 import Button from "../../components/Button";
 import moment from "moment";
+import { apiDishes } from "../../components/utilities/operation";
 
 const SelectedDish = () => {
   const { user } = useUserContext();
@@ -21,12 +22,23 @@ const SelectedDish = () => {
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
 
+  // const getDish = async () => {
+  //   try {
+  //     const result = await axios.get(`/api/dish/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setDish(result.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      apiDishes.getSingle(id).then((result) => {
+        setDish(result);
+        console.log(result);
       });
-      setDish(result.data);
     } catch (err) {
       console.log(err);
     }
@@ -78,6 +90,19 @@ const SelectedDish = () => {
     }
   }
 
+  // async function deleteDish(id) {
+  //   if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+  //     await apiTasks
+  //       .remove(id, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then(() => {
+  //         router.push("/dishes/");
+  //       });
+  //   }
+  // }
+
+
   const handleTitle = (e) => {
     setTitleChange(e.target.value);
   };
@@ -85,6 +110,10 @@ const SelectedDish = () => {
   const handleDescription = (e) => {
     setDescriptionChange(e.target.value);
   };
+
+  console.log("///////////////////////////////////////");
+  console.log(dish);
+  console.log("///////////////////////////////////////");
 
   return (
     <>

@@ -4,6 +4,8 @@ import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
 import axios from "axios";
+import { Tasks } from "../../components/DishCreateForm/DishCreateForm.jsx";
+import { apiDishes } from '../../components/utilities/operation'
 
 const Dishes = ({ dishes, regions }) => {
   // set up state for multiselect
@@ -19,16 +21,16 @@ const Dishes = ({ dishes, regions }) => {
   );
 
   // async search fonction
+
   const getDishes = async (data) => {
-    try {
-      const result = await axios.post(`/api/dish/searchDishes`, {
-        ...data,
-      });
-      setFilterDishes(result.data);
-    } catch (err) {
-      console.log("error");
-    }
-  };
+    apiDishes.post(data).then((res) => {
+      try {
+        setFilterDishes(res.results.data);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }
 
   useEffect(() => {
     const filterCall = {};
@@ -44,29 +46,31 @@ const Dishes = ({ dishes, regions }) => {
   }, [filterRegion, filter]);
 
   return (
-    <div className={classes.margin}>
-      <div className="column">
-        <div className={classes.titlecontainerindex}>
-          <h1 className={classes.h1}>Tous les plats </h1>
-          <div className={classes.filters}>
-            <MultiSelect
-              data={dataRegions}
-              value={filterRegion}
-              onChange={setFilterRegion}
-              placeholder="Trier par région"
-              searchable
-              clearable
-              className={classes.multiselect}
-              size="xs"
-              styles={{ label: { fontSize: 14 } }}
-            />
+    <div>
+      <div className={classes.margin}>
+        <div className="column">
+          <div className={classes.titlecontainerindex}>
+            <h1 className={classes.h1}>Tous les plats </h1>
+            <div className={classes.filters}>
+              <MultiSelect
+                data={dataRegions}
+                value={filterRegion}
+                onChange={setFilterRegion}
+                placeholder="Trier par région"
+                searchable
+                clearable
+                className={classes.multiselect}
+                size="xs"
+                styles={{ label: { fontSize: 14 } }}
+              />
+            </div>
           </div>
-        </div>
-        <div className="row">
-          {filteredDishes &&
-            filteredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} col="col-3" />
-            ))}
+          <div className="row">
+            {filteredDishes &&
+              filteredDishes.map((dish) => (
+                <DishCard key={dish.id} dish={dish} col="col-3" />
+              ))}
+          </div>
         </div>
       </div>
     </div>
