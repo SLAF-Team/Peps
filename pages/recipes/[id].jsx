@@ -1,7 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
@@ -25,9 +24,8 @@ const SelectedRecipe = ({
   types,
   dishes,
   tags,
+  id,
 }) => {
-  const router = useRouter();
-  const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
@@ -47,6 +45,7 @@ const SelectedRecipe = ({
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(result.data);
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
@@ -418,12 +417,13 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-      <Rating/>
+      <Rating />
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { id } = context.params;
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
   const allTypes = await prisma.type.findMany();
@@ -438,6 +438,7 @@ export async function getServerSideProps() {
       types: allTypes,
       countries: allCountries,
       tags: allTags,
+      id: id,
     },
   };
 }

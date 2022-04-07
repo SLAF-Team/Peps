@@ -29,6 +29,13 @@ const Profile = () => {
   const [oldValue, setOldValue] = useState([]);
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   useEffect(() => {
     if (recipes) {
@@ -54,6 +61,7 @@ const Profile = () => {
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {
+      take: page * recipesPerPage,
       where: { id: parseInt(id) },
       include: {
         recipes: {
@@ -110,10 +118,11 @@ const Profile = () => {
 
   useEffect(() => {
     getList(filter);
-  }, [id, filter, opened]);
+  }, [page, id, filter, opened]);
 
   const handleSelect = (event) => {
     setFilter(event);
+    setPage(1);
   };
 
   async function deleteList() {
@@ -176,6 +185,13 @@ const Profile = () => {
                 <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
+            {recipes?.length >= recipesPerPage && (
+              <div className={classes.loadMore}>
+                <a onClick={loadMore} className={classes.btn}>
+                  Voir plus
+                </a>
+              </div>
+            )}
           </div>
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <form onSubmit={editList}>
