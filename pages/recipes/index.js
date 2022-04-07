@@ -12,6 +12,8 @@ import { useRouter } from "next/router";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { query } = useRouter();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
@@ -31,7 +33,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
   const [filter, setFilter] = useState(true);
-  
+
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -67,6 +69,7 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
 
   useEffect(() => {
     const filteredQuery = {
+      take: page * recipesPerPage,
       include: {
         _count: { select: { likes: true, comments: true } },
       },
@@ -97,6 +100,10 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     }
     filteredQuery.where = wheres;
     getRecipes(filteredQuery);
+  }, [page, filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
   useEffect(() => {
@@ -119,6 +126,11 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       }
     }
   }, [query.tag, query.country, query.type, query.ingredient]);
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   return (
     <div className={classes.margin}>
@@ -200,13 +212,16 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
-              <RecipeCard
-                recipe={recipe}
-                key={i}
-                col="col-3 col-6-sm"
-              />
+              <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
             ))}
         </div>
+        {filteredRecipes.length >= recipesPerPage && (
+          <div className={classes.loadMore}>
+            <a onClick={loadMore} className={classes.btn}>
+              Voir plus
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
