@@ -45,7 +45,6 @@ const SelectedRecipe = ({
       const result = await axios.get(`/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(result.data);
       setRecipe(result.data);
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
