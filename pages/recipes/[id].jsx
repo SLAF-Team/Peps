@@ -1,7 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
@@ -25,9 +24,8 @@ const SelectedRecipe = ({
   types,
   dishes,
   tags,
+  id,
 }) => {
-  const router = useRouter();
-  const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
@@ -418,11 +416,16 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
+<<<<<<< HEAD
+=======
+      <Rating />
+>>>>>>> 4c5acbdc1f5b299d1d9b38a6ceb20e00f78a3bdf
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { id } = context.params;
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
   const allTypes = await prisma.type.findMany();
@@ -437,6 +440,7 @@ export async function getServerSideProps() {
       types: allTypes,
       countries: allCountries,
       tags: allTags,
+      id: id,
     },
   };
 }

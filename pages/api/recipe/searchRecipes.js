@@ -1,7 +1,9 @@
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
-  const data = req.body
+  const data = req.body;
+  const { page } = req.query;
+  const totalRecipes = parseInt(page) * 12;
   try {
     const result = await prisma.recipe.findMany({
       ...data,

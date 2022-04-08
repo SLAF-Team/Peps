@@ -16,6 +16,7 @@ const Profile = ({ recipes }) => {
   const { query } = useRouter();
   const { user } = useUserContext();
   const [contribution, setContribution] = useState(false);
+  const [userRecipes, setUserRecipes] = useState(recipes);
   const [style, setStyle] = useState(false);
   const [lists, setLists] = useState([]);
   const token = Cookies.get("token");
@@ -68,13 +69,13 @@ const Profile = ({ recipes }) => {
   };
 
   const privateRecipesFromUser = user
-    ? recipes.filter(
+    ? userRecipes.filter(
         (element) => element.cookId === user.id && element.published === false
       )
     : null;
 
   const publishedRrecipesFromUser = user
-    ? recipes.filter(
+    ? userRecipes.filter(
         (element) => element.cookId === user.id && element.published === true
       )
     : null;
@@ -99,11 +100,7 @@ const Profile = ({ recipes }) => {
             <h3>Publiées</h3>
             <div className="row">
               {publishedRrecipesFromUser?.map((recipe, index) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={index}
-                  col="col-3 col-6-sm"
-                />
+                <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
           </div>
@@ -111,11 +108,7 @@ const Profile = ({ recipes }) => {
             <h3>Privées</h3>
             <div className="row">
               {privateRecipesFromUser?.map((recipe, index) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={index}
-                  col="col-3 col-6-sm"
-                />
+                <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
           </div>
@@ -149,7 +142,7 @@ const Profile = ({ recipes }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const allRecipes = await prisma.recipe.findMany({
     include: {
       _count: { select: { likes: true, comments: true } },
