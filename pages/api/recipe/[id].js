@@ -1,11 +1,6 @@
 import prisma from "../../../lib/prisma.ts";
 
 export default async (req, res) => {
-<<<<<<< HEAD
-
-=======
-  console.log(req.query)
->>>>>>> 4c5acbdc1f5b299d1d9b38a6ceb20e00f78a3bdf
   try {
     const { id } = req.query;
     const result = await prisma.recipe.findUnique({
