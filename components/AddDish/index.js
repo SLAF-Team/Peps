@@ -1,22 +1,20 @@
 import React from "react";
-import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
-import prisma from "../../../lib/prisma.ts";
+// import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
-import classes from "./../Dishes.module.css";
-import Button from "../../../components/Button";
+import classes from "./addDish.module.css";
+import Button from "../Button/index";
 
-const NewDish = ({ regions }) => {
-  const router = useRouter();
+const AddDish = ({ regions }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
-  const [disable, setDisable] = useState(false);
   const notifications = useNotifications();
+  const [disable, setDisable] = useState(false);
 
-  async function addNewDish(params) {
+
+  async function addNewDish() {
     setDisable(true);
     const { addTitle, addDescription, addRegion, addImageUrl } =
       formRef.current;
@@ -44,13 +42,11 @@ const NewDish = ({ regions }) => {
       setDisable(false);
       notifications.showNotification({
         title: "Bravo!",
-        message: "Votre plat a été publiée avec succès",
+        message: "Votre plat a été publié avec succès",
         color: "green",
       });
-      router.push("/dishes");
     }
   }
-
 
 
   return (
@@ -123,4 +119,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default NewDish;
+export default AddDish;
