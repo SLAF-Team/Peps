@@ -1,7 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import CommentsList from "./../../components/Comment/CommentsList";
@@ -16,6 +15,8 @@ import EditRecipe from "../../components/EditRecipe";
 import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
+import Rating from "../../components/Rating";
+
 const SelectedRecipe = ({
   ingredients,
   units,
@@ -23,15 +24,13 @@ const SelectedRecipe = ({
   types,
   dishes,
   tags,
+  id,
 }) => {
-  const router = useRouter();
-  const { id } = router.query;
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(true);
   const isPublic = recipe?.published;
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
@@ -75,11 +74,7 @@ const SelectedRecipe = ({
     getIngredients();
   }, [id]);
 
-  const handleCommentCreate = () => {
-    getRecipe();
-  };
-
-  const handleCommentDelete = () => {
+  const handleCommentUpdate = () => {
     getRecipe();
   };
 
@@ -130,7 +125,10 @@ const SelectedRecipe = ({
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.titlecontainer}>
             <h1 className={classes.h1}>{recipe.name}</h1>
-            <p className={classes.selectorName}>Par {recipe.cook.name}</p>
+            <p className={classes.selectorName}>
+              Par{" "}
+              <Link href={"/users/" + recipe.cookId}>{recipe.cook.name}</Link>
+            </p>
           </div>
           <div className={classes.selector}>
             <div className="selectorBlock">
@@ -172,8 +170,8 @@ const SelectedRecipe = ({
                   <div>
                     <ul className={classes.ul}>
                       {recipe?.ingredientsUnit &&
-                        recipe?.ingredientsUnit.map((element) => (
-                          <li className={classes.li}>
+                        recipe?.ingredientsUnit.map((element, index) => (
+                          <li className={classes.li} key={index}>
                             <Link
                               href={
                                 "/recipes?ingredient=" + element.ingredient.id
@@ -198,7 +196,7 @@ const SelectedRecipe = ({
                 <div className={classes.stepsmobilecontainer}>
                   {recipe?.steps &&
                     recipe?.steps.map((element, index) => (
-                      <div>
+                      <div key={index}>
                         <p className={classes.steps}>Étape {index + 1}</p>
                         <p>{element.text} </p>
                       </div>
@@ -215,8 +213,8 @@ const SelectedRecipe = ({
                   <div>
                     <ul className={classes.ul}>
                       {recipe?.tags &&
-                        recipe?.tags.map((tag) => (
-                          <li className={classes.li}>
+                        recipe?.tags.map((tag, index) => (
+                          <li className={classes.li} key={index}>
                             <Link href={"/recipes?tag=" + tag.id}>
                               {"#" + tag.name}
                             </Link>
@@ -247,7 +245,7 @@ const SelectedRecipe = ({
           <div className={classes.stepscontainer}>
             {recipe?.steps &&
               recipe?.steps.map((element, index) => (
-                <div>
+                <div key={index}>
                   <p className={classes.steps}>Étape {index + 1}</p>
                   <p>{element.text} </p>
                 </div>
@@ -260,7 +258,7 @@ const SelectedRecipe = ({
             <CommentForm
               user={user}
               recipe={recipe}
-              onCreate={handleCommentCreate}
+              onCreate={handleCommentUpdate}
             />
             <br></br>
             {recipe?.comments.length != 0 && (
@@ -273,7 +271,7 @@ const SelectedRecipe = ({
                   {recipe?.comments && (
                     <CommentsList
                       comments={recipe.comments}
-                      onDelete={handleCommentDelete}
+                      onDelete={handleCommentUpdate}
                     />
                   )}
                 </Accordion.Item>
@@ -329,8 +327,8 @@ const SelectedRecipe = ({
               <div>
                 <ul className={classes.ul}>
                   {recipe?.ingredientsUnit &&
-                    recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li}>
+                    recipe?.ingredientsUnit.map((element, index) => (
+                      <li className={classes.li} key={index}>
                         <Link
                           href={"/recipes?ingredient=" + element.ingredient.id}
                         >
@@ -357,8 +355,8 @@ const SelectedRecipe = ({
               <div>
                 <ul className={classes.ul}>
                   {recipe?.tags &&
-                    recipe?.tags.map((tag) => (
-                      <li className={classes.li}>
+                    recipe?.tags.map((tag, index) => (
+                      <li className={classes.li} key={index}>
                         <Link href={"/recipes?tag=" + tag.id}>
                           {"#" + tag.name}
                         </Link>
@@ -418,11 +416,13 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
+      <Rating />
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { id } = context.params;
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
   const allTypes = await prisma.type.findMany();
@@ -437,6 +437,7 @@ export async function getServerSideProps() {
       types: allTypes,
       countries: allCountries,
       tags: allTags,
+      id: id,
     },
   };
 }

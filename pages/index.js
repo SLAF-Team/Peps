@@ -4,7 +4,6 @@ import Button from "../components/Button";
 import SearchBarHome from "../components/SearchBarHome/index";
 import RecipeCard from "../components/recipeCard/index.jsx";
 import Link from "next/link";
-import SearchImage from "../components/SearchImage";
 import DishCard from "../components/DishCard/DishCard";
 
 export default function Home({ recipes, dishes }) {
@@ -66,8 +65,6 @@ export default function Home({ recipes, dishes }) {
               <RecipeCard
                 recipe={recipe}
                 key={i}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
                 col="col-3 col-6-sm"
               />
             ))}

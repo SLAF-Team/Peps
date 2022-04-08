@@ -25,9 +25,6 @@ export default async (req, res) => {
     });
     res.status(200).json(deleteComment);
   } catch (error) {
-    console.log(error);
-    res
-      .status(400)
-      .json({ err: "Error occured while deleting a comment." });
+    res.status(400).json({ err: "Error occured while deleting a comment." });
   }
 };

@@ -71,7 +71,10 @@ function MyApp({ Component, pageProps }) {
             <meta property="og:title" content="Peps, damn that's tasty" />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://peps.life" />
-            <meta property="og:image" content="https://peps.life/_next/static/media/peps.6b723156.svg" />
+            <meta
+              property="og:image"
+              content="https://peps.life/_next/static/media/peps.6b723156.svg"
+            />
             <meta
               property="og:description"
               content="Bienvenue sur Peps.life, les meilleures recettes des plats iconiques"

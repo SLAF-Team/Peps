@@ -4,7 +4,7 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
+import { Switch, Drawer, Group, ActionIcon } from "@mantine/core";
 import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
@@ -12,8 +12,9 @@ import { useRouter } from "next/router";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { query } = useRouter();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
-  // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
 
@@ -33,7 +34,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
   const [filter, setFilter] = useState(true);
 
-  // set up data for multiselect
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -50,10 +50,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
-  // set up drawer
   const [opened, setOpened] = useState(false);
 
-  // async search fonction
   const getRecipes = async (data) => {
     try {
       const result = await axios.post(`/api/recipe/searchRecipes`, {
@@ -61,35 +59,37 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       });
       setFilterRecipes(result.data);
     } catch (err) {
-      console.log("error");
+      console.log("Error regarding the loading of recipes.");
     }
   };
 
-  // change filter state
   const handleChange = () => {
     setFilter(!filter);
   };
 
-  //useEffect for filter with exceptions
   useEffect(() => {
-    const filterCall = {
+    const filteredQuery = {
+      take: page * recipesPerPage,
       include: {
         _count: { select: { likes: true, comments: true } },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     };
     const wheres = { published: true };
-    if (filterCountry.length > 0) {
+    if (filter && filterCountry.length > 0) {
       wheres.countryId = { in: filterCountry };
     }
-    if (filterType.length > 0) {
+    if (filter && filterType.length > 0) {
       wheres.typeId = { in: filterType };
     }
-    if (filterTag.length > 0) {
+    if (filter && filterTag.length > 0) {
       wheres.tags = {
         some: { id: { in: filterTag } },
       };
     }
-    if (filterIngredient.length > 0) {
+    if (filter && filterIngredient.length > 0) {
       wheres.ingredientsUnit = {
         some: {
           ingredientId: {
@@ -98,9 +98,12 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         },
       };
     }
-    filterCall.where = wheres;
-    const data = filter ? filterCall : null;
-    getRecipes(data);
+    filteredQuery.where = wheres;
+    getRecipes(filteredQuery);
+  }, [page, filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
 
   useEffect(() => {
@@ -123,6 +126,11 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       }
     }
   }, [query.tag, query.country, query.type, query.ingredient]);
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   return (
     <div className={classes.margin}>
@@ -204,15 +212,16 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
-              <RecipeCard
-                recipe={recipe}
-                key={i}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
-                col="col-3 col-6-sm"
-              />
+              <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
             ))}
         </div>
+        {filteredRecipes.length >= recipesPerPage && (
+          <div className={classes.loadMore}>
+            <a onClick={loadMore} className={classes.btn}>
+              Voir plus
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -226,6 +235,9 @@ export async function getServerSideProps() {
       _count: { select: { likes: true, comments: true } },
     },
     where: { published: true },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   const allTags = await prisma.tag.findMany({});
   const allTypes = await prisma.type.findMany({});

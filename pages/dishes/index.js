@@ -6,19 +6,19 @@ import { MultiSelect } from "@mantine/core";
 import axios from "axios";
 
 const Dishes = ({ dishes, regions }) => {
-  // set up state for multiselect
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
   const [filterRegion, setFilterRegion] = useState([]);
   const [filteredDishes, setFilterDishes] = useState(dishes);
   const [filter, setFilter] = useState(true);
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
   const dataRegions = [];
   regions?.map((region) =>
     dataRegions.push({ value: region.id, label: region.name })
   );
 
-  // async search fonction
   const getDishes = async (data) => {
     try {
       const result = await axios.post(`/api/dish/searchDishes`, {
@@ -26,7 +26,7 @@ const Dishes = ({ dishes, regions }) => {
       });
       setFilterDishes(result.data);
     } catch (err) {
-      console.log("error");
+      console.log("Error regarding the loading of dishes.");
     }
   };
 
@@ -39,9 +39,15 @@ const Dishes = ({ dishes, regions }) => {
         },
       };
     }
+    filterCall.take = page * recipesPerPage;
     const data = filter ? filterCall : null;
     getDishes(data);
-  }, [filterRegion, filter]);
+  }, [page, filterRegion, filter]);
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   return (
     <div className={classes.margin}>
@@ -65,9 +71,21 @@ const Dishes = ({ dishes, regions }) => {
         <div className="row">
           {filteredDishes &&
             filteredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} col="col-3" />
+              <DishCard
+                key={dish.id}
+                dish={dish}
+                regions={regions}
+                col="col-3"
+              />
             ))}
         </div>
+        {filteredDishes.length >= recipesPerPage && (
+          <div className={classes.loadMore}>
+            <a onClick={loadMore} className={classes.btn}>
+              Voir plus
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

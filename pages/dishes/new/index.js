@@ -4,7 +4,6 @@ import { useRef } from "react";
 import axios from "axios";
 import prisma from "../../../lib/prisma.ts";
 import Cookies from "js-cookie";
-import { useUserContext } from "../../../context/UserContext";
 import { useNotifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";
@@ -12,11 +11,9 @@ import Button from "../../../components/Button";
 
 const newDish = ({ regions }) => {
   const router = useRouter();
-  const { user } = useUserContext();
   const formRef = useRef();
   const token = Cookies.get("token");
   const [disable, setDisable] = useState(false);
-  const [auth, setAuth] = useState(false);
   const notifications = useNotifications();
 
   async function addNewDish(params) {
