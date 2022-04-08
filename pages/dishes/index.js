@@ -78,8 +78,6 @@ const Dishes = ({ dishes, regions }) => {
                 <DishCard key={dish.id} dish={dish} col="col-3" />
               ))}
           </div>
-<<<<<<< HEAD
-=======
         </div>
         <div className="row">
           {filteredDishes &&
@@ -91,7 +89,6 @@ const Dishes = ({ dishes, regions }) => {
                 col="col-3"
               />
             ))}
->>>>>>> development
         </div>
         {filteredDishes.length >= recipesPerPage && (
           <div className={classes.loadMore}>

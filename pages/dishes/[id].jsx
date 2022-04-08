@@ -33,15 +33,10 @@ const SelectedDish = ({ recipes, id }) => {
 
   const getDish = async () => {
     try {
-<<<<<<< HEAD
       apiDishes.getSingle(id).then((result) => {
         setDish(result);
         console.log(result);
       });
-=======
-      const result = await axios.get(`/api/dish/${id}?page=${page}`);
-      setDish(result.data);
->>>>>>> development
     } catch (err) {
       console.log("Error regarding the loading of dishes.");
     }
@@ -62,7 +57,6 @@ const SelectedDish = ({ recipes, id }) => {
   const handleEditDish = () => {
     getDish();
     setOpened(false);
-<<<<<<< HEAD
   }
 
   async function deleteDish() {
@@ -89,18 +83,12 @@ const SelectedDish = ({ recipes, id }) => {
 
   const handleTitle = (e) => {
     setTitleChange(e.target.value);
-=======
->>>>>>> development
   };
 
   const loadMore = (e) => {
     e.preventDefault();
     setPage(page + 1);
   };
-
-  console.log("///////////////////////////////////////");
-  console.log(dish);
-  console.log("///////////////////////////////////////");
 
   return (
     <>
