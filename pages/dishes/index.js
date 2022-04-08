@@ -8,12 +8,13 @@ import { Tasks } from "../../components/DishCreateForm/DishCreateForm.jsx";
 import { apiDishes } from '../../components/utilities/operation'
 
 const Dishes = ({ dishes, regions }) => {
-  // set up state for multiselect
   const idRegions = [];
   regions?.map((element) => idRegions.push(element.id));
   const [filterRegion, setFilterRegion] = useState([]);
   const [filteredDishes, setFilterDishes] = useState(dishes);
   const [filter, setFilter] = useState(true);
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
   const dataRegions = [];
   regions?.map((region) =>
@@ -41,9 +42,15 @@ const Dishes = ({ dishes, regions }) => {
         },
       };
     }
+    filterCall.take = page * recipesPerPage;
     const data = filter ? filterCall : null;
     getDishes(data);
-  }, [filterRegion, filter]);
+  }, [page, filterRegion, filter]);
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   return (
     <div>
@@ -71,7 +78,28 @@ const Dishes = ({ dishes, regions }) => {
                 <DishCard key={dish.id} dish={dish} col="col-3" />
               ))}
           </div>
+<<<<<<< HEAD
+=======
         </div>
+        <div className="row">
+          {filteredDishes &&
+            filteredDishes.map((dish) => (
+              <DishCard
+                key={dish.id}
+                dish={dish}
+                regions={regions}
+                col="col-3"
+              />
+            ))}
+>>>>>>> development
+        </div>
+        {filteredDishes.length >= recipesPerPage && (
+          <div className={classes.loadMore}>
+            <a onClick={loadMore} className={classes.btn}>
+              Voir plus
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

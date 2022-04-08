@@ -14,13 +14,12 @@ const SearchImage = ({ placeholder, onSubmit }) => {
   const ref = useClickOutside(() => setOpened(false), ["mouseup", "touchend"]);
 
   async function getSearchedImages(value) {
-    const data = `?query=${value}&per_page=10&locale=fr-FR`;
+    const data = `?query=${value}&per_page=10`;
     const response = await axios.get(
       `https://api.pexels.com/v1/search${data}`,
       {
         headers: {
-          Authorization:
-            "563492ad6f91700001000001fa3ba1c4f717433fa7f0c75b6bd09180",
+          Authorization: process.env.PEXEL_API_KEY,
           "Content-Type": "text/plain",
         },
       }

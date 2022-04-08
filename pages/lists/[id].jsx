@@ -17,7 +17,7 @@ const Profile = () => {
   const token = Cookies.get("token");
   const router = useRouter();
   const { query } = useRouter();
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
   const { id } = query;
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
@@ -26,10 +26,26 @@ const Profile = () => {
   const [opened, setOpened] = useState(false);
   const [nameChange, setNameChange] = useState("");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
   const [idOfUserConnected, setIdOfUserConnected] = useState();
   const [idOfOwnerList, setIdOfOwnerList] = useState();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
-  // search list + call axios
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    if (recipes) {
+      const oldRecipes = [];
+      recipes.map((recipe) => oldRecipes.push(recipe.id.toString()));
+      setValue(oldRecipes);
+      setOldValue(oldRecipes);
+    }
+  }, [user, recipes]);
+
   async function searchList(data) {
     try {
       const result = await axios.post(`/api/list/searchLists`, {
@@ -38,14 +54,14 @@ const Profile = () => {
       setList(result.data);
       setRecipes(result.data[0].recipes);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of lists.");
     }
   }
 
-  // getlist
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {
+      take: page * recipesPerPage,
       where: { id: parseInt(id) },
       include: {
         recipes: {
@@ -54,7 +70,7 @@ const Profile = () => {
           },
           orderBy: {
             [dataFilter]: {
-              _count: "asc",
+              _count: "desc",
             },
           },
         },
@@ -72,13 +88,16 @@ const Profile = () => {
     event.preventDefault();
     const data = [];
     value.map((element) => data.push({ id: parseInt(element) }));
+    const oldData = [];
+    oldValue.map((element) => oldData.push({ id: parseInt(element) }));
     await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
         name: nameChange,
         recipes: {
-          disconnect: data,
+          disconnect: oldData,
+          connect: data,
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -89,7 +108,6 @@ const Profile = () => {
       color: "green",
     });
     setOpened(false);
-    getList(filter);
   };
 
   useEffect(() => {
@@ -98,17 +116,13 @@ const Profile = () => {
     }
   }, [list]);
 
-  // filter
-  useEffect(() => {
-    getList("like");
-  }, [id]);
-
   useEffect(() => {
     getList(filter);
-  }, [filter]);
+  }, [page, id, filter, opened]);
 
   const handleSelect = (event) => {
     setFilter(event);
+    setPage(1);
   };
 
   async function deleteList() {
@@ -167,16 +181,17 @@ const Profile = () => {
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
           <div className={classes.cards}>
             <div className="row">
-              {recipes?.map((recipe) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={recipe.id}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
-                  col="col-3 col-6-sm"
-                />
+              {recipes?.map((recipe, index) => (
+                <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
+            {recipes?.length >= recipesPerPage && (
+              <div className={classes.loadMore}>
+                <a onClick={loadMore} className={classes.btn}>
+                  Voir plus
+                </a>
+              </div>
+            )}
           </div>
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <form onSubmit={editList}>
@@ -195,8 +210,9 @@ const Profile = () => {
                 required
               >
                 {list[0].recipes ? (
-                  list[0].recipes.map((recipe) => (
+                  list[0].recipes.map((recipe, index) => (
                     <Checkbox
+                      key={index}
                       value={recipe.id.toString()}
                       label={recipe.name}
                     />
@@ -210,11 +226,11 @@ const Profile = () => {
               </button>
             </form>
             <div className={classes.button}>
-            <Button
-              label="Ajouter à d'autres recettes"
-              type="success"
-              href="/recipes"
-            />
+              <Button
+                label="Ajouter de nouvelles recettes"
+                type="success"
+                href="/recipes"
+              />
             </div>
           </Modal>
         </>

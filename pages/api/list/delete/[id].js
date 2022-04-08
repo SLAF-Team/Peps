@@ -25,7 +25,6 @@ export default async (req, res) => {
     });
     res.status(200).json(deleteList);
   } catch (error) {
-    console.log(error);
     res.status(400).json({ err: "Error occured while deleting a List item." });
   }
 };

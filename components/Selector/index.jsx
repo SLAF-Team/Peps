@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Selector.module.css";
-import Image from "next/image";
 
 const Selector = ({
 	right,
