@@ -96,7 +96,6 @@ export async function getServerSideProps() {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
       ratings: true,
-      // ratings: { select: { userId: true, rating: true } },
       _count: { select: { likes: true, comments: true } },
     },
     where: { published: true },
