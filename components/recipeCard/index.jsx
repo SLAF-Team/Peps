@@ -14,7 +14,6 @@ import { useNotifications } from "@mantine/notifications";
 import meanBy from "lodash.meanby";
 
 const RecipeCard = ({ recipe, col }) => {
-  console.log(recipe)
   const { user, setUser } = useUserContext();
   const token = Cookies.get("token");
   const [currentRecipe, setCurrentRecipe] = useState(recipe);

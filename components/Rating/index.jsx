@@ -19,7 +19,6 @@ const Rating = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDataRating(result.data);
-      console.log(result.data)
     } catch (err) {
       console.log("Error regarding the loading of recipes.");
     }
