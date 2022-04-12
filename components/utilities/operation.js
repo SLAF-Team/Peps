@@ -20,7 +20,22 @@ export const apiDishes = new ApiCore({
   single: single
 });
 
+export const apiRecipes = new ApiCore({
+  getAll: true,
+  getSingle: true,
+  post: true,
+  put: true,
+  patch: true,
+  delete: false,
+  url: url,
+  plural: plural,
+  single: single
+});
+
 apiDishes.example = () => {
   // Add custom api call logic here
-}
+};
 
+apiRecipes.example = () => {
+  // Add custom api call logic here
+};

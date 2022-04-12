@@ -10,6 +10,7 @@ import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { query } = useRouter();
   const [page, setPage] = useState(1);
@@ -62,6 +63,9 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       console.log("Error regarding the loading of recipes.");
     }
   };
+
+
+  
 
   const handleChange = () => {
     setFilter(!filter);
