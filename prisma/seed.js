@@ -11,6 +11,7 @@ async function main() {
   await prisma.user.deleteMany({});
   await prisma.region.deleteMany({});
   await prisma.unit.deleteMany({});
+  await prisma.rating.deleteMany({});
 
   const john = await prisma.user.create({
     data: {
@@ -1370,6 +1371,14 @@ async function main() {
       typeId: entree.id,
       countryId: maroc.id,
       persons: 4,
+    },
+  });
+
+  const rating = await prisma.rating.create({
+    data: {
+      rating: 4,
+      recipeId: recipe.id,
+      userId: john.id,
     },
   });
 

@@ -67,6 +67,7 @@ const Profile = () => {
         recipes: {
           include: {
             _count: { select: { likes: true, comments: true } },
+            ratings: true,
           },
           orderBy: {
             [dataFilter]: {

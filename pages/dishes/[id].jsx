@@ -1,8 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
@@ -10,8 +8,11 @@ import { useUserContext } from "../../context/UserContext";
 import moment from "moment";
 import EditDish from "../../components/EditDish";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-const SelectedDish = ({ recipes, id }) => {
+const SelectedDish = () => {
+  const router = useRouter();
+  const { id } = router.query;
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [dish, setDish] = useState(null);
@@ -24,7 +25,7 @@ const SelectedDish = ({ recipes, id }) => {
       const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
     } catch (err) {
-      console.log("Error regarding the loading of dishes.");
+      console.log("Error regarding the loading of dish.");
     }
   };
 
@@ -55,22 +56,22 @@ const SelectedDish = ({ recipes, id }) => {
       <div className="row">
         <div className="col-9">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
-            <img src={recipes?.imageUrl} className={classes.mainImage} />
+            <img src={dish?.imageUrl} className={classes.mainImage} />
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.titlecontainer}>
-              <h1 className={classes.h1}>{recipes?.title}</h1>
-              <p className={classes.selectorName}>{recipes?.region.name}</p>
+              <h1 className={classes.h1}>{dish?.title}</h1>
+              <p className={classes.selectorName}>{dish?.region.name}</p>
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.stepscontainer}>
-              <p className={classes.description}>{recipes?.description}</p>
+              <p className={classes.description}>{dish?.description}</p>
             </div>
             <div className={classes.selector}>
               <div className="selectorBlock">
                 <p className={classes.selectorText}>
-                  Recettes associées ({recipes?.recipes.length})
+                  Recettes associées ({dish?.recipes.length})
                 </p>
               </div>
             </div>
@@ -86,7 +87,7 @@ const SelectedDish = ({ recipes, id }) => {
                   ))}
               </div>
             </div>
-            {recipes?.recipes.length != dish?.recipes.length && (
+            {dish?.recipes.length != dish?.recipes.length && (
               <div className={classes.loadMore}>
                 <a onClick={loadMore} className={classes.btn}>
                   Voir plus
@@ -121,7 +122,7 @@ const SelectedDish = ({ recipes, id }) => {
               <div>
                 <ul className={classes.ul}>
                   <li className={classes.li}>
-                    <a href="#">{recipes?.region.name}</a>
+                    <a href="#">{dish?.region.name}</a>
                   </li>
                 </ul>
               </div>
@@ -137,7 +138,7 @@ const SelectedDish = ({ recipes, id }) => {
               </div>
               <div>
                 <ul style={{ paddingInlineStart: "0px" }}>
-                  {recipes?.updates.map((update, index) => (
+                  {dish?.updates.map((update, index) => (
                     <li
                       key={index}
                       style={{ fontSize: "9px", listStyle: "none" }}
@@ -180,31 +181,5 @@ const SelectedDish = ({ recipes, id }) => {
     </>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const allRecipes = await prisma.dish.findUnique({
-    where: { id: parseInt(id, 10) },
-    include: {
-      updates: {
-        include: {
-          user: { select: { name: true, id: true } },
-        },
-      },
-      region: true,
-      recipes: {
-        include: {
-          _count: { select: { likes: true, comments: true } },
-        },
-      },
-    },
-  });
-  return {
-    props: {
-      recipes: allRecipes,
-      id: id,
-    },
-  };
-}
 
 export default SelectedDish;
