@@ -11,7 +11,7 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
 import EditRecipe from "../../components/EditRecipe";
-
+import RecipeTitle from "../../components/RecipeTitle/RecipeTitle";
 import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 
@@ -123,25 +123,7 @@ const SelectedRecipe = ({
           <img src={recipe.imageUrl} className={classes.mainImage} />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.titlecontainer}>
-            <h1 className={classes.h1}>{recipe.name}</h1>
-            <p className={classes.selectorName}>
-              Par{" "}
-              <Link href={"/users/" + recipe.cookId}>{recipe.cook.name}</Link>
-            </p>
-          </div>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <Link href={"/dishes/" + recipe.dish?.id}>
-                <p className={classes.selectorText}>
-                  Une variante de{" "}
-                  <span className={classes.selectorSpan}>
-                    {recipe.dish?.title}
-                  </span>
-                </p>
-              </Link>
-            </div>
-          </div>
+          <RecipeTitle recipe={recipe} />
         </Skeleton>
         <div className={classes.resp}>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
