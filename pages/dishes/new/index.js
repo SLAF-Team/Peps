@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";
 import Button from "../../../components/Button";
 
-const NewDish = ({ regions }) => {
+const NewDish = ({ regions, onCreate }) => {
   const router = useRouter();
   const formRef = useRef();
   const token = Cookies.get("token");
@@ -47,11 +47,13 @@ const NewDish = ({ regions }) => {
         message: "Votre plat a été publiée avec succès",
         color: "green",
       });
-      router.push("/dishes");
+      if (window.location.pathname === "/dishes/new") {
+        router.push("/dishes");
+      } else {
+        onCreate();
+      }
     }
   }
-
-
 
   return (
     <>

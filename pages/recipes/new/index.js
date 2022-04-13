@@ -74,6 +74,10 @@ const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units
     setStyle(!style);
   };
 
+  const handleDishCreate = () => {
+    setOpened(false)
+  };
+
   // add Recipe
   async function addNewRecipe(params) {
     const { addName, addPersons } = formRef.current;
@@ -339,7 +343,7 @@ const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units
         </>
       )}
       <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
-        <NewDish regions={regionsData} />
+        <NewDish regions={regionsData} onCreate={handleDishCreate} />
       </Modal>
     </div>
   );
