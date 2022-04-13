@@ -253,6 +253,11 @@ const SelectedRecipe = ({
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
+            <Rating/>
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.commentcontainer}>
             <p className={classes.h2}>Commenter</p>
             <CommentForm
               user={user}
@@ -415,7 +420,6 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-      <Rating />
     </div>
   );
 };

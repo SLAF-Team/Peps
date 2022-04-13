@@ -1,28 +1,50 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import star from "../../assets/images/star.svg";
+import { useState } from "react";
+import starblack from "../../assets/images/starblack.svg";
+import starfill from "../../assets/images/starfill.svg";
+import Star from "../Star";
+import styles from "./Rating.module.css";
 import Image from "next/image";
 
 const Rating = () => {
-  const [rate, setRate] = useState(null);
-  const router = useRouter();
-  const { id } = router.query;
-  const token = Cookies.get("token");
+  const [targetedRate, setTargetedRate] = useState(0);
+  const [rating, setRating] = useState(null);
+  console.log(rating)
 
   return (
     <>
-      Notez cette recette !
-      {[1, 2, 3, 4, 5].map((element, index) => (
-        <Image
-          src={star}
-          width={20}
-          height={20}
-          value={element}
-          key={index}
-          onClick={() => setRate(element)}
-        />
-      ))}
+      Noter cette recette
+      <div className={styles.rating__box}>
+        {Array(targetedRate)
+          .fill(1)
+          .map((element, index) => (
+            <div className={styles.rating__star}>
+              <Image
+                src={starfill}
+                width={30}
+                height={30}
+                value={index + 1}
+                key={index + 1}
+                onMouseOut={() => setTargetedRate(0)}
+                onClick={() => setRating(index + 1)}
+              />
+            </div>
+          ))}
+        {Array(5 - targetedRate)
+          .fill(1)
+          .map((element, index) => (
+            <div className={styles.rating__star}>
+              <Image
+                src={starblack}
+                width={30}
+                height={30}
+                value={targetedRate + index + 1}
+                key={targetedRate + index + 1}
+                onMouseEnter={() => setTargetedRate(index + 1)}
+                onClick={() => setRating(targetedRate + index + 1)}
+              />
+            </div>
+          ))}
+      </div>
     </>
   );
 };
