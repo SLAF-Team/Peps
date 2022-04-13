@@ -7,9 +7,11 @@ import Image from "next/image";
 import styles from "./RecipeCard.module.css";
 import heart from "../../assets/images/heart.svg";
 import heartvar from "../../assets/images/heartvar.svg";
+import star from "../../assets/images/star.svg";
 import comment from "../../assets/images/comment.svg";
 import { useEffect } from "react";
 import { useNotifications } from "@mantine/notifications";
+import meanBy from "lodash.meanby";
 
 const RecipeCard = ({ recipe, col }) => {
   const { user, setUser } = useUserContext();
@@ -19,9 +21,13 @@ const RecipeCard = ({ recipe, col }) => {
     recipe._count ? recipe._count.comments : []
   );
   const [likes, setLikes] = useState(recipe._count ? recipe._count.likes : []);
+  const [ratings, setRatings] = useState(
+    recipe.ratings ? meanBy(recipe.ratings, (p) => p.rating) : null
+  );
   const [isLiked, setIsLiked] = useState(false);
   const hasLikes = likes ? true : false;
   const hasComments = comments ? true : false;
+  const hasRatings = ratings ? true : false;
   const notifications = useNotifications();
 
   const getRecipe = async () => {
@@ -128,6 +134,12 @@ const RecipeCard = ({ recipe, col }) => {
           <Image src={comment} width={20} height={20} />
           {hasComments ? (
             <div className={styles.recipe__likescount}>{comments}</div>
+          ) : null}
+        </div>
+        <div className={styles.recipe__likes}>
+          <Image src={star} width={20} height={20} />
+          {hasRatings ? (
+            <div className={styles.recipe__likescount}>{ratings}</div>
           ) : null}
         </div>
       </div>
