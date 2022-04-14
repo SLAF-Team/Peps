@@ -12,6 +12,10 @@ import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
 import EditRecipe from "../../components/EditRecipe";
 import Rating from "../../components/Rating";
+import Image from "next/image";
+import heart from "../../assets/images/heart.svg";
+import heartvar from "../../assets/images/heartvar.svg";
+import star from "../../assets/images/star.svg";
 
 import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
@@ -118,7 +122,7 @@ const SelectedRecipe = ({
     <div className="row">
       <div className="col-9">
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <img src={recipe.imageUrl} className={classes.mainImage} />
+            <img src={recipe.imageUrl} className={classes.mainImage}  />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.titlecontainer}>
