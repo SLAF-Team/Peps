@@ -11,11 +11,10 @@ import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
 import EditRecipe from "../../components/EditRecipe";
+import Rating from "../../components/Rating";
 
 import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
-
-import Rating from "../../components/Rating";
 import { apiRecipes } from "../../components/utilities/operation";
 
 const SelectedRecipe = ({
@@ -253,6 +252,11 @@ const SelectedRecipe = ({
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
+            <Rating recipe={recipe}/>
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.commentcontainer}>
             <p className={classes.h2}>Commenter</p>
             <CommentForm
               user={user}
@@ -415,7 +419,6 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-      <Rating />
     </div>
   );
 };
