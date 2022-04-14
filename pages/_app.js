@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     getUser();
   }, [token]);
-
+  
   return (
     <MantineProvider
       theme={{

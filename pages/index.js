@@ -7,6 +7,7 @@ import Link from "next/link";
 import DishCard from "../components/DishCard/DishCard";
 
 export default function Home({ recipes, dishes }) {
+
   return (
     <main className={styles.main}>
       {recipes.length > 0 ? (
@@ -62,11 +63,7 @@ export default function Home({ recipes, dishes }) {
           recipes
             .slice(-4)
             .map((recipe, i) => (
-              <RecipeCard
-                recipe={recipe}
-                key={i}
-                col="col-3 col-6-sm"
-              />
+              <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
             ))}
       </div>
       <br />
@@ -98,6 +95,7 @@ export async function getServerSideProps() {
     include: {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
+      ratings: true,
       _count: { select: { likes: true, comments: true } },
     },
     where: { published: true },

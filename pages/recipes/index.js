@@ -9,6 +9,7 @@ import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { apiRecipes } from "../../components/utilities/operation.js";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const { query } = useRouter();
@@ -53,15 +54,15 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [opened, setOpened] = useState(false);
 
   const getRecipes = async (data) => {
-    try {
-      const result = await axios.post(`/api/recipe/searchRecipes`, {
-        ...data,
-      });
-      setFilterRecipes(result.data);
-    } catch (err) {
-      console.log("Error regarding the loading of recipes.");
-    }
-  };
+    apiRecipes.post(data).then((res) => {
+      try {
+        setFilterRecipes(res.results.data);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }
+
 
   const handleChange = () => {
     setFilter(!filter);
@@ -233,6 +234,7 @@ export async function getServerSideProps() {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
+      ratings: true,
     },
     where: { published: true },
     orderBy: {

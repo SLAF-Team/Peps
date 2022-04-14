@@ -18,6 +18,7 @@ export default async (req, res) => {
           take: totalRecipes,
           include: {
             _count: { select: { likes: true, comments: true } },
+            ratings: true,
           },
         },
       },

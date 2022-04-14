@@ -162,10 +162,8 @@ model Step {
 model Rating {
   id       Int      @id @default(autoincrement())
   rating   Int
-
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
-
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId Int
 }
