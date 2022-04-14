@@ -4,41 +4,75 @@ import starfill from "../../assets/images/starfill.svg";
 import styles from "./Rating.module.css";
 import Image from "next/image";
 import { useUserContext } from "../../context/UserContext";
+import axios from "axios";
+import { useNotifications } from "@mantine/notifications";
+import Cookies from "js-cookie";
 
-const Rating = ({ recipe }) => {
+const Rating = ({ recipe, onCreate }) => {
+  const token = Cookies.get("token");
+  const notifications = useNotifications();
   const { user } = useUserContext();
   const [targetedRate, setTargetedRate] = useState(0);
   const [rating, setRating] = useState(null);
-  const [isRated, setIsRated] = useState(false);
-  const [recipeRatings, setRecipeRatings] = useState([]);
   const [userHasRated, setUserHasRated] = useState(false);
   const [userRating, setUserRating] = useState(null);
-
-  console.log("user rating");
-  console.log(userHasRated);
+  const [recipeRatings, setRecipeRatings] = useState([]);
 
   useEffect(() => {
-    setRecipeRatings(recipe.ratings);
+    if (recipe) {
+      setRecipeRatings(recipe.ratings);
+    }
   }, [recipe]);
 
   useEffect(() => {
     if (user) {
       setUserHasRated(
-        user.ratings.filter((element) => element.recipeId === recipe.id)
+        recipeRatings.filter((element) => element.userId === user.id).length > 0
           ? true
           : false
       );
     }
-  }, [user]);
+  }, [user, recipeRatings]);
 
   useEffect(() => {
     if (userHasRated) {
       setUserRating(
-        user.ratings.filter((element) => element.recipeId === recipe.id)[0]
-          .rating
+        recipeRatings.filter((element) => element.userId === user.id)[0].rating
       );
     }
-  }, [userHasRated]);
+  }, [userHasRated, recipe]);
+
+  async function addRating() {
+    if (!user) {
+      notifications.showNotification({
+        title: "Erreur",
+        message: "Vous devez être connecté pour noter une recette.",
+        color: "red",
+      });
+    } else {
+      await axios.post(
+        "/api/rating/addRating",
+        {
+          recipeId: recipe.id,
+          userId: user.id,
+          rating,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      onCreate();
+      notifications.showNotification({
+        title: "Bravo!",
+        message: "Votre note a été prise en compte",
+        color: "green",
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (rating) {
+      addRating();
+    }
+  }, [rating]);
 
   if (userHasRated) {
     return (
@@ -74,44 +108,45 @@ const Rating = ({ recipe }) => {
         </div>
       </>
     );
+  } else {
+    return (
+      <>
+        Noter cette recette
+        <div className={styles.rating__box}>
+          {Array(targetedRate)
+            .fill(1)
+            .map((element, index) => (
+              <div className={styles.rating__star}>
+                <Image
+                  src={starfill}
+                  width={30}
+                  height={30}
+                  value={index + 1}
+                  key={index + 1}
+                  onMouseOut={() => setTargetedRate(0)}
+                  onClick={() => setRating(index + 1)}
+                />
+              </div>
+            ))}
+          {Array(5 - targetedRate)
+            .fill(1)
+            .map((element, index) => (
+              <div className={styles.rating__star}>
+                <Image
+                  src={starblack}
+                  width={30}
+                  height={30}
+                  value={targetedRate + index + 1}
+                  key={targetedRate + index + 1}
+                  onMouseEnter={() => setTargetedRate(index + 1)}
+                  onClick={() => setRating(targetedRate + index + 1)}
+                />
+              </div>
+            ))}
+        </div>
+      </>
+    );
   }
-  return (
-    <>
-      Noter cette recette
-      <div className={styles.rating__box}>
-        {Array(targetedRate)
-          .fill(1)
-          .map((element, index) => (
-            <div className={styles.rating__star}>
-              <Image
-                src={starfill}
-                width={30}
-                height={30}
-                value={index + 1}
-                key={index + 1}
-                onMouseOut={() => setTargetedRate(0)}
-                onClick={() => setRating(index + 1)}
-              />
-            </div>
-          ))}
-        {Array(5 - targetedRate)
-          .fill(1)
-          .map((element, index) => (
-            <div className={styles.rating__star}>
-              <Image
-                src={starblack}
-                width={30}
-                height={30}
-                value={targetedRate + index + 1}
-                key={targetedRate + index + 1}
-                onMouseEnter={() => setTargetedRate(index + 1)}
-                onClick={() => setRating(targetedRate + index + 1)}
-              />
-            </div>
-          ))}
-      </div>
-    </>
-  );
 };
 
 export default Rating;

@@ -41,13 +41,11 @@ const SelectedRecipe = ({
     try {
       apiRecipes.getSingle(id).then((result) => {
         setRecipe(result);
-        console.log(result);
       });
     } catch (err) {
-      console.log("Error regarding the loading of dishes.");
+      console.log("Error regarding the loading of recipe.");
     }
   };
-
 
   const getIngredients = async () => {
     if (!id) {
@@ -77,6 +75,10 @@ const SelectedRecipe = ({
   };
 
   const handleListCreate = () => {
+    getRecipe();
+  };
+
+  const handleRatingCreate = () => {
     getRecipe();
   };
 
@@ -252,7 +254,7 @@ const SelectedRecipe = ({
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
-            <Rating recipe={recipe}/>
+            <Rating recipe={recipe} onCreate={handleRatingCreate} />
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
