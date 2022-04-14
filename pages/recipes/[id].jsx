@@ -19,6 +19,7 @@ import Comments from "../../components/Comments/Comments";
 import { Modal, Tabs, Skeleton, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import Rating from "../../components/Rating";
+import { apiRecipes } from "../../components/utilities/operation";
 
 const SelectedRecipe = ({
   ingredients,
@@ -40,18 +41,16 @@ const SelectedRecipe = ({
   const notifications = useNotifications();
 
   const getRecipe = async () => {
-    if (!id) {
-      return;
-    }
     try {
-      const result = await axios.get(`/api/recipe/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      apiRecipes.getSingle(id).then((result) => {
+        setRecipe(result);
+        console.log(result);
       });
-      setRecipe(result.data);
     } catch (err) {
-      console.log("Error regarding the loading of recipes.");
+      console.log("Error regarding the loading of dishes.");
     }
   };
+
 
   const getIngredients = async () => {
     if (!id) {
