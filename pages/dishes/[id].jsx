@@ -6,6 +6,7 @@ import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
 import { useUserContext } from "../../context/UserContext";
 import moment from "moment";
+import { apiDishes } from "../../components/utilities/operation";
 import EditDish from "../../components/EditDish";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -20,10 +21,23 @@ const SelectedDish = () => {
   const [opened, setOpened] = useState(false);
   const [page, setPage] = useState(1);
 
+  // const getDish = async () => {
+  //   try {
+  //     const result = await axios.get(`/api/dish/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setDish(result.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}?page=${page}`);
-      setDish(result.data);
+      apiDishes.getSingle(id).then((result) => {
+        setDish(result);
+        console.log(result);
+      });
     } catch (err) {
       console.log("Error regarding the loading of dish.");
     }
@@ -44,6 +58,32 @@ const SelectedDish = () => {
   const handleEditDish = () => {
     getDish();
     setOpened(false);
+  }
+
+  async function deleteDish() {
+    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+      await axios.delete(`/api/dish/delete/${dish?.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/dishes/");
+    }
+  }
+
+  // async function deleteDish(id) {
+  //   if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+  //     await apiTasks
+  //       .remove(id, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then(() => {
+  //         router.push("/dishes/");
+  //       });
+  //   }
+  // }
+
+
+  const handleTitle = (e) => {
+    setTitleChange(e.target.value);
   };
 
   const loadMore = (e) => {
