@@ -253,7 +253,7 @@ const SelectedRecipe = ({
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
-            <Rating/>
+            <Rating recipe={recipe}/>
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>

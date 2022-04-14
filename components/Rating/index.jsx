@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import starblack from "../../assets/images/starblack.svg";
 import starfill from "../../assets/images/starfill.svg";
-import Star from "../Star";
 import styles from "./Rating.module.css";
 import Image from "next/image";
+import { useUserContext } from "../../context/UserContext";
 
-const Rating = () => {
+const Rating = ({ recipe }) => {
+  const { user } = useUserContext();
   const [targetedRate, setTargetedRate] = useState(0);
   const [rating, setRating] = useState(null);
-  console.log(rating)
+  const [isRated, setIsRated] = useState(false);
+  const [recipeRatings, setRecipeRatings] = useState([]);
+  const [userRatings, setUserRatings] = useState([]);
+
+  useEffect(() => {
+    setRecipeRatings(recipe.ratings);
+  }, [recipe]);
+
+  useEffect(() => {
+    if (user) {
+      setUserRatings(user.ratings);
+    }
+  }, [user]);
 
   return (
     <>
