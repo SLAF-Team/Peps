@@ -6,9 +6,9 @@ const url = 'dish';
 const plural = 'dishes';
 const single = 'dish';
 
-const urlRecipe = 'recipe'
-const pluralRecipe = 'recipes'
-const singleRecipe = 'recipe'
+const urlRecipe = 'recipe';
+const pluralRecipe = 'recipes';
+const singleRecipe = 'recipe';
 
 // plural and single may be used for message logic if needed in the ApiCore class.
 

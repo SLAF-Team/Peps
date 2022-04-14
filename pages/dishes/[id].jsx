@@ -45,7 +45,7 @@ const SelectedDish = () => {
 
   useEffect(() => {
     getDish();
-  }, [page]);
+  }, [id ,page]);
 
   useEffect(() => {
     setLoading(true);
