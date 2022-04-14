@@ -6,6 +6,10 @@ const url = 'dish';
 const plural = 'dishes';
 const single = 'dish';
 
+const urlRecipe = 'recipe'
+const pluralRecipe = 'recipes'
+const singleRecipe = 'recipe'
+
 // plural and single may be used for message logic if needed in the ApiCore class.
 
 export const apiDishes = new ApiCore({
@@ -27,9 +31,9 @@ export const apiRecipes = new ApiCore({
   put: true,
   patch: true,
   delete: false,
-  url: url,
-  plural: plural,
-  single: single
+  url: urlRecipe,
+  plural: pluralRecipe,
+  single: singleRecipe
 });
 
 apiDishes.example = () => {

@@ -64,6 +64,8 @@ const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units
     }
   }, [token]);
 
+
+
   const handleClickRight = () => {
     setChecked(!checked);
     setStyle(!style);
