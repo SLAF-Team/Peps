@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import classes from "./../Dishes.module.css";
 import Button from "../../../components/Button";
 
-const newDish = ({ regions }) => {
+const NewDish = ({ regions, onCreate }) => {
   const router = useRouter();
   const formRef = useRef();
   const token = Cookies.get("token");
@@ -44,10 +44,14 @@ const newDish = ({ regions }) => {
       setDisable(false);
       notifications.showNotification({
         title: "Bravo!",
-        message: "Votre recette a été publiée avec succès",
+        message: "Votre plat a été publiée avec succès",
         color: "green",
       });
-      router.push("/dishes");
+      if (window.location.pathname === "/dishes/new") {
+        router.push("/dishes");
+      } else {
+        onCreate();
+      }
     }
   }
 
@@ -121,4 +125,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default newDish;
+export default NewDish;

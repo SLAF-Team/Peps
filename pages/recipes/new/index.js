@@ -10,11 +10,12 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
-import { Select, Stepper } from "@mantine/core";
+import { Select, Stepper, Modal } from "@mantine/core";
 import { useRouter } from "next/router";
 import SearchImage from "../../../components/SearchImage";
+import NewDish from "../../../pages/dishes/new/index";
 
-const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
+const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const { user } = useUserContext();
@@ -28,12 +29,19 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [opened, setOpened] = useState(false);
   const router = useRouter();
 
   const countriesData = [];
   countries.map((element) =>
     countriesData.push({ value: element.id.toString(), label: element.name })
   );
+
+  const regionsData = [];
+  regions.map((element) =>
+  regionsData.push({ id: element.id.toString(), name: element.name })
+  );
+
   const typesData = [];
   types.map((element) =>
     typesData.push({ value: element.id.toString(), label: element.name })
@@ -56,6 +64,8 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     }
   }, [token]);
 
+
+
   const handleClickRight = () => {
     setChecked(!checked);
     setStyle(!style);
@@ -64,6 +74,10 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
   const handleClickLeft = () => {
     setChecked(!checked);
     setStyle(!style);
+  };
+
+  const handleDishCreate = () => {
+    setOpened(false)
   };
 
   // add Recipe
@@ -111,8 +125,11 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     setCount(1);
   };
 
+  console.log(regionsData)
+
   return (
     <div className={classes.main}>
+
       <h1 className={classes.title}>Ajouter une recette</h1>
       <div className={classes.stepper}>
         <Stepper
@@ -152,7 +169,12 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.button}>
-              <Button label="Nouveau plat" type="primary" href="/dishes/new" />
+              <Button
+                label="Nouveau plat"
+                type="primary"
+                href="#"
+                handleClick={() => setOpened(true)}
+              />
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nom de la recette *</label>
@@ -318,9 +340,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 href={`/recipes/${recipe?.id}`}
               />
             </div>
+
           </div>
         </>
       )}
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
+        <NewDish regions={regionsData} onCreate={handleDishCreate} />
+      </Modal>
     </div>
   );
 };
@@ -332,6 +358,8 @@ export async function getServerSideProps() {
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
   const allTags = await prisma.tag.findMany();
+  const allRegions = await prisma.region.findMany();
+
   return {
     props: {
       dishes: allDishes,
@@ -340,6 +368,7 @@ export async function getServerSideProps() {
       tags: allTags,
       ingredients: allIngredients,
       units: allUnits,
+      regions: allRegions,
     },
   };
 }
