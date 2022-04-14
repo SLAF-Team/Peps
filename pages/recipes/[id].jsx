@@ -51,7 +51,6 @@ const SelectedRecipe = ({
     }
   };
 
-
   const getIngredients = async () => {
     if (!id) {
       return;
@@ -174,6 +173,11 @@ const SelectedRecipe = ({
           <Steps recipe={recipe} container={classes.stepscontainer} />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <div className={classes.commentcontainer}>
+            <Rating recipe={recipe} />
+          </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <Comments
             recipe={recipe}
             user={user}
@@ -254,7 +258,6 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-      <Rating />
     </div>
   );
 };
