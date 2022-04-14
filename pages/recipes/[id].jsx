@@ -415,10 +415,7 @@ const SelectedRecipe = ({
           onSubmit={handleEditRecipe}
         />
       </Modal>
-<<<<<<< HEAD
-=======
       <Rating />
->>>>>>> 4c5acbdc1f5b299d1d9b38a6ceb20e00f78a3bdf
     </div>
   );
 };
