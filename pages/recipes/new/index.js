@@ -125,8 +125,6 @@ const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units
     setCount(1);
   };
 
-  console.log(regionsData)
-
   return (
     <div className={classes.main}>
 

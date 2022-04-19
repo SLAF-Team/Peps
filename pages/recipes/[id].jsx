@@ -44,10 +44,9 @@ const SelectedRecipe = ({
     try {
       apiRecipes.getSingle(id).then((result) => {
         setRecipe(result);
-        console.log(result);
       });
     } catch (err) {
-      console.log("Error regarding the loading of dishes.");
+      console.log("Error regarding the loading of recipe.");
     }
   };
 
@@ -79,6 +78,10 @@ const SelectedRecipe = ({
   };
 
   const handleListCreate = () => {
+    getRecipe();
+  };
+
+  const handleRatingCreate = () => {
     getRecipe();
   };
 
