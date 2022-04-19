@@ -10,11 +10,13 @@ export default async (req, res) => {
 
   const isAdmin = await checkIfAdmin(req);
   if (!isAdmin) {
+    console.log(req)
     res.status(403).json({ err: "Forbidden" });
     return;
   }
 
   const { id } = req.query;
+  console.log(req.query)
   try {
     const deleteDish = await prisma.dish.delete({
       where: {
