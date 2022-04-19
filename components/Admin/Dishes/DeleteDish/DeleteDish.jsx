@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Button from '../../Button';
+import Button from '../../../Button';
 import Cookies from 'js-cookie'
-import Router from 'next/router';
 
 const DeleteDish = ({id, onDelete}) => {
 

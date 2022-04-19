@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Button from '../../../components/Button'
-import DishCard from '../../../components/DishCard/DishCard';
+import Button from '../../../Button';
+import DishCard from '../../../DishCard/DishCard';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
-import DeleteDish from '../../../components/Admin/DeleteDish/DeleteDish';
-import classes from './index.module.css'
+import DeleteDish from '../DeleteDish/DeleteDish';
+import classes from './getDishes.module.css';
 
 const AllDishes = () => {
 
