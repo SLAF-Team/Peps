@@ -5,7 +5,6 @@ import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
 import { Switch, Drawer, Group, ActionIcon } from "@mantine/core";
-import axios from "axios";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -62,7 +61,6 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
       }
     });
   }
-
 
   const handleChange = () => {
     setFilter(!filter);
