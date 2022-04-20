@@ -13,7 +13,7 @@ export default async (req, res) => {
       },
     });
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, isadmin: user.isadmin },
       process.env.JWT_KEY
     );
     res.status(200).json({ user, token });

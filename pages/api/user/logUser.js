@@ -26,7 +26,7 @@ export default async (req, res) => {
       } else {
         bcrypt.compare(password, user.password).then((isMatch) => {
           const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, isadmin: user.isadmin },
             process.env.JWT_KEY
           );
           res.status(200).json({ user, token });
