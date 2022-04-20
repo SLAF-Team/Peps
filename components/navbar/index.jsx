@@ -18,12 +18,22 @@ const NavBar = () => {
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const [pivot, setPivot] = useState(false);
+  const token = Cookies.get('token')
 
   const handleClick = () => {
       Cookies.remove("token");
       setUser(null);
       router.push("/");
   };
+
+  const parseJwt = (token) => {
+    try{
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (err) {
+        return null;
+    }
+}
+  const jwtTokenDetails = parseJwt(token);
 
   return (
     <>
@@ -135,6 +145,17 @@ const NavBar = () => {
                   Mes Listes
                 </Menu.Item>
                 <Divider />
+                { jwtTokenDetails.isadmin === true ?
+                <>
+                  <Menu.Label>Admin</Menu.Label>
+                  <Menu.Item component={NextLink} href="/admin">
+                    Dashboard
+                  </Menu.Item>
+                  <Divider />
+                </>
+                :
+                null
+                } 
                 <Menu.Item color="red" onClick={() => handleClick()}>
                   Déconnexion
                 </Menu.Item>
