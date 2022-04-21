@@ -1,16 +1,9 @@
 .search {
 	background: #ffffff;
-	border: 0.7px solid #000000;
+	border: 0.7px solid #e1ddd8;
 	box-sizing: border-box;
 	border-radius: 4px;
-	padding: 1.5vh 30vw 1.5vh 10vw;
 	font-family: Lato, sans-serif;
-	margin-left: 1.5vw;
-	font-size: 40px;
-	-webkit-border-radius: ;
-	-moz-border-radius: ;
-	-ms-border-radius: ;
-	-o-border-radius: ;
 }
 
 .searchbox {
@@ -70,9 +63,10 @@
 
 @media only screen and (min-width: 33.75em) {
 	.search {
-		padding: 15px 170px 15px 56px;
+		padding: 15px 56px 15px 56px;
 		margin-left: 0;
-		font-size: 22px;
+		font-size: 20px;
+		width: 50vw;
 	}
 	.img {
 		margin-top: -43px;
@@ -99,7 +93,8 @@
 	.search {
 		width: 100%;
 		font-size: 18px;
-		padding: 1.5vh 5vw 1.5vh 10vw;
+		padding: 2vh 5vw 2vh 13vw;
+		width: 85vw;
 	}
 
 	.size {
@@ -113,5 +108,12 @@
 	.box {
 		width: 40vh;
 		max-height: 200px;
+	}
+
+	.img {
+		position: relative;
+		margin-top: -40px;
+		margin-left: 3vw;
+		pointer-events: none;
 	}
 }

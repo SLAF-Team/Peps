@@ -111,12 +111,12 @@
   display: flex;
   flex-direction: row;
   width: 100vw;
-  height: 35rem;
+  height: 34rem;
 }
 
 .heroleft {
   height: 100%;
-  width: 50vw;
+  width: 60vw;
   position: relative;
   overflow: hidden;
   margin: 0;
@@ -148,11 +148,11 @@
 
 .heroleft:hover .heroimg {
   max-width: 100%;
-  -moz-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
+  -moz-transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -o-transform: scale(1.05);
 }
 
 .heroimg {
@@ -165,28 +165,44 @@
 }
 
 .p {
-  height: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
 }
 
 .h1 {
   font-size: 50px;
   text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .h2 {
-  margin-top: 50px;
+  margin-top: 4rem;
   font-size: 34px;
 }
 
 .h3 {
-  margin-top: 50px;
+  margin-top: 40px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.recipes {
+  width: 60vw;
+}
+
+.h3_bis {
+  margin-top: 1.5rem;
   font-size: 30px;
   font-weight: 600;
 }
 
 .h4 {
+  font-family: "Merriweather", serif;
+  font-weight: 700;
+  font-size: 24px;
   font-style: italic;
-  margin-top: 0.5rem;
 }
 
 .search {
@@ -245,20 +261,27 @@
     width: 100vw;
   }
 
+  .h1 {
+    font-size: 38px;
+  }
+
+  .h4 {
+    font-size: 20px;
+  }
+
   .h2 {
-    margin-top: 80px;
+    margin-top: 50px;
     font-size: 25px;
     text-align: center;
     margin-bottom: 20px;
   }
 
   .recipes {
-    padding: 20px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 100%;
-    margin-bottom: 50px;
+    width: 100vw;
   }
 
   .herotextblock {
@@ -270,5 +293,17 @@
     height: 30vh;
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  .h3 {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .h3_bis {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: 600;
   }
 }
