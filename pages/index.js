@@ -7,7 +7,6 @@ import Link from "next/link";
 import DishCard from "../components/DishCard/DishCard";
 
 export default function Home({ recipes, dishes }) {
-
   return (
     <main className={styles.main}>
       {recipes.length > 0 ? (
@@ -34,20 +33,15 @@ export default function Home({ recipes, dishes }) {
               >
                 <h1 className={styles.h1}>{recipes.slice(-1)[0].name}</h1>
               </a>
-              <h4 className={styles.h4}>Damn, that's good.</h4>
+              <p className={styles.h4}>Damn, that's good.</p>
             </div>
           </div>
         </div>
       ) : null}
       <div className={styles.search}>
-        <h2 className={styles.h2}>
-          A chaque plat, ses recettes. Elles sont toutes ici !
-        </h2>
+        <h2 className={styles.h2}>A chaque plat, ses recettes</h2>
         <div>
-          <SearchBarHome
-            placeholder="Chercher une recette"
-            className={styles.search}
-          />
+          <SearchBarHome placeholder="Chercher une recette" />
         </div>
       </div>
       <div className={styles.recipes}>
@@ -57,35 +51,32 @@ export default function Home({ recipes, dishes }) {
             <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
+        <div className="row">
+          {recipes.length > 0 &&
+            recipes
+              .slice(-8)
+              .map((recipe, i) => (
+                <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
+              ))}
+        </div>
       </div>
-      <div className="row">
-        {recipes.length > 0 &&
-          recipes
-            .slice(-4)
-            .map((recipe, i) => (
-              <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
-            ))}
-      </div>
-      <br />
-      <Button href="/recipes/new" label="Ajouter une recette" />
       <div className={styles.recipes}>
-        <h3 className={styles.h3}>
+        <h3 className={styles.h3_bis}>
           Nos derniers plats{" "}
           <Link href="/dishes">
             <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
+
+        <div className="row">
+          {dishes.length > 0 &&
+            dishes
+              .slice(-4)
+              .map((dish, i) => (
+                <DishCard dish={dish} key={i} col="col-6 col-6-sm" />
+              ))}
+        </div>
       </div>
-      <div className="row">
-        {dishes.length > 0 &&
-          dishes
-            .slice(-4)
-            .map((dish, i) => (
-              <DishCard dish={dish} key={i} col="col-3 col-6-sm" />
-            ))}
-      </div>
-      <br />
-      <Button href="/dishes/new" label="Ajouter un plat" />
     </main>
   );
 }
