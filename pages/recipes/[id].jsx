@@ -3,18 +3,22 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
-import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
 import ButtonSettings from "../../components/ButtonSettings";
 import Button from "../../components/Button";
-import CommentForm from "../../components/Comment/CommentForm";
 import ListForm from "../../components/List/ListForm";
 import prisma from "../../lib/prisma.ts";
 import EditRecipe from "../../components/EditRecipe";
-import Rating from "../../components/Rating";
-
-import { Modal, Tabs, Skeleton, Accordion, NumberInput } from "@mantine/core";
+import RecipeTitle from "../../components/RecipeTitle/RecipeTitle";
+import Steps from "../../components/Steps/Steps";
+import Tags from "../../components/Tags/Tags";
+import RecipeSectionTitle from "../../components/RecipeSectionTitle/RecipeSectionTitle";
+import Ingredients from "../../components/Ingredients/Ingredients";
+import BCrumbs from "../../components/BCrumbs/BCrumbs";
+import Comments from "../../components/Comments/Comments";
+import { Modal, Tabs, Skeleton, NumberInput } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
+import Rating from "../../components/Rating";
 import { apiRecipes } from "../../components/utilities/operation";
 
 const SelectedRecipe = ({
@@ -34,7 +38,6 @@ const SelectedRecipe = ({
   const isPublic = recipe?.published;
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
-  const personsRatio = personsValue / recipe?.persons;
   const notifications = useNotifications();
 
   const getRecipe = async () => {
@@ -120,39 +123,20 @@ const SelectedRecipe = ({
     <div className="row">
       <div className="col-9">
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <BCrumbs parent={"Recettes"} child={recipe.name} />
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <img src={recipe.imageUrl} className={classes.mainImage} />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.titlecontainer}>
-            <h1 className={classes.h1}>{recipe.name}</h1>
-            <p className={classes.selectorName}>
-              Par{" "}
-              <Link href={"/users/" + recipe.cookId}>{recipe.cook.name}</Link>
-            </p>
-          </div>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <Link href={"/dishes/" + recipe.dish?.id}>
-                <p className={classes.selectorText}>
-                  Une variante de{" "}
-                  <span className={classes.selectorSpan}>
-                    {recipe.dish?.title}
-                  </span>
-                </p>
-              </Link>
-            </div>
-          </div>
+          <RecipeTitle recipe={recipe} />
         </Skeleton>
         <div className={classes.resp}>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <Tabs grow>
               <Tabs.Tab label="Ingrédients">
                 <div className={classes.padding}>
-                  <div className={classes.selector}>
-                    <div className="selectorBlock">
-                      <p className={classes.selectorText}>PERSONNES</p>
-                    </div>
-                  </div>
+                  <RecipeSectionTitle children="PERSONNES" />
                   <NumberInput
                     style={{ marginTop: 10 }}
                     value={personsValue}
@@ -162,73 +146,20 @@ const SelectedRecipe = ({
                     max={15}
                     size="xs"
                   />
-                  <div className={classes.selector}>
-                    <div className="selectorBlock">
-                      <p className={classes.selectorText}>INGRÉDIENTS</p>
-                    </div>
-                  </div>
-                  <div>
-                    <ul className={classes.ul}>
-                      {recipe?.ingredientsUnit &&
-                        recipe?.ingredientsUnit.map((element, index) => (
-                          <li className={classes.li} key={index}>
-                            <Link
-                              href={
-                                "/recipes?ingredient=" + element.ingredient.id
-                              }
-                            >
-                              {Math.round(
-                                10 * personsRatio * element.quantity
-                              ) /
-                                10 +
-                                " " +
-                                element.unit.name +
-                                " de " +
-                                element.ingredient.name}
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
+                  <RecipeSectionTitle children="INGRÉDIENTS" />
+                  <Ingredients recipe={recipe} personsValue={personsValue} />
                 </div>
               </Tabs.Tab>
               <Tabs.Tab label="Étapes">
-                <div className={classes.stepsmobilecontainer}>
-                  {recipe?.steps &&
-                    recipe?.steps.map((element, index) => (
-                      <div key={index}>
-                        <p className={classes.steps}>Étape {index + 1}</p>
-                        <p>{element.text} </p>
-                      </div>
-                    ))}
-                </div>
+                <Steps recipe={recipe} container={classes.mobilecontainer} />
               </Tabs.Tab>
               <Tabs.Tab label="Tags et Listes">
                 <div className={classes.padding}>
-                  <div className={classes.selector}>
-                    <div className="selectorBlock">
-                      <p className={classes.selectorText}>TAGS</p>
-                    </div>
-                  </div>
-                  <div>
-                    <ul className={classes.ul}>
-                      {recipe?.tags &&
-                        recipe?.tags.map((tag, index) => (
-                          <li className={classes.li} key={index}>
-                            <Link href={"/recipes?tag=" + tag.id}>
-                              {"#" + tag.name}
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
+                  <RecipeSectionTitle children="TAGS" />
+                  <Tags recipe={recipe} />
                 </div>
                 <div className={classes.padding}>
-                  <div className={classes.selector}>
-                    <div className="selectorBlock">
-                      <p className={classes.selectorText}>LISTES</p>
-                    </div>
-                  </div>
+                  <RecipeSectionTitle children="LISTES" />
                   <div className={classes.detailscontainer}>
                     <ListForm
                       lists={recipe.lists}
@@ -242,47 +173,19 @@ const SelectedRecipe = ({
           </Skeleton>
         </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.stepscontainer}>
-            {recipe?.steps &&
-              recipe?.steps.map((element, index) => (
-                <div key={index}>
-                  <p className={classes.steps}>Étape {index + 1}</p>
-                  <p>{element.text} </p>
-                </div>
-              ))}
-          </div>
+          <Steps recipe={recipe} container={classes.stepscontainer} />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
-            <Rating recipe={recipe} onCreate={handleRatingCreate} />
+            <Rating recipe={recipe} />
           </div>
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.commentcontainer}>
-            <p className={classes.h2}>Commenter</p>
-            <CommentForm
-              user={user}
-              recipe={recipe}
-              onCreate={handleCommentUpdate}
-            />
-            <br></br>
-            {recipe?.comments.length != 0 && (
-              <Accordion>
-                <Accordion.Item
-                  label={
-                    "Voir les " + recipe?.comments.length + " commentaires"
-                  }
-                >
-                  {recipe?.comments && (
-                    <CommentsList
-                      comments={recipe.comments}
-                      onDelete={handleCommentUpdate}
-                    />
-                  )}
-                </Accordion.Item>
-              </Accordion>
-            )}
-          </div>
+          <Comments
+            recipe={recipe}
+            user={user}
+            handleCommentUpdate={handleCommentUpdate}
+          />
         </Skeleton>
       </div>
       <div className="col-3">
@@ -310,11 +213,7 @@ const SelectedRecipe = ({
           ) : null}
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>PERSONNES</p>
-                </div>
-              </div>
+              <RecipeSectionTitle children="PERSONNES" />
               <NumberInput
                 style={{ marginTop: 10 }}
                 value={personsValue}
@@ -324,84 +223,25 @@ const SelectedRecipe = ({
                 max={15}
                 size="xs"
               />
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>INGRÉDIENTS</p>
-                </div>
-              </div>
-              <div>
-                <ul className={classes.ul}>
-                  {recipe?.ingredientsUnit &&
-                    recipe?.ingredientsUnit.map((element, index) => (
-                      <li className={classes.li} key={index}>
-                        <Link
-                          href={"/recipes?ingredient=" + element.ingredient.id}
-                        >
-                          {Math.round(10 * personsRatio * element.quantity) /
-                            10 +
-                            " " +
-                            element.unit.name +
-                            " de " +
-                            element.ingredient.name}
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+              <RecipeSectionTitle children="INGRÉDIENTS" />
+              <Ingredients recipe={recipe} personsValue={personsValue} />
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>TAGS</p>
-                </div>
-              </div>
-              <div>
-                <ul className={classes.ul}>
-                  {recipe?.tags &&
-                    recipe?.tags.map((tag, index) => (
-                      <li className={classes.li} key={index}>
-                        <Link href={"/recipes?tag=" + tag.id}>
-                          {"#" + tag.name}
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+              <RecipeSectionTitle children="TAGS" />
+              <Tags recipe={recipe} />
             </div>
           </Skeleton>
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}>LISTES</p>
-                </div>
-              </div>
+              <RecipeSectionTitle children="LISTES" />
               <div className={classes.detailscontainer}>
                 <ListForm
                   lists={recipe.lists}
                   recipe={recipe}
                   onCreate={handleListCreate}
                 />
-              </div>
-            </div>
-          </Skeleton>
-          <Skeleton visible={loading} style={{ marginTop: 6 }}>
-            <div className={classes.padding}>
-              <div className={classes.selector}>
-                <div className="selectorBlock">
-                  <p className={classes.selectorText}></p>
-                </div>
-              </div>
-              <div>
-                <ul className={classes.ul}>
-                  <li className={classes.li} style={{ textAlign: "center" }}>
-                    <a href={"/recipes"} style={{ fontSize: "12px" }}>
-                      Voir toutes les recettes
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
           </Skeleton>

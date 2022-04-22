@@ -284,19 +284,6 @@
     text-align: center;
   }
 
-  .titlecontainer {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .detailstitlecontainer {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px;
-  }
-
   .dishtitle {
     font-weight: 400;
     font-size: 16px;
