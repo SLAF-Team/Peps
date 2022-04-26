@@ -60,6 +60,7 @@ export default function Home({ recipes, dishes }) {
               ))}
         </div>
       </div>
+      <Button href="/recipes/new" label="Ajouter une recette" />
       <div className={styles.recipes}>
         <h3 className={styles.h3_bis}>
           Nos derniers plats{" "}
@@ -67,7 +68,6 @@ export default function Home({ recipes, dishes }) {
             <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
-
         <div className="row">
           {dishes.length > 0 &&
             dishes
@@ -77,6 +77,7 @@ export default function Home({ recipes, dishes }) {
               ))}
         </div>
       </div>
+      <Button href="/dishes/new" label="Ajouter un plat" />
     </main>
   );
 }

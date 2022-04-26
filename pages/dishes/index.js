@@ -3,8 +3,6 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Dishes.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import axios from "axios";
-import { Tasks } from "../../components/DishCreateForm/DishCreateForm.jsx";
 import { apiDishes } from '../../components/utilities/operation'
 
 const Dishes = ({ dishes, regions }) => {
@@ -20,8 +18,6 @@ const Dishes = ({ dishes, regions }) => {
   regions?.map((region) =>
     dataRegions.push({ value: region.id, label: region.name })
   );
-
-  // async search fonction
 
   const getDishes = async (data) => {
     apiDishes.post(data).then((res) => {
@@ -75,20 +71,14 @@ const Dishes = ({ dishes, regions }) => {
           <div className="row">
             {filteredDishes &&
               filteredDishes.map((dish) => (
-                <DishCard key={dish.id} dish={dish} col="col-3" />
+                <DishCard
+                  key={dish.id}
+                  dish={dish}
+                  regions={regions}
+                  col="col-3"
+                />
               ))}
           </div>
-        </div>
-        <div className="row">
-          {filteredDishes &&
-            filteredDishes.map((dish) => (
-              <DishCard
-                key={dish.id}
-                dish={dish}
-                regions={regions}
-                col="col-3"
-              />
-            ))}
         </div>
         {filteredDishes.length >= recipesPerPage && (
           <div className={classes.loadMore}>
