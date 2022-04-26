@@ -74,7 +74,6 @@ const Dishes = ({ dishes, regions }) => {
                 <DishCard
                   key={dish.id}
                   dish={dish}
-                  regions={regions}
                   col="col-3"
                 />
               ))}
