@@ -13,7 +13,9 @@ const Footer = () => {
             <span className={styles.brand}>Peps</span>
             <p className={styles.description}>
               Peps est une base de donnée culinaire, qui a pour vision de
-              façonner l'espace alimentaire numérique. Perdez-vous dans notre labyrinthe de saveurs ! 
+              façonner l'espace alimentaire numérique. Une recette est une
+              déclinaison d'un type de plat. Perdez-vous dans notre labyrinthe
+              de saveurs !
             </p>
             <a href="https://github.com/SLAF-Team/Cookogs">
               <svg
@@ -63,6 +65,9 @@ const Footer = () => {
           </div>
           <Link href="/recipes/new">
             <p className={styles.link}>Proposer une recette</p>
+          </Link>
+          <Link href="/dishes/new">
+            <p className={styles.link}>Proposer un plat</p>
           </Link>
           <Link href="/dishes">
             <p className={styles.link}>Plats</p>

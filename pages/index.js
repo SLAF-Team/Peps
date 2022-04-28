@@ -67,7 +67,6 @@ export default function Home({ recipes, dishes }) {
             <span className={styles.seeAll}>Découvrir</span>
           </Link>
         </h3>
-
         <div className="row">
           {dishes.length > 0 &&
             dishes

@@ -7,7 +7,7 @@ import { Select } from "@mantine/core";
 import Cookies from "js-cookie";
 import { useNotifications } from "@mantine/notifications";
 
-const EditDish = ({ dish, onSubmit, user }) => {
+const EditDish = ({ dish, onEdit, user }) => {
   const notifications = useNotifications();
   const token = Cookies.get("token");
   const [titleValue, setTitleValue] = useState(dish.title);
@@ -75,7 +75,7 @@ const EditDish = ({ dish, onSubmit, user }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }
-      onSubmit();
+      onEdit();
     }
   }
 
