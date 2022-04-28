@@ -4,10 +4,9 @@ import EditUser from "../editUser/index";
 import ButtonSettings from "../ButtonSettings";
 import { useRouter } from "next/router";
 
-const UserList = ({ user, color }) => {
+const UserList = ({ user, color, onClick }) => {
   const [form, setForm] = useState(false);
   const query = useRouter();
-  const canEdit = query.pathname === "/profile" ? true : false;
 
   const handleUpdateUser = () => {
     setForm(!form);
@@ -25,7 +24,7 @@ const UserList = ({ user, color }) => {
       <div className="col-9">
         {user?.email && (
           <div className={styles.float}>
-            {!form && canEdit && (
+            {!form && (
               <ButtonSettings
                 label="Éditer mon profil"
                 handleClick={() => handleUpdateUser()}
@@ -33,6 +32,13 @@ const UserList = ({ user, color }) => {
             )}
             {form && (
               <EditUser user={user} handleUpdateUser={handleUpdateUser} />
+            )}
+          </div>
+        )}
+        {!user?.email && (
+          <div className={styles.float}>
+            {!form && (
+              <ButtonSettings label="Éditer" handleClick={() => onClick()} />
             )}
           </div>
         )}
