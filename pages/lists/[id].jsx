@@ -162,23 +162,11 @@ const Profile = () => {
     <>
       {list && (
         <>
-          <UserList user={list[0]} color="#26c485" />
-          {auth && (
-            <>
-              <button
-                onClick={() => handleDeleteList()}
-                className={classes.btnDanger}
-              >
-                Supprimer
-              </button>
-              <button
-                onClick={() => setOpened(true)}
-                className={classes.btnPrimary}
-              >
-                Editer
-              </button>
-            </>
-          )}
+          <UserList
+            user={list[0]}
+            color="#26c485"
+            onClick={() => setOpened(true)}
+          />
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
           <div className={classes.cards}>
             <div className="row">
@@ -224,6 +212,12 @@ const Profile = () => {
               </CheckboxGroup>
               <button className={classes.btnPrimary} type="submit">
                 J'édite
+              </button>
+              <button
+                onClick={() => handleDeleteList()}
+                className={classes.btnDanger}
+              >
+                Supprimer
               </button>
             </form>
             <div className={classes.button}>

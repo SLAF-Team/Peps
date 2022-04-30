@@ -19,7 +19,7 @@ const FilterSelector = ({ left, handleSelect }) => {
 					<select
 						name="filter"
 						onChange={handleSelection}
-						className="customSelect"
+						className={styles.customSelect}
 					>
 						<option value="like">Likes</option>
 						<option value="comment">Commentaires</option>
