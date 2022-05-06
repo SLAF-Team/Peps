@@ -4,20 +4,17 @@ import prisma from "../../lib/prisma.ts";
 import classes from "./Recipe.module.css";
 import { useState, useEffect } from "react";
 import { MultiSelect } from "@mantine/core";
-import { Switch, Drawer, Button, Group, ActionIcon } from "@mantine/core";
-import axios from "axios";
+import { Switch, Drawer, Group, ActionIcon } from "@mantine/core";
 import adjust from "../../assets/images/adjust.svg";
 import Image from "next/image";
-import { useUserContext } from "../../context/UserContext.js";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
+import { apiRecipes } from "../../components/utilities/operation.js";
 
 const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
-  const { user } = useUserContext();
-  const router = useRouter();
-  const token = Cookies.get("token");
+  const { query } = useRouter();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
-  // set up state for multiselect
   const idTags = [];
   tags?.map((element) => idTags.push(element.id));
 
@@ -35,9 +32,8 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
   const [filterCountry, setFilterCountry] = useState([]);
   const [filterIngredient, setFilterIngredient] = useState([]);
   const [filteredRecipes, setFilterRecipes] = useState(recipes);
-  const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(true);
 
-  // set up data for multiselect
   const dataTags = [];
   tags?.map((tag) => dataTags.push({ value: tag.id, label: tag.name }));
 
@@ -54,46 +50,45 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
     dataIngredients.push({ value: ingredient.id, label: ingredient.name })
   );
 
-  // set up drawer
   const [opened, setOpened] = useState(false);
 
-  // async search fonction
   const getRecipes = async (data) => {
-    try {
-      const result = await axios.post(`/api/recipe/searchRecipes`, {
-        ...data,
-      });
-      setFilterRecipes(result.data);
-    } catch (err) {
-      console.log("error");
-    }
-  };
+    apiRecipes.post(data).then((res) => {
+      try {
+        setFilterRecipes(res.results.data);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }
 
-  // change filter state
   const handleChange = () => {
     setFilter(!filter);
   };
 
-  //useEffect for filter with exceptions
   useEffect(() => {
-    const filterCall = {
+    const filteredQuery = {
+      take: page * recipesPerPage,
       include: {
         _count: { select: { likes: true, comments: true } },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     };
-    const wheres = {};
-    if (filterCountry.length > 0) {
+    const wheres = { published: true };
+    if (filter && filterCountry.length > 0) {
       wheres.countryId = { in: filterCountry };
     }
-    if (filterType.length > 0) {
+    if (filter && filterType.length > 0) {
       wheres.typeId = { in: filterType };
     }
-    if (filterTag.length > 0) {
+    if (filter && filterTag.length > 0) {
       wheres.tags = {
         some: { id: { in: filterTag } },
       };
     }
-    if (filterIngredient.length > 0) {
+    if (filter && filterIngredient.length > 0) {
       wheres.ingredientsUnit = {
         some: {
           ingredientId: {
@@ -102,10 +97,39 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         },
       };
     }
-    filterCall.where = wheres;
-    const data = filter ? filterCall : null;
-    getRecipes(data);
+    filteredQuery.where = wheres;
+    getRecipes(filteredQuery);
+  }, [page, filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    setPage(1);
   }, [filterTag, filterCountry, filterType, filterIngredient, filter]);
+
+  useEffect(() => {
+    if (query.tag || query.country || query.type || query.ingredient) {
+      switch (Object.keys(query)[0]) {
+        case "tag":
+          setFilterTag([parseInt(query.tag)]);
+          break;
+        case "country":
+          setFilterCountry([parseInt(query.country)]);
+          break;
+        case "type":
+          setFilterType([parseInt(query.type)]);
+          break;
+        case "ingredient":
+          setFilterIngredient([parseInt(query.ingredient)]);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [query.tag, query.country, query.type, query.ingredient]);
+
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
 
   return (
     <div className={classes.margin}>
@@ -134,48 +158,36 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
                   data={dataTags}
                   value={filterTag}
                   onChange={setFilterTag}
-                  placeholder="tags"
+                  placeholder="Choisir des tags"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Pays</h2>
                 <MultiSelect
                   data={dataCountries}
                   value={filterCountry}
                   onChange={setFilterCountry}
-                  placeholder="pays"
+                  placeholder="Choisir des pays"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Type de recette</h2>
                 <MultiSelect
                   data={dataTypes}
                   value={filterType}
                   onChange={setFilterType}
-                  placeholder="types"
+                  placeholder="Choisir des types"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
                 <h2 className={classes.h2}>Par Ingrédient</h2>
                 <MultiSelect
                   data={dataIngredients}
                   value={filterIngredient}
                   onChange={setFilterIngredient}
-                  placeholder="ingrédients"
+                  placeholder="Choisir des ingrédients"
                   searchable
                   clearable
-                  className={classes.multiselect}
-                  size="xs"
-                  styles={{ label: { fontSize: 14 } }}
                 />
               </div>
             </Drawer>
@@ -199,15 +211,16 @@ const Recipes = ({ recipes, tags, countries, types, ingredients }) => {
         <div className="row">
           {filteredRecipes &&
             filteredRecipes.map((recipe, i) => (
-              <RecipeCard
-                recipe={recipe}
-                key={i}
-                like_count={recipe?._count?.likes}
-                comment_count={recipe?._count?.comments}
-                col="col-3 col-6-sm"
-              />
+              <RecipeCard recipe={recipe} key={i} col="col-3 col-6-sm" />
             ))}
         </div>
+        {filteredRecipes.length >= recipesPerPage && (
+          <div className={classes.loadMore}>
+            <a onClick={loadMore} className={classes.btn}>
+              Voir plus
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -219,6 +232,11 @@ export async function getServerSideProps() {
       cook: { select: { email: true, name: true, id: true } },
       tags: { select: { id: true } },
       _count: { select: { likes: true, comments: true } },
+      ratings: true,
+    },
+    where: { published: true },
+    orderBy: {
+      createdAt: "desc",
     },
   });
   const allTags = await prisma.tag.findMany({});

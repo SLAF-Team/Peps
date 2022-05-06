@@ -1,28 +1,44 @@
 import ListsList from "../ListsList";
 import { useUserContext } from "../../../context/UserContext";
 import { Modal } from "@mantine/core";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Button from "../../Button";
-import ButtonForm from "../../ButtonForm";
 import Cookies from "js-cookie";
 import styles from "./ListForm.module.css";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
-import { useRouter } from "next/router";
 
-const ListForm = ({ lists, recipe, setSubmitted }) => {
+const ListForm = ({ lists, recipe, onCreate }) => {
   const formRef = useRef();
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [opened, setOpened] = useState(false);
   const token = Cookies.get("token");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
   const notifications = useNotifications();
-  const router = useRouter();
+  const filteredLists = recipe.lists.filter((list) => list.userId === user?.id);
 
   const handleClick = () => {
     setOpened(true);
   };
+
+  // refreshcontext
+  async function getUser() {
+    const result = await axios.get("/api/user/getCurrentUser", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUser(result.data.user);
+  }
+
+  useEffect(() => {
+    if (filteredLists.length > 0) {
+      const oldLists = [];
+      filteredLists.map((list) => oldLists.push(list.id.toString()));
+      setValue(oldLists);
+      setOldValue(oldLists);
+    }
+  }, [user, recipe]);
 
   // Add new
   async function addNewList(params) {
@@ -46,50 +62,54 @@ const ListForm = ({ lists, recipe, setSubmitted }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    router.push(`/recipes/${recipe.id}`);
-    setSubmitted(true);
+    onCreate();
     notifications.showNotification({
       message: "Votre liste a bien été créée",
       color: "green",
     });
     setOpened(false);
-    setSubmitted(false);
+    getUser();
   }
 
   // edit list
-  async function editList(data) {
-    const result = await axios.put(
-      "/api/recipe/editRecipe",
+  async function editList(oldData, data) {
+    await axios.put(
+      "/api/recipe/editRecipesList",
       {
         id: recipe.id,
         lists: {
+          disconnect: oldData,
           connect: data,
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setSubmitted(true);
     notifications.showNotification({
       message: "Votre liste a bien été mise à jour",
       color: "green",
     });
-    setSubmitted(false);
+    onCreate();
+    setOpened(false);
   }
 
   const handleEditClick = () => {
     const newValue = [];
     value.map((element) => newValue.push({ id: parseInt(element) }));
-    editList(newValue);
+    const oldValueList = [];
+    oldValue.map((element) => oldValueList.push({ id: parseInt(element) }));
+    editList(oldValueList, newValue);
   };
 
   return (
     <>
       <ListsList lists={lists} />
-      <div className={styles.form}>
-        <a href="" className={styles.btn} onClick={handleClick}>
-          Ajouter
-        </a>
-      </div>
+      {user ? (
+        <div className={styles.form}>
+          <a href="#" className={styles.btn} onClick={() => handleClick()}>
+            Ajouter
+          </a>
+        </div>
+      ) : null}
       <Modal opened={opened} onClose={() => setOpened(false)}>
         <p>Ajouter à une nouvelle liste</p>
         <form ref={formRef}>

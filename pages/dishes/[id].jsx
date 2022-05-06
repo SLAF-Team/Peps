@@ -1,41 +1,38 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import classes from "./Dishes.module.css";
 import RecipeCard from "../../components/recipeCard/index.jsx";
 import { Modal, Skeleton } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 import { useUserContext } from "../../context/UserContext";
-import ButtonForm from "../../components/ButtonForm";
-import Button from "../../components/Button";
 import moment from "moment";
+import EditDish from "../../components/EditDish";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SelectedDish = () => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const router = useRouter();
-  const { id } = router.query;
   const [dish, setDish] = useState(null);
-  const [titleChange, setTitleChange] = useState();
-  const [descriptionChange, setDescriptionChange] = useState();
   const [loading, setLoading] = useState(true);
   const [opened, setOpened] = useState(false);
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const { id } = router.query;
+  const totalRecipes = dish?._count.recipes;
 
   const getDish = async () => {
     try {
-      const result = await axios.get(`/api/dish/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const result = await axios.get(`/api/dish/${id}?page=${page}`);
       setDish(result.data);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of dishes.");
     }
   };
 
   useEffect(() => {
     getDish();
-  }, [id]);
+  }, [id, page]);
 
   useEffect(() => {
     setLoading(true);
@@ -45,48 +42,13 @@ const SelectedDish = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  async function editDish(event) {
-    event.preventDefault();
-    const result = await axios.put(
-      "/api/dish/editDish",
-      {
-        id: dish.id,
-        title: titleChange,
-        description: descriptionChange,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    console.log(result);
-    if (result.status === 200) {
-      const lol = await axios.put(
-        "/api/update/addUpdate",
-        {
-          userId: user.id,
-          dishId: dish.id,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      console.log(lol);
-    }
-    getDish();
+  const handleEditDish = () => {
     setOpened(false);
-  }
-
-  async function deleteDish() {
-    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
-      await axios.delete(`/api/dish/delete/${dish?.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      router.push("/dishes/");
-    }
-  }
-
-  const handleTitle = (e) => {
-    setTitleChange(e.target.value);
+    getDish();
   };
 
-  const handleDescription = (e) => {
-    setDescriptionChange(e.target.value);
+  const setPageNumber = (number) => {
+    setPage(page + number);
   };
 
   return (
@@ -109,30 +71,41 @@ const SelectedDish = () => {
             <div className={classes.selector}>
               <div className="selectorBlock">
                 <p className={classes.selectorText}>
-                  Recettes associées ({dish?.recipes.length})
+                  Recettes associées ({totalRecipes})
                 </p>
               </div>
             </div>
             <div className="row">
               <div className={classes.cards}>
                 {dish?.recipes &&
-                  dish?.recipes.map((recipe) => (
+                  dish?.recipes.map((recipe, index) => (
                     <RecipeCard
-                      key={recipe.id}
+                      key={index}
                       recipe={recipe}
-                      like_count={recipe?._count?.likes}
-                      comment_count={recipe?._count?.comments}
                       col="col-4 col-6-sm"
                     />
                   ))}
               </div>
             </div>
+            {totalRecipes > dish?.recipes.length ? (
+              <div className={classes.loadMore}>
+                <a onClick={() => setPageNumber(1)} className={classes.btn}>
+                  Voir plus
+                </a>
+              </div>
+            ) : (
+              <div className={classes.loadMore}>
+                <a onClick={() => setPageNumber(-1)} className={classes.btn}>
+                  Voir moins
+                </a>
+              </div>
+            )}
           </Skeleton>
         </div>
         <div className="col-3">
           <Skeleton visible={loading} style={{ marginTop: 6 }}>
             <div className={classes.padding}>
-              {token != null && (
+              {token && (
                 <div className={classes.editBtn}>
                   <a
                     href="#"
@@ -153,7 +126,7 @@ const SelectedDish = () => {
                 </div>
               </div>
               <div>
-                <ul>
+                <ul className={classes.ul}>
                   <li className={classes.li}>
                     <a href="#">{dish?.region.name}</a>
                   </li>
@@ -166,60 +139,50 @@ const SelectedDish = () => {
             <div className={classes.padding}>
               <div className={classes.selector}>
                 <div className="selectorBlock">
-                  <p className={classes.selectorText}>WIKI</p>
+                  <p className={classes.selectorText}>HISTORIQUE</p>
                 </div>
               </div>
               <div>
-                <ul>
+                <ul style={{ paddingInlineStart: "0px" }}>
                   {dish?.updates.map((update, index) => (
-                    <p key={index}>
-                      Modifié par {update.user.name}{" "}
+                    <li
+                      key={index}
+                      style={{ fontSize: "9px", listStyle: "none" }}
+                    >
+                      Modifié par{" "}
+                      <Link href={"/users/" + update.user.id}>
+                        {update.user.name}
+                      </Link>{" "}
                       {moment(update.createdAt).fromNow()}
-                    </p>
+                    </li>
                   ))}
                 </ul>
               </div>
             </div>
           </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.selector}>
+              <div className="selectorBlock">
+                <p className={classes.selectorText}></p>
+              </div>
+            </div>
+            <div>
+              <ul className={classes.ul}>
+                <li className={classes.li} style={{ textAlign: "center" }}>
+                  <a
+                    href={"/dishes"}
+                    style={{ fontSize: "12px", textAlign: "center" }}
+                  >
+                    Voir tous les plats
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </Skeleton>
         </div>
       </div>
-      <Modal opened={opened} onClose={() => setOpened(false)}>
-        <div className={classes.form}>
-          <form onSubmit={editDish} className={classes.size}>
-            <div>
-              <label>Nom</label>
-            </div>
-            <input
-              name="dishTitle"
-              type="text"
-              defaultValue={dish?.title}
-              onChange={handleTitle}
-              className={classes.field}
-            />
-            <div>
-              {" "}
-              <label>Description</label>
-            </div>
-            <textarea
-              name="dishDescription"
-              type="text"
-              style={{ width: "100%", height: "100px" }}
-              defaultValue={dish?.description}
-              onChange={handleDescription}
-              className={classes.field}
-            />
-            <ButtonForm label={"j'édite"} theme="success" />
-          </form>
-          <br />
-          {user?.isadmin ? (
-            <Button
-              handleClick={() => deleteDish()}
-              label="Supprimer"
-              href="#"
-              type="danger"
-            />
-          ) : null}
-        </div>
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
+        <EditDish dish={dish} onEdit={handleEditDish} user={user} />
       </Modal>
     </>
   );

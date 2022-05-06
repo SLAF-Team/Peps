@@ -1,16 +1,16 @@
 .search {
 	background: #ffffff;
-	border: 0.7px solid #000000;
+	border: 0.7px solid #e1ddd8;
 	box-sizing: border-box;
 	border-radius: 4px;
 	padding: 1.5vh 30vw 1.5vh 10vw;
 	font-family: Lato, sans-serif;
 	margin-left: 1.5vw;
 	font-size: 40px;
-	-webkit-border-radius:;
-	-moz-border-radius:;
-	-ms-border-radius:;
-	-o-border-radius:;
+	-webkit-border-radius: ;
+	-moz-border-radius: ;
+	-ms-border-radius: ;
+	-o-border-radius: ;
 }
 
 .search:hover,
@@ -51,36 +51,28 @@
 }
 
 .linkbox {
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding: 10px;
 	display: flex;
 	align-items: center;
+	border-bottom: 0.5px solid black;
 }
 
 .linkbox:hover {
 	background-color: #faf5f0;
 }
 
-
 .box {
-	padding-top: 20px;
-	padding-bottom: 15px;
-	z-index: 3333;
-	padding-left: 10px;
-	padding-right: 10px;
 	border-radius: 4px;
 	cursor: pointer;
 	width: 140%;
-	background-color: #f8f9fa;
+	background-color: white;
 	max-height: 40px;
 	overflow-y: scroll;
 	max-height: 500px;
 	overflow-y: scroll;
-
-}
-
-.box:hover {
-background-color: #f1f3f5;
+	border-right: 0.5px solid black;
+	border-left: 0.5px solid black;
+	border-top: 0.5px solid black;
 }
 
 @media only screen and (min-width: 33.75em) {
@@ -100,16 +92,14 @@ background-color: #f1f3f5;
 	}
 
 	.searchbox {
-		margin-top: 10px;
+		margin-top: 5px;
 		position: absolute;
 		z-index: 1;
 		width: 100%;
 	}
-
 }
 
 @media only screen and (max-width: 600px) {
-
 	.searchbox {
 		margin-top: 25px;
 		padding-left: 8px;

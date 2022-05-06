@@ -1,0 +1,22 @@
+.h2 {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: "Lato", sans-serif;
+}
+
+@media (max-width: 500px) {
+
+  .commentcontainer {
+    font-size: 10px;
+  }
+
+
+  .h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "Lato", sans-serif;
+  }
+
+}

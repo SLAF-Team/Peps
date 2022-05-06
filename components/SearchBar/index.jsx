@@ -1,11 +1,10 @@
-import React from "react";
 import styles from "./SearchBar.module.css";
 import search from "../../assets/images/search.svg";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { Box, Anchor } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 
 const SearchBar = ({ placeholder, handleSubmit }) => {
@@ -18,7 +17,6 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
   const handleChange = (e) => {
     e.preventDefault();
     setRecipeSearch(e.target.value);
-    console.log(opened);
   };
 
   async function getSearchedRecipe(recipeSearch, e) {
@@ -38,6 +36,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
             },
           },
         ],
+        published: true,
       },
     };
     const result = await axios.post("/api/recipe/searchRecipes", {
@@ -67,10 +66,7 @@ const SearchBar = ({ placeholder, handleSubmit }) => {
         {recipeSearch && (
           <div>
             {opened && dataSearch.length > 0 && (
-              <Box
-                ref={ref}
-                className={styles.box}
-              >
+              <Box ref={ref} className={styles.box}>
                 {dataSearch?.map((element) => {
                   return (
                     <div className={styles.linkbox}>

@@ -2,9 +2,11 @@ import { useState } from "react";
 import styles from "./UserList.module.css";
 import EditUser from "../editUser/index";
 import ButtonSettings from "../ButtonSettings";
+import { useRouter } from "next/router";
 
-const UserList = ({ user, color }) => {
+const UserList = ({ user, color, onClick }) => {
   const [form, setForm] = useState(false);
+  const query = useRouter();
 
   const handleUpdateUser = () => {
     setForm(!form);
@@ -30,6 +32,13 @@ const UserList = ({ user, color }) => {
             )}
             {form && (
               <EditUser user={user} handleUpdateUser={handleUpdateUser} />
+            )}
+          </div>
+        )}
+        {!user?.email && (
+          <div className={styles.float}>
+            {!form && (
+              <ButtonSettings label="Éditer" handleClick={() => onClick()} />
             )}
           </div>
         )}

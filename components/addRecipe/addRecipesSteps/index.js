@@ -66,7 +66,7 @@ const AddRecipesStep = ({ recipe, count }) => {
             <Button
               label="Valider mon étape"
               handleClick={() => addRecipeStep()}
-              href=""
+              href="#"
               type="success"
             />
           </div>

@@ -7,14 +7,10 @@ import classes from "./CommentForm.module.css";
 import Button from "../../Button";
 import { useNotifications } from "@mantine/notifications";
 
-const CommentForm = ({ user, recipe, setSubmitted }) => {
+const CommentForm = ({ user, recipe, onCreate }) => {
   const formRef = useRef();
   const token = Cookies.get("token");
   const notifications = useNotifications();
-
-  useEffect(() => {
-    setSubmitted(false);
-  }, []);
 
   async function addComment() {
     const { addText } = formRef.current;
@@ -35,7 +31,7 @@ const CommentForm = ({ user, recipe, setSubmitted }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSubmitted(true);
+      onCreate();
       addText.value = "";
       notifications.showNotification({
         title: "Bravo!",

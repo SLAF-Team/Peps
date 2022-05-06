@@ -16,7 +16,7 @@ const Login = () => {
   const notifications = useNotifications();
 
   useEffect(() => {
-    if (token !== undefined) {
+    if (token) {
       notifications.showNotification({
         title: "Connexion",
         message: "Vous êtes déjà connecté",
@@ -24,7 +24,7 @@ const Login = () => {
       });
       router.push("/");
     }
-  }, [])
+  }, []);
 
   const handleClickLeft = () => {
     setSignUp(false);

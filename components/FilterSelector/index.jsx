@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./FilterSelector.module.css";
-import Image from "next/image";
 
 const FilterSelector = ({ left, handleSelect }) => {
 	const handleSelection = (e) => {
@@ -11,7 +10,7 @@ const FilterSelector = ({ left, handleSelect }) => {
 		<div className={styles.selector}>
 			<div>
 				<p className={styles.selectorText}>
-					<span className={styles.bold}>{left}</span> Résultats
+					<span className={styles.bold}>{left}</span> Recettes
 				</p>
 			</div>
 			<div>
@@ -20,7 +19,7 @@ const FilterSelector = ({ left, handleSelect }) => {
 					<select
 						name="filter"
 						onChange={handleSelection}
-						className="customSelect"
+						className={styles.customSelect}
 					>
 						<option value="like">Likes</option>
 						<option value="comment">Commentaires</option>

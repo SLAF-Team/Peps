@@ -10,29 +10,38 @@ import Button from "../../../components/Button";
 import classes from "./Recipe.module.css";
 import Selector from "../../../components/Selector";
 import { useNotifications } from "@mantine/notifications";
-import { Select, Stepper } from "@mantine/core";
+import { Select, Stepper, Modal } from "@mantine/core";
 import { useRouter } from "next/router";
+import SearchImage from "../../../components/SearchImage";
+import NewDish from "../../../pages/dishes/new/index";
 
-const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
+const newRecipe = ({ countries, regions, types, dishes, tags, ingredients, units }) => {
   const notifications = useNotifications();
   const formRef = useRef();
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const [recipe, setRecipe] = useState(null);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [style, setStyle] = useState(false);
   const [count, setCount] = useState(1);
-  const [step, setStep] = useState(4);
-  const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState(1);
   const [countryValue, setCountryValue] = useState("");
   const [typeValue, setTypeValue] = useState("");
   const [dishValue, setDishValue] = useState("");
+  const [newImage, setNewImage] = useState("");
+  const [opened, setOpened] = useState(false);
   const router = useRouter();
 
   const countriesData = [];
   countries.map((element) =>
     countriesData.push({ value: element.id.toString(), label: element.name })
   );
+
+  const regionsData = [];
+  regions.map((element) =>
+  regionsData.push({ id: element.id.toString(), name: element.name })
+  );
+
   const typesData = [];
   types.map((element) =>
     typesData.push({ value: element.id.toString(), label: element.name })
@@ -55,21 +64,27 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
     }
   }, [token]);
 
+
+
   const handleClickRight = () => {
-    setChecked(true);
-    setStyle(true);
+    setChecked(!checked);
+    setStyle(!style);
   };
 
   const handleClickLeft = () => {
-    setChecked(false);
-    setStyle(false);
+    setChecked(!checked);
+    setStyle(!style);
+  };
+
+  const handleDishCreate = () => {
+    setOpened(false)
   };
 
   // add Recipe
   async function addNewRecipe(params) {
-    const { addName, addImageUrl, addPersons } = formRef.current;
+    const { addName, addPersons } = formRef.current;
     const name = addName.value;
-    const imageUrl = addImageUrl.value;
+    const imageUrl = newImage;
     const country = countryValue;
     const dish = dishValue;
     const type = typeValue;
@@ -96,7 +111,6 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSubmitted(true);
       setRecipe(result.data);
       setStep(step + 1);
     }
@@ -113,24 +127,27 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
 
   return (
     <div className={classes.main}>
+
       <h1 className={classes.title}>Ajouter une recette</h1>
-      <Stepper
-        active={step}
-        breakpoint="sm"
-        size="xs"
-        color="yellow"
-        iconSize={32}
-      >
-        <Stepper.Step label="Associer une recette"></Stepper.Step>
-        <Stepper.Step label="Les ingrédients"></Stepper.Step>
-        <Stepper.Step label="Les étapes"></Stepper.Step>
-        <Stepper.Step label="Ajouter des tags"></Stepper.Step>
-      </Stepper>
+      <div className={classes.stepper}>
+        <Stepper
+          active={step}
+          breakpoint="sm"
+          size="xs"
+          color="yellow"
+          iconSize={32}
+        >
+          <Stepper.Step label="Associer une recette"></Stepper.Step>
+          <Stepper.Step label="Les ingrédients"></Stepper.Step>
+          <Stepper.Step label="Les étapes"></Stepper.Step>
+          <Stepper.Step label="Ajouter des tags"></Stepper.Step>
+        </Stepper>
+      </div>
       {step === 1 && (
         <>
           <Selector
-            left="PRIVÉE"
-            right="PUBLIQUE"
+            left="PUBLIQUE"
+            right="PRIVÉE"
             handleClickRight={handleClickRight}
             handleClickLeft={handleClickLeft}
             style={style}
@@ -150,7 +167,12 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
               </div>
             ) : null}
             <div className={classes.button}>
-              <Button label="Nouveau plat" type="primary" href="/dishes/new" />
+              <Button
+                label="Nouveau plat"
+                type="primary"
+                href="#"
+                handleClick={() => setOpened(true)}
+              />
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nom de la recette *</label>
@@ -163,12 +185,18 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Ajouter une photo</label>
-              <input
-                className={classes.input}
-                name="addImageUrl"
-                type="text"
-                placeholder="Ex: https://masuperimagedetarte.com"
+              <SearchImage
+                placeholder="rechercher en anglais ou copier l'URL de votre image"
+                onSubmit={setNewImage}
               />
+              <a href="https://www.pexels.com">
+                <p>Photos mises à disposition par Pexels</p>
+              </a>
+              {newImage && (
+                <div>
+                  <img src={newImage} className={classes.mainImage} />
+                </div>
+              )}
             </div>
             <div className={classes.step}>
               <label className={classes.label}>Nombre de convives *</label>
@@ -310,9 +338,13 @@ const newRecipe = ({ countries, types, dishes, tags, ingredients, units }) => {
                 href={`/recipes/${recipe?.id}`}
               />
             </div>
+
           </div>
         </>
       )}
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
+        <NewDish regions={regionsData} onCreate={handleDishCreate} />
+      </Modal>
     </div>
   );
 };
@@ -324,6 +356,8 @@ export async function getServerSideProps() {
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
   const allTags = await prisma.tag.findMany();
+  const allRegions = await prisma.region.findMany();
+
   return {
     props: {
       dishes: allDishes,
@@ -332,6 +366,7 @@ export async function getServerSideProps() {
       tags: allTags,
       ingredients: allIngredients,
       units: allUnits,
+      regions: allRegions,
     },
   };
 }

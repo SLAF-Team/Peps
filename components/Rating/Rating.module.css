@@ -1,0 +1,12 @@
+.rating__box{
+  display: flex;
+
+}
+
+.rating__star {
+  margin: 0.5rem;
+}
+
+.black {
+  background-color: black;
+}

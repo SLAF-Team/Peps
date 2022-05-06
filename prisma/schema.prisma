@@ -23,7 +23,7 @@ model User {
   lists     List[]
   likes     LikesOnRecipes[]
   updates   UpdatesOnDish[]
-
+  ratings   Rating[]
   @@map(name: "users")
 }
 
@@ -84,6 +84,7 @@ model Recipe {
   lists           List[]                   @relation("_ListAndRecipes")
   comments        Comment[]
   steps           Step[]
+  ratings         Rating[]
 }
 
 model Dish {
@@ -148,10 +149,19 @@ model Comment {
   recipeId   Int
 }
 
-
 model Step {
   id       Int      @id @default(autoincrement())
   text     String
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId   Int
 }
+
+model Rating {
+  id       Int      @id @default(autoincrement())
+  rating   Int
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+}
+

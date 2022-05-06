@@ -1,59 +1,52 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
-import CommentsList from "./../../components/Comment/CommentsList";
 import classes from "./Recipe.module.css";
-import Button from "../../components/Button";
 import ButtonSettings from "../../components/ButtonSettings";
-import CommentForm from "../../components/Comment/CommentForm";
+import Button from "../../components/Button";
 import ListForm from "../../components/List/ListForm";
-import Layout from "../../components/layout";
-import heart from "../../assets/images/heart.svg";
-import { Select } from "@mantine/core";
 import prisma from "../../lib/prisma.ts";
+import EditRecipe from "../../components/EditRecipe";
+import RecipeTitle from "../../components/RecipeTitle/RecipeTitle";
+import Steps from "../../components/Steps/Steps";
+import Tags from "../../components/Tags/Tags";
+import RecipeSectionTitle from "../../components/RecipeSectionTitle/RecipeSectionTitle";
+import Ingredients from "../../components/Ingredients/Ingredients";
+import BCrumbs from "../../components/BCrumbs/BCrumbs";
+import Comments from "../../components/Comments/Comments";
+import { Modal, Tabs, Skeleton, NumberInput } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
+import Rating from "../../components/Rating";
+import { apiRecipes } from "../../components/utilities/operation";
 
-import {
-  Modal,
-  LoadingOverlay,
-  Tabs,
-  Anchor,
-  Skeleton,
-  Accordion,
-  NumberInput,
-} from "@mantine/core";
-import ButtonForm from "../../components/ButtonForm";
-import EditRecipeIngredients from "../../components/editRecipe/editRecipeIngredients";
-
-const SelectedRecipe = ({ ingredients, units }) => {
-  const router = useRouter();
-  const { id } = router.query;
+const SelectedRecipe = ({
+  ingredients,
+  units,
+  countries,
+  types,
+  dishes,
+  tags,
+  id,
+}) => {
   const [recipe, setRecipe] = useState(null);
   const { user } = useUserContext();
   const token = Cookies.get("token");
-  const [nameChange, setNameChange] = useState();
   const [opened, setOpened] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(true);
+  const isPublic = recipe?.published;
   const isAuthor = recipe?.cookId == user?.id ? true : false;
   const [personsValue, setPersonsValue] = useState(0);
-  const personsRatio = personsValue / recipe?.persons;
+  const notifications = useNotifications();
 
   const getRecipe = async () => {
-    if (!id) {
-      return;
-    }
     try {
-      const result = await axios.get(`/api/recipe/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      apiRecipes.getSingle(id).then((result) => {
+        setRecipe(result);
       });
-      console.log(result.data);
-      setRecipe(result.data);
     } catch (err) {
-      console.log("Error regarding the loading of recipes.");
+      console.log("Error regarding the loading of recipe.");
     }
   };
 
@@ -78,7 +71,24 @@ const SelectedRecipe = ({ ingredients, units }) => {
   useEffect(() => {
     getRecipe();
     getIngredients();
-  }, [id, submitted]);
+  }, [id]);
+
+  const handleCommentUpdate = () => {
+    getRecipe();
+  };
+
+  const handleListCreate = () => {
+    getRecipe();
+  };
+
+  const handleRatingCreate = () => {
+    getRecipe();
+  };
+
+  const handleEditRecipe = () => {
+    getRecipe();
+    setOpened(false);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -88,33 +98,15 @@ const SelectedRecipe = ({ ingredients, units }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const editRecipe = async (event) => {
-    event.preventDefault();
-
-    await axios.put(
-      "/api/recipe/editRecipe",
-      {
-        id: recipe.id,
-        name: nameChange,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    notifications.showNotification({
-      title: "Bravo!",
-      message: "Votre recette a été publié avec succès",
-      color: "green",
-    });
-    getRecipe();
-  };
-
-  const handleName = (e) => {
-    setNameChange(e.target.value);
-  };
-
   async function deleteRecipe() {
-    if (window.confirm("Souhaitez vous supprimer ce plat?")) {
+    if (window.confirm("Souhaitez vous supprimer cette recette?")) {
       await axios.delete(`/api/recipe/delete/${recipe?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
+      });
+      notifications.showNotification({
+        title: "C'est la fin des haricots",
+        message: "Votre recette a bien été supprimée",
+        color: "green",
       });
       router.push("/recipes/");
     }
@@ -123,242 +115,173 @@ const SelectedRecipe = ({ ingredients, units }) => {
   if (!recipe) {
     return null;
   }
-
-  console.log(recipe);
+  if (!isPublic && !isAuthor) {
+    return <p>Cette recette est privée !</p>;
+  }
 
   return (
     <div className="row">
       <div className="col-9">
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <BCrumbs parent={"Recettes"} child={recipe.name} />
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <img src={recipe.imageUrl} className={classes.mainImage} />
         </Skeleton>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.titlecontainer}>
-            <h1 className={classes.h1}>{recipe.name}</h1>
-            <p className={classes.selectorName}>Par {recipe.cook.name}</p>
-          </div>
-          <div className={classes.selector}>
-            <div className="selectorBlock">
-              <Link href={"/dishes/" + recipe.dish?.id}>
-                <p className={classes.selectorText}>
-                  Une variante de{" "}
-                  <span className={classes.selectorSpan}>
-                    {recipe.dish?.title}
-                  </span>
-                </p>
-              </Link>
-            </div>
-          </div>
+          <RecipeTitle recipe={recipe} />
         </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.stepscontainer}>
-            {recipe?.steps &&
-              recipe?.steps.map((element, index) => (
-                <div>
-                  <p className={classes.steps}>Étape {index + 1}</p>
-                  <p>{element.text} </p>
-                </div>
-              ))}
-          </div>
-        </Skeleton>
-
-        <div className={classes.mobiletabcontainer}>
-          <Tabs grow tabPadding="xl" position="center" color="dark">
-            <Skeleton visible={loading} style={{ marginTop: 6 }}>
-              <Tabs.Tab label="INGREDIENTS">
-                <ul>
-                  {recipe?.ingredientsUnit &&
-                    recipe?.ingredientsUnit.map((element) => (
-                      <li className={classes.li} key={element.id}>
-                        {element.quantity} {element.unit.name} de{" "}
-                        <Anchor
-                          href={"/ingredient/" + element.ingredient.id}
-                          target="_blank"
-                          color="cookogsyellow"
-                          size="xs"
-                        >
-                          {element.ingredient.name}
-                        </Anchor>
-                      </li>
-                    ))}
-                </ul>
-              </Tabs.Tab>
-            </Skeleton>
-            <Skeleton visible={loading} style={{ marginTop: 6 }}>
-              <Tabs.Tab label="ETAPES">
-                <div className={classes.stepsmobilecontainer}>
-                  <ul>
-                    <li className={classes.steps}>{recipe.steps}</li>
-                  </ul>
+        <div className={classes.resp}>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <Tabs grow>
+              <Tabs.Tab label="Ingrédients">
+                <div className={classes.padding}>
+                  <RecipeSectionTitle children="PERSONNES" />
+                  <NumberInput
+                    style={{ marginTop: 10 }}
+                    value={personsValue}
+                    onChange={(val) => setPersonsValue(val)}
+                    required
+                    min={1}
+                    max={15}
+                    size="xs"
+                  />
+                  <RecipeSectionTitle children="INGRÉDIENTS" />
+                  <Ingredients recipe={recipe} personsValue={personsValue} />
                 </div>
               </Tabs.Tab>
-            </Skeleton>
-          </Tabs>
+              <Tabs.Tab label="Étapes">
+                <Steps recipe={recipe} container={classes.mobilecontainer} />
+              </Tabs.Tab>
+              <Tabs.Tab label="Tags et Listes">
+                <div className={classes.padding}>
+                  <RecipeSectionTitle children="TAGS" />
+                  <Tags recipe={recipe} />
+                </div>
+                <div className={classes.padding}>
+                  <RecipeSectionTitle children="LISTES" />
+                  <div className={classes.detailscontainer}>
+                    <ListForm
+                      lists={recipe.lists}
+                      recipe={recipe}
+                      onCreate={handleListCreate}
+                    />
+                  </div>
+                </div>
+              </Tabs.Tab>
+            </Tabs>
+          </Skeleton>
         </div>
         <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <Steps recipe={recipe} container={classes.stepscontainer} />
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
           <div className={classes.commentcontainer}>
-            <p className={classes.h2}>Commenter</p>
-            <CommentForm
-              user={user}
-              recipe={recipe}
-              setSubmitted={setSubmitted}
-            />
-            <br></br>
-            {recipe?.comments.length != 0 && (
-              <Accordion>
-                <Accordion.Item
-                  label={
-                    "Voir les " + recipe?.comments.length + " commentaires"
-                  }
-                >
-                  {recipe?.comments && (
-                    <CommentsList comments={recipe.comments} />
-                  )}
-                </Accordion.Item>
-              </Accordion>
-            )}
+            <Rating recipe={recipe} />
           </div>
+        </Skeleton>
+        <Skeleton visible={loading} style={{ marginTop: 6 }}>
+          <Comments
+            recipe={recipe}
+            user={user}
+            handleCommentUpdate={handleCommentUpdate}
+          />
         </Skeleton>
       </div>
       <div className="col-3">
-        <div className={classes.button}>
-          <ButtonSettings
-            label="Editer"
-            type="warning"
-            handleClick={() => setOpened(true)}
-            href="#"
-          />
-        </div>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>PERSONNES</p>
+        <div className={classes.responsive}>
+          {isAuthor ? (
+            <>
+              <div className={classes.button}>
+                <ButtonSettings
+                  label="Editer"
+                  type="warning"
+                  handleClick={() => setOpened(true)}
+                  href="#"
+                />
               </div>
-            </div>
-            <NumberInput
-              style={{ marginTop: 10 }}
-              value={personsValue}
-              onChange={(val) => setPersonsValue(val)}
-              required
-              min={1}
-              max={15}
-              size="xs"
-            />
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>INGRÉDIENTS</p>
+
+              <div className={classes.button}>
+                <Button
+                  label="Supprimer"
+                  type="danger"
+                  handleClick={() => deleteRecipe()}
+                  href="#"
+                />
               </div>
-            </div>
-            <div>
-              <ul>
-                {recipe?.ingredientsUnit &&
-                  recipe?.ingredientsUnit.map((element) => (
-                    <li className={classes.li}>
-                      <a href="#">
-                        {Math.round(10 * personsRatio * element.quantity) / 10}{" "}
-                        {element.unit.name} de {element.ingredient.name}
-                      </a>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>TAGS</p>
-              </div>
-            </div>
-            <div>
-              <ul>
-                {recipe?.tags &&
-                  recipe?.tags.map((tag) => (
-                    <li className={classes.li}>
-                      <a href="#">#{tag.name}</a>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-        </Skeleton>
-        <Skeleton visible={loading} style={{ marginTop: 6 }}>
-          <div className={classes.padding}>
-            <div className={classes.selector}>
-              <div className="selectorBlock">
-                <p className={classes.selectorText}>LISTES</p>
-              </div>
-            </div>
-            <div className={classes.detailscontainer}>
-              <ListForm
-                lists={recipe.lists}
-                recipe={recipe}
-                setSubmitted={setSubmitted}
+            </>
+          ) : null}
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <RecipeSectionTitle children="PERSONNES" />
+              <NumberInput
+                style={{ marginTop: 10 }}
+                value={personsValue}
+                onChange={(val) => setPersonsValue(val)}
+                required
+                min={1}
+                max={15}
+                size="xs"
               />
+              <RecipeSectionTitle children="INGRÉDIENTS" />
+              <Ingredients recipe={recipe} personsValue={personsValue} />
             </div>
-          </div>
-          <a href="" onClick={() => setOpened(true)} className={classes.btn}>
-            Editer
-          </a>
-        </Skeleton>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <RecipeSectionTitle children="TAGS" />
+              <Tags recipe={recipe} />
+            </div>
+          </Skeleton>
+          <Skeleton visible={loading} style={{ marginTop: 6 }}>
+            <div className={classes.padding}>
+              <RecipeSectionTitle children="LISTES" />
+              <div className={classes.detailscontainer}>
+                <ListForm
+                  lists={recipe.lists}
+                  recipe={recipe}
+                  onCreate={handleListCreate}
+                />
+              </div>
+            </div>
+          </Skeleton>
+        </div>
       </div>
 
-      <Modal opened={opened} onClose={() => setOpened(false)}>
-        <form onSubmit={editRecipe}>
-          <label>Name</label> <br />
-          <input
-            name="recipeName"
-            type="text"
-            defaultValue={recipe.name}
-            onChange={handleName}
-          />
-          <br />
-          {/* <label>Convives</label>
-          <textarea
-            name="recipePerson"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.persons}
-            onChange={handlePersons}
-          />
-          <br />
-          <label>Etapes</label>
-          <textarea
-            name="recipeSteps"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.step}
-            onChange={handleSteps}
-          />
-          <label>Etapes</label>
-          <textarea
-            name="recipeSteps"
-            type="text"
-            style={{ width: "100%", height: "100px" }}
-            defaultValue={recipe.step}
-            onChange={handleSteps}
-          /> */}
-          <EditRecipeIngredients
-            recipe={recipe}
-            units={units}
-            ingredients={ingredients}
-          />
-          <ButtonForm label="J'édite" theme="success" />
-        </form>
+      <Modal size="xl" opened={opened} onClose={() => setOpened(false)}>
+        <EditRecipe
+          recipe={recipe}
+          user={user}
+          ingredients={ingredients}
+          units={units}
+          countries={countries}
+          types={types}
+          dishes={dishes}
+          tags={tags}
+          onSubmit={handleEditRecipe}
+        />
       </Modal>
     </div>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { id } = context.params;
   const allIngredients = await prisma.ingredient.findMany();
   const allUnits = await prisma.unit.findMany();
+  const allTypes = await prisma.type.findMany();
+  const allCountries = await prisma.country.findMany();
+  const allDishes = await prisma.dish.findMany();
+  const allTags = await prisma.tag.findMany();
   return {
     props: {
       ingredients: allIngredients,
       units: allUnits,
+      dishes: allDishes,
+      types: allTypes,
+      countries: allCountries,
+      tags: allTags,
+      id: id,
     },
   };
 }

@@ -3,7 +3,6 @@ import UserList from "../../components/UserList";
 import classes from "./Lists.module.css";
 import RecipeCard from "../../components/recipeCard";
 import FilterSelector from "../../components/FilterSelector";
-import { checkAuthorAuth } from "../../lib/authfront";
 import { useUserContext } from "../../context/UserContext";
 import Button from "../../components/Button";
 import Cookies from "js-cookie";
@@ -12,24 +11,41 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Modal } from "@mantine/core";
 import { CheckboxGroup, Checkbox } from "@mantine/core";
-import ButtonSettings from "../../components/ButtonSettings";
 
 const Profile = () => {
   const { user } = useUserContext();
   const token = Cookies.get("token");
   const router = useRouter();
   const { query } = useRouter();
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
   const { id } = query;
   const [filter, setFilter] = useState("like");
   const [list, setList] = useState(null);
   const notifications = useNotifications();
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState();
   const [opened, setOpened] = useState(false);
-  const [nameChange, setNameChange] = useState();
+  const [nameChange, setNameChange] = useState("");
   const [value, setValue] = useState([]);
+  const [oldValue, setOldValue] = useState([]);
+  const [idOfUserConnected, setIdOfUserConnected] = useState();
+  const [idOfOwnerList, setIdOfOwnerList] = useState();
+  const [page, setPage] = useState(1);
+  const recipesPerPage = 12;
 
-  // search list + call axios
+  const loadMore = (e) => {
+    e.preventDefault();
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    if (recipes) {
+      const oldRecipes = [];
+      recipes.map((recipe) => oldRecipes.push(recipe.id.toString()));
+      setValue(oldRecipes);
+      setOldValue(oldRecipes);
+    }
+  }, [user, recipes]);
+
   async function searchList(data) {
     try {
       const result = await axios.post(`/api/list/searchLists`, {
@@ -38,23 +54,24 @@ const Profile = () => {
       setList(result.data);
       setRecipes(result.data[0].recipes);
     } catch (err) {
-      console.log(err);
+      console.log("Error regarding the loading of lists.");
     }
   }
 
-  // getlist
   async function getList(filtre) {
     let dataFilter = filtre === "comment" ? "comments" : "likes";
     let data = {
+      take: page * recipesPerPage,
       where: { id: parseInt(id) },
       include: {
         recipes: {
           include: {
             _count: { select: { likes: true, comments: true } },
+            ratings: true,
           },
           orderBy: {
             [dataFilter]: {
-              _count: "asc",
+              _count: "desc",
             },
           },
         },
@@ -64,8 +81,6 @@ const Profile = () => {
     searchList(data);
   }
 
-  // update list bloc
-
   const handleName = (e) => {
     setNameChange(e.target.value);
   };
@@ -74,13 +89,16 @@ const Profile = () => {
     event.preventDefault();
     const data = [];
     value.map((element) => data.push({ id: parseInt(element) }));
-    const result = await axios.put(
+    const oldData = [];
+    oldValue.map((element) => oldData.push({ id: parseInt(element) }));
+    await axios.put(
       "/api/list/editList",
       {
         id: parseInt(id),
         name: nameChange,
         recipes: {
-          disconnect: data,
+          disconnect: oldData,
+          connect: data,
         },
       },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -91,27 +109,21 @@ const Profile = () => {
       color: "green",
     });
     setOpened(false);
-    getList(filter);
   };
 
   useEffect(() => {
-    if (!user && !list) {
-      setAuth(checkAuthorAuth(user, list));
+    if (list?.length > 0) {
+      setNameChange(list[0].name);
     }
-  }, [list, user]);
-
-  useEffect(() => {
-    getList("like");
-  }, [id]);
-
-  // Filter
+  }, [list]);
 
   useEffect(() => {
     getList(filter);
-  }, [filter]);
+  }, [page, id, filter, opened]);
 
   const handleSelect = (event) => {
     setFilter(event);
+    setPage(1);
   };
 
   async function deleteList() {
@@ -132,55 +144,54 @@ const Profile = () => {
     });
   };
 
+  useEffect(() => {
+    user && user.id ? setIdOfUserConnected(user.id) : null;
+  }, [searchList]);
+
+  useEffect(() => {
+    list && setIdOfOwnerList(list[0].userId);
+  }, [searchList, getList]);
+
+  useEffect(() => {
+    idOfUserConnected && idOfOwnerList
+      ? setAuth(idOfUserConnected == idOfOwnerList ? true : false)
+      : setAuth(false);
+  }, [idOfUserConnected, idOfOwnerList]);
+
   return (
     <>
       {list && (
         <>
-          <UserList user={list[0]} color="#26c485" />
-          {auth && (
-            <>
-              <Button
-                label="Supprimer"
-                type="danger"
-                handleClick={() => handleDeleteList()}
-                href="#"
-                className={classes.button}
-              />
-              <br></br>
-              <ButtonSettings
-                label="Editer"
-                type="warning"
-                handleClick={() => setOpened(true)}
-                href="#"
-                className={classes.button}
-              />
-            </>
-          )}
+          <UserList
+            user={list[0]}
+            color="#26c485"
+            onClick={() => setOpened(true)}
+          />
           <FilterSelector left={recipes?.length} handleSelect={handleSelect} />
           <div className={classes.cards}>
             <div className="row">
-              {recipes?.map((recipe) => (
-                <RecipeCard
-                  recipe={recipe}
-                  key={recipe.id}
-                  like_count={recipe?._count?.likes}
-                  comment_count={recipe?._count?.comments}
-                  col="col-3 col-6-sm"
-                />
+              {recipes?.map((recipe, index) => (
+                <RecipeCard recipe={recipe} key={index} col="col-3 col-6-sm" />
               ))}
             </div>
+            {recipes?.length >= recipesPerPage && (
+              <div className={classes.loadMore}>
+                <a onClick={loadMore} className={classes.btn}>
+                  Voir plus
+                </a>
+              </div>
+            )}
           </div>
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <form onSubmit={editList}>
               <label>Nom</label> <br />
               <input
-                name="listName"
-                type="text"
-                ref={list.name}
                 onChange={handleName}
+                className={classes.field}
+                value={nameChange}
+                type="text"
               />
               <CheckboxGroup
-                // defaultValue={initialValue}
                 value={value}
                 onChange={setValue}
                 label="Retirer des recettes"
@@ -188,8 +199,9 @@ const Profile = () => {
                 required
               >
                 {list[0].recipes ? (
-                  list[0].recipes.map((recipe) => (
+                  list[0].recipes.map((recipe, index) => (
                     <Checkbox
+                      key={index}
                       value={recipe.id.toString()}
                       label={recipe.name}
                     />
@@ -198,14 +210,23 @@ const Profile = () => {
                   <p>Tu n'as pas encore de liste</p>
                 )}
               </CheckboxGroup>
-              <button type="submit">J'édite</button>
+              <button className={classes.btnPrimary} type="submit">
+                J'édite
+              </button>
+              <button
+                onClick={() => handleDeleteList()}
+                className={classes.btnDanger}
+              >
+                Supprimer
+              </button>
             </form>
-            <Button
-              label="Ajouter à d'autres recettes"
-              type="success"
-              href="/recipes"
-              className={classes.button}
-            />
+            <div className={classes.button}>
+              <Button
+                label="Ajouter de nouvelles recettes"
+                type="success"
+                href="/recipes"
+              />
+            </div>
           </Modal>
         </>
       )}

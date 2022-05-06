@@ -12,9 +12,10 @@ const Footer = () => {
           <div className={styles.border}>
             <span className={styles.brand}>Peps</span>
             <p className={styles.description}>
-              Peps est une base de donnée culinaire qui a pour vision de
-              façonner l'espace alimentaire numérique avec une technologie et un
-              contenu de pointe.
+              Peps est une base de donnée culinaire, qui a pour vision de
+              façonner l'espace alimentaire numérique. Une recette est une
+              déclinaison d'un type de plat. Perdez-vous dans notre labyrinthe
+              de saveurs !
             </p>
             <a href="https://github.com/SLAF-Team/Cookogs">
               <svg
@@ -34,15 +35,28 @@ const Footer = () => {
             <div className={styles.title}>
               <span>Mon espace</span>
             </div>
-            <Link href="/">
-              <p className={styles.link}>Home</p>
-            </Link>
-            <Link href="/profile">
-              <p className={styles.link}>Mon Profil</p>
-            </Link>
-            <Link href="/profile?list=true" as="/profile">
-              <p className={styles.link}>Mes listes</p>
-            </Link>
+            {user ? (
+              <>
+                <Link href="/">
+                  <p className={styles.link}>Accueil</p>
+                </Link>
+                <Link href="/profile">
+                  <p className={styles.link}>Profil</p>
+                </Link>
+                <Link href="/profile?list=true" as="/profile">
+                  <p className={styles.link}>Listes</p>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/login">
+                  <p className={styles.link}>Connexion</p>
+                </Link>
+                <Link href="/login">
+                  <p className={styles.link}>Inscription</p>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="col-3">
@@ -51,6 +65,9 @@ const Footer = () => {
           </div>
           <Link href="/recipes/new">
             <p className={styles.link}>Proposer une recette</p>
+          </Link>
+          <Link href="/dishes/new">
+            <p className={styles.link}>Proposer un plat</p>
           </Link>
           <Link href="/dishes">
             <p className={styles.link}>Plats</p>
