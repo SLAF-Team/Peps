@@ -15,7 +15,7 @@ const EditUser = ({ user, handleUpdateUser }) => {
   const [email, setEmail] = useState(user?.email);
   const notifications = useNotifications();
 
-  // Handling the name change
+  // Handling the name changee
   const handleName = (e) => {
     setName(e.target.value);
   };
