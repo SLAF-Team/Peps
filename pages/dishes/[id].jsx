@@ -24,6 +24,7 @@ const SelectedDish = () => {
   const getDish = async () => {
     try {
       const result = await axios.get(`/api/dish/${id}?page=${page}`);
+      console.log(result)
       setDish(result.data);
     } catch (err) {
       console.log("Error regarding the loading of dishes.");
@@ -46,7 +47,8 @@ const SelectedDish = () => {
     setOpened(false);
     getDish();
   };
-
+  console.log("dish?.imageUrl")
+  console.log(dish?.imageUrl)
   const setPageNumber = (number) => {
     setPage(page + number);
   };
@@ -173,7 +175,7 @@ const SelectedDish = () => {
                     href={"/dishes"}
                     style={{ fontSize: "12px", textAlign: "center" }}
                   >
-                    Voir tous les plats
+                    Voir les plats
                   </a>
                 </li>
               </ul>
